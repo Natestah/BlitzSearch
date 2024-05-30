@@ -4,6 +4,8 @@
 
 Blitz Search is tool in Active Development, made private because I do plan to eventually activate a Premium mode within.  At which point I hope to release *some* of the Sub Projects.
 
+This page exists primarily for Issue tracking, but also serves a public place for Blitz Search to notify version changes.
+
 ## More Info:
 
 [Natestah.com](https://natestah.com/)
