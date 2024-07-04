@@ -1,28 +1,98 @@
-{
-  "Revision": "0.0.35",
-  "History": [
-    "### Latest( Version 0.0.35 )\r\n* Fixed changed file when search box has nothing resulting in results.\r\n* Cleanup status bar a bit. ( smaller, less verbiage)\r\n* Add sublime text to IDE setup instructions.\r\n* [Issue 46](https://github.com/Natestah/BlitzSearch/issues/46) With an empty search field, changed files were creating bogus results\r\n* [Issue 7](https://github.com/Natestah/BlitzSearch/issues/7) Add an option to show total file time (instead of forcing it)\r\n",
-    "### Version 0.0.34\r\n* **Premium:** Theme Panel upgrade, Select Syntax Highlighting mode from more that just light/dark radio buttons\r\n* **Premium:** Some Control over Results Spacing\r\n* **Premium:** Global Font Selector.\r\n* **Free-To-Play**: Right Click on a word in the preview to \u0022Search on Github\u0022 simply tells web browser to open that up as a github search.\r\n",
-    "### Version 0.0.33\r\n* another cache fix as I realized that GetHashCode is indeterminate,  Due to recent improvements to Directory Enumerations this flew under the radar.\r\n",
-    "### Version 0.0.32\r\n* Fixed old results coming in when changing the scope, now unique caches are created foreach combination of directories.\r\n* Send the results immediately after quiet time has elapsed. \r\n* More Accurate time on \u0022Last result found\u0022 when recycling is enabled. Was Conflict with \u0022quiet time\u0022 logic. \r\n### 0.0.31\r\n* Fix Whole word considering underscore as a boundary.\r\n* Adding \u0022IDE Setup\u0022 with links to Setup instructions for each.\r\n",
-    "### Version 0.0.30\r\n* Add Usage section to Help page\r\n* Fix Reddit link\r\n* Shrank some help images\r\n* Some notes about What Blitz Search Is Not ( AI Driven, Fuzzy Search )\r\n* Added Catch around some new file Discovery \r\n",
-    "### Version 0.0.29\r\n* Added parallel to directory enumeration\r\n",
-    "### Version 0.0.28 \r\n* BugFix - preview pane now updates when files are saved.\r\n* Added Context Menu to Preview Pane with 2 new Hotkey bound commands\r\n  * Goto Selected Editor ( F12 )\r\n  * Search This ( F8 )\r\n",
-    "### Version 0.0.27\r\n* Fix highlighting in preview when starting up. A mix up between \u0022Dark\u0022 and \u0022DarkPlus\u0022 (preferred) was flying under the radar.\r\n* Work on Cache Recall, Before the cached recall was only benefiting the first of extension in the list. \r\n### Coming soon\r\n* Jetbrains IDE Extension has been Submitted and is going through Evaluation.. This will provide \u0022Search This\u0022 in the editor(s).\r\n* NotePad\u002B\u002B Plugin has been approved for the list, it should be in the next build ( after 8.6.8 )..  \r\n* More Quality of life things.. \r\n  * [Issue #38](https://github.com/Natestah/BlitzSearch/issues/38) Sometimes empty FileName filter seems to yield results from when there was a filename filter\r\n  * [Issue #37](https://github.com/Natestah/BlitzSearch/issues/37) Search This in preview pane\r\n## History\r\n",
-    "### Version 0.0.26\r\n* Added Change Log and improve help section, Can now show images and things\r\n* [Github #32](https://github.com/Natestah/BlitzSearch/issues/31) Memory improvement for caches\r\n  * Removing common Hexadecimal words\r\n  * underscores removed from remembered names\r\n* [Github #36](https://github.com/Natestah/BlitzSearch/issues/36) Control-F for find-in-files is now Control-Shift-F, so as not to conflict with the Preview panes Control-F\r\n* [Github #38](https://github.com/Natestah/BlitzSearch/issues/38) Fix FileName being recalled, but not shown, creating very misleading non-results.\r\n* Added History Fly-out-drop-downs for file and search fields.\r\n",
-    "### Version 0.0.25\r\n* [Github #35](https://github.com/Natestah/BlitzSearch/issues/35) Added Case Sensitivity  \r\n* [Github #35](https://github.com/Natestah/BlitzSearch/issues/35) Smart Case Option ( Any Upper case character indicates case sensitive )\r\n* [Github #35](https://github.com/Natestah/BlitzSearch/issues/35) bumped Avalonia to Beta 11.1.0.beta2 for a change ( radio buttons on menus )\r\n",
-    "### Version 0.0.24\r\n* Added all Jetbrains IDE\u0027s to the Goto box\r\n* Shrank the Items since there are many now! \r\n",
-    "### Version 0.0.23 \r\n* New feature to Update Results when files change\r\n",
-    "### Version 0.0.22\r\n* Added granular parsing on .gitIgnore.. Instead of failing the whole thing, fail and log the line.\r\n",
-    "### Version 0.0.21\r\n* Fixed an issue that popped up in v20.\r\n",
-    "### Version 0.0.20\r\n#### Quality of Life:\r\n* Right click Open in Explorer Option\r\n* Right click Open with Command Prompt option\r\n* Minor work to \u0022files not found\u0022 UI in results field.\r\n#### Bugfixes:\r\n* Fixed inconsistency of report on number of files with Results Recycling.\r\n* Much Work to improve behavior of changed files and .blitzIgnore .gitignore files when files change.\r\n* Fixed Icons not showing up in published Exe ( NativeAOC related ).\r\n",
-    "### Version 0.0.19\r\n* Added Special thanks ***Carlos Pineda*** for feedback\r\n* Quality of life changes: Right Click menu in the search results to open editor other than what you have selected.\r\n* Close Button on File Name Filter\r\n* **.blitzIgnore** (file) acts like **.gitIgnore**.. For when you want to ignore in blitz, but not GIt. ( I\u0027m still trying to find the context for this )\r\n",
-    "### Version 0.0.18\r\n* Blitz now has an adjustable robot file detection that can help identify and save memory Or simply sort those to the end of the search list for quicker Human results.\r\n* The detection is simply \u0022Greater than X MB\u0022 or \u0022First Line Longer than X characters\u0022. both of which are adjustable\r\n* Added Cache Clean up button.\r\n* Additional work when making adjustments to the Scope to weed out old caches and get back some memory.\r\n",
-    "### Version 0.0.17\r\n* Work to Restore window state when invoked from outside (make window come to front).\r\n",
-    "### Version 0.0.15\r\n* Stuff for Visual Studio Extension ( which is live now in Preview )\r\n",
-    "### Version 0.0.14\r\n* Option to show in taskbar.\r\n",
-    "### Version 0.0.13\r\n* Minor light theme fixes\r\n* visual studio code plugin update (v6) to run needs this in Blitz too.  Running the command will now launch blitz And Update the search field accordingly.\r\n",
-    "### Version 0.0.12\r\n* Dark/Light Theme.\r\n* Fix an out of memory issue.\r\n* Remember the split pane setting on closing.\r\n",
-    "### Version 0.0.11\r\n* Integrates Licence management.   ( I haven\u0027t activated the storefront as there is nothing to sell yet ).\r\n* Adding TimeToLastResult / Total Time.\r\n* Removed option to not retain filenames. It was a heavily ignored and suboptimal code path.\r\n* Describe the \u0022Debug Filename\u0022 option better.\r\n* Little bit of work to [ALL files] with priorities.\r\n"
-  ]
-}
+[
+  {
+    "Revision": "0.0.35",
+    "Changes": "* Fixed changed file when search box has nothing resulting in results.\r\n* Cleanup status bar a bit. ( smaller, less verbiage)\r\n* Add sublime text to IDE setup instructions.\r\n* [Issue 46](https://github.com/Natestah/BlitzSearch/issues/46) With an empty search field, changed files were creating bogus results\r\n* [Issue 7](https://github.com/Natestah/BlitzSearch/issues/7) Add an option to show total file time (instead of forcing it)\r\n"
+  },
+  {
+    "Revision": "0.0.34",
+    "Changes": "* **Premium:** Theme Panel upgrade, Select Syntax Highlighting mode from more that just light/dark radio buttons\r\n* **Premium:** Some Control over Results Spacing\r\n* **Premium:** Global Font Selector.\r\n* **Free-To-Play**: Right Click on a word in the preview to \u0022Search on Github\u0022 simply tells web browser to open that up as a github search.\r\n"
+  },
+  {
+    "Revision": "0.0.33",
+    "Changes": "* another cache fix as I realized that GetHashCode is indeterminate,  Due to recent improvements to Directory Enumerations this flew under the radar.\r\n"
+  },
+  {
+    "Revision": "0.0.32",
+    "Changes": "* Fixed old results coming in when changing the scope, now unique caches are created foreach combination of directories.\r\n* Send the results immediately after quiet time has elapsed. \r\n* More Accurate time on \u0022Last result found\u0022 when recycling is enabled. Was Conflict with \u0022quiet time\u0022 logic. \r\n### 0.0.31\r\n* Fix Whole word considering underscore as a boundary.\r\n* Adding \u0022IDE Setup\u0022 with links to Setup instructions for each.\r\n"
+  },
+  {
+    "Revision": "0.0.30",
+    "Changes": "* Add Usage section to Help page\r\n* Fix Reddit link\r\n* Shrank some help images\r\n* Some notes about What Blitz Search Is Not ( AI Driven, Fuzzy Search )\r\n* Added Catch around some new file Discovery \r\n"
+  },
+  {
+    "Revision": "0.0.29",
+    "Changes": "* Added parallel to directory enumeration\r\n"
+  },
+  {
+    "Revision": "0.0.28",
+    "Changes": "* BugFix - preview pane now updates when files are saved.\r\n* Added Context Menu to Preview Pane with 2 new Hotkey bound commands\r\n  * Goto Selected Editor ( F12 )\r\n  * Search This ( F8 )\r\n"
+  },
+  {
+    "Revision": "0.0.27",
+    "Changes": "* Fix highlighting in preview when starting up. A mix up between \u0022Dark\u0022 and \u0022DarkPlus\u0022 (preferred) was flying under the radar.\r\n* Work on Cache Recall, Before the cached recall was only benefiting the first of extension in the list. \r\n### Coming soon\r\n* Jetbrains IDE Extension has been Submitted and is going through Evaluation.. This will provide \u0022Search This\u0022 in the editor(s).\r\n* NotePad\u002B\u002B Plugin has been approved for the list, it should be in the next build ( after 8.6.8 )..  \r\n* More Quality of life things.. \r\n  * [Issue #38](https://github.com/Natestah/BlitzSearch/issues/38) Sometimes empty FileName filter seems to yield results from when there was a filename filter\r\n  * [Issue #37](https://github.com/Natestah/BlitzSearch/issues/37) Search This in preview pane\r\n## History\r\n"
+  },
+  {
+    "Revision": "0.0.26",
+    "Changes": "* Added Change Log and improve help section, Can now show images and things\r\n* [Github #32](https://github.com/Natestah/BlitzSearch/issues/31) Memory improvement for caches\r\n  * Removing common Hexadecimal words\r\n  * underscores removed from remembered names\r\n* [Github #36](https://github.com/Natestah/BlitzSearch/issues/36) Control-F for find-in-files is now Control-Shift-F, so as not to conflict with the Preview panes Control-F\r\n* [Github #38](https://github.com/Natestah/BlitzSearch/issues/38) Fix FileName being recalled, but not shown, creating very misleading non-results.\r\n* Added History Fly-out-drop-downs for file and search fields.\r\n"
+  },
+  {
+    "Revision": "0.0.25",
+    "Changes": "* [Github #35](https://github.com/Natestah/BlitzSearch/issues/35) Added Case Sensitivity  \r\n* [Github #35](https://github.com/Natestah/BlitzSearch/issues/35) Smart Case Option ( Any Upper case character indicates case sensitive )\r\n* [Github #35](https://github.com/Natestah/BlitzSearch/issues/35) bumped Avalonia to Beta 11.1.0.beta2 for a change ( radio buttons on menus )\r\n"
+  },
+  {
+    "Revision": "0.0.24",
+    "Changes": "* Added all Jetbrains IDE\u0027s to the Goto box\r\n* Shrank the Items since there are many now! \r\n"
+  },
+  {
+    "Revision": "0.0.23",
+    "Changes": "* New feature to Update Results when files change\r\n"
+  },
+  {
+    "Revision": "0.0.22",
+    "Changes": "* Added granular parsing on .gitIgnore.. Instead of failing the whole thing, fail and log the line.\r\n"
+  },
+  {
+    "Revision": "0.0.21",
+    "Changes": "* Fixed an issue that popped up in v20.\r\n"
+  },
+  {
+    "Revision": "0.0.20",
+    "Changes": "#### Quality of Life:\r\n* Right click Open in Explorer Option\r\n* Right click Open with Command Prompt option\r\n* Minor work to \u0022files not found\u0022 UI in results field.\r\n#### Bugfixes:\r\n* Fixed inconsistency of report on number of files with Results Recycling.\r\n* Much Work to improve behavior of changed files and .blitzIgnore .gitignore files when files change.\r\n* Fixed Icons not showing up in published Exe ( NativeAOC related ).\r\n"
+  },
+  {
+    "Revision": "0.0.19",
+    "Changes": "* Added Special thanks ***Carlos Pineda*** for feedback\r\n* Quality of life changes: Right Click menu in the search results to open editor other than what you have selected.\r\n* Close Button on File Name Filter\r\n* **.blitzIgnore** (file) acts like **.gitIgnore**.. For when you want to ignore in blitz, but not GIt. ( I\u0027m still trying to find the context for this )\r\n"
+  },
+  {
+    "Revision": "0.0.18",
+    "Changes": "* Blitz now has an adjustable robot file detection that can help identify and save memory Or simply sort those to the end of the search list for quicker Human results.\r\n* The detection is simply \u0022Greater than X MB\u0022 or \u0022First Line Longer than X characters\u0022. both of which are adjustable\r\n* Added Cache Clean up button.\r\n* Additional work when making adjustments to the Scope to weed out old caches and get back some memory.\r\n"
+  },
+  {
+    "Revision": "0.0.17",
+    "Changes": "* Work to Restore window state when invoked from outside (make window come to front).\r\n"
+  },
+  {
+    "Revision": "0.0.15",
+    "Changes": "* Stuff for Visual Studio Extension ( which is live now in Preview )\r\n"
+  },
+  {
+    "Revision": "0.0.14",
+    "Changes": "* Option to show in taskbar.\r\n"
+  },
+  {
+    "Revision": "0.0.13",
+    "Changes": "* Minor light theme fixes\r\n* visual studio code plugin update (v6) to run needs this in Blitz too.  Running the command will now launch blitz And Update the search field accordingly.\r\n"
+  },
+  {
+    "Revision": "0.0.12",
+    "Changes": "* Dark/Light Theme.\r\n* Fix an out of memory issue.\r\n* Remember the split pane setting on closing.\r\n"
+  },
+  {
+    "Revision": "0.0.11",
+    "Changes": "* Integrates Licence management.   ( I haven\u0027t activated the storefront as there is nothing to sell yet ).\r\n* Adding TimeToLastResult / Total Time.\r\n* Removed option to not retain filenames. It was a heavily ignored and suboptimal code path.\r\n* Describe the \u0022Debug Filename\u0022 option better.\r\n* Little bit of work to [ALL files] with priorities.\r\n"
+  },
+  {
+    "Revision": "0.0.9",
+    "Changes": "* Project Rider Goto\r\n"
+  }
+]
