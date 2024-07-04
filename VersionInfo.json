@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.36",
+    "Changes": "* Improved Versioning and Updating\r\n"
+  },
+  {
     "Revision": "0.0.35",
     "Changes": "* Fixed changed file when search box has nothing resulting in results.\r\n* Cleanup status bar a bit. ( smaller, less verbiage)\r\n* Add sublime text to IDE setup instructions.\r\n* [Issue 46](https://github.com/Natestah/BlitzSearch/issues/46) With an empty search field, changed files were creating bogus results\r\n* [Issue 7](https://github.com/Natestah/BlitzSearch/issues/7) Add an option to show total file time (instead of forcing it)\r\n"
   },
