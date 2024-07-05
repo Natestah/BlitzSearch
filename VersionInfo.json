@@ -1,7 +1,11 @@
 [
   {
+    "Revision": "0.0.38",
+    "Changes": "* Public Facing Version update feature. Some live tests were required\r\n"
+  },
+  {
     "Revision": "0.0.37",
-    "Changes": "* Public Facing Version update feature. 36 was test.. \r\n"
+    "Changes": "* Testing..\r\n"
   },
   {
     "Revision": "0.0.36",
