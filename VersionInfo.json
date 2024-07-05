@@ -1,11 +1,15 @@
 [
   {
+    "Revision": "0.0.37",
+    "Changes": "* Public Facing Version update feature. 36 was test.. \r\n"
+  },
+  {
     "Revision": "0.0.36",
-    "Changes": "* Improved Versioning and Updating\r\n"
+    "Changes": "* Updater, fetches information about updates and automatically downloads / presents a button about it.\r\n* Clicking update runs installer in Super Silent mode.  It should be quick and painless to install. \r\n* Removed pdb\u0027s from deploy for big Installer size saving.\r\n* Installer is now signed by Natestah LLC.. Meaning Windows Defender won\u0027t bother you with a scary prompt.\r\n* My update process is a little bit more Automated\r\n"
   },
   {
     "Revision": "0.0.35",
-    "Changes": "* Fixed changed file when search box has nothing resulting in results.\r\n* Cleanup status bar a bit. ( smaller, less verbiage)\r\n* Add sublime text to IDE setup instructions.\r\n* [Issue 46](https://github.com/Natestah/BlitzSearch/issues/46) With an empty search field, changed files were creating bogus results\r\n* [Issue 7](https://github.com/Natestah/BlitzSearch/issues/7) Add an option to show total file time (instead of forcing it)\r\n"
+    "Changes": "* Fixed changed file when search box has nothing resulting in results.\r\n* Cleanup status bar a bit. ( smaller, less verbiage)\r\n* Add sublime text to IDE setup instructions.\r\n* Fix F8 ( search this from preview ) Now Focuses and highlights text in search box ( like the editors do ) \r\n* [Issue 46](https://github.com/Natestah/BlitzSearch/issues/46) With an empty search field, changed files were creating bogus results\r\n* [Issue 7](https://github.com/Natestah/BlitzSearch/issues/7) Add an option to show total file time (instead of forcing it)\r\n"
   },
   {
     "Revision": "0.0.34",
