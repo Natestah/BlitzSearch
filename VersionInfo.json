@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.41",
+    "Changes": "* Fix command line preview not showing in Goto Selection\r\n* Fixed up default for Fleet Goto behavior. \r\n"
+  },
+  {
     "Revision": "0.0.40",
     "Changes": "* Fixed Visual Studio missing from right click to goto\r\n"
   },
