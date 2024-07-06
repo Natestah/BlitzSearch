@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.40",
+    "Changes": "* Fixed Visual Studio missing from right click to goto\r\n"
+  },
+  {
     "Revision": "0.0.39",
     "Changes": "* Public Facing Version update feature. Some live tests were required\r\n"
   },
