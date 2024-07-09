@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.42",
+    "Changes": "* [bugfix] color fix on \u0027:\u0027 for filename path\r\n* [issues/47](https://github.com/Natestah/BlitzSearch/issues/47) Ordering on priority extensions getting mixed up on Recycle results.\r\n* Ignore files ending with ~ ( backup files )\r\n"
+  },
+  {
     "Revision": "0.0.41",
     "Changes": "* Fix command line preview not showing in Goto Selection\r\n* Fixed up default for Fleet Goto behavior. \r\n"
   },
