@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.44",
+    "Changes": "* Fix default font.. not everyone has \u0022Cascadia Code\u0022\r\n"
+  },
+  {
     "Revision": "0.0.43",
     "Changes": "* Visuals improvements, PNG-\u003ESVG for better fidelity \r\n* Custom Title bar allows Theme color to affect space better ( and rendering SVG icon )\r\n* BugFix: Launch Registration Application from Program Files instead of \u0022CurrentDirectory\u0022 to assure it lands correctly.\r\n* Theoretical fix on right click crash on results view.\r\n* Work on Folder selection, adding History and AutoCompleteBox.\r\n"
   },
