@@ -5,11 +5,11 @@
   },
   {
     "Revision": "0.0.43",
-    "Changes": "* Visuals improvements, PNG-\u003ESVG for better fidelity \r\n* Custom Title bar allows Theme color to affect space better ( and rendering SVG icon )\r\n* BugFix: Launch Registration Application from Program Files instead of \u0022CurrentDirectory\u0022 to assure it lands correctly.\r\n* Theoretical fix on right click crash on results view.\r\n* Work on Folder selection, adding History and AutoCompleteBox.\r\n"
+    "Changes": "* Visuals improvements, PNG-\u003ESVG for better fidelity \r\n* Custom Title bar allows Theme color to affect space better ( and rendering SVG icon )\r\n* **BugFix:** Launch Registration Application from Program Files instead of \u0022CurrentDirectory\u0022 to assure it lands correctly.\r\n* Theoretical fix on right click crash on results view.\r\n* Work on Folder selection, adding History and AutoCompleteBox.\r\n"
   },
   {
     "Revision": "0.0.42",
-    "Changes": "* Bugfix: color fix on \u0027:\u0027 for filename path\r\n* [issues/47](https://github.com/Natestah/BlitzSearch/issues/47) Ordering on priority extensions getting mixed up on Recycle results.\r\n* Ignore files ending with ~ ( backup files )\r\n"
+    "Changes": "* **BugFix:**: color fix on \u0027:\u0027 for filename path\r\n* [issues/47](https://github.com/Natestah/BlitzSearch/issues/47) Ordering on priority extensions getting mixed up on Recycle results.\r\n* Ignore files ending with ~ ( backup files )\r\n"
   },
   {
     "Revision": "0.0.41",
@@ -37,7 +37,7 @@
   },
   {
     "Revision": "0.0.34",
-    "Changes": "* **Premium:** Theme Panel upgrade, Select Syntax Highlighting mode from more that just light/dark radio buttons\r\n* **Premium:** Some Control over Results Spacing\r\n* **Premium:** Global Font Selector.\r\n* **Free-To-Play**: Right Click on a word in the preview to \u0022Search on Github\u0022 simply tells web browser to open that up as a github search.\r\n"
+    "Changes": "* **Premium:** Theme Panel upgrade, Select Syntax Highlighting mode from more that just light/dark radio buttons\r\n* **Premium:** Some Control over Results Spacing\r\n* **Premium:** Global Font Selector.\r\n* Right Click on a word in the preview to \u0022Search on Github\u0022 simply tells web browser to open that up as a github search.\r\n"
   },
   {
     "Revision": "0.0.33",
@@ -57,11 +57,11 @@
   },
   {
     "Revision": "0.0.28",
-    "Changes": "* BugFix - preview pane now updates when files are saved.\r\n* Added Context Menu to Preview Pane with 2 new Hotkey bound commands\r\n  * Goto Selected Editor ( F12 )\r\n  * Search This ( F8 )\r\n"
+    "Changes": "* **BugFix:** - preview pane now updates when files are saved.\r\n* Added Context Menu to Preview Pane with 2 new Hotkey bound commands\r\n  * Goto Selected Editor ( F12 )\r\n  * Search This ( F8 )\r\n"
   },
   {
     "Revision": "0.0.27",
-    "Changes": "* Fix highlighting in preview when starting up. A mix up between \u0022Dark\u0022 and \u0022DarkPlus\u0022 (preferred) was flying under the radar.\r\n* Work on Cache Recall, Before the cached recall was only benefiting the first of extension in the list. \r\n### Coming soon\r\n* Jetbrains IDE Extension has been Submitted and is going through Evaluation.. This will provide \u0022Search This\u0022 in the editor(s).\r\n* NotePad\u002B\u002B Plugin has been approved for the list, it should be in the next build ( after 8.6.8 )..  \r\n* More Quality of life things.. \r\n  * [Issue #38](https://github.com/Natestah/BlitzSearch/issues/38) Sometimes empty FileName filter seems to yield results from when there was a filename filter\r\n  * [Issue #37](https://github.com/Natestah/BlitzSearch/issues/37) Search This in preview pane\r\n## History\r\n"
+    "Changes": "* Fix highlighting in preview when starting up. A mix up between \u0022Dark\u0022 and \u0022DarkPlus\u0022 (preferred) was flying under the radar.\r\n* Work on Cache Recall, Before the cached recall was only benefiting the first of extension in the list. \r\n"
   },
   {
     "Revision": "0.0.26",
@@ -89,7 +89,7 @@
   },
   {
     "Revision": "0.0.20",
-    "Changes": "#### Quality of Life:\r\n* Right click Open in Explorer Option\r\n* Right click Open with Command Prompt option\r\n* Minor work to \u0022files not found\u0022 UI in results field.\r\n#### Bugfixes:\r\n* Fixed inconsistency of report on number of files with Results Recycling.\r\n* Much Work to improve behavior of changed files and .blitzIgnore .gitignore files when files change.\r\n* Fixed Icons not showing up in published Exe ( NativeAOC related ).\r\n"
+    "Changes": "* Right click Open in Explorer Option\r\n* Right click Open with Command Prompt option\r\n* Minor work to \u0022files not found\u0022 UI in results field.\r\n* **Bugfix:** Fixed inconsistency of report on number of files with Results Recycling.\r\n* **Bugfix:**Much Work to improve behavior of changed files and .blitzIgnore .gitignore files when files change.\r\n* Fixed Icons not showing up in published Exe ( NativeAOC related ).\r\n"
   },
   {
     "Revision": "0.0.19",
