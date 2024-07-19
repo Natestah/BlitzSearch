@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.47",
+    "Changes": "* More reduced memory usage.\r\n"
+  },
+  {
     "Revision": "0.0.46",
     "Changes": "* Update Goto for Jetbrains products to also look in LOCALAPPDATA for executables. noticed when I finally updated to 2024 bins.\r\n"
   },
