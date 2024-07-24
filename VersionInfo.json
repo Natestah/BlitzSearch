@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.48",
+    "Changes": "* [Premium] Find-Replace \r\n* Added RoadMap To Documentation\r\n* Move Right Pane Tabs up to title bar.\r\n"
+  },
+  {
     "Revision": "0.0.47",
     "Changes": "* More reduced memory usage.\r\n"
   },
