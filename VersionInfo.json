@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.50",
+    "Changes": "* clean install fix exceptions.\r\n"
+  },
+  {
     "Revision": "0.0.49",
     "Changes": "* Inno Installer upgrade in hopes of thwarting false positive on Windows Defender virus detection.\r\n* Updates for Right arrow in search results pulling out Preview\r\n* Collapsable title menu ( more work needed here, but wanted for vertical social recordings )\r\n* Some initial refactoring work on \u0022Quick Scoping\u0022.  Should come online soon. Nothing feature wise.\r\n"
   },
