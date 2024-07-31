@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.51",
+    "Changes": "* [Premium] Adding Quick Scope feature\r\n* Minor fix to Selection Vertical Height causing jitter to view\r\n"
+  },
+  {
     "Revision": "0.0.50",
     "Changes": "* clean install fix exceptions.\r\n"
   },
