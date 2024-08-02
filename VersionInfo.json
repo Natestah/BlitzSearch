@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.52",
+    "Changes": "* [Premium] Adding Literal search option. \r\n* Fix bug in file changes while Blitz is not running. Needed an extra bit of validation.\r\n* Fix some bugs in Replace History.\r\n"
+  },
+  {
     "Revision": "0.0.51",
     "Changes": "* [Premium] Adding Quick Scope feature\r\n* Minor fix to Selection Vertical Height causing jitter to view\r\n"
   },
