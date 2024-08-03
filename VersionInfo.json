@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.53",
+    "Changes": "* [issues/49](https://github.com/Natestah/BlitzSearch/issues/49) - Smart case works with Literal Search.\r\n* Smart Case Close button makes adjustment to Literal Search. \r\n* Ignore Case sensitivity when searching the filenames0\r\n"
+  },
+  {
     "Revision": "0.0.52",
     "Changes": "* [Premium] Adding Literal search option. \r\n* Fix bug in file changes while Blitz is not running. Needed an extra bit of validation.\r\n* Fix some bugs in Replace History.\r\n"
   },
