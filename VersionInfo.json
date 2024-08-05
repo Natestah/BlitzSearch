@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.54",
+    "Changes": "* Fix a bug that I noticed today about Updating Results as files are changed.\r\n"
+  },
+  {
     "Revision": "0.0.53",
     "Changes": "* [issues/49](https://github.com/Natestah/BlitzSearch/issues/49) - Smart case works with Literal Search.\r\n* Smart Case Close button makes adjustment to Literal Search. \r\n* Ignore Case sensitivity when searching the filenames0\r\n"
   },
