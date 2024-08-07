@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.56",
+    "Changes": "* Some work internally for Regex ( nothing to show yet )\r\n* Improved crash handling on deployed Blitz Search.  Now shows HTML page for more systemic unhandled Exceptions ( so that I can go after stability )\r\n"
+  },
+  {
     "Revision": "0.0.55",
     "Changes": "* Fixed Crash that happened as I was demonstrating updates on file changes.\r\n* Two places where I read the file immediately were contending with no recourse/failure handling.\r\n* This is extra important for VS Code users as that tends to hold onto files for various reasons ( LSP and other extensions might hold the file )\r\n* [Premium] Adjustable icon scale, for me to take Zooming out of my social Media post. Less post processing makes video\u0027s a little more crisp\r\n"
   },
