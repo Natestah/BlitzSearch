@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.58",
+    "Changes": "* Fixed up filename matching with Literal and Regex Searches\r\n* Fixed results recycling up after adding new features of literal and regex.\r\n* Update Roadmap to reflect addition of Regex feature\r\n"
+  },
+  {
     "Revision": "0.0.57",
     "Changes": "* Enable Regular Expression search\r\n* More work to messaging when failed expressions happen.\r\n* Fix Last Scope Selection being off when restarting Blitz\r\n"
   },
