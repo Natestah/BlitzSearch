@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.59",
+    "Changes": "* Little Cleanup to Title Bar Behaviors. Window will shrink a bit better.\r\n* Add Margins for Fullscreen mode to fix things going offscreen\r\n* Margin to Settings window\r\n* Keyboard Down arrow from search box will goto the first result line, then filename if no results in files.\r\n* Keyboard Enter from search will Go directly to the first item in the list.\r\n* Goto Has expander for Customize, also a scroll viewer for vertically challenged windows.\r\n* Goto Editors have more Notes applied, all the Jetbrains products have plugins, etc.\r\n* Goto Editor has a drop down Duplicate to better represent what things are doing.\r\n* Fixed an unhandled exception I found while mucking with Goto Editor settings.\r\n"
+  },
+  {
     "Revision": "0.0.58",
     "Changes": "* Fixed up filename matching with Literal and Regex Searches\r\n* Fixed results recycling up after adding new features of literal and regex.\r\n* Update Roadmap to reflect addition of Regex feature\r\n"
   },
