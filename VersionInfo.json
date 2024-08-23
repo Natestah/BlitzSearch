@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.61",
+    "Changes": "* Fix RegexEx ShortCut Hint.\r\n* Fixed bug in results in Literal search after an invalid normal search.\r\n* Cleanup Goto Settings, squished selection, etc.~~~~\r\n* Documentation work\r\n* Fixed crash when clicking about on the very front page ( yikes )\r\n* Some word-reduction on Settings page\r\n"
+  },
+  {
     "Revision": "0.0.60",
     "Changes": "* Blitz Search Premium sales is now live, check website for early bird special!\r\n* [issues/54](https://github.com/Natestah/BlitzSearch/issues/54) Fix negative margins on maximized window at startup.\r\n"
   },
