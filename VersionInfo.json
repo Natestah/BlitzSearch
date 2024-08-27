@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.63",
+    "Changes": "* Removed weird inline Left/Right Arrows in favor of \u0022Space Bar\u0022 to toggle the text preview. This is clued by the right click menu and also paves way for folding results. \r\n* Add Toggle for Status bar in the Theme settings.\r\n* Git ignore setting is moved from Settings to Per Scope setting.\r\n* Decrease Hover time from 0.5 to 0.0 for ScrollBars\r\n* Reduced Verbiage in Scope Settings.\r\n"
+  },
+  {
     "Revision": "0.0.62",
     "Changes": "* Add Handler for Regular Expression Error in .gitIgnore.\r\n"
   },
