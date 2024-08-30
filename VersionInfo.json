@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.65",
+    "Changes": "* Fixed \u0022Updated\u0022 results not updating correctly.\r\n* Fixed up some Drawing issues with Various Find/Replace operations.\r\n"
+  },
+  {
     "Revision": "0.0.64",
     "Changes": "* Fixed Links to IDE setup in readme area.\r\n* PREMIUM: Added selector box for Literal/Regular expression on Find/Replace\r\n* Some work to Highlighter to better support mismatch in lengths with replacements. \r\n"
   },
