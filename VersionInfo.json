@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.66",
+    "Changes": "* Revamped Highlights, handles overlaps better.\r\n* This paves way for more robust painting of highlights for future changes but also fixes the immediate problems in regex Literal replace.\r\n"
+  },
+  {
     "Revision": "0.0.65",
     "Changes": "* Fixed \u0022Updated\u0022 results not updating correctly.\r\n* Fixed up some Drawing issues with Various Find/Replace operations.\r\n"
   },
