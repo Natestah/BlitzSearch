@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.67",
+    "Changes": "* Global Case sensitivity selection is removed, read on!\r\n* FileName search is always case-insensitive since windows filesystem is insensitive\r\n* Added ^ operator to query to get per word granularity on Case sensitivity\r\n* Special operators can be Combined now (For whole word Case sensitive use: @^word )\r\n* Special operators can be post-fixed now too. word@ is same as @word.  Since you might decide to append these after you\u0027ve typed and seen the results need continued filtering.\r\n* Humanized number of files, ( 10.3K instead of 10300 )\r\n* Work to Improve responsiveness of Results when nothing is found for a time ( the old results clear out ).  Blitz search keeps old results for a time in order to prevent flickering.\r\n* more immediate response to broken Regular expressions in Regex Search\r\n* [YouTube - Case sensitivity demo](https://youtu.be/2TElEqcqpRk)\r\n"
+  },
+  {
     "Revision": "0.0.66",
     "Changes": "* Revamped Highlights, handles overlaps better.\r\n* This paves way for more robust painting of highlights for future changes but also fixes the immediate problems in regex Literal replace.\r\n"
   },
