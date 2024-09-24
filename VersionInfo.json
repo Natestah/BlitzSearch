@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.70",
+    "Changes": "* Adding 30 day Trial for Premium Blitz\r\n* Ignore .TMP files ( for Visual Studio )\r\n"
+  },
+  {
     "Revision": "0.0.69",
     "Changes": "* Update to handle Replace This Command from VSCode\r\n"
   },
