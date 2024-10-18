@@ -1,0 +1,190 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:sys="using:System"
+             xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
+             x:DataType="vm:ScopeViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Blitz.Avalonia.Controls.Views.ScopeSettingsPanel">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TextBackDrop">DimGray</SolidColorBrush>
+        <SolidColorBrush x:Key="GeneralIcon">DarkGray</SolidColorBrush>
+        <SolidColorBrush x:Key="AttentionExclamation">OrangeRed</SolidColorBrush>
+        <SolidColorBrush x:Key="GreenCheck">LawnGreen</SolidColorBrush>
+        <sys:Double x:Key="LeftFilterLabelWidth">110</sys:Double>
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.FolderHeader">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4 20 4 4"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="MinWidth" Value="{StaticResource LeftFilterLabelWidth}"/>
+            <!-- MinWidth="{StaticResource LeftFilterLabelWidth}"   -->
+        </Style>
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style Selector="TextBlock.d1">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="MaxWidth" Value="520"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </UserControl.Styles>
+    <ScrollViewer  >
+        
+        <DockPanel Margin="15" MinWidth="400" HorizontalAlignment="Left" DockPanel.Dock="Top"
+                   LastChildFill="False">
+        
+        <Panel DockPanel.Dock="Top">
+            <DockPanel >
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <TextBlock Text="Select Scope Configuration" Classes="FolderHeader"/>
+                </StackPanel>
+                <TextBlock Classes="d1" DockPanel.Dock="Top">
+                    <Run>Configure sets of paths to search..</Run>
+                </TextBlock>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <models:ScopeSelector DataContext="{Binding MainWindowViewModel}" ></models:ScopeSelector>
+                    <Button Click="AddNewButton_OnClick" Content="+New"></Button>
+                    <Button Click="DeleteButton_OnClick0" Content="Delete"></Button>
+                </StackPanel>
+                
+                <TextBlock Text="Scope Title" Classes="FolderHeader" DockPanel.Dock="Top"/>
+                <TextBox DockPanel.Dock="Top"
+                         Text="{Binding ScopeTitle}"
+                         Watermark="DisplayName"
+                >
+                </TextBox>
+            </DockPanel>
+        </Panel>
+        
+        <TextBlock Text="Search Paths" Classes="FolderHeader" DockPanel.Dock="Top"/>
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" LastChildFill="True">
+            <Button VerticalAlignment="Top" DockPanel.Dock="Bottom" Command="{Binding AddSearchPath}">
+                <StackPanel Orientation="Horizontal">
+                    <material:MaterialIcon Height="20" Width="20" Margin="0" HorizontalAlignment="Center"
+                                           Padding="0" Foreground="{StaticResource GeneralIcon}"
+                                           Kind="FolderAdd" />
+                    <TextBlock Text="Add Folder"/>
+                </StackPanel>
+            </Button>
+            <ItemsControl DockPanel.Dock="Left" MinHeight="10" ItemsSource="{Binding SearchPathViewModels}">
+                <ItemsControl.DataTemplates>
+                    <DataTemplate x:DataType="vm:SearchPathViewModel">
+                        <Border>
+                            <DockPanel LastChildFill="true">
+                                <Button DockPanel.Dock="Right" Command="{Binding DeleteSearchPath}">
+                                    <material:MaterialIcon DockPanel.Dock="Right" Height="16" Width="16"
+                                                           Margin="2" HorizontalAlignment="Center"
+                                                           Padding="4"
+                                                           Kind="CloseBold">
+                                    </material:MaterialIcon>
+                                </Button>
+
+                                <material:MaterialIcon DockPanel.Dock="Left" Height="16"
+                                                       IsVisible="{Binding !IsSearchPathValid}" Width="16"
+                                                       Margin="2" HorizontalAlignment="Center" Padding="4"
+                                                       Foreground="{StaticResource AttentionExclamation}"
+                                                       Kind="Exclamation">
+                                </material:MaterialIcon>
+                                <material:MaterialIcon DockPanel.Dock="Left" Height="16"
+                                                       IsVisible="{Binding IsSearchPathValid}" Width="16"
+                                                       Margin="2" HorizontalAlignment="Center" Padding="4"
+                                                       Foreground="{StaticResource GreenCheck}"
+                                                       Kind="Check">
+                                </material:MaterialIcon>
+
+                                <ToggleButton VerticalAlignment="Center" DockPanel.Dock="Right"
+                                              IsChecked="{Binding TopLevelOnly}">
+                                    <material:MaterialIcon DockPanel.Dock="Right" Height="16" Width="16"
+                                                           Margin="2" HorizontalAlignment="Center"
+                                                           Padding="4"
+                                                           Kind="AlignVerticalTop">
+                                    </material:MaterialIcon>
+                                    <ToolTip.Tip>
+                                        Search Top Level Only
+                                    </ToolTip.Tip>
+                                </ToggleButton>
+
+                                <Button Click="OpenFolder_Button_OnClick" DockPanel.Dock="Right">
+                                    <material:MaterialIcon DockPanel.Dock="Left" Height="16" Width="16"
+                                                           Margin="2" HorizontalAlignment="Center"
+                                                           Padding="4"
+                                                           Kind="FolderSearch">
+                                    </material:MaterialIcon>
+                                </Button>
+                                <DropDownButton DockPanel.Dock="Right">
+                                    <DropDownButton.Content>
+                                        <material:MaterialIcon Height="16" Width="16"
+                                                               Margin="2" HorizontalAlignment="Center"
+                                                               Padding="4" Kind="History"/>
+                                    </DropDownButton.Content>
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <ListBox ItemsSource="{Binding ParentModel.PathFolderHistory}" SelectionChanged="SearchPathViewmodelHistoryFolder_OnSelectionChanged">
+                                            </ListBox>    
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </DropDownButton>
+                                <AutoCompleteBox ItemsSource="{Binding CompletionItems}" IsDropDownOpen="{Binding IsCompletionFocused, Mode=TwoWay}" DockPanel.Dock="Left" VerticalAlignment="Center" LostFocus="SearchPath_OnLostFocus"
+                                                 Text="{Binding SearchPath }" Watermark="Enter a path to search.." />
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.DataTemplates>
+                <ItemsControl.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="MinHeight" Value="24" />
+                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                        <Setter Property="Padding" Value="2"></Setter>
+                        <Setter Property="Margin" Value="0"></Setter>
+                    </Style>
+                </ItemsControl.Styles>
+            </ItemsControl>
+        </DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+            <TextBlock Text="Priority Extensions" Classes="FolderHeader"/>
+            <TextBox Watermark="Optionally List Extensions in order of priority to search..( 'sln csproj cs json' ) "
+                     Text="{Binding ExtensionText}"/>
+        </StackPanel>
+        
+        <TextBlock DockPanel.Dock="Top" Text="{Binding ExtensionValidation}" />
+        
+        <CheckBox VerticalAlignment="Center" DockPanel.Dock="Top" IsChecked="{Binding UseGitIgnore}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                <TextBlock Classes="h2"> Use '.gitIgnore and .blitzIgnore' files </TextBlock>
+                <TextBlock Classes="d1"> These are great for skipping code gen files and things.. </TextBlock>
+            </StackPanel>
+        </CheckBox>
+        
+        <Panel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <TextBlock DockPanel.Dock="Top" Text="Display Image" Classes="FolderHeader" />
+            </StackPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{Binding ScopeImage}"/>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Button Content="Clear" Click="ClearScopeButton_OnClick"></Button>
+                <Button Click="OpenBitmap_OnClick">
+                    <material:MaterialIcon Height="16" Width="16"
+                                           Margin="2" HorizontalAlignment="Center"
+                                           Padding="4"
+                                           Kind="FileImagePlus"/>
+                </Button>
+            </StackPanel>
+            <Border DockPanel.Dock="Top" HorizontalAlignment="Left" DragDrop.AllowDrop="True" x:Name="DropBox" CornerRadius="15" BorderThickness="2" PointerPressed="DropBox_OnPointerPressed">
+                <Panel Background="Transparent">
+                    <Image  Height="400" Width="400" IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
+                    <material:MaterialIcon Opacity="0.6" Background="Transparent" IsVisible="{Binding !ScopeImageVisible}" Kind="PlusBox" Height="400" Width="400" ></material:MaterialIcon>
+                </Panel>
+            </Border>
+        </Panel>
+        
+
+    </DockPanel>
+  
+    </ScrollViewer>
+</UserControl>

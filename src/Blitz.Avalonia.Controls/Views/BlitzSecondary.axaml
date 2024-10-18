@@ -1,0 +1,243 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:controls="using:Blitz.Avalonia.Controls"
+             xmlns:md="https://github.com/whistyun/Markdown.Avalonia.Tight"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:views="clr-namespace:Blitz.AvaloniaEdit.Views;assembly=Blitz.AvaloniaEdit"
+             xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.BlitzSecondary">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.p1">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+        </Style>
+        <Style Selector="TextBox.e1">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+        </Style>
+        <Style Selector="TextBlock.h1">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+            <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+        </Style>
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style Selector="TextBlock.d1">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            
+            <Setter Property="MaxWidth" Value="520"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style Selector="TextBlock.radio">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Border.o1">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#444" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Margin" Value="15 1 4 4 "></Setter>
+            <!-- <Setter Property="Background" Value="#111"></Setter> -->
+            <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+        </Style>
+        <Style Selector="StackPanel.DescriptorPanel">
+            <Setter Property="Margin" Value="15 1 4 4 "></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+        </Style>
+        <Style Selector="CheckBox.OptionBox">
+            <Setter Property="Margin" Value="0 4 0 4"></Setter>
+        </Style>
+        <Style Selector="material|MaterialIcon.menuIcon">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+    </UserControl.Styles>
+    <UserControl.Resources>
+        <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
+
+    </UserControl.Resources>
+    <Grid>
+        <Panel IsVisible="{Binding EnableHelpPane, Mode=TwoWay}">
+            <DockPanel>
+                <ListBox x:Name="HelpBox" Background="Transparent" SelectionChanged="HelpBoxItemChanged" DockPanel.Dock="Left">
+                    <ListBoxItem>Welcome</ListBoxItem>
+                    <ListBoxItem>Usage</ListBoxItem>
+                    <ListBoxItem>IDE Setup</ListBoxItem>
+                    <ListBoxItem>Change Log</ListBoxItem>
+                    <ListBoxItem>Support Blitz</ListBoxItem>
+                    <ListBoxItem>RoadMap</ListBoxItem>
+                    <ListBoxItem>About</ListBoxItem>
+                </ListBox>
+                <md:MarkdownScrollViewer
+                    x:Name="MarkdownScrollViewer"
+                    Grid.Column="2"
+                    MaxWidth="800"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Left"
+                    SaveScrollValueWhenContentUpdated="True">
+                    <md:MarkdownScrollViewer.Styles>
+                        <StyleInclude Source="avares://Blitz.Avalonia.Controls/Resources/MarkdownStyles.axaml" />
+                    </md:MarkdownScrollViewer.Styles>
+                </md:MarkdownScrollViewer>
+            </DockPanel>
+        </Panel>
+        <Panel Margin="15" IsVisible="{Binding EnableSettingsPane}">
+                           <ScrollViewer>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Margin="0 20 0 0" Orientation="Vertical">
+                        
+                        <CheckBox Classes="OptionBox" IsChecked="{Binding EnableSearchIndex}">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> Search Indexing </TextBlock>
+                                <TextBlock Classes="d1"> Search Indexing helps reduce the workload by Parsing the file for unique words.  It is the backbone of what makes blitz search fast!</TextBlock>
+                            </StackPanel>
+                        </CheckBox>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> Search Threads </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="4" VerticalAlignment="Center" Text="{Binding SearchThreads}"> </TextBlock>
+                                    <Slider Width="480" Value="{Binding SearchThreads}"
+                                            Maximum="{Binding SearchThreadsMax}"
+                                            Minimum="{Binding SearchThreadsMin}" />
+                                </StackPanel>
+                                <TextBlock Classes="d1"> Searching Files in parallel can return results faster.</TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <CheckBox Classes="OptionBox" IsChecked="{Binding VerboseFileSystemException }">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> Enable Extra File System errors </TextBlock>
+                                <TextBlock Classes="d1"> File system errors such as Unauthorized Access are ignored, use for debugging or tuning your .gitignore</TextBlock>
+                            </StackPanel>
+                        </CheckBox>
+
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> DebugFile </TextBlock>
+                                <TextBlock Classes="d1"> For files that match this blitz query Add a result with debug information ( why it was excluded), Clicking that result will show the reason.</TextBlock>
+                            </StackPanel>
+                            <TextBox Text="{Binding DebugFileNameSearchTextBox}"
+                                     Watermark="Search for words seperated by space..">
+                            </TextBox>
+                        </StackPanel>
+
+                        <CheckBox Classes="OptionBox" IsChecked="{Binding EnableResultsRecycling }">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> Results Recycling </TextBlock>
+                                <TextBlock Classes="d1"> Under certain conditions, the results of a prior search, can be recycled to improve the speed.</TextBlock>
+                            </StackPanel>
+                        </CheckBox>
+
+                        <TextBlock Text="Generated Text file handling" />
+                        <StackPanel Margin="40 4 0 0" Orientation="Vertical">
+                            <TextBlock Classes="d1">
+                                Save memory by ignoring / skipping detected Generated Text files.
+                                View the report to get an idea of where the memory is going.
+                            </TextBlock>
+                            <StackPanel Orientation="Vertical">
+                                <RadioButton VerticalAlignment="Center" GroupName="RobotFilter" IsChecked="{Binding EnableRobotFileFilterIgnore}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Classes="radio" Text="Ignore" />
+                                        <TextBlock Classes="d1" Text="Memory saving, removes message" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton VerticalAlignment="Center" GroupName="RobotFilter" IsChecked="{Binding EnableRobotFileFilterDefer}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Classes="radio" VerticalAlignment="Top" Text="Defer" />
+                                        <TextBlock Classes="d1" Text="No memory saved but ordered heavy files to last" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton VerticalAlignment="Center" GroupName="RobotFilter"
+                                             IsChecked="{Binding EnableRobotFileFilterSkipAndReport}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Classes="radio" VerticalAlignment="Top" Text="Report and Skip (default)" />
+                                        <TextBlock Classes="d1" Text="Saves Memory but provides information" />
+                                    </StackPanel>
+                                </RadioButton>
+                            </StackPanel>
+                            <StackPanel Classes="DescriptorPanel">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Classes="h2">Max Human File Size (MB)</TextBlock>
+                                    <NumericUpDown Increment="0.1" FormatString="0.0" Minimum="0"
+                                                   Value="{Binding RobotFileDetectionSizeMB}" />
+                                </StackPanel>
+                                <TextBlock Classes="d1">Files Larger than this will be considered Generated files.</TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Classes="h2">Max Human Line Size in Characters</TextBlock>
+                                    <NumericUpDown Increment="100" Minimum="1000"
+                                                   Value="{Binding RobotContentLineDetection}" />
+                                </StackPanel>
+                                <TextBlock Classes="d1">If the first line of the file is Greater than this (IE large non-pretty json files )</TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    
+                </StackPanel>
+                    <StackPanel Orientation="Vertical" >
+                        <CheckBox Classes="OptionBox" IsChecked="{Binding ShowOnTaskBar }">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> Show on Taskbar </TextBlock>
+                                <TextBlock Classes="d1"> Show the icon on windows taskbar ( icon always shows in tray )</TextBlock>
+                            </StackPanel>
+                        </CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" >
+                        <CheckBox Classes="OptionBox" IsChecked="{Binding TimerDisplayTotalSearchTIme }">
+                            <StackPanel Classes="DescriptorPanel">
+                                <TextBlock Classes="h2"> Show Total time spent searching </TextBlock>
+                                <TextBlock Classes="d1"> The default time shown is time-to-last result, enabling this will show the total time to completion .</TextBlock>
+                            </StackPanel>
+                        </CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button IsEnabled="{Binding !CacheCleaning}" Content="Clean up Cache" Click="CacheClean_OnClick"></Button>
+                        <StackPanel Classes="DescriptorPanel">
+                            <TextBlock  Classes="h2" Text="{Binding CacheStatus }"></TextBlock>
+                            <TextBlock Classes="d1"> Manually Clean up the cache</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Garbage Collect" Click="CollectGarbage_OnClick"></Button>
+                        <StackPanel Classes="DescriptorPanel">
+                            <TextBlock Classes="h2" Text="Collect Garbage"></TextBlock>
+                            <TextBlock Classes="d1"> Force .NET Garbage Collection to get clearer picture of memory</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                </ScrollViewer>
+        </Panel>
+        <DockPanel IsVisible="{Binding EnableTextPane}">
+            <views:BlitzFileTab DataContext="{Binding EditorViewModel }" DockPanel.Dock="Top"/>
+            <views:BlitzFileView DataContext="{Binding EditorViewModel }" x:Name="FileView" DockPanel.Dock="Top" >
+                 
+            </views:BlitzFileView>
+            
+        </DockPanel>
+        <Panel IsVisible="{Binding EnableGotoPane}">
+            <models:GotoEditorSettingsPanel/>
+        </Panel>
+        <Panel IsVisible="{Binding EnableScopePane}">
+            <models:ScopeSettingsPanel DataContext="{Binding WorkingScope}"/>
+        </Panel>
+        <Panel IsVisible="{Binding EnableThemePane}">
+            <models:ThemePanel />
+        </Panel>
+    </Grid>
+    
+</UserControl>

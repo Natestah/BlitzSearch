@@ -1,0 +1,579 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mde="https://github.com/whistyun/Markdown.Avalonia.SyntaxHigh"
+             xmlns:svg="clr-namespace:Avalonia.Svg;assembly=Avalonia.Svg"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:sys="using:System"
+             xmlns:lb="clr-namespace:Blitz_Behavior"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+            
+             x:Class="Blitz.Avalonia.Controls.Views.BlitzMainPanel">
+    <!-- Background="#252527" -->
+  
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
+        <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
+        <SolidColorBrush x:Key="GeneralIcon">DarkGray</SolidColorBrush>
+        <LinearGradientBrush x:Key="ReplaceHighlight" StartPoint="0% 0%" EndPoint="100% 0%">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0.1" Color="Transparent" />
+                <GradientStop Offset="0.6" Color="#BBCA772E" />
+                <GradientStop Offset="1" Color="#BBCA772E" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+        <sys:Double x:Key="StatusItemWidth">86</sys:Double>
+        <CompiledBinding x:Key="TitleBinding" DataType="vm:GotoEditorViewModel" Path="Title"></CompiledBinding>
+    </UserControl.Resources>
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+Shift+L" Command="{Binding ToggleLiteralSearchCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+R" Command="{Binding ToggleRegexSearchCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+F" Command="{Binding ToggleFileNameFilterCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+H" Command="{Binding ToggleFindInFilesFilterCommand}" />
+    </UserControl.KeyBindings>
+    <UserControl.Styles>
+        <Style Selector="material|MaterialIcon.m1">
+            <!-- todo: other changable size -->
+            <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}"/>
+            <Setter Property="Height" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="material|MaterialIcon.m1ForToggle">
+            <!-- todo: other changable size -->
+            <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}"/>
+            <Setter Property="Height" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="material|MaterialIcon.results">
+            <Setter Property="Width" Value="{CompiledBinding DataType=vm:ReplaceModeViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Height" Value="{CompiledBinding DataType=vm:ReplaceModeViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="material|MaterialIcon.adspaceResults">
+            <Setter Property="Width" Value="{CompiledBinding DataType=vm:AdSpaceViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Height" Value="{CompiledBinding DataType=vm:AdSpaceViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Margin" Value="4 0"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="material|MaterialIcon.statusMaterial" >
+            <Setter Property="Width" Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Height" Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="material|MaterialIcon.updateAvailable">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Foreground" Value="LawnGreen"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="material|MaterialIcon.s1">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="2"/>
+
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="material|MaterialIcon.m2">
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock.statusBar">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="4 0"/>
+            <Setter Property="MinWidth" Value="100"></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+        </Style>
+        
+        <Style Selector="TextBlock.statusBarSlash">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="4 0"/>
+            <!-- <Setter Property="Foreground" Value="{Binding StatusBarForeground}"/> -->
+        </Style>
+        <Style Selector="TextBlock.opt1Text">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4 0"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
+        
+        <Style Selector="TextBlock.labelText">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="4 0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style Selector="DropDownButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style Selector="Border.opt1">
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource ExtensionForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ExtensionHighlight}"/>
+        </Style>
+        <Style Selector="Button.opt1Button">
+            <Setter Property="Padding" Value="1"/>
+        </Style>
+        
+        <Style Selector="RadioButton">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+  
+        <Style Selector="RadioButton /template/ Border#PART_BorderOverlay">
+            <Setter Property="Opacity" Value="0.0"/>
+        </Style>
+        <Style Selector="RadioButton:pointerover /template/ Border#PART_BorderOverlay">
+            <Setter Property="Opacity" Value="0.1"/>
+        </Style>
+        <Style Selector="RadioButton:pressed /template/ Border#PART_BorderOverlay">
+            <Setter Property="Opacity" Value="0.2"/>
+        </Style>
+        <Style Selector="RadioButton:checked /template/ Border#PART_BorderOverlay">
+            <Setter Property="Opacity" Value="0.3"/>
+        </Style>
+        
+        <Style Selector="Button.hyperlink">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource SystemAccentColor}" TextDecorations="Underline">
+                        <TextBlock.Styles>
+                            <Style Selector="TextBlock:pointerover">
+                                <Setter Property="Foreground" Value="{StaticResource SystemAccentColorLight1}"/>
+                            </Style>
+                        </TextBlock.Styles>
+                    </TextBlock>
+                </ControlTemplate>
+            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </UserControl.Styles>
+    <Grid  >
+    <!-- <Grid  Background="{Binding BlitzThemeViewModel.WindowBackground}"> -->
+        <DockPanel >
+        <DockPanel DockPanel.Dock="Bottom" Background="{Binding EditorViewModel.StatusBarBackground}" IsVisible="{Binding ShowStatusBar}">
+            
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="v" Opacity="0.5" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Opacity="0.5" Margin="2 0" VerticalAlignment="Center" Text="{Binding Version}"></TextBlock>
+                <Button IsVisible="{Binding NewVersionAvailable}" Padding="1" IsTabStop="False" BorderBrush="Chartreuse" BorderThickness="2" Background="Black" Foreground="White" IsHitTestVisible="True" Margin="5 0" Click="NewVersionButton_OnClick">
+                    <ToolTip.Tip>
+                        <TextBlock Text="{Binding WhatsInUpdate}"></TextBlock>
+                    </ToolTip.Tip>
+                    <StackPanel Orientation="Horizontal">
+                        <material:MaterialIcon Classes="updateAvailable" Kind="Download"/>
+                        <TextBlock Foreground="White">
+                            <Run Foreground="White" >Update (</Run>
+                            <Run Foreground="White" Text="{Binding NewVersionString}"/>
+                            <Run Foreground="White">) Available! </Run>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <StackPanel Background="{Binding EditorViewModel.StatusBarBackground}"  DockPanel.Dock="Right"  >
+                <StackPanel DataContext="{Binding AdsCollection.FirstAdSpace}" Orientation="Horizontal" Margin="4 0">
+                    <TextBlock VerticalAlignment="Center" Text="Support Blitz Search: "></TextBlock>
+                    <material:MaterialIcon Foreground="Red" Classes="adspaceResults" Kind="{Binding Icon}"/>
+                    <Button Classes="hyperlink" Click="AdButton_OnClick" Content="{Binding TextInformation}" FontSize="14" />
+                </StackPanel>
+            </StackPanel>
+
+            <DockPanel DockPanel.Dock="Bottom">
+                <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" DataContext="{Binding Path=FileSearchStatus}">
+
+                    <StackPanel IsVisible="{Binding FilesDiscoveredCount}" VerticalAlignment="Center"
+                                Orientation="Vertical" MinWidth="{StaticResource StatusItemWidth}">
+                        <StackPanel Orientation="Horizontal">
+                            <material:MaterialIcon Classes="statusMaterial" Kind="FileMultiple"
+                                                   Foreground="{Binding StatusBarForeground}" />
+                            <TextBlock Classes="statusBar" Text="{Binding FilesDiscoveredHumanized}"
+                                       Foreground="{Binding StatusBarForeground}">
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding}" VerticalAlignment="Center" Orientation="Horizontal"
+                                MinWidth="{StaticResource StatusItemWidth}">
+                        <material:MaterialIcon Classes="statusMaterial" Kind="Files" Foreground="{Binding StatusBarForeground}" />
+                        <TextBlock Classes="statusBar" Text="{Binding TotalFileSizeHumanized}"
+                                   Foreground="{Binding StatusBarForeground}">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal"
+                                MinWidth="{StaticResource StatusItemWidth}">
+                        <material:MaterialIcon Classes="statusMaterial" Kind="Timer" Foreground="{Binding StatusBarForeground}" />
+                        
+                        <TextBlock  Classes="statusBar" Text="{Binding LastResultTimeHumanized}"
+                                   Foreground="{Binding StatusBarForeground}"/>
+                        
+                        <TextBlock Classes="statusBarSlash" Text="/" IsVisible="{Binding TimerDisplayTotalSearchTIme}" />
+                        <material:MaterialIcon Classes="statusMaterial" Kind="Timer" Foreground="{Binding StatusBarForeground}"
+                                               IsVisible="{Binding TimerDisplayTotalSearchTIme}" />
+                        <TextBlock Classes="statusBar" Text="{Binding RunningTimeHumanized}"
+                                   Foreground="{Binding StatusBarForeground}"
+                                   IsVisible="{Binding TimerDisplayTotalSearchTIme}">
+                        </TextBlock>
+                    </StackPanel>
+                </DockPanel>
+
+
+            </DockPanel>
+        </DockPanel>
+
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="270" />
+                <ColumnDefinition Width="4"  lb:ColumnDefinition.IsVisible="{Binding SplitPane}"/>
+                <ColumnDefinition Width="*" lb:ColumnDefinition.IsVisible="{Binding SplitPane}"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0">
+                <Grid>
+                <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image>
+                <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" />
+                </Grid>
+            </Border>
+
+            <DockPanel Grid.Column="0" LastChildFill="True">
+                <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                    <DropDownButton>
+                        <DropDownButton.Content>
+                            <material:MaterialIcon  Classes="m1" Kind="Search"/>
+                        </DropDownButton.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <ListBox ItemsSource="{Binding SearchTextHistory}" SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                                </ListBox>    
+                            </Flyout>
+                        </Button.Flyout>
+                    </DropDownButton>
+                    <DropDownButton DockPanel.Dock="Right" HorizontalAlignment="Stretch"  >
+                        <DropDownButton.Content>
+                            <material:MaterialIcon Classes="m1" Kind="FilterPlus"/>
+                        </DropDownButton.Content>
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuItem Icon="{material:MaterialIconExt TextBoxSearch}" 
+                                          Command="{Binding ToggleLiteralSearchCommand}"
+                                          IsChecked="{Binding  LiteralSearchEnabled}"
+                                          ToggleType="CheckBox"
+                                          Header = "{Binding LiteralSearchHeader}">
+                                    <MenuItem.InputGesture>
+                                        <KeyGesture>Control+Shift+L</KeyGesture>
+                                    </MenuItem.InputGesture>
+                                </MenuItem>
+                                <MenuItem Icon="{material:MaterialIconExt Regex}" 
+                                          Command="{Binding ToggleRegexSearchCommand}"
+                                          IsChecked="{Binding  RegexSearchEnabled}"
+                                          ToggleType="CheckBox"
+                                          Header = "{Binding RegexMatchHeader}">
+                                    <MenuItem.InputGesture>
+                                        <KeyGesture>Control+Shift+R</KeyGesture>
+                                    </MenuItem.InputGesture>
+                                </MenuItem>
+                                <MenuItem Icon="{material:MaterialIconExt FolderFile}" 
+                                          Command="{Binding ToggleFileNameFilterCommand}"
+                                          IsChecked="{Binding FileNameSearchEnabled}"
+                                          ToggleType="CheckBox"
+                                          Header = "Find-in-files">
+                                    <MenuItem.InputGesture>
+                                        <KeyGesture>Control+Shift+F</KeyGesture>
+                                    </MenuItem.InputGesture>
+                                </MenuItem>
+                                <MenuItem Icon="{material:MaterialIconExt FindReplace}" 
+                                          Command="{Binding ToggleFindInFilesFilterCommand}"
+                                          IsChecked="{Binding ReplaceInFileEnabled}"
+                                          ToggleType="CheckBox"
+                                          Header = "Replace">
+                                    <MenuItem.InputGesture>
+                                        <KeyGesture>Control+Shift+H</KeyGesture>
+                                    </MenuItem.InputGesture>
+                                </MenuItem>
+                                <!-- <Separator /> -->
+                                <!-- <MenuItem Header="Ignore Case" Icon="{material:MaterialIconExt FormatLowercase}" ToggleType="Radio" GroupName="CaseSensitivity" IsChecked="{Binding CaseInSensitive, Mode=TwoWay}"></MenuItem> -->
+                                <!-- <MenuItem Header="Sensitive" Icon="{material:MaterialIconExt CaseSensitiveAlt}" ToggleType="Radio" GroupName="CaseSensitivity" IsChecked="{Binding CaseSensitive, Mode=TwoWay}"></MenuItem> -->
+                                <!-- <MenuItem Header="Smart Case" Icon="{material:MaterialIconExt Brain}" ToggleType="Radio" GroupName="CaseSensitivity" IsChecked="{Binding CaseSmartCase, Mode=TwoWay}"/> -->
+                            </MenuFlyout>
+                            
+                        </Button.Flyout>
+                    </DropDownButton>
+                    
+                    <models:ScopeSelector DockPanel.Dock="Right"/>
+                    
+                    <TextBox  LostFocus="MainSearchField_OnLostFocus"
+                              x:Name="MainSearchField"
+                              VerticalAlignment="Center"
+                              DockPanel.Dock="Left"
+                              MinWidth="100"
+                              KeyDown="MainSearchField_OnKeyDown"
+                              Watermark="{Binding SearchTextWaterMark}"
+                              Margin="4"
+                             Text="{Binding SearchTextBox}">
+                    </TextBox>
+                </DockPanel>
+                
+                <DockPanel  DockPanel.Dock="Top" IsVisible="{Binding LiteralSearchEnabled}">
+                        <DropDownButton>
+                            <DropDownButton.Content>
+                                <material:MaterialIcon Classes="m1" Kind="TextBoxSearch"/>
+                            </DropDownButton.Content>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <ListBox ItemsSource="{Binding LiteralSearchTextHistory}" SelectionChanged="LiteralSearchControl_OnSelectionChanged">
+                                    </ListBox>    
+                                </Flyout>
+                            </Button.Flyout>
+                        </DropDownButton>
+                        <Button DockPanel.Dock="Right" Padding="1" Click="LiteralSearchCloseButton_OnClick">
+                            <material:MaterialIcon Classes="m1" Kind="Close"/>
+                        </Button>
+                        <ToggleButton DockPanel.Dock="Left"
+                                      Padding="2"
+                                      Margin="4 0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsLiteralCaseSensitive}">
+                            <ToolTip.Tip>
+                                Toggle Case Sensitivity
+                            </ToolTip.Tip>
+                            <ToggleButton.Content>
+                                <material:MaterialIcon Classes="m1" Kind="FormatLowercase" />
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                    
+                        <TextBox DockPanel.Dock="Left" MinWidth="600" Watermark="Literal Match contents ( spaces and everything )"
+                                 AttachedToVisualTree="LiterSearchTextBox_OnAttachedToVisualTree"
+                                 LostFocus="LiteralSearchField_OnLostFocus"
+                                 Text="{Binding LiteralSearchTextBox}">
+                        </TextBox>
+                        
+                </DockPanel>
+                
+                <!-- Regular Expression -->
+                <DockPanel  DockPanel.Dock="Top" IsVisible="{Binding RegexSearchEnabled}">
+                    <DropDownButton>
+                        <DropDownButton.Content>
+                            <material:MaterialIcon Classes="m1" Kind="Regex"/>
+                        </DropDownButton.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <ListBox ItemsSource="{Binding RegexSearchTextHistory}" SelectionChanged="RegexSearchControl_OnSelectionChanged">
+                                </ListBox>    
+                            </Flyout>
+                        </Button.Flyout>
+                    </DropDownButton>
+                    <Button DockPanel.Dock="Right" Padding="1" Click="RegexSearchCloseButton_OnClick">
+                        <material:MaterialIcon Classes="m1" Kind="Close"/>
+                    </Button>
+                    <ToggleButton DockPanel.Dock="Left"
+                                  Padding="2"
+                                  Margin="4 0"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding IsRegexCaseSensitive}">
+                        <ToolTip.Tip>
+                            Toggle Case Sensitivity
+                        </ToolTip.Tip>
+                        <ToggleButton.Content>
+                            <material:MaterialIcon Classes="m1" Kind="FormatLowercase" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <TextBox DockPanel.Dock="Left" MinWidth="600" Watermark="Enter a Regular Expression"
+                             AttachedToVisualTree="RegexSearchTextBox_OnAttachedToVisualTree"
+                             LostFocus="RegexSearchField_OnLostFocus"
+                             Text="{Binding RegexSearchTextBox}">
+                    </TextBox>
+                </DockPanel>
+                
+                <!-- FileName Search -->
+                <DockPanel  DockPanel.Dock="Top" IsVisible="{Binding FileNameSearchEnabled}">
+                    <DropDownButton>
+                        <DropDownButton.Content>
+                            <material:MaterialIcon Classes="m1" Kind="FolderFile"/>
+                        </DropDownButton.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <ListBox ItemsSource="{Binding SearchFileHistory}" SelectionChanged="SelectingFileItemsControl_OnSelectionChanged">
+                                </ListBox>    
+                            </Flyout>
+                        </Button.Flyout>
+                    </DropDownButton>
+                    <Button DockPanel.Dock="Right" Padding="1" Click="Button_OnClick">
+                        <material:MaterialIcon Classes="m1" Kind="Close"/>
+                    </Button>
+                   
+                    <TextBox DockPanel.Dock="Left" MinWidth="600" Watermark="Filter Filenames with words.."
+                             AttachedToVisualTree="FileNameFilterBox_OnAttachedToVisualTree"
+                             LostFocus="FileNameSearchField_OnLostFocus"
+                             Text="{Binding FileNameSearchTextBox}">
+                    </TextBox>
+                </DockPanel>
+                
+                <!-- Replace Search -->
+                <DockPanel  DockPanel.Dock="Top" IsVisible="{Binding ReplaceInFileEnabled}">
+                    <Button DockPanel.Dock="Right" Padding="1" Click="CloseReplaceBox_OnClick">
+                        <material:MaterialIcon Classes="m1" Kind="Close"/>
+                    </Button>
+                    
+
+                    <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <material:MaterialIcon Classes="m1" Kind="FileReplace" />
+                            <TextBlock Classes="labelText" Text="Replace in Files"/>
+                            <material:MaterialIcon Classes="m1" Kind="ArrowRight" />
+                            <ComboBox ItemsSource="{Binding ReplaceModeViewModels}" SelectedItem="{Binding SelectedReplaceMode}">
+                            <ComboBox.DataTemplates>
+                                <DataTemplate x:DataType="vm:ReplaceModeViewModel">
+                                    <StackPanel Orientation="Horizontal">
+                                        <material:MaterialIcon Classes="results" Kind="{Binding IconKind}"/>
+                                        <TextBlock Classes="labelText" Text="{Binding Title}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.DataTemplates>
+                        </ComboBox>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <ToggleButton DockPanel.Dock="Left"
+                                          Padding="2"
+                                          Margin="4 0"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding IsReplaceCaseSensitive}">
+                                <ToolTip.Tip>
+                                    Toggle Case Sensitivity
+                                </ToolTip.Tip>
+                                <ToggleButton.Content>
+                                    <material:MaterialIcon Classes="m1" Kind="FormatLowercase" />
+                                </ToggleButton.Content>
+                            </ToggleButton>
+                            <DropDownButton IsTabStop="False">
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <ListBox ItemsSource="{Binding ReplaceHistory}"
+                                                 SelectionChanged="ReplaceHistoryItemsControl_OnSelectionChanged">
+                                        </ListBox>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </DropDownButton>
+                            <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="Replace.."
+                                     LostFocus="ReplaceField_OnLostFocus"
+                                     Text="{Binding ReplaceBoxText}">
+                            </TextBox>
+                            <material:MaterialIcon Classes="m1" Kind="ArrowRight" />
+                            <DropDownButton IsTabStop="False">
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <ListBox ItemsSource="{Binding ReplaceWithHistory}"
+                                                 SelectionChanged="ReplaceWithHistoryItemsControl_OnSelectionChanged">
+                                        </ListBox>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </DropDownButton>
+                            <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="With.."
+                                     x:Name="ReplaceTextWithBox"
+                                     AttachedToVisualTree="ReplaceWithBox_OnAttachedToVisualTree"
+                                     LostFocus="FileNameSearchField_OnLostFocus"
+                                     Text="{Binding ReplaceWithBoxText}">
+                            </TextBox>
+                           
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+                
+                <DockPanel DockPanel.Dock="Top" LastChildFill="False" >
+                    <Border Classes="opt1" IsVisible="{Binding IsSmartCaseSensitive}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Classes="opt1Text" Text="Smart Case" >
+                                <ToolTip.Tip>
+                                    <ToolTip Content="Smart Case Activated with an Uppercase Character, Close this convert to lower case (insensitive)"></ToolTip>
+                                </ToolTip.Tip>
+                            </TextBlock>
+                            <Button Classes="opt1Button" Click="SmartCaseOffButton">
+                                <TextBlock Classes="opt1Text" Text="X"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="opt1" IsVisible="{Binding IsSmartReplaceCaseSensitive}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Classes="opt1Text" Text="Replace Smart Case" >
+                                <ToolTip.Tip>
+                                    <ToolTip Content="Smart Case Activated with an Uppercase Character, Close this convert to lower case (insensitive)"></ToolTip>
+                                </ToolTip.Tip>
+                            </TextBlock>
+                            <Button Classes="opt1Button" Click="SmartCaseReplaceOffButton">
+                                <TextBlock Classes="opt1Text" Text="X"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="opt1" IsVisible="{Binding IsSmartLiteralCaseSensitive}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Classes="opt1Text" Text="Literal Smart Case" >
+                                <ToolTip.Tip>
+                                    <ToolTip Content="Smart Case Activated with an Uppercase Character, Close this convert to lower case (insensitive)"></ToolTip>
+                                </ToolTip.Tip>
+                            </TextBlock>
+                            <Button Classes="opt1Button" Click="SmartCaseLiteralOffButton">
+                                <TextBlock Classes="opt1Text" Text="X"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    
+                    
+                </DockPanel>
+                <DockPanel Background="{StaticResource ReplaceHighlight}" LastChildFill="False" DockPanel.Dock="Bottom" IsVisible="{Binding ReplaceInFileEnabled}">
+                    <Button DockPanel.Dock="Right" Margin="5" Padding="15 5" Foreground="WhiteSmoke" Click="AcceptChangesClick">Apply Changes</Button>
+                </DockPanel>
+                <Grid  DockPanel.Dock="Bottom" >
+                <ProgressBar 
+                    Margin="0 0 0 2"
+                    DataContext="{Binding Path=FileSearchStatus}"
+                    Opacity="{Binding ProgressOpacity}"
+                    IsIndeterminate="{Binding IsIndeterminate}"
+                    IsVisible="{Binding Working}"
+                    Maximum="{Binding FilesDiscoveredCount}"
+                    Value="{Binding FilesProcessedCount}"
+                    MinWidth="70"
+                    VerticalAlignment="Bottom" />
+                </Grid>
+                
+                <!-- *************** -->
+                <!--   Results Box   -->
+                <!-- *************** -->
+                <models:ResultsBox x:Name="ResultsBox"/>
+              
+            </DockPanel>
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" IsTabStop="False" />
+            
+            <!-- *************** -->
+            <!-- BLITZ SECONDARY -->
+            <!-- *************** -->
+            <models:BlitzSecondary  x:Name="BlitzSecondary" Grid.Column="2"/>
+        </Grid>
+    </DockPanel>
+       
+    </Grid>
+</UserControl>

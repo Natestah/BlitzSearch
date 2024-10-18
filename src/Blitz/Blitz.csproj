@@ -1,0 +1,109 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <IsTrimmable>true</IsTrimmable>
+        <Authors>Nathan Silvers</Authors>
+        <Description>Find Files faster.</Description>
+        <Copyright>2024</Copyright>
+        <PackageProjectUrl>www.natestah.com</PackageProjectUrl>
+        <PackageIcon>Assets\BlitzIcon.ico</PackageIcon>
+        <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
+        <PackageReleaseNotes>Limited Time Beta</PackageReleaseNotes>
+        <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
+        <AssemblyVersion>0.0.72</AssemblyVersion>
+        <FileVersion>0.0.72</FileVersion>
+        <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
+        <PublicSign>false</PublicSign>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <PublishAot>true</PublishAot>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <PublishAot>true</PublishAot>
+        <PublishReadyToRun>true</PublishReadyToRun>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.1.1" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0-rc2" />
+        <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.0" />
+        <PackageReference Include="Blitz.Goto" Version="1.0.6" />
+        <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
+        <PackageReference Include="Blitz.Search" Version="1.0.0" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.7" />
+        <PackageReference Include="ReactiveUI" Version="20.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Blitz.Avalonia.Controls\Blitz.Avalonia.Controls.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ReferencePathWithRefAssemblies Update="C:\Users\Silvers\.nuget\packages\reactiveui\18.3.1\lib\net6.0\ReactiveUI.dll" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Update="BlitzIcon.ico">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+      <None Update="Documentation\BlitzHighlight.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="Documentation\AboutImage.png" />
+      <Content Include="Documentation\AboutImage.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\About.md" />
+      <Content Include="Documentation\About.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\Change_Log.md" />
+      <Content Include="Documentation\Change_Log.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\Usage.md" />
+      <Content Include="Documentation\Usage.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\Welcome.md" />
+      <Content Include="Documentation\Welcome.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\IDE_Setup.md" />
+      <Content Include="Documentation\IDE_Setup.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Documentation\RoadMap.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\RoadMap.md" />
+      <Content Include="Documentation\RoadMap.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Documentation\Support_Blitz_Search.md" />
+      <Content Update="Documentation\Support_Blitz_Search.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+
+        <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+
+    </ItemGroup>
+</Project>

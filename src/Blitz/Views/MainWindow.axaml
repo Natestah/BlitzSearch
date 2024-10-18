@@ -1,0 +1,235 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+        xmlns:controls="using:Blitz.Avalonia.Controls.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:svg="clr-namespace:Avalonia.Svg;assembly=Avalonia.Svg"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:material="using:Material.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Blitz.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/BlitzIcon.ico"
+        FontFamily="{Binding SelectedFontFamily}"
+        FontSize="{Binding FontSize}"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        Title="Blitz">
+    <Window.Styles>
+        <Style Selector="material|MaterialIcon.TitleBarIcon">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Foreground" Value="DarkGray" />
+        </Style>
+        <Style Selector="ToggleButton.titleButton">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        
+        <Style Selector="ScrollBar">
+            <Setter Property="ShowDelay" Value="0.0"></Setter>
+        </Style>
+    </Window.Styles>
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <Border x:Name="MaximizeBorder" BorderBrush="Transparent" BorderThickness="0">
+    <Grid>
+        <Panel VerticalAlignment="Top" IsHitTestVisible="False" Background="{Binding EditorViewModel.TitleBarBackground}"/>
+        <DockPanel LastChildFill="True">
+            <DockPanel DockPanel.Dock="Top" x:Name="TitlePanel">
+                <svg:Svg DockPanel.Dock="Left" Width="32" Height="32" VerticalAlignment="Center" Margin="2" x:Name="BlitzLogo"
+                         Path="/Assets/BlitzSVGCentered.svg" /> 
+                <!-- TitlePanel, BlitzLogo(icon), ButtonPanel,WindowsPanel-->
+
+                <StackPanel DockPanel.Dock="Right" Height="22" x:Name="ButtonPanel"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Spacing="0"
+
+                            VerticalAlignment="Center">
+                    <Button Width="46"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            BorderThickness="0"
+                            Foreground="{Binding EditorViewModel.StatusBarForeground}"
+                            Click="Button_MinimizeWindow"
+                            ToolTip.Tip="Minimize">
+                        <Button.Resources>
+                            <CornerRadius x:Key="ControlCornerRadius">0</CornerRadius>
+                        </Button.Resources>
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="#44AAAAAA" />
+                            </Style>
+                            <Style
+                                Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                        </Button.Styles>
+                        <Path Margin="10,0,10,0"
+                              Stretch="Uniform"
+                              VerticalAlignment="Center"
+                              Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                              Data="M2048 1229v-205h-2048v205h2048z">
+                        </Path>
+                    </Button>
+
+                    <Button Width="46"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="0"
+                            Foreground="{Binding EditorViewModel.StatusBarForeground}"
+
+                            Click="Button_MaximizeWindow">
+                        <ToolTip.Tip>
+                            <ToolTip Content="Maximize"
+                                     Name="MaximizeToolTip">
+                            </ToolTip>
+                        </ToolTip.Tip>
+
+                        <Button.Resources>
+                            <CornerRadius x:Key="ControlCornerRadius">0</CornerRadius>
+                        </Button.Resources>
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="#44AAAAAA" />
+                            </Style>
+                            <Style
+                                Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                        </Button.Styles>
+                        <Path Margin="10,0,10,0"
+                              Stretch="Uniform"
+                              Fill="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                              Name="MaximizeIcon"
+                              Data="M2048 2048v-2048h-2048v2048h2048zM1843 1843h-1638v-1638h1638v1638z">
+                        </Path>
+                    </Button>
+
+                    <Button Width="46"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="0"
+                            Click="Button_CloseWindow"
+                            Foreground="{Binding EditorViewModel.StatusBarForeground}"
+                            ToolTip.Tip="Close">
+                        <Button.Resources>
+                            <CornerRadius x:Key="ControlCornerRadius">0</CornerRadius>
+                        </Button.Resources>
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="Red" />
+                            </Style>
+                            <Style
+                                Selector="Button:not(:pointerover) /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                            <Style Selector="Button:pointerover > Path">
+                                <Setter Property="Fill" Value="White" />
+                            </Style>
+                            <Style Selector="Button:not(:pointerover) > Path">
+                                <Setter Property="Fill" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                            </Style>
+                        </Button.Styles>
+                        <Path Margin="10,0,10,0"
+                              Stretch="Uniform"
+                              Data="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z">
+                        </Path>
+                    </Button>
+                </StackPanel>
+                <!-- <ToggleButton Classes="titleButton" DockPanel.Dock="Right" x:Name="TittleBarCheck" IsChecked="True"> -->
+                <!--     <ToggleButton.Content> -->
+                <!--         <material:MaterialIcon Classes="TitleBarIcon" Kind="DotsVertical" /> -->
+                <!--     </ToggleButton.Content> -->
+                <!-- </ToggleButton> -->
+                
+                <!-- IsVisible="{Binding #TittleBarCheck.IsChecked}" -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" x:Name="WindowsPanel"
+                            >
+                    <ToggleButton Classes="titleButton" IsChecked="{Binding EnableHelpPane, Mode=TwoWay}"
+                                  Click="Button_OnClick">
+                        <ToolTip.Tip>
+                            Help
+                        </ToolTip.Tip>
+
+                        <ToggleButton.Content>
+                            <material:MaterialIcon Classes="TitleBarIcon" Kind="HelpBox" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Classes="titleButton" IsChecked="{Binding EnableSettingsPane}" Click="Button_OnClick">
+                        <ToolTip.Tip>
+                            Advanced Settings
+                        </ToolTip.Tip>
+                        <ToggleButton.Content>
+                            <material:MaterialIcon Classes="TitleBarIcon" Kind="Settings" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Classes="titleButton" IsChecked="{Binding EnableTextPane}" Click="Button_OnClick">
+                        <ToolTip.Tip>
+                            Text Previewer
+                        </ToolTip.Tip>
+
+                        <ToggleButton.Content>
+                            <material:MaterialIcon Classes="TitleBarIcon" Kind="Text" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Classes="titleButton" IsChecked="{Binding EnableGotoPane}" Click="Button_OnClick">
+                        <ToolTip.Tip>
+                            Goto Text Editor
+                        </ToolTip.Tip>
+                        <ToggleButton.Content>
+                            <material:MaterialIcon Classes="TitleBarIcon" Kind="Arrow" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Classes="titleButton" IsChecked="{Binding EnableScopePane}" Click="Button_OnClick">
+                        <ToolTip.Tip>
+                            File Scope
+                        </ToolTip.Tip>
+                        <ToggleButton.Content>
+                            <Grid>
+                                <material:MaterialIcon Classes="TitleBarIcon" Kind="Telescope" />
+                                <Border IsVisible="{Binding IsMissingScopeRequirements }" Background="Crimson"
+                                        HorizontalAlignment="Right" CornerRadius="6" Padding="0 2"
+                                        VerticalAlignment="Bottom">
+                                    <TextBlock FontWeight="Bold" Foreground="White" FontSize="14">!</TextBlock>
+                                </Border>
+                            </Grid>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton Classes="titleButton" IsChecked="{Binding EnableThemePane}" Click="Button_OnClick">
+                        <ToolTip.Tip>
+                            Theme
+                        </ToolTip.Tip>
+
+                        <ToggleButton.Content>
+                            <material:MaterialIcon Classes="TitleBarIcon" Kind="Palette" />
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                </StackPanel>
+                <StackPanel x:Name="BlitzLabelAll" Orientation="Horizontal" DockPanel.Dock="Left"
+                            VerticalAlignment="Center" HorizontalAlignment="Center" Margin="3">
+                    <TextBlock x:Name="BlitzLabelBlitz"
+                               Foreground="#CA772E"
+                               FontWeight="Bold"
+                               IsHitTestVisible="False"
+                               Text="Blitz">
+                    </TextBlock>
+                    <TextBlock x:Name="BlitzLabelSearch"
+                               Foreground="{Binding EditorViewModel.StatusBarForeground}"
+                               IsHitTestVisible="False"
+                               Text="Search">
+                    </TextBlock>
+                </StackPanel>
+
+            </DockPanel>
+            <controls:BlitzMainPanel DockPanel.Dock="Bottom" x:Name="BlitzMainPanel"></controls:BlitzMainPanel>
+        </DockPanel>
+        
+    </Grid>
+    </Border>
+</Window>

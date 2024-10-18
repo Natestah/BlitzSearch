@@ -1,0 +1,239 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:controls="using:Blitz.Avalonia.Controls"
+             xmlns:avEditConverters="using:Blitz.AvaloniaEdit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.ResultsBox">
+    <UserControl.Resources>
+        <avEditConverters:FileTypeIconConverter x:Key="FileTypeIconConverter"></avEditConverters:FileTypeIconConverter>
+        <SolidColorBrush x:Key="TextBackDrop">DimGray</SolidColorBrush>
+        <SolidColorBrush x:Key="GreenCheck">LawnGreen</SolidColorBrush>
+        <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
+        <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
+        <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
+        <MultiBinding  x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}">
+            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="Executable"/>
+            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="ExecutableIconHint"/>
+        </MultiBinding>
+        <SolidColorBrush x:Key="GeneralIcon">DarkGray</SolidColorBrush>
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="material|MaterialIcon.resultIcon">
+            <Setter Property="Width" Value="{CompiledBinding DataType=vm:FileNameResultViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Height" Value="{CompiledBinding DataType=vm:FileNameResultViewModel, Path=MainWindowViewModel.GeneralIconSize}"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+    <ListBox  DoubleTapped="ResultsListBox_OnDoubleTapped" Name="ResultsListBox" 
+              SelectionMode="Multiple"
+              IsHitTestVisible="{Binding SearchResultsHitTestEnabled}"
+              ItemsSource="{Binding ResultBoxItems}" 
+              SelectedItems="{Binding SelectedItems}"
+              SelectionChanged="ResultsView_OnSelectionChanged" Background="Transparent"
+    >
+                    <ListBox.KeyBindings>
+                        <KeyBinding Gesture="Right" Command="{Binding ShowPreviewTextCommand}" />
+                        <KeyBinding Gesture="Left" Command="{Binding HidePreviewPaneCommand}" />
+                        <KeyBinding Gesture="Control+c" Command="{Binding CopyCommand}" />
+                        <KeyBinding Gesture="Space" Command="{Binding ToggleTextEditCmd}" />
+                    </ListBox.KeyBindings>
+                    <ListBox.ItemContainerTheme>
+                        <ControlTheme 
+                            TargetType="ListBoxItem"
+                            BasedOn="{StaticResource {x:Type ListBoxItem}}"
+                            x:DataType="vm:ViewModelBase">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        </ControlTheme>
+                    </ListBox.ItemContainerTheme>
+                    
+                    <ListBox.DataTemplates>
+                        <DataTemplate x:DataType="vm:FileNameResultViewModel">
+                            <Panel HorizontalAlignment="Stretch" >
+                                <StackPanel Orientation="Horizontal" Focusable="True" Background="Transparent" >
+                                    <material:MaterialIcon Classes="resultIcon"
+                                                           Background="{StaticResource ExtensionHighlight}"
+                                                           Foreground="{StaticResource ExtensionForeground}"
+                                                           Kind="{Binding FileName,Converter={StaticResource FileTypeIconConverter}}" />
+                                    <Border CornerRadius="4" Padding="4 1 20 1" Background="{StaticResource TextBackDrop}"
+                                            BorderThickness="1" BorderBrush="Transparent">
+                                        <TextBlock VerticalAlignment="Center" Inlines="{Binding FileNameWithHighlights }"
+                                                   Foreground="{DynamicResource SystemColorWindowTextColor}">
+                                            <ToolTip.Tip>
+                                                <TextBox Text="{Binding FileName}" />
+                                            </ToolTip.Tip>
+                                        </TextBlock>
+                                    </Border>
+                                    <Border Background="DarkSlateGray" BorderBrush="Chartreuse" BorderThickness="2" IsVisible="{Binding IsUpdated}" Padding="3 1" CornerRadius="3" Margin="3">
+                                        <TextBlock Foreground="WhiteSmoke" FontWeight="Bold" VerticalAlignment="Center" Text="Updated!"/>
+                                    </Border>
+                                </StackPanel>
+                            </Panel>
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:ExceptionViewModel">
+                            <StackPanel Orientation="Horizontal" Focusable="True" Background="Red">
+                                <material:MaterialIcon Classes="m1" Foreground="Black" Kind="Error" />
+                                <Border CornerRadius="4" Padding="4 1 20 1" Background="{StaticResource TextBackDrop}"
+                                        BorderThickness="1" BorderBrush="Transparent">
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Message }"
+                                               Foreground="{StaticResource SystemColorWindowTextColor}">
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:ContentResultViewModel">
+                            <Border BorderThickness="1" Background="Transparent" IsHitTestVisible="True" Margin="2"
+                                    VerticalAlignment="Center">
+                                <Panel>
+                                    <!-- <DockPanel LastChildFill="True"> -->
+                                        <!-- <Panel  VerticalAlignment="Center"> -->
+                                        <!--     <TextBlock VerticalAlignment="Center" -->
+                                        <!--                Inlines="{Binding BackGroundWithHighlights }" -->
+                                        <!--                LineSpacing="{Binding LineHeight}" -->
+                                        <!--                Foreground="{StaticResource SystemColorWindowTextColor}"> -->
+                                        <!--     </TextBlock> -->
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Inlines="{Binding ContentWithHighlights }"
+                                                       LineSpacing="{Binding LineHeight}"
+                                                       Foreground="{StaticResource SystemColorWindowTextColor}">
+                                            </TextBlock>
+                                        <!-- </Panel> -->
+                                    <!-- </DockPanel> -->
+                                </Panel>
+                            </Border>
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:RobotFileSummaryViewModel">
+                            <Border BorderThickness="1" Background="DarkBlue" IsHitTestVisible="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🤖" FontSize="40" VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock  TextAlignment="Center" VerticalAlignment="Center" Text="{Binding RobotFilesCount}" 
+                                                       Foreground="Yellow">
+                                            </TextBlock>
+                                            <TextBlock Foreground="Bisque" TextAlignment="Center" VerticalAlignment="Center" Text="Robot Files, Click to see them, double click to open CSV"/>
+                                        </StackPanel>
+                                        <TextBlock Foreground="NavajoWhite" Text="{Binding ActionMessage}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:MissingRequirementsViewModel">
+                            <Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <material:MaterialIcon
+                                        VerticalAlignment="Top"
+                                                            Classes="m2"
+                                                           Foreground="DodgerBlue"
+                                                           Kind="Information" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding RequirementMessage }"></TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                        
+                        <DataTemplate x:DataType="vm:ReplaceTextViewModel">
+                            <Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <material:MaterialIcon
+                                        VerticalAlignment="Top"
+                                        Classes="m2"
+                                        Foreground="DodgerBlue"
+                                        Kind="FileReplace" />
+                                        <TextBlock VerticalAlignment="Center" >
+                                            <Run Text="Replaced '"/><Run Text="{Binding Count}"/> <Run Text="of "/><Run Text="{Binding Total}"/> <Run Text="' Files"></Run>
+                                        </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.DataTemplates>
+                    <ListBox.ContextMenu>
+                        <ContextMenu Opened="RightClickMenu_OnOpened">
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand}">
+                                <MenuItem.Icon>
+                                    <material:MaterialIcon Kind="ContentCopy"></material:MaterialIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.InputGesture>
+                                    <KeyGesture>Control+C</KeyGesture>
+                                </MenuItem.InputGesture>
+                            </MenuItem>
+                            <MenuItem Header="Open External.." Command="{Binding GotoSelectedExternal}">
+                                <MenuItem.Icon>
+                                    <Image Margin="1 1 4 1" Width="64" Height="64" DataContext="{Binding Path=SelectedEditorViewModel}" >
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource GotoEditorImageConverter}">
+                                                <Binding Path="Executable"/>
+                                                <Binding Path="ExecutableIconHint"/>
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </MenuItem.Icon>
+                                <MenuItem.InputGesture>
+                                    <KeyGesture>Enter</KeyGesture>
+                                </MenuItem.InputGesture>
+                            </MenuItem>
+                            <MenuItem Header="Open Explorer.." Command="{Binding GotoSelectedExplorer}">
+                                <MenuItem.Icon>
+                                    <material:MaterialIcon Kind="Folder"></material:MaterialIcon>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Open CMD.." Command="{Binding GotoSelectedCmd}">
+                                <MenuItem.Icon>
+                                    <material:MaterialIcon Kind="Terminal"></material:MaterialIcon>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Header="Toggle Preview"  Command="{Binding ToggleTextEditCmd}">
+                                <MenuItem.Icon>
+                                    <material:MaterialIcon Kind="TextBoxEdit"></material:MaterialIcon>
+                                </MenuItem.Icon>
+                                <MenuItem.InputGesture>
+                                    <KeyGesture>Space</KeyGesture>
+                                </MenuItem.InputGesture>
+
+                            </MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <!-- <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundThemeBrush}"/> -->
+                            <Setter Property="Background" Value="Transparent"></Setter>
+                            <Setter Property="MinHeight" Value="24" />
+                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            <Setter Property="Padding" Value="0"></Setter>
+                            <Setter Property="Margin" Value="0"></Setter>
+                            <Setter Property="BorderThickness" Value="1"></Setter>
+                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                        </Style>
+                        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                            <Setter Property="BorderBrush" Value="{DynamicResource GreenCheck}" />
+                        </Style>
+
+                        <!-- Todo: style configuration, for now just dark oriented -->
+                        <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="DimGray" />
+                        </Style>
+
+                        <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="DodgerBlue" />
+                        </Style>
+
+                        <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Style>
+
+                        <Style Selector="ListBoxItem:selected:focus:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="DodgerBlue" />
+                        </Style>
+                    </ListBox.Styles>
+                </ListBox>
+</UserControl>

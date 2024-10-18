@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.ScopeSelector">
+    <DropDownButton DockPanel.Dock="Right">
+        <StackPanel DataContext="{Binding WorkingScope}" Orientation="Horizontal">
+            <Image  Width="{Binding MainWindowViewModel.GeneralIconSize}"
+                    Height="{Binding MainWindowViewModel.GeneralIconSize}"
+                    IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
+            <TextBlock Margin="6 0" VerticalAlignment="Center" IsVisible="{Binding !ScopeImageVisible}" Text="{Binding ScopeTitle}"></TextBlock>
+        </StackPanel>
+        <Button.Flyout>
+            <Flyout>
+                <ListBox ItemsSource="{Binding ScopeViewModels}"
+                         SelectionChanged="ComboboxItemsControl_OnSelectionChanged"
+                         SelectedItem="{Binding SelectedScope}">
+                    <ListBox.DataTemplates>
+                        <DataTemplate x:DataType="vm:ScopeViewModel">
+                            <StackPanel Orientation="Horizontal">
+                                <Image   Height="64"  Width="64" IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
+                                <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding ScopeTitle}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.DataTemplates>
+                </ListBox>    
+            </Flyout>
+        </Button.Flyout>
+    </DropDownButton>
+</UserControl>

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net8.0</TargetFramework>
+        <PublishAot>true</PublishAot>
+        <IsTrimmable>true</IsTrimmable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="11.1.1" />
+      <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.0" />
+      <PackageReference Include="Blitz.Goto" Version="1.0.6" />
+    </ItemGroup>
+
+</Project>

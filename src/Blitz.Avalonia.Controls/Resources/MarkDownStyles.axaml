@@ -1,0 +1,141 @@
+﻿    <Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctxt="clr-namespace:ColorTextBlock.Avalonia;assembly=ColorTextBlock.Avalonia"
+        xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        xmlns:mde="clr-namespace:Markdown.Avalonia.Extensions;assembly=Markdown.Avalonia"
+        xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia">
+    <Design.PreviewWith>
+        <Border Padding="0">
+            <md:MarkdownScrollViewer>
+                <md:MarkdownScrollViewer.Styles>
+                    <StyleInclude Source="avares://Blitz.Avalonia.Controls/Resources/MarkDownStyles.axaml" />
+                </md:MarkdownScrollViewer.Styles>
+                # Heading1
+
+                ## Heading2
+                
+                ### Heading 3
+
+                The quick brown fox jumps over the lazy dog.
+
+                > #blockquote
+                > p>. and enhance syntax
+
+                inline code: `this is inline.`
+
+                ```vhdl
+                test
+                ```
+            </md:MarkdownScrollViewer>
+        </Border>
+    </Design.PreviewWith>
+
+	<Style Selector="ctxt|CTextBlock.Paragraph">
+		<Setter Property="Margin" Value="20 10 10 5"/>
+        <Setter Property="Opacity" Value="0.7"/>
+        <!-- <Setter Property="Foreground" Value="#D0D0D0"></Setter> -->
+    </Style>
+    
+    <Style Selector="Border.Blockquote">
+        <Setter Property="BorderBrush" Value="#4D6087" />
+        <!-- <Setter Property="Background" Value="#373839" /> -->
+        <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundDisabled}" />
+        <Setter Property="BorderThickness" Value="2 0 0 0"/>
+    </Style>
+
+    <Style Selector="ctxt|CHyperlink">
+        <Setter Property="Foreground" Value="Blue"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    
+    <Style Selector="Grid.List">
+        <Setter Property="Margin" Value="20 0 0 0"/>
+    </Style>
+    
+    
+    <Style Selector=".List ctxt|CTextBlock">
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+
+    <Style Selector="ctxt|CTextBlock.ListMarker">
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    
+    <Style Selector="ctxt|CTextBlock.Heading1">
+        <Setter Property="FontSize"   Value="22" />
+        <Setter Property="Margin"   Value="10" />
+        <Setter Property="FontWeight"   Value="Bold" />
+        <Setter Property="TextAlignment"   Value="Center" />
+        <!-- <Setter Property="Foreground" Value="White"></Setter> -->
+    </Style>
+    
+    
+    <Style Selector="ctxt|CTextBlock.Heading2">
+        <Setter Property="FontSize"   Value="18" />
+        <Setter Property="FontWeight"   Value="Bold" />
+        <Setter Property="Margin" Value="0 10"/>
+        <!-- <Setter Property="Foreground" Value="#D0D0D0"></Setter> -->
+    </Style>
+    
+    <Style Selector="ctxt|CTextBlock.Heading3">
+        <Setter Property="FontSize"   Value="16" />
+        <Setter Property="FontWeight"   Value="Bold" />
+        <!-- <Setter Property="Foreground" Value="#D0D0D0"></Setter> -->
+        <Setter Property="Margin" Value="0 10"/>
+    </Style>
+    
+    <Style Selector="md|MarkdownScrollViewer.ToolTip">
+        <Style.Setters>
+            <Setter Property="Margin" Value="-1" />
+            <Setter Property="MaxWidth" Value="500" />
+            <Setter Property="MaxHeight" Value="200" />
+        </Style.Setters>
+    </Style>
+    
+    <Style Selector="md|MarkdownScrollViewer.ToolTip TextBlock">
+        <Style.Setters>
+            <Setter Property="MaxWidth" Value="490" />
+        </Style.Setters>
+    </Style>
+    
+    <Style Selector="md|MarkdownScrollViewer.ToolTip ctxt|CTextBlock">
+        <Style.Setters>
+            <Setter Property="MaxWidth" Value="490" />
+        </Style.Setters>
+    </Style>
+    
+    <Style Selector="md|MarkdownScrollViewer avaloniaEdit|TextEditor">
+        <Style.Setters>
+            <Setter Property="FontFamily" Value="{DynamicResource EditorFont}" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+        </Style.Setters>
+    </Style>
+    
+    <Style Selector="md|MarkdownScrollViewer Border.CodeBlock">
+        <Style.Setters>
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style.Setters>
+    </Style>
+        
+      
+    <Style Selector="md|MarkdownScrollViewer.ToolTip Border.CodeBlock">
+        <Style.Setters>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style.Setters>
+    </Style>
+    <Style Selector="md|MarkdownScrollViewer ctxt|CCode">
+        <Style.Setters>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ThemeBorderLowBrush}" />
+        </Style.Setters>
+    </Style>
+</Styles>

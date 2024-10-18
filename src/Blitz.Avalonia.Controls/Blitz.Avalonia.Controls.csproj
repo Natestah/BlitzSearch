@@ -1,0 +1,97 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <PublishAot>true</PublishAot>
+        <IsTrimmable>true</IsTrimmable>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <IsAotCompatible>True</IsAotCompatible>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <IsAotCompatible>True</IsAotCompatible>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Labs.Controls" Version="11.0.10.1" />
+        <PackageReference Include="Avalonia.Svg" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc2" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+        <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
+        <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.0" />
+        <PackageReference Include="Blitz.Goto" Version="1.0.6" />
+        <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
+        <PackageReference Include="ColorTextBlock.Avalonia" Version="11.0.3-a1" />
+        <PackageReference Include="Humanizer" Version="3.0.0-beta.13" />
+        <PackageReference Include="Humanizer.Core" Version="3.0.0-beta.13" />
+        <PackageReference Include="Markdown.Avalonia" Version="11.0.3-a1" />
+        <PackageReference Include="ReactiveUI" Version="20.1.1" />
+        <PackageReference Include="TextMateSharp" Version="1.0.63" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\Blitz.Configuration\Blitz.Configuration.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="Resources\Help.md" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="Resources\Rider_icon.png" />
+      <AvaloniaResource Include="Resources\BlitzSVGCentered.svg" />
+      <AvaloniaResource Include="Resources\Rider_icon.png" />
+      <None Remove="Resources\Notepad_plus_plus.png" />
+      <AvaloniaResource Include="Resources\Notepad_plus_plus.png" />
+      <None Remove="Resources\vscode.png" />
+      <AvaloniaResource Include="Resources\vscode.png" />
+      <None Remove="Resources\uelogo.png" />
+      <AvaloniaResource Include="Resources\uelogo.png" />
+      <None Remove="Resources\VisualStudio2022PNG.png" />
+      <AvaloniaResource Include="Resources\VisualStudio2022PNG.png" />
+      <None Remove="Resources\Notepad_Win11PNG.png" />
+      <AvaloniaResource Include="Resources\Notepad_Win11PNG.png" />
+      <None Remove="Resources\intellij_idea.png" />
+      <AvaloniaResource Include="Resources\intellij_idea.png" />
+      <None Remove="Resources\pycharm.png" />
+      <AvaloniaResource Include="Resources\pycharm.png" />
+      <None Remove="Resources\phpstorm.png" />
+      <AvaloniaResource Include="Resources\phpstorm.png" />
+      <None Remove="Resources\goland.png" />
+      <AvaloniaResource Include="Resources\goland.png" />
+      <None Remove="Resources\clion.png" />
+      <AvaloniaResource Include="Resources\clion.png" />
+      <None Remove="Resources\rustrover.png" />
+      <AvaloniaResource Include="Resources\rustrover.png" />
+      <None Remove="Resources\webstorm.png" />
+      <AvaloniaResource Include="Resources\webstorm.png" />
+      <None Remove="Resources\rubymine.png" />
+      <AvaloniaResource Include="Resources\rubymine.png" />
+      <None Remove="Resources\Fleet.png" />
+      <AvaloniaResource Include="Resources\Fleet.png" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Remove="Resources\sublime_text.png" />
+      <AvaloniaResource Include="Resources\sublime_text.png" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <AvaloniaResource Include="Resources\NewBlitzPng.png" />
+    </ItemGroup>
+</Project>

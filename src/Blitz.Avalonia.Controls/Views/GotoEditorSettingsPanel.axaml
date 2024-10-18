@@ -1,0 +1,136 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="using:Blitz.Avalonia.Controls"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Blitz.Avalonia.Controls.Views.GotoEditorSettingsPanel"
+             x:CompileBindings="True"
+             x:DataType="vm:MainWindowViewModel">
+    <UserControl.Resources>
+        <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
+
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.p1">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+        </Style>
+        <Style Selector="TextBox.e1">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+        </Style>
+        <Style Selector="TextBlock.h1">
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5 10 5 10" />
+            <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+        </Style>
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style Selector="TextBlock.d1">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="MaxWidth" Value="520"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style Selector="Border.o1">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#444" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Margin" Value="15 1 4 4 "></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="DockPanel.Dock" Value="Top"></Setter>
+        </Style>
+
+        <Style Selector="CheckBox.OptionBox">
+            <Setter Property="Margin" Value="0 4 0 4"></Setter>
+        </Style>
+    </UserControl.Styles>
+    <DockPanel LastChildFill="True">
+        <Expander DockPanel.Dock="Bottom" Header="Customize" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <ScrollViewer>
+                <StackPanel Margin="10" DockPanel.Dock="Top" DataContext="{Binding SelectedEditorViewModel }"
+                            Orientation="Vertical">
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Classes="p1" Text="Executable" />
+                        <TextBox Classes="e1" Text="{Binding Executable}" />
+                    </DockPanel>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Classes="p1" Text="WorkingDirectory" />
+                        <TextBox Classes="e1" Text="{Binding ExecutableWorkingDirectory}" />
+                    </DockPanel>
+
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Classes="p1" Text="CommandLine" />
+                        <DockPanel>
+                            <ItemsControl DockPanel.Dock="Top"
+                                          HorizontalAlignment="Left"
+                                          Margin="15 5 5 15"
+                                          ItemsSource="{Binding SuggestedNames}">
+                                <ItemsControl.DataTemplates>
+                                    <DataTemplate x:DataType="{x:Type vm:ArgumentAliasViewModel}">
+                                        <Button Click="SuggestedNames_OnClick" CornerRadius="10">
+                                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                                                <TextBlock Text="{Binding Alias}" />
+                                                <TextBlock Opacity="0.5" Margin="10 2 2 2"
+                                                           Text="{Binding Description}" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.DataTemplates>
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <TextBox Classes="e1" Name="CommandLineBox" Text="{Binding CommandLine}" />
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Classes="p1" Text="Notes" />
+                        <TextBox Classes="e1" Text="{Binding Notes}" />
+                    </DockPanel>
+                    <TextBlock HorizontalAlignment="Left" Classes="h1" Text="CommandLine Preview" />
+                    <TextBlock HorizontalAlignment="Left" Classes="e1" Text="{Binding PreviewCommandLine}" />
+                </StackPanel>
+            </ScrollViewer>
+        </Expander>
+        <TextBlock DockPanel.Dock="Top" Classes="h1">Select Editor from Presets</TextBlock>
+        <ListBox DockPanel.Dock="Top" Margin="10"
+                 SelectionMode="Single"
+                 ItemsSource="{Binding GotoEditorCollection}"
+                 SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+            <ListBox.DataTemplates>
+                <DataTemplate x:DataType="{x:Type vm:GotoEditorViewModel}">
+                   
+                        
+                    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
+                        <!-- Source="{Binding Executable, Converter={StaticResource GotoEditorImageConverter}}" -->
+                        <Image DockPanel.Dock="Left" Margin="1 1 4 1" Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource GotoEditorImageConverter}">
+                                    <Binding Path="Executable" />
+                                    <Binding Path="ExecutableIconHint" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <DockPanel LastChildFill="False">
+                            <TextBlock DockPanel.Dock="Left" Margin="4 2"  Text="{Binding Title}" />
+                            <Panel DockPanel.Dock="Left" Width="10"/>
+                            <TextBlock DockPanel.Dock="Right" Opacity="0.3" Margin="4 2" Text="{Binding Notes}" />
+                        </DockPanel>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.DataTemplates>
+        </ListBox>
+
+
+    </DockPanel>
+</UserControl>

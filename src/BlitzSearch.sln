@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Configuration", "Blitz.Configuration\Blitz.Configuration.csproj", "{6113A8CE-95F8-4F59-B9FB-49785FA25145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Avalonia.Controls", "Blitz.Avalonia.Controls\Blitz.Avalonia.Controls.csproj", "{5C0DEB59-79E5-4A66-A7CE-E497F3A3A9C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz", "Blitz\Blitz.csproj", "{819CA219-2842-441C-86B5-4BE8722455C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6113A8CE-95F8-4F59-B9FB-49785FA25145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6113A8CE-95F8-4F59-B9FB-49785FA25145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6113A8CE-95F8-4F59-B9FB-49785FA25145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6113A8CE-95F8-4F59-B9FB-49785FA25145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C0DEB59-79E5-4A66-A7CE-E497F3A3A9C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0DEB59-79E5-4A66-A7CE-E497F3A3A9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0DEB59-79E5-4A66-A7CE-E497F3A3A9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0DEB59-79E5-4A66-A7CE-E497F3A3A9C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{819CA219-2842-441C-86B5-4BE8722455C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819CA219-2842-441C-86B5-4BE8722455C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819CA219-2842-441C-86B5-4BE8722455C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819CA219-2842-441C-86B5-4BE8722455C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

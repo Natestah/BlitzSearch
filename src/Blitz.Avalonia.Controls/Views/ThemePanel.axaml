@@ -1,0 +1,114 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="using:Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.ThemePanel">
+    <DockPanel LastChildFill="True">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+            <DropDownButton Margin="10">
+                <DropDownButton.Styles>
+                    <Style Selector="FlyoutPresenter">
+                        <Setter Property="Width" Value="1300" />
+                        <Setter Property="MaxWidth" Value="1300" />
+                        <Setter Property="MaxHeight" Value="1000" />
+                    </Style>
+                </DropDownButton.Styles>
+                <DropDownButton.Content>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch"
+                                DataContext="{Binding BlitzThemeViewModel}">
+                        <Border BorderThickness="2" Background="{Binding BackGroundBrush}" BorderBrush="SlateBlue"
+                                CornerRadius="5">
+                            <TextBlock Margin="20" Inlines="{Binding ContentWithHighlights}" />
+                        </Border>
+                    </StackPanel>
+                </DropDownButton.Content>
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ListBox DockPanel.Dock="Top"
+                                 Background="Transparent"
+                                 Width="1300"
+                                 HorizontalAlignment="Left"
+                                 Margin="15 5 5 15"
+                                 ItemsSource="{Binding AllThemeViewModels}"
+                                 SelectedItem="{Binding BlitzThemeViewModel, Mode=TwoWay}">
+                            <ListBox.DataTemplates>
+                                <DataTemplate x:DataType="{x:Type vm:BlitzThemeViewModel}">
+                                    <Grid>
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                                        <Border BorderThickness="2" Background="{Binding BackGroundBrush}"
+                                                BorderBrush="SlateBlue" CornerRadius="5">
+                                            <TextBlock Margin="20" Inlines="{Binding ContentWithHighlights}" />
+                                        </Border>
+                                    </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.DataTemplates>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+            <Panel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Margin="0 0 5 0" Text="Font: " Foreground="{Binding TextForeground}"></TextBlock>
+                        <DropDownButton Margin="10">
+                            <DropDownButton.Content>
+                                <TextBlock
+                                    Text="{Binding SelectedFontFamily.Name}"
+                                    FontFamily="{Binding SelectedFontFamily}"
+                                    Foreground="{Binding EditorViewModel.TextForeground}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </DropDownButton.Content>
+                            <DropDownButton.Flyout>
+                                <Flyout>
+                                    <ListBox ItemsSource="{Binding FontFamilies}"
+                                             SelectedItem="{Binding SelectedFontFamily}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="FontFamily">
+                                                <TextBlock
+                                                    Text="{Binding Name}"
+                                                    FontFamily="{Binding .}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Flyout>
+
+                            </DropDownButton.Flyout>
+                        </DropDownButton>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Margin="0 0 5 0" Text="Font Scale: "></TextBlock>
+                        <NumericUpDown Increment="0.2" FormatString="0.0" Minimum="1" Maximum="100"
+                                       Value="{Binding FontSize}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Margin="0 0 5 0" Text="Line Spacing: "></TextBlock>
+                        <NumericUpDown Increment="1" Minimum="0" Maximum="20"
+                                       Value="{Binding LineSpacing}" />
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Margin="0 0 5 0" Text="Icon Size: "></TextBlock>
+                        <NumericUpDown Increment="1.0" FormatString="0.0" Minimum="16.0" Maximum="100.0"
+                                       Value="{Binding GeneralIconSize}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Margin="0 0 5 0" Text="Show Status: "></TextBlock>
+                        <CheckBox IsChecked="{Binding ShowStatusBar}" />
+                    </StackPanel>
+                </StackPanel>
+            </Panel>
+        </StackPanel>
+    </DockPanel>
+</UserControl>
