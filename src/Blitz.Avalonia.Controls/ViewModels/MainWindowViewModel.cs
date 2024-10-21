@@ -992,7 +992,7 @@ public class MainWindowViewModel : ViewModelBase
 
 
     
-    public string SearchTextWaterMark => "Search for words seperated by space..";
+    public string SearchTextWaterMark => "Search for words separated by space..";
 
     public string SearchTextBox
     {

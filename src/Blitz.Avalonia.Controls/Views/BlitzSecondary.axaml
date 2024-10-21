@@ -134,7 +134,7 @@
                                 <TextBlock Classes="d1"> For files that match this blitz query Add a result with debug information ( why it was excluded), Clicking that result will show the reason.</TextBlock>
                             </StackPanel>
                             <TextBox Text="{Binding DebugFileNameSearchTextBox}"
-                                     Watermark="Search for words seperated by space..">
+                                     Watermark="Search for words separated by space..">
                             </TextBox>
                         </StackPanel>
 
