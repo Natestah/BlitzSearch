@@ -1,4 +1,3 @@
-
 /src/Blitz.Avalonia.Controls/bin
 /src/Blitz.Avalonia.Controls/obj
 /src/Blitz.Configuration/obj
@@ -6,3 +5,4 @@
 /src/Blitz/obj
 /src/Blitz.Configuration/bin
 /src/.idea
+.vs/
