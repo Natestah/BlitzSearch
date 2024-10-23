@@ -6,10 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Avalonia.Controls", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz", "Blitz\Blitz.csproj", "{819CA219-2842-441C-86B5-4BE8722455C9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TEMPPROJECT", "TEMPPROJECT", "{187E7314-2C9F-43FA-AA26-B8BB0AD8F379}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.AvaloniaEdit", "..\..\BlitzEdit\src\Blitz.AvaloniaEdit\Blitz.AvaloniaEdit.csproj", "{7B6A5000-FF4D-4D5C-AF1D-494EAD558D26}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,12 +24,7 @@ Global
 		{819CA219-2842-441C-86B5-4BE8722455C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{819CA219-2842-441C-86B5-4BE8722455C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{819CA219-2842-441C-86B5-4BE8722455C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B6A5000-FF4D-4D5C-AF1D-494EAD558D26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B6A5000-FF4D-4D5C-AF1D-494EAD558D26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B6A5000-FF4D-4D5C-AF1D-494EAD558D26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B6A5000-FF4D-4D5C-AF1D-494EAD558D26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7B6A5000-FF4D-4D5C-AF1D-494EAD558D26} = {187E7314-2C9F-43FA-AA26-B8BB0AD8F379}
 	EndGlobalSection
 EndGlobal
