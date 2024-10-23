@@ -30,8 +30,6 @@ public partial class BlitzSecondary : UserControl
             
             if (DataContext is MainWindowViewModel mainWindowViewModel)
             {
-                mainWindowViewModel.PopulateThemeModels();
-                mainWindowViewModel.UpdateRegistryOptions();
                 mainWindowViewModel.ShowPreview = ShowPreview;
             }
             _ = CalculateCacheUsage();
@@ -249,14 +247,16 @@ public partial class BlitzSecondary : UserControl
         }
         else if (previewing is ReplaceTextViewModel replaceTextViewModel)
         {
-            var language =  mainWindowViewModel.TextMateRegistryOptions.GetLanguageByExtension(".txt") 
-                            ?? mainWindowViewModel.TextMateRegistryOptions.GetAvailableLanguages().FirstOrDefault();
+            //Todo: This seems weird, can't remember why I don't have the extension available here..   
+            var baseOptions = mainWindowViewModel.EditorViewModel.ThemeViewModel.RegistryOptions.BaseOptions;
+            
+            var language =  baseOptions.GetLanguageByExtension(".txt") 
+                            ?? baseOptions.GetAvailableLanguages().FirstOrDefault();
             if (language == null)
             {
                 throw new NullReferenceException();
             }
-            mainWindowViewModel.TextMateInstallation?.SetGrammar(mainWindowViewModel.TextMateRegistryOptions.GetScopeByLanguageId(language.Id));
-            
+            mainWindowViewModel.EditorViewModel.TextMateInstallation?.SetGrammar(baseOptions.GetScopeByLanguageId(language.Id));
             gotoDocument = new BlitzDocument(BlitzDocument.DocumentType.Untitled, "Replace Preview")
             {
                 DirtyText = replaceTextViewModel.TextSummary

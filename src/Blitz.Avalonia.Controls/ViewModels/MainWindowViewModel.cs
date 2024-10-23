@@ -30,21 +30,7 @@ namespace Blitz.Avalonia.Controls.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public RegistryOptions TextMateRegistryOptions
-    {
-        get
-        {
-            string themeString = Configuration.Instance.CurrentTheme.ThemeName;
-            if (Enum.TryParse(themeString, out ThemeName themeName))
-            {
-                EditorViewModel.ConfiguredThemeName = themeName;
-            }
-
-            return EditorViewModel.TextMateRegistryOptions;
-        }
-        set => EditorViewModel.TextMateRegistryOptions = value;
-    }
-
+   
     public SearchQuery SearchQuery => _searchQuery;
 
     public AdsCollection AdsCollection { get; }
@@ -101,24 +87,8 @@ public class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _textForeground, value);
     }
 
-
-    public BlitzEditorViewModel.InstallationInstallerDelegate? TextMateInstaller => EditorViewModel.TextMateInstaller;
-    
-    public TextMate.Installation? TextMateInstallation
-    {
-        get => _textMateInstallation;
-        set => this.RaiseAndSetIfChanged(ref _textMateInstallation, value);
-    }
-
-    public void UpdateRegistryOptions() => this.RaisePropertyChanged(nameof(TextMateRegistryOptions));
-
     public event EventHandler? SelectedFileChanged; 
     
-    public void RefreshRegistryOptions()
-    {
-        this.RaisePropertyChanged(nameof(TextMateRegistryOptions));
-    }
-
     public MainWindowViewModel( ISearchingClient searchingClient)
     {
         foreach (var gotoEditor in new GotoDefinitions().GetBuiltInEditors())
@@ -167,8 +137,10 @@ public class MainWindowViewModel : ViewModelBase
         
         BuildScopesViewModelsFromConfig();
         AdsCollection = new AdsCollection(this);
-
+        ResultsHighlighting = new ResultsHighlighting(this);
     }
+
+    public ResultsHighlighting ResultsHighlighting { get; set; } 
 
     public void BuildScopesViewModelsFromConfig()
     {
@@ -192,49 +164,27 @@ public class MainWindowViewModel : ViewModelBase
     public Action<string>? ShowImportantMessage { get; set; }
     public Action<TextMate.Installation>? BackGroundForeGroundUpdate;
 
-    private BlitzTheme FromBase(BlitzTheme baseTheme,ThemeName themeName)
+    public void SetSelectedThemeModels()
     {
-        return new BlitzTheme
+        EditorViewModel.PopulateThemeModels();
+        
+        EditorViewModel.PropertyChanged += (sender, args) =>
         {
-            TextForeground = baseTheme.TextForeground,
-            WindowBackground = baseTheme.WindowBackground,
-            PassiveIcon = baseTheme.PassiveIcon,
-            ContentHighlightBackground = baseTheme.ContentHighlightBackground,
-            ContentHighlightBorder = baseTheme.ContentHighlightBorder,
-            ContentHighlightReplaceBackground = baseTheme.ContentHighlightReplaceBackground,
-            ContentHighlightReplaceBorder = baseTheme.ContentHighlightReplaceBorder,
-            SelectedItemBackground =baseTheme.SelectedItemBackground,
-            AvaloniaThemeVariant = baseTheme.AvaloniaThemeVariant,
-            ThemeName = themeName.ToString()
-        };
-    }
-
-    public void PopulateThemeModels()
-    {
-        AllThemeViewModels.Add(new BlitzThemeViewModel(this, BlitzTheme.Dark, true));
-        AllThemeViewModels.Add(new BlitzThemeViewModel(this, BlitzTheme.Light, true));
-        foreach (ThemeName themeName in Enum.GetValuesAsUnderlyingType(typeof(TextMateSharp.Grammars.ThemeName)))
-        {
-            if (themeName is ThemeName.DarkPlus or ThemeName.Light)
+            if (args.PropertyName == nameof(EditorViewModel.ThemeViewModel) && EditorViewModel.ThemeViewModel != null)
             {
-                continue;
+                Configuration.Instance.SelectedThemePremium = EditorViewModel.ThemeViewModel.Theme.ThemeName;
+                Configuration.Instance.SelectedThemeIsDark = EditorViewModel.ThemeViewModel.Theme.AvaloniaThemeVariant == "Dark";
             }
-            
-            
-            var newBlitzTHeme = themeName.ToString().ToLower().Contains("light") ? FromBase(BlitzTheme.Light, themeName) : FromBase(BlitzTheme.Dark, themeName);
-            AllThemeViewModels.Add( new BlitzThemeViewModel(this, newBlitzTHeme, false));
-        }
-
-        foreach (var themeViewModel in AllThemeViewModels)
+        };
+        foreach (var themeViewModel in EditorViewModel.AllThemeViewModels)
         {
             if ( themeViewModel.Theme.ThemeName == Configuration.Instance.SelectedThemePremium)
             {
-                this.BlitzThemeViewModel = themeViewModel;
+                EditorViewModel.ThemeViewModel = themeViewModel;
                 return;
             }
         }
 
-        this.BlitzThemeViewModel = AllThemeViewModels.First();
     }
 
     public bool SearchResultsHitTestEnabled
@@ -251,7 +201,6 @@ public class MainWindowViewModel : ViewModelBase
         new GotoEditorViewModel(Configuration.Instance.GotoEditor);
 
     private bool _newVersionAvailable;
-    private BlitzThemeViewModel? _blitzThemeViewModel = null;
     private string? _cacheStatus;
     private bool _cacheCleaning;
 
@@ -336,19 +285,6 @@ public class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _newVersionString, value);
     }
 
-    public BlitzThemeViewModel? BlitzThemeViewModel
-    {
-        get => _blitzThemeViewModel;
-        set
-        {
-            if (value == null) return;
-            Configuration.Instance.CurrentTheme = value.Theme;
-            Configuration.Instance.SelectedThemePremium = value.ThemeName.ToString();
-            _blitzThemeViewModel = value;
-            UpdateTheme();
-        }
-    }
-
     public FontFamily SelectedFontFamily
     {
         get => EditorViewModel.SelectedFontFamily;
@@ -410,8 +346,6 @@ public class MainWindowViewModel : ViewModelBase
             return _fontFamilies = families;
         }
     }
-
-    public ObservableCollection<BlitzThemeViewModel> AllThemeViewModels { get; } = [];
 
     public bool FileNameSearchEnabled
     {
@@ -519,11 +453,10 @@ public class MainWindowViewModel : ViewModelBase
 
     public void UpdateTheme()
     {
-        ResultsHighlighting.Instance.InstallHighlighting();
         RefreshBoxItemHighlights(); // syntax highlighting, sim^ply redo the search.
 
-        TextMateRegistryOptions = new RegistryOptions(_blitzThemeViewModel!.ThemeName);
-        this.RaisePropertyChanged(nameof(BlitzThemeViewModel));
+        Console.WriteLine("hi"); //todo what?
+        //EditorViewModel.TextMateRegistryOptions = new RegistryOptions(_blitzThemeViewModel!.ThemeName);
         
     }
 
@@ -829,10 +762,7 @@ public class MainWindowViewModel : ViewModelBase
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is nameof(IsMissingScopeRequirements) 
-            or nameof(BlitzThemeViewModel) 
             or nameof(CacheStatus) 
-            or nameof(TextMateRegistryOptions) 
-            or nameof(TextMateInstallation) 
             or nameof(SelectedFontFamily)
             or nameof(EnableGotoPane)
             or nameof(EnableHelpPane)

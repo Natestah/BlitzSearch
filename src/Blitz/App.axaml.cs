@@ -7,9 +7,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using AvaloniaEdit.TextMate;
-using Blitz.Avalonia.Controls.ViewModels;
+using Blitz.AvaloniaEdit.ViewModels;
 using Blitz.Search;
 using Blitz.Views;
+using MainWindowViewModel = Blitz.Avalonia.Controls.ViewModels.MainWindowViewModel;
 
 namespace Blitz;
 
@@ -34,17 +35,19 @@ public partial class App : Application
         applyColorAction(colorBrush);
         return true;
     }
+    
+    MainWindowViewModel? _mainWindowViewModel;
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindowViewModel = new MainWindowViewModel(new InProcessSearchHandler());
+            _mainWindowViewModel = new MainWindowViewModel(new InProcessSearchHandler());
 
             var mainWindow = desktop.MainWindow = new MainWindow
             {
-                DataContext = mainWindowViewModel,
+                DataContext = _mainWindowViewModel,
             };
-            mainWindowViewModel.EditorViewModel.BackGroundForeGroundUpdate = (textMateInstallation) =>
+            _mainWindowViewModel.EditorViewModel.BackGroundForeGroundUpdate = (textMateInstallation) =>
             {
                 ApplyBrushAction(textMateInstallation, "editor.background",brush => mainWindow.Background = brush);
                 if (!ApplyBrushAction(textMateInstallation,"editor.foreground", brush => mainWindow.Foreground = brush))
@@ -53,7 +56,7 @@ public partial class App : Application
                 }
             };
             
-            mainWindowViewModel.PropertyChanged +=MainWindowViewModelOnPropertyChanged;
+            _mainWindowViewModel.EditorViewModel.PropertyChanged +=MainWindowViewModelOnPropertyChanged;
             var trayIcon = new TrayIcon();
             trayIcon.Icon = desktop.MainWindow.Icon;
             trayIcon.Clicked += (_, _) =>
@@ -68,11 +71,11 @@ public partial class App : Application
 
             mainWindow.ShowInTaskbar = Configuration.Instance.ShowOnTaskBar;
 
-            mainWindowViewModel.PropertyChanged += (_, args) =>
+            _mainWindowViewModel.PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName == nameof(MainWindowViewModel.ShowOnTaskBar))
                 {
-                    mainWindow.ShowInTaskbar = mainWindowViewModel.ShowOnTaskBar;
+                    mainWindow.ShowInTaskbar = _mainWindowViewModel.ShowOnTaskBar;
                 }
             };
         }
@@ -81,10 +84,10 @@ public partial class App : Application
 
     private void MainWindowViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender is not MainWindowViewModel mainWindowViewModel) return;
-        if (e.PropertyName == nameof(MainWindowViewModel.BlitzThemeViewModel))
+        if (sender is not BlitzEditorViewModel blitzEditorViewModel) return;
+        if (e.PropertyName == nameof(BlitzEditorViewModel.ThemeViewModel))
         {
-            RequestedThemeVariant = mainWindowViewModel.BlitzThemeViewModel != null && mainWindowViewModel.BlitzThemeViewModel.ThemeName.ToString().ToLower().Contains("light")
+            RequestedThemeVariant = blitzEditorViewModel.ThemeViewModel is { Theme.AvaloniaThemeVariant: "Light" }
                 ? ThemeVariant.Light
                 : ThemeVariant.Dark;
         }
@@ -92,9 +95,6 @@ public partial class App : Application
 
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs e)
     {
-        if (DataContext is MainWindowViewModel mainWindowViewModel)
-        {
-            mainWindowViewModel.UpdateTheme();
-        }
+        _mainWindowViewModel?.UpdateTheme();
     }
 }

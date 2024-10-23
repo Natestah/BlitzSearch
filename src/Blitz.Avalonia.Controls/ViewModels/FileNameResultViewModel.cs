@@ -106,7 +106,7 @@ public class FileNameResultViewModel : ViewModelBase, IResultCopiable
             {
                 return inlineCollection;
             }
-            var states = ResultsHighlighting.Instance.GetCharStatesFromInlines(inlineCollection, _fileNameResult.FileName);
+            var states = _mainWindowViewModel.ResultsHighlighting.GetCharStatesFromInlines(inlineCollection, _fileNameResult.FileName);
             var matchHighlighter = new MatchHighlighter(states,_fileNameResult.BlitzMatches, _fileNameResult.FileName, false);
             return matchHighlighter.GetInlines();
         }

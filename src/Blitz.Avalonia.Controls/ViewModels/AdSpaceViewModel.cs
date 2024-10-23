@@ -20,6 +20,8 @@ public class AdsCollection : ObservableCollection<AdSpaceViewModel>
     
     public AdsCollection(MainWindowViewModel mainWindowViewModel)
     {
+        Add(new(mainWindowViewModel, MaterialIconKind.Youtube, "Open Source Available Now",
+            "https://youtube.com/shorts/OMPUElrPGJ4?si=J18LMHGDmKwUM2cP"));
         Add(new(mainWindowViewModel, MaterialIconKind.Youtube, "Setting Blitz Search Free",
             "https://youtube.com/shorts/bb9mbht9O8o?feature=share"));
     }

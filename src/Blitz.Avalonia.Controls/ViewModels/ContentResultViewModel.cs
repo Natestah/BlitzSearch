@@ -1,4 +1,5 @@
 using Avalonia.Controls.Documents;
+using Blitz.AvaloniaEdit.ViewModels;
 using Blitz.Interfacing;
 using ReactiveUI;
 
@@ -42,10 +43,9 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
             string displayContents = largeLine ? renderedContents.Substring(0, maxLineDisplayChars): renderedContents;
 
             // given the lines contents and the filename.. come up with some highlights.
-            InlineCollection inlineCollection = ResultsHighlighting.Instance.GetInlinesFromTextMateSharp(displayContents, fileNameResult.FileName);
+            InlineCollection inlineCollection = MainWindowViewModel.ResultsHighlighting.GetInlinesFromTextMateSharp(displayContents, fileNameResult.FileName);
 
-
-            var states = ResultsHighlighting.Instance.GetCharStatesFromInlines(inlineCollection, displayContents);
+            var states = MainWindowViewModel.ResultsHighlighting.GetCharStatesFromInlines(inlineCollection, displayContents);
             
             var matchHighlighter = new MatchHighlighter(states,fileContentResultResult.BlitzMatches, displayContents, replacing);
 

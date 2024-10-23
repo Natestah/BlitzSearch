@@ -7,6 +7,8 @@ Please support Blitz Search by engaging social media's.
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) or [Reddit](https://www.reddit.com/r/BlitzSearch) and give feedback!
 
 Thank you!
+### Version 0.0.73
+* Added Ability to import Themes from JSON
 ### Version 0.0.72
 * Removing Premium checks, Blitz Search Is fully free
 * Small banner has been added, subject to some more change. I ask that you click this and watch and engage. Help me get the word out..

@@ -15,8 +15,8 @@
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
         <PackageReleaseNotes>Limited Time Beta</PackageReleaseNotes>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>0.0.72</AssemblyVersion>
-        <FileVersion>0.0.72</FileVersion>
+        <AssemblyVersion>0.0.73</AssemblyVersion>
+        <FileVersion>0.0.73</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>
@@ -37,7 +37,6 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.1.1" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0-rc2" />
-        <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.0" />
         <PackageReference Include="Blitz.Goto" Version="1.0.6" />
         <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
         <PackageReference Include="Blitz.Search" Version="1.0.0" />
@@ -104,6 +103,12 @@
       </Content>
 
         <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+
+        <None Remove="Documentation\Support_Blitz.md" />
+
+        <Content Include="Documentation\Support_Blitz.md">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
 
     </ItemGroup>
 </Project>

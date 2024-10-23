@@ -17,11 +17,15 @@ using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Blitz.Avalonia.Controls.ViewModels;
+using Blitz.AvaloniaEdit.Models;
+using Blitz.AvaloniaEdit.ViewModels;
 using Blitz.Interfacing;
 using Markdown.Avalonia;
 using Material.Icons;
 using Material.Icons.Avalonia;
 using ReactiveUI;
+using TextMateSharp.Grammars;
+using MainWindowViewModel = Blitz.Avalonia.Controls.ViewModels.MainWindowViewModel;
 
 namespace Blitz.Avalonia.Controls.Views;
 
@@ -60,9 +64,48 @@ public partial class BlitzMainPanel : UserControl
                 BlitzSecondary.GotoPreviewLineRun);
 
             BlitzSecondary.AvaloniaTextEditor.ContextRequested += ContextMenuOnContextRequested;
+            
+
         }
 
         base.OnLoaded(e);
+
+        if (DataContext is MainWindowViewModel mv)
+        {
+            mv.EditorViewModel.PopulateThemeModels();
+
+            AddFileBasedSelectedTheme();
+            
+            mv.SetSelectedThemeModels();
+            BlitzSecondary.FileView.ReApplyTheme();
+        }
+    }
+
+    private void AddFileBasedSelectedTheme()
+    {
+        if (DataContext is not MainWindowViewModel mv)
+        {
+            return; 
+        }
+
+        //Return if it's NOT a path.
+        try
+        {
+            if (!File.Exists(Configuration.Instance.SelectedThemePremium))
+            {
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            //Selected theme can be the enum name for built ins
+            return;
+        }
+        
+        var baseTheme = Configuration.Instance.SelectedThemeIsDark ? BlitzTheme.Dark : BlitzTheme.Light;
+        var theme = mv.EditorViewModel.FromBase(baseTheme, Configuration.Instance.SelectedThemePremium);
+        var themeViewModel = new ThemeViewModel(theme);
+        mv.EditorViewModel.AllThemeViewModels.Add(themeViewModel);
     }
 
     private void ContextMenuOnContextRequested(object? sender, ContextRequestedEventArgs e)

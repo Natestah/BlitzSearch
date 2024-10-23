@@ -43,6 +43,8 @@ public class Configuration
     public bool IsWelcomed { get; set; } 
 
     public string SelectedThemePremium { get; set; } = "DarkPlus";
+    public bool SelectedThemeIsDark { get; set; } = true;
+    
     public List<string> LiteralSearchTextHistory { get; set; } = [];
     public List<string> RegexSearchTextHistory { get; set; } = [];
     public List<string> SearchTextHistory { get; set; } = [];

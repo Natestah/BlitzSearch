@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.73",
+    "Changes": "* Added Ability to import Themes from JSON\r\n"
+  },
+  {
     "Revision": "0.0.72",
     "Changes": "* Removing Premium checks, Blitz Search Is fully free\r\n* Small banner has been added, subject to some more change. I ask that you click this and watch and engage. Help me get the word out..\r\n* I am checkpointing my work on the built-in text editor. There is a new file tab, with preview mode. More on this later. \r\n"
   },

@@ -26,8 +26,6 @@ Social media algorithms favor posts with user engagement.
 #### [Blitz Search on X](https://x.com/BlitzSearch) - Follow me!
 
 #### [YouTube ](https://www.youtube.com/@BlitzSearch-qb2oq) "Blitz Search" Channel..
-## Donations
-* Donate.  I will happily accept donations, It costs money to keep Blitz Search running ( hosting the website, promoting, code-signing, etc ).
 
 #### [Natestah.com](https://natestah.com/) - Blitz Search Homepage.
 

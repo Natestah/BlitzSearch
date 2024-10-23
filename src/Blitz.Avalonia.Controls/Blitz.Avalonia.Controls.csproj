@@ -28,7 +28,6 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
         <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
-        <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.0" />
         <PackageReference Include="Blitz.Goto" Version="1.0.6" />
         <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
         <PackageReference Include="ColorTextBlock.Avalonia" Version="11.0.3-a1" />
@@ -41,6 +40,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\BlitzEdit\src\Blitz.AvaloniaEdit\Blitz.AvaloniaEdit.csproj" />
       <ProjectReference Include="..\Blitz.Configuration\Blitz.Configuration.csproj" />
     </ItemGroup>
 

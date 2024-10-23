@@ -5,11 +5,12 @@
              xmlns:material="using:Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:editorVM="using:Blitz.AvaloniaEdit.ViewModels"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.ThemePanel">
     <DockPanel LastChildFill="True">
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-            <DropDownButton Margin="10">
+            <DropDownButton Margin="10" DataContext="{Binding EditorViewModel}">
                 <DropDownButton.Styles>
                     <Style Selector="FlyoutPresenter">
                         <Setter Property="Width" Value="1300" />
@@ -19,7 +20,7 @@
                 </DropDownButton.Styles>
                 <DropDownButton.Content>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch"
-                                DataContext="{Binding BlitzThemeViewModel}">
+                                DataContext="{Binding ThemeViewModel}">
                         <Border BorderThickness="2" Background="{Binding BackGroundBrush}" BorderBrush="SlateBlue"
                                 CornerRadius="5">
                             <TextBlock Margin="20" Inlines="{Binding ContentWithHighlights}" />
@@ -34,9 +35,9 @@
                                  HorizontalAlignment="Left"
                                  Margin="15 5 5 15"
                                  ItemsSource="{Binding AllThemeViewModels}"
-                                 SelectedItem="{Binding BlitzThemeViewModel, Mode=TwoWay}">
+                                 SelectedItem="{Binding ThemeViewModel, Mode=TwoWay}">
                             <ListBox.DataTemplates>
-                                <DataTemplate x:DataType="{x:Type vm:BlitzThemeViewModel}">
+                                <DataTemplate x:DataType="{x:Type editorVM:ThemeViewModel}">
                                     <Grid>
                                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
                                         <Border BorderThickness="2" Background="{Binding BackGroundBrush}"
@@ -58,8 +59,18 @@
             </DropDownButton>
             <Panel>
                 <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0 0 5 0" Text="Import Theme (json): "/>
+                        <Border BorderThickness="1" BorderBrush="DimGray">
+                            <Button Background="Black" Foreground="White" Content="Dark..." Click="ImportTheme_OnClick" CommandParameter="Dark"></Button>
+                        </Border>
+                        <Border BorderThickness="1" BorderBrush="DimGray">
+                            <Button Background="White" Foreground="Black" Content="Light..." Click="ImportTheme_OnClick" CommandParameter="Light"></Button>
+                        </Border>
+                        
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10">
-                        <TextBlock Margin="0 0 5 0" Text="Font: " Foreground="{Binding TextForeground}"></TextBlock>
+                        <TextBlock Margin="0 0 5 0" Text="Font: "></TextBlock>
                         <DropDownButton Margin="10">
                             <DropDownButton.Content>
                                 <TextBlock
