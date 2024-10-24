@@ -1,6 +1,8 @@
+using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Blitz.Avalonia.Controls.ViewModels;
+using Blitz.Goto;
 
 namespace Blitz.Avalonia.Controls.Views;
 
@@ -11,30 +13,6 @@ public partial class GotoEditorSettingsPanel : UserControl
         InitializeComponent();
     }
     
-
-    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (e.AddedItems.Count > 0 && e.AddedItems[0] is GotoEditorViewModel gotoEditorViewModel)
-        {
-            SetManualEditorTo((DataContext as MainWindowViewModel)!, gotoEditorViewModel);
-        }
-    }
-    
-    private static void SetManualEditorTo(MainWindowViewModel vm, GotoEditorViewModel selectedGotoEditor)
-    {
-        var manualEditor = vm.SelectedEditorViewModel;
-        if (manualEditor == null)
-        {
-            return;
-        }
-        manualEditor.Title = selectedGotoEditor.Title;
-        manualEditor.GotoEditor.CodeExecute = selectedGotoEditor.GotoEditor.CodeExecute;
-        manualEditor.CommandLine = selectedGotoEditor.CommandLine;
-        manualEditor.ExecutableWorkingDirectory = selectedGotoEditor.ExecutableWorkingDirectory;
-        manualEditor.Executable = selectedGotoEditor.Executable;
-        manualEditor.Notes = selectedGotoEditor.Notes;
-    }
-
     private void SuggestedNames_OnClick(object? sender, RoutedEventArgs e)
     {
         if (sender is not Button { DataContext: ArgumentAliasViewModel argumentAliasViewModel })
@@ -47,5 +25,33 @@ public partial class GotoEditorSettingsPanel : UserControl
         var replaceBoxText = boxText.Insert(insertAt, insertText);
         CommandLineBox.Text = replaceBoxText;
         CommandLineBox.CaretIndex = insertAt + insertText.Length;
+    }
+
+    private void CreateCustomEditor_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is MainWindowViewModel mainWindowViewModel)
+        {
+            var newEditor = new GotoEditorViewModel(new GotoEditor());
+            mainWindowViewModel.GotoEditorCollection.Add(newEditor);
+            mainWindowViewModel.SelectedEditorViewModel = newEditor;;
+            mainWindowViewModel.RebuildCustomEditorList();
+        }
+    }
+    private void DuplicateEditor_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel { SelectedEditorViewModel.GotoEditor: not null } mainWindowViewModel)
+        {
+            return;
+        }
+        var fileContents =  JsonSerializer.Serialize(mainWindowViewModel.SelectedEditorViewModel.GotoEditor, JsonContext.Default.Configuration);
+        var copy = JsonSerializer.Deserialize<GotoEditor>(fileContents, JsonContext.Default.GotoEditor);
+        if (copy == null)
+        {
+            return;
+        }
+        copy.Title = $"{copy.Title}_copy";
+        var newEditor = new GotoEditorViewModel(copy);
+        mainWindowViewModel.GotoEditorCollection.Add(newEditor);
+        mainWindowViewModel.RebuildCustomEditorList();
     }
 }

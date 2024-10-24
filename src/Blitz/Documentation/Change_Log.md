@@ -7,6 +7,12 @@ Please support Blitz Search by engaging social media's.
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) or [Reddit](https://www.reddit.com/r/BlitzSearch) and give feedback!
 
 Thank you!
+
+### Version 0.0.74
+* Fixed up Goto Editor Selection, important as I change parameters on the built-in's
+* Selection of Editors now persists
+* Add Ability to Duplicate BuiltIn readonly editors and modify. These also persist between sessions
+* VSCode Previewing, With VS Code selected.
 ### Version 0.0.73
 * Added Ability to import Themes from JSON
 ### Version 0.0.72

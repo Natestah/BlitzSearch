@@ -12,6 +12,16 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
 {
     public GotoEditor GotoEditor => gotoEditor;
 
+    public bool ReadOnly
+    {
+        get => _isReadonly;
+        set
+        {
+            _isReadonly = value;
+            this.RaisePropertyChanged();
+        }
+    }
+
     public string Title
     {
         get => gotoEditor.Title;
@@ -42,7 +52,25 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
             this.RaisePropertyChanged();
         }
     }
-
+    public string CodeExecute
+    {
+        get => gotoEditor.CodeExecute;
+        set
+        {
+            gotoEditor.CodeExecute = value;
+            this.RaisePropertyChanged();
+        }
+    }
+    
+    public string RunningProcessName
+    {
+        get => gotoEditor.RunningProcessName;
+        set
+        {
+            gotoEditor.RunningProcessName = value;
+            this.RaisePropertyChanged();
+        }
+    }
     public string ExecutableWorkingDirectory
     {
         get => gotoEditor.ExecutableWorkingDirectory;
@@ -93,6 +121,7 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
     }
 
     private readonly ObservableCollection<ArgumentAliasViewModel> _suggestedNames = [];
+    private bool _isReadonly;
 
     public ObservableCollection<ArgumentAliasViewModel> SuggestedNames
     {
@@ -201,14 +230,14 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
         return true;
     }
 
-    public bool RunGoto(string fileToGoto, int line, int column, out string errorMessage)
+    public bool RunGoto(bool preview, string fileToGoto, int line, int column, out string errorMessage)
     {
         var gotoAction = new GotoAction(GotoEditor);
         var directive = new GotoDirective(fileToGoto, line, column);
         errorMessage = string.Empty;
         try
         {
-            gotoAction.ExecuteGoto(directive);
+            gotoAction.ExecuteGoto(directive, preview);
         }
         catch (FileNotFoundException)
         {
@@ -231,14 +260,14 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
 
     }
     
-    public bool RunTotoOnObjectGoto(object? controlDataContext, out string errorMessage)
+    public bool RunTotoOnObjectGoto(object? controlDataContext, bool preview, out string errorMessage)
     {
         errorMessage = string.Empty;
         if (!GetFileGotoInfo(controlDataContext, out var fileToGoto, out var line ,out var column))
         {
             return false;
         }
-        return RunGoto(fileToGoto, line, column, out errorMessage);
+        return RunGoto(preview, fileToGoto, line, column, out errorMessage);
     }
 
     public bool EditorExists()

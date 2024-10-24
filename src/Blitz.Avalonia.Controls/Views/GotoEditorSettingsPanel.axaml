@@ -55,50 +55,67 @@
     <DockPanel LastChildFill="True">
         <Expander DockPanel.Dock="Bottom" Header="Customize" VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <ScrollViewer>
-                <StackPanel Margin="10" DockPanel.Dock="Top" DataContext="{Binding SelectedEditorViewModel }"
-                            Orientation="Vertical">
-                    <DockPanel LastChildFill="True">
-                        <TextBlock Classes="p1" Text="Executable" />
-                        <TextBox Classes="e1" Text="{Binding Executable}" />
-                    </DockPanel>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock Classes="p1" Text="WorkingDirectory" />
-                        <TextBox Classes="e1" Text="{Binding ExecutableWorkingDirectory}" />
-                    </DockPanel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Create Custom Editor" Click="CreateCustomEditor_OnClick"></Button>
+                        <Button Content="Duplicate and Edit" Click="DuplicateEditor_OnClick"></Button>
+                    </StackPanel>
 
-                    <DockPanel LastChildFill="True">
-                        <TextBlock Classes="p1" Text="CommandLine" />
-                        <DockPanel>
-                            <ItemsControl DockPanel.Dock="Top"
-                                          HorizontalAlignment="Left"
-                                          Margin="15 5 5 15"
-                                          ItemsSource="{Binding SuggestedNames}">
-                                <ItemsControl.DataTemplates>
-                                    <DataTemplate x:DataType="{x:Type vm:ArgumentAliasViewModel}">
-                                        <Button Click="SuggestedNames_OnClick" CornerRadius="10">
-                                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
-                                                <TextBlock Text="{Binding Alias}" />
-                                                <TextBlock Opacity="0.5" Margin="10 2 2 2"
-                                                           Text="{Binding Description}" />
-                                            </StackPanel>
-                                        </Button>
-                                    </DataTemplate>
-                                </ItemsControl.DataTemplates>
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                            <TextBox Classes="e1" Name="CommandLineBox" Text="{Binding CommandLine}" />
+
+                    <StackPanel Margin="10" DataContext="{Binding SelectedEditorViewModel }"
+                                IsEnabled="{Binding !ReadOnly}"
+                                Orientation="Vertical">
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="Executable" />
+                            <TextBox Classes="e1" Text="{Binding Executable}" />
                         </DockPanel>
-                    </DockPanel>
-                    <DockPanel LastChildFill="True">
-                        <TextBlock Classes="p1" Text="Notes" />
-                        <TextBox Classes="e1" Text="{Binding Notes}" />
-                    </DockPanel>
-                    <TextBlock HorizontalAlignment="Left" Classes="h1" Text="CommandLine Preview" />
-                    <TextBlock HorizontalAlignment="Left" Classes="e1" Text="{Binding PreviewCommandLine}" />
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="WorkingDirectory" />
+                            <TextBox Classes="e1" Text="{Binding ExecutableWorkingDirectory}" />
+                        </DockPanel>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="CodeExecute" />
+                            <TextBox Classes="e1" Text="{Binding CodeExecute }" />
+                        </DockPanel>
+
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="RunningProcessName" />
+                            <TextBox Classes="e1" Text="{Binding RunningProcessName }" />
+                        </DockPanel>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="CommandLine" />
+                            <DockPanel>
+                                <ItemsControl DockPanel.Dock="Top"
+                                              HorizontalAlignment="Left"
+                                              Margin="15 5 5 15"
+                                              ItemsSource="{Binding SuggestedNames}">
+                                    <ItemsControl.DataTemplates>
+                                        <DataTemplate x:DataType="{x:Type vm:ArgumentAliasViewModel}">
+                                            <Button Click="SuggestedNames_OnClick" CornerRadius="10">
+                                                <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                                                    <TextBlock Text="{Binding Alias}" />
+                                                    <TextBlock Opacity="0.5" Margin="10 2 2 2"
+                                                               Text="{Binding Description}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.DataTemplates>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                                <TextBox Classes="e1" Name="CommandLineBox" Text="{Binding CommandLine}" />
+                            </DockPanel>
+                        </DockPanel>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="Notes" />
+                            <TextBox Classes="e1" Text="{Binding Notes}" />
+                        </DockPanel>
+                        <TextBlock HorizontalAlignment="Left" Classes="h1" Text="CommandLine Preview" />
+                        <TextBlock HorizontalAlignment="Left" Classes="e1" Text="{Binding PreviewCommandLine}" />
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </Expander>
@@ -106,11 +123,10 @@
         <ListBox DockPanel.Dock="Top" Margin="10"
                  SelectionMode="Single"
                  ItemsSource="{Binding GotoEditorCollection}"
-                 SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                 SelectedItem="{Binding SelectedEditorViewModel}"
+                 >
             <ListBox.DataTemplates>
                 <DataTemplate x:DataType="{x:Type vm:GotoEditorViewModel}">
-                   
-                        
                     <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
                         <!-- Source="{Binding Executable, Converter={StaticResource GotoEditorImageConverter}}" -->
                         <Image DockPanel.Dock="Left" Margin="1 1 4 1" Width="32" Height="32">

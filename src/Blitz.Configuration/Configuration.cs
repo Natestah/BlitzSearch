@@ -17,6 +17,7 @@ public class Configuration
     
     public GotoEditor GotoEditor { get; set; } = new GotoEditor();
 
+    public List<GotoEditor> CustomEditors { get; set; } = [];
     public bool FromFile { get; set; }
     
     private static string _getStoreFile(string fileName)

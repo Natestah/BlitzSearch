@@ -91,9 +91,28 @@ public class MainWindowViewModel : ViewModelBase
     
     public MainWindowViewModel( ISearchingClient searchingClient)
     {
+        GotoEditorViewModel? firstEditorThatExists = null;
         foreach (var gotoEditor in new GotoDefinitions().GetBuiltInEditors())
         {
-            GotoEditorCollection.Add(new GotoEditorViewModel(gotoEditor));
+            var editorVm = new GotoEditorViewModel(gotoEditor)
+            {
+                ReadOnly = true
+            };
+            GotoEditorCollection.Add(editorVm);
+            if (gotoEditor.Title == Configuration.Instance.GotoEditor.Title)
+            {
+                _selectedEditorViewModel = editorVm;
+            }
+
+            if (firstEditorThatExists == null && editorVm.EditorExists())
+            {
+                firstEditorThatExists = editorVm;;
+            }
+        }
+
+        if (_selectedEditorViewModel == null)
+        {
+            _selectedEditorViewModel = firstEditorThatExists ?? GotoEditorCollection.FirstOrDefault();
         }
         
         SearchingClient = searchingClient;
@@ -194,12 +213,10 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public WindowState LastNonMinizedState { get; set; } = WindowState.Normal;
-    
-    
 
-    private GotoEditorViewModel _selectedEditorViewModel =
-        new GotoEditorViewModel(Configuration.Instance.GotoEditor);
 
+
+    private GotoEditorViewModel _selectedEditorViewModel;
     private bool _newVersionAvailable;
     private string? _cacheStatus;
     private bool _cacheCleaning;
@@ -515,7 +532,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private void GotoSelectedExternalRun()
     {
-        if (SelectedEditorViewModel != null && !SelectedEditorViewModel.RunTotoOnObjectGoto(SelectedItems.FirstOrDefault(), out var errorMessage))
+        if (SelectedEditorViewModel != null && !SelectedEditorViewModel.RunTotoOnObjectGoto(SelectedItems.FirstOrDefault(),false, out var errorMessage))
         {
         }
     }
@@ -1359,5 +1376,17 @@ public class MainWindowViewModel : ViewModelBase
     public void NotifyMainIconVisibility()
     {
         this.RaisePropertyChanged(nameof(IsBlitzLogoVisibile));
+    }
+
+    public void RebuildCustomEditorList()
+    {
+        Configuration.Instance.CustomEditors.Clear();
+        foreach (var gotoEditorViewModel in GotoEditorCollection)
+        {
+            if (!gotoEditorViewModel.ReadOnly)
+            {
+                Configuration.Instance.CustomEditors.Add(gotoEditorViewModel.GotoEditor);
+            }
+        }
     }
 }

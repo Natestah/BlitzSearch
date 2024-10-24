@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.74",
+    "Changes": "* Fixed up Goto Editor Selection, important as I change parameters on the built-in\u0027s\r\n* Selection of Editors now persists\r\n* Add Ability to Duplicate BuiltIn readonly editors and modify. These also persist between sessions\r\n* VSCode Previewing, With VS Code selected.\r\n"
+  },
+  {
     "Revision": "0.0.73",
     "Changes": "* Added Ability to import Themes from JSON\r\n"
   },

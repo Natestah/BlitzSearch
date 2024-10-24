@@ -19,7 +19,7 @@ namespace Blitz;
 [JsonSerializable(typeof(Avalonia.Point))]
 [JsonSerializable(typeof(Avalonia.PixelPoint))]
 [JsonSerializable(typeof(RobotDetectionSettings))]
-internal partial class JsonContext : JsonSerializerContext
+public partial class JsonContext : JsonSerializerContext
 {
     
 }

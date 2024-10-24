@@ -53,7 +53,7 @@ public partial class BlitzSecondary : UserControl
         
         if (selectedModel != null && selectedDocument is { Type: BlitzDocument.DocumentType.File })
         {
-            selectedModel.RunGoto(selectedDocument.FileNameOrTitle, line, column, out var _);
+            selectedModel.RunGoto(false, selectedDocument.FileNameOrTitle, line, column, out var _);
         }
     }
 

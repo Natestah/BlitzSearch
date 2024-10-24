@@ -201,7 +201,6 @@
 
             <StackPanel Background="{Binding EditorViewModel.StatusBarBackground}"  DockPanel.Dock="Right"  >
                 <StackPanel DataContext="{Binding AdsCollection.FirstAdSpace}" Orientation="Horizontal" Margin="4 0">
-                    <TextBlock VerticalAlignment="Center" Text="Support Blitz Search: "></TextBlock>
                     <material:MaterialIcon Foreground="Red" Classes="adspaceResults" Kind="{Binding Icon}"/>
                     <Button Classes="hyperlink" Click="AdButton_OnClick" Content="{Binding TextInformation}" FontSize="14" />
                 </StackPanel>
@@ -269,7 +268,7 @@
                         </DropDownButton.Content>
                         <Button.Flyout>
                             <Flyout>
-                                <ListBox ItemsSource="{Binding SearchTextHistory}" SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                                <ListBox ItemsSource="{Binding SearchTextHistory}"  SelectionChanged="SelectingItemsControl_OnSelectionChanged">
                                 </ListBox>    
                             </Flyout>
                         </Button.Flyout>

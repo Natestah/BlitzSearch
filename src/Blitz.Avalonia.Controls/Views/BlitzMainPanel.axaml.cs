@@ -672,7 +672,7 @@ public partial class BlitzMainPanel : UserControl
 
             if (first is null || mainWindowViewModel.SelectedEditorViewModel == null) return;
 
-            if (!mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(first,
+            if (!mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(first,false,
                     out string errorMessage))
             {
                 mainWindowViewModel.ShowImportantMessage?.Invoke(errorMessage);
