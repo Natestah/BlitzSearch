@@ -11,7 +11,7 @@
     <ItemGroup>
       <PackageReference Include="Avalonia" Version="11.1.1" />
       <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.1" />
-      <PackageReference Include="Blitz.Goto" Version="1.0.6" />
+      <PackageReference Include="Blitz.Goto" Version="1.0.8" />
     </ItemGroup>
 
 </Project>

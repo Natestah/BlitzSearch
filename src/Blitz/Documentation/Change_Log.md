@@ -8,6 +8,8 @@ Please support Blitz Search by engaging social media's.
 
 Thank you!
 
+### Version 0.0.75
+* Minor Visual Studio update.
 ### Version 0.0.74
 * Fixed up Goto Editor Selection, important as I change parameters on the built-in's
 * Selection of Editors now persists
