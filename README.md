@@ -12,7 +12,7 @@ The official Deployment of Blitz Search is at https://natestah.com - where the e
 Mirrored from https://natestah.com
 
 ## Universal Search
-* A Stand alone Windows (x64) Search Tool that works together with Many Popular IDE's and Text Editors.
+* A Stand alone Windows (x64) Search Tool that works together with Many Popular IDEs and Text Editors.
 ## Dynamic Results, its not just about Speed
 * Search code for words on a line.
 * Stack query types ( words, and literal, or regex )
@@ -23,9 +23,9 @@ Mirrored from https://natestah.com
 * Git Ignore file filter reduces workload and Clutter in results.
 * Auto-Human text file discovery Takes burden off Filtering ( Don't worry about heavy binary files getting in the way )
 * Quality of Life focused.
-## Companion for Popular Editors and IDE's
+## Companion for Popular Editors and IDEs
 * Can open editors directly to the results, Acting as a stand-in for Control-Shift-F  and Control-Shift-H ( replace in files )
-* Plugins available for Visual Studio Code, Visual Studio, All JetBrains IDE's, Sublime Text, and Notepad++
+* Plugins available for Visual Studio Code, Visual Studio, All JetBrains IDEs, Sublime Text, and Notepad++
 * Plugins Communicate with Blitz Search to Find/Replace the word at the cursor, much the same as selecting the word and pressing Control-Shift-F/H
 
 # Samples:
