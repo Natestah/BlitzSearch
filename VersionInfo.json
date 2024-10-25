@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.76",
+    "Changes": "* Fix highlighting on light theme\r\n"
+  },
+  {
     "Revision": "0.0.75",
     "Changes": "* Minor Visual Studio update.\r\n"
   },

@@ -8,6 +8,8 @@ Please support Blitz Search by engaging social media's.
 
 Thank you!
 
+### Version 0.0.76
+* Fix highlighting on light theme
 ### Version 0.0.75
 * Minor Visual Studio update.
 ### Version 0.0.74

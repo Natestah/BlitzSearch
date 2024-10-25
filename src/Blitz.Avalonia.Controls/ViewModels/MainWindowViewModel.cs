@@ -191,6 +191,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             if (args.PropertyName == nameof(EditorViewModel.ThemeViewModel) && EditorViewModel.ThemeViewModel != null)
             {
+                Configuration.Instance.CurrentTheme = EditorViewModel.ThemeViewModel.Theme; 
                 Configuration.Instance.SelectedThemePremium = EditorViewModel.ThemeViewModel.Theme.ThemeName;
                 Configuration.Instance.SelectedThemeIsDark = EditorViewModel.ThemeViewModel.Theme.AvaloniaThemeVariant == "Dark";
             }
