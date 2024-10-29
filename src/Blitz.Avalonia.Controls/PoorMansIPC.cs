@@ -31,6 +31,21 @@ public class PoorMansIPC
         _actions[name] = action;
     }
 
+    public void ExecuteNamedAction(string name)
+    {
+        if (!_actions.TryGetValue(name, out var action))
+        {
+            return;
+        }
+        string filePath = Path.Combine(_fileSystemWatcher.Path, $"{name}.txt");
+        if (!File.Exists(filePath))
+        {
+            return;
+        }
+        string text = File.ReadAllText(filePath);
+        action.Invoke(text);
+    }
+
     private void DoActionWithFile(string fullFilename)
     {
         try
@@ -68,6 +83,7 @@ public class PoorMansIPC
     {
         DoActionWithFile(e.FullPath);
     }
+
 
     public void ExecuteWithin(DateTime utcNow, TimeSpan withinTime)
     {

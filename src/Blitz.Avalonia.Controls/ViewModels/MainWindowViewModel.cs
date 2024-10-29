@@ -471,11 +471,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public void UpdateTheme()
     {
-        RefreshBoxItemHighlights(); // syntax highlighting, sim^ply redo the search.
-
-        Console.WriteLine("hi"); //todo what?
-        //EditorViewModel.TextMateRegistryOptions = new RegistryOptions(_blitzThemeViewModel!.ThemeName);
-        
+        RefreshBoxItemHighlights();
     }
 
     public bool CacheCleaning

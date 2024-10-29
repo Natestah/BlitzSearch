@@ -8,6 +8,11 @@ Please support Blitz Search by engaging social media's.
 
 Thank you!
 
+### Version 0.0.77
+* VS Code can now Configure the theme in Blitz Search to match automatically. Look for "Blitz Configure Theme" in the command pallete.
+* VS Code now Informs Blitz search about Workspace changes, folders from these workspaces create and select the scope automatically on first discovery.
+* Adding a small label to show the selected items Title ( Default VS Code icon here was being too generic ). 
+
 ### Version 0.0.76
 * Fix highlighting on light theme
 ### Version 0.0.75

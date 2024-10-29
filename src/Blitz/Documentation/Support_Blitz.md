@@ -1,5 +1,5 @@
 
-# Support blitz Search
+## Support blitz Search
 
 There are a number of ways to support blitz search.  Listed in order of priority.
 
@@ -10,6 +10,7 @@ The more I can smooth over the end-user experience the better chance Blitz Searc
 * #### [Get on Discord and talk](https://discord.com/invite/UYPwQY9ngm) ! Let me know your pain points.  Even the most obvious things, your talking give those things an upvote.
 
 * Write bugs on the Github repo's
+* Contribute code!  Blitz Search is fully open sourced, https://github.com/Natestah/BlitzSearch
 
 ## Engage Social Media
 

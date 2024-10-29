@@ -12,6 +12,7 @@ namespace Blitz;
 [JsonSerializable(typeof(BlitzVersion))]
 [JsonSerializable(typeof(BlitzVersionList))]
 [JsonSerializable(typeof(GotoEditor))]
+[JsonSerializable(typeof(FolderWorkspace))]
 [JsonSerializable(typeof(BlitzTheme))]
 [JsonSerializable(typeof(BlitzColor))]
 [JsonSerializable(typeof(Avalonia.Rect))]

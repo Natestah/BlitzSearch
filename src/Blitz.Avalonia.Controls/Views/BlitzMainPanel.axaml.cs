@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -37,7 +38,61 @@ public partial class BlitzMainPanel : UserControl
         ReactiveCommand.Create(CopyCommandRun);
         PoorMansIPC.Instance.RegisterAction("SET_SEARCH", IPC_SETSEARCH);
         PoorMansIPC.Instance.RegisterAction("SET_REPLACE", IPC_SETREPLACE);
+        PoorMansIPC.Instance.RegisterAction("SET_THEME", IPC_SET_THEME);
+        PoorMansIPC.Instance.RegisterAction("SET_THEME_LIGHT", IPC_SET_THEME_LIGHT);
+        PoorMansIPC.Instance.RegisterAction("WORKSPACE_UPDATE", IPC_UPDATE_WORKSPACE_UPDATE);
+        PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
         PoorMansIPC.Instance.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+    }
+
+    private void IPC_UPDATE_WORKSPACE_UPDATE(string text)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is not MainWindowViewModel mainWindowViewModel)
+            {
+                return;
+            }
+            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.FolderWorkspace);
+            if (configFromFile is null)
+            {
+                return;
+            }
+
+            bool selectingNewlyCreatedNode = false;
+            var existing = mainWindowViewModel.ScopeViewModels.FirstOrDefault(v=>v.ScopeTitle == configFromFile.Name);
+            if (existing is null)
+            {
+                existing = new ScopeViewModel(mainWindowViewModel, new ScopeConfig());
+                existing.ScopeTitle = configFromFile.Name;
+                mainWindowViewModel.ScopeViewModels.Add(existing);
+                selectingNewlyCreatedNode = true;
+            }
+
+            existing.SearchPathViewModels.Clear();
+            foreach (var folder in configFromFile.Folders)
+            {
+                var path = new ConfigSearchPath { Folder = folder, TopLevelOnly = false };
+                existing.SearchPathViewModels.Add( new SearchPathViewModel(path,mainWindowViewModel,existing));
+            }
+
+            var gotoeditorConverter = new GotoEditorImageConverter();
+            var bitmap = gotoeditorConverter.Convert([configFromFile.ExeForIcon,configFromFile.ExeForIcon],typeof(Bitmap),null, CultureInfo.CurrentCulture) as Bitmap;
+        
+            var appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var specificFolder = Path.Combine(appFolder, "NathanSilvers", "IMAGES");
+            Directory.CreateDirectory(specificFolder);
+            string bitmapPath = Path.Combine(specificFolder, configFromFile.ExeForIcon);
+            bitmapPath = Path.ChangeExtension(bitmapPath, "png");
+            bitmap.Save(bitmapPath);
+            existing.ScopeImage = bitmapPath;
+
+            //only automatically select when it's freshly added.
+            if (selectingNewlyCreatedNode)
+            {
+                mainWindowViewModel.SelectedScope = existing;
+            }
+        });
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
@@ -239,6 +294,45 @@ public partial class BlitzMainPanel : UserControl
             MainSearchField.SelectAll();
             MainSearchField.Focus();
         });
+    }
+
+    private void SetTheme(string themePath, bool islight)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is not MainWindowViewModel mainWindowViewModel)
+            {
+                return;
+            }
+            var existing = mainWindowViewModel.EditorViewModel.AllThemeViewModels.FirstOrDefault(a=>a.Theme.ThemeName == themePath);
+            if (existing != null)
+            {
+                mainWindowViewModel.EditorViewModel.AllThemeViewModels.Remove(existing);
+            }
+            var baseTheme = islight? BlitzTheme.Light : BlitzTheme.Dark;
+            var theme = mainWindowViewModel.EditorViewModel.FromBase(baseTheme, themePath);
+            try
+            {
+                var themeViewModel = new ThemeViewModel(theme);
+                mainWindowViewModel.EditorViewModel.AllThemeViewModels.Add(themeViewModel);
+                mainWindowViewModel.EditorViewModel.ThemeViewModel = themeViewModel;
+            }
+            catch (Exception exception)
+            {
+                //Todo: Still need a proper message box for editor..
+                Console.WriteLine(exception);
+                return;
+            }
+
+        });
+    }
+    private void IPC_SET_THEME(string themeName)
+    {
+        SetTheme(themeName, false);
+    }
+    private void IPC_SET_THEME_LIGHT(string themeName)
+    {
+        SetTheme(themeName, true);
     }
 
     private void IPC_SETREPLACE(string search)

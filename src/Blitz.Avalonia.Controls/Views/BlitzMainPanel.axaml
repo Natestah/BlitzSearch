@@ -255,8 +255,9 @@
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0">
                 <Grid>
-                <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image>
-                <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" />
+                    <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image>
+                    <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" />
+                    <TextBlock Opacity="0.4" TextAlignment="Right" VerticalAlignment="Bottom" Margin="10" Text="{Binding WorkingScope.ScopeTitle}"></TextBlock>
                 </Grid>
             </Border>
 

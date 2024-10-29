@@ -90,6 +90,7 @@ public partial class App : Application
             RequestedThemeVariant = blitzEditorViewModel.ThemeViewModel is { Theme.AvaloniaThemeVariant: "Light" }
                 ? ThemeVariant.Light
                 : ThemeVariant.Dark;
+            _mainWindowViewModel?.UpdateTheme();
         }
     }
 
