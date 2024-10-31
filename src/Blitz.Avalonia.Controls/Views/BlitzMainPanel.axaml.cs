@@ -86,12 +86,7 @@ public partial class BlitzMainPanel : UserControl
             bitmapPath = Path.ChangeExtension(bitmapPath, "png");
             bitmap.Save(bitmapPath);
             existing.ScopeImage = bitmapPath;
-
-            //only automatically select when it's freshly added.
-            if (selectingNewlyCreatedNode)
-            {
-                mainWindowViewModel.SelectedScope = existing;
-            }
+            mainWindowViewModel.SelectedScope = existing;
         });
     }
 
@@ -102,7 +97,10 @@ public partial class BlitzMainPanel : UserControl
             BlitzSecondary.ShowHelp();
             mainWindowViewModel.SelectedFileChanged += (o, _) =>
             {
-                if (o != null) BlitzSecondary.ShowPreview(o);
+                if (o != null)
+                {
+                    BlitzSecondary.ShowPreview(o);
+                }
             };
             mainWindowViewModel.SelectedFontFamily =
                 mainWindowViewModel.FontFamilies.First(font =>

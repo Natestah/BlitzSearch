@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.78",
+    "Changes": "* Always switch to the project last loaded by VS Code.  Time will tell if we need an opt out of this behavior but it seem right.\r\n* Only do preview request to VS Code when the internal preview is closed.\r\n\r\n"
+  },
+  {
     "Revision": "0.0.77",
     "Changes": "* VS Code can now Configure the theme in Blitz Search to match automatically. Look for \u0022Blitz Configure Theme\u0022 in the command pallete.\r\n* VS Code now Informs Blitz search about Workspace changes, folders from these workspaces create and select the scope automatically on first discovery.\r\n* Adding a small label to show the selected items Title ( Default VS Code icon here was being too generic ). \r\n\r\n"
   },

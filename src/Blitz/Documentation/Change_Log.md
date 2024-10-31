@@ -8,6 +8,10 @@ Please support Blitz Search by engaging social media's.
 
 Thank you!
 
+### Version 0.0.78
+* Always switch to the project last loaded by VS Code.  Time will tell if we need an opt out of this behavior but it seem right.
+* Only do preview request to VS Code when the internal preview is closed.
+
 ### Version 0.0.77
 * VS Code can now Configure the theme in Blitz Search to match automatically. Look for "Blitz Configure Theme" in the command pallete.
 * VS Code now Informs Blitz search about Workspace changes, folders from these workspaces create and select the scope automatically on first discovery.

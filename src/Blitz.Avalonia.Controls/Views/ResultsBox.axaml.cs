@@ -27,7 +27,7 @@ public partial class ResultsBox : UserControl
         if (e.Key == Key.Enter)
         {
             var selected = mainWindowViewModel.SelectedItems.FirstOrDefault();
-            if (mainWindowViewModel.SelectedEditorViewModel != null && !mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(selected,true,
+            if (mainWindowViewModel.SelectedEditorViewModel != null && !mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(selected,false,
                     out string errorMessage))
             {
                 mainWindowViewModel.ShowImportantMessage?.Invoke(errorMessage);
@@ -43,16 +43,23 @@ public partial class ResultsBox : UserControl
             return;
         }
         
-        if (e.Source is Control control)
+        
+        
+        if (e.Source is Control control )
         {
-            if (!mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(e.AddedItems[0],true,
+            if (mainWindowViewModel.SplitPane == true) 
+            {
+                //update preview on internal text pane.
+                mainWindowViewModel.ShowPreview?.Invoke(e.AddedItems[0]!);
+            }
+            else if (!mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(e.AddedItems[0],true,
                     out string errorMessage))
             {
                 mainWindowViewModel.ShowImportantMessage?.Invoke(errorMessage);
             }
         }
         
-        mainWindowViewModel.ShowPreview?.Invoke(e.AddedItems[0]!);
+       
         
         if (mainWindowViewModel.SelectedEditorViewModel == null)
         {

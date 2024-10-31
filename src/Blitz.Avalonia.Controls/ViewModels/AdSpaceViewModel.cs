@@ -20,6 +20,8 @@ public class AdsCollection : ObservableCollection<AdSpaceViewModel>
     
     public AdsCollection(MainWindowViewModel mainWindowViewModel)
     {
+        Add(new(mainWindowViewModel, MaterialIconKind.Youtube, "VS Code updates 10-31",
+            "https://youtu.be/0RAI3CJRsyA"));
         Add(new(mainWindowViewModel, MaterialIconKind.Youtube, "Open Source Available Now",
             "https://youtube.com/shorts/OMPUElrPGJ4?si=J18LMHGDmKwUM2cP"));
         Add(new(mainWindowViewModel, MaterialIconKind.Youtube, "Setting Blitz Search Free",
