@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.79",
+    "Changes": "* Fixed Selected Editor not retaining between sessions\r\n* In Folder Scope selection, I noticed the large image overlaying some buttons and fixed.\r\n* Answered to Security Concern voice in Nuget for MessagePack ( upgraded it )\r\n* Removing Large BlitzLogo/Customized logo from the results pane, because that information is in the combo box dropdown\r\n* Fix Replace/Special chars https://github.com/Natestah/BlitzSearch/issues/83\r\n* Fix Preview Mode being an actual run-mode on non - preview mode supporting editors.\r\n* Adding New GotoEditor Selector right in this new pane.  This affects the Scope visibility and things. \r\n\r\n"
+  },
+  {
     "Revision": "0.0.78",
     "Changes": "* Always switch to the project last loaded by VS Code.  Time will tell if we need an opt out of this behavior but it seem right.\r\n* Only do preview request to VS Code when the internal preview is closed.\r\n\r\n"
   },
@@ -29,7 +33,7 @@
   },
   {
     "Revision": "0.0.70",
-    "Changes": "* Adding 30 day Trial for Premium Blitz\r\n* Ignore .TMP files ( for Visual Studio )\r\n"
+    "Changes": "* Ignore .TMP files ( for Visual Studio )\r\n"
   },
   {
     "Revision": "0.0.69",
@@ -53,7 +57,7 @@
   },
   {
     "Revision": "0.0.64",
-    "Changes": "* Fixed Links to IDE setup in readme area.\r\n* PREMIUM: Added selector box for Literal/Regular expression on Find/Replace\r\n* Some work to Highlighter to better support mismatch in lengths with replacements. \r\n"
+    "Changes": "* Fixed Links to IDE setup in readme area.\r\n* Added selector box for Literal/Regular expression on Find/Replace\r\n* Some work to Highlighter to better support mismatch in lengths with replacements. \r\n"
   },
   {
     "Revision": "0.0.63",
