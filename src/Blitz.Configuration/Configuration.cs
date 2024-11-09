@@ -108,7 +108,7 @@ public class Configuration
     public bool CaseSmart { get; set; } = false;
 
     [DefaultValue(true)]
-    public bool ShowStatusBar { get; set; } = false;
+    public bool ShowStatusBar { get; set; } = true;
 
 
     [DefaultValue("Words Query")]
@@ -119,6 +119,14 @@ public class Configuration
     public bool ShowTotalSearchTime { get; set; } = false;
     public string SelectedScope { get; set; }
 
+    [DefaultValue(false)]
+    public bool IsSolutionScopeSelected { get; set; } = false;
+    
+    [DefaultValue(false)]
+    public bool IsProjectScopeSelected { get; set; } = false;
+    
+    [DefaultValue(true)]
+    public bool IsFoldersScopeSelected { get; set; } = true;
 
     [JsonIgnore] public bool _cleanSlateShutdown = false;
 

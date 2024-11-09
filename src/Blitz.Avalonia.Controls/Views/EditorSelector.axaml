@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:controls="clr-namespace:Blitz.Avalonia.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.EditorSelector">
+    <UserControl.Resources>
+        <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"/>
+    </UserControl.Resources>
+    <DropDownButton DockPanel.Dock="Right">
+        <StackPanel DataContext="{Binding SelectedEditorViewModel}" Orientation="Horizontal">
+            
+            <StackPanel Orientation="Horizontal" Margin="2 2 6 2" >
+                <Image  Width="{Binding MainWindowViewModel.GeneralIconSize}"
+                        Height="{Binding MainWindowViewModel.GeneralIconSize}"
+                        >
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource GotoEditorImageConverter}">
+                            <Binding Path="Executable"/>
+                            <Binding Path="ExecutableIconHint"/>
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <TextBlock Margin="4 0" Text="{Binding Title}"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <Button.Flyout>
+            <Flyout>
+                <ListBox ItemsSource="{Binding GotoEditorCollection}"
+                         SelectedItem="{Binding SelectedEditorViewModel}">
+                    <ListBox.DataTemplates>
+                        <DataTemplate x:DataType="vm:GotoEditorViewModel">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32" >
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource GotoEditorImageConverter}">
+                                            <Binding Path="Executable"/>
+                                            <Binding Path="ExecutableIconHint"/>
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding Title}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.DataTemplates>
+                </ListBox>    
+            </Flyout>
+        </Button.Flyout>
+    </DropDownButton>
+</UserControl>

@@ -20,6 +20,7 @@ using Avalonia.Threading;
 using Blitz.Avalonia.Controls.ViewModels;
 using Blitz.AvaloniaEdit.Models;
 using Blitz.AvaloniaEdit.ViewModels;
+using Blitz.Goto;
 using Blitz.Interfacing;
 using Markdown.Avalonia;
 using Material.Icons;
@@ -41,9 +42,70 @@ public partial class BlitzMainPanel : UserControl
         PoorMansIPC.Instance.RegisterAction("SET_THEME", IPC_SET_THEME);
         PoorMansIPC.Instance.RegisterAction("SET_THEME_LIGHT", IPC_SET_THEME_LIGHT);
         PoorMansIPC.Instance.RegisterAction("WORKSPACE_UPDATE", IPC_UPDATE_WORKSPACE_UPDATE);
-        PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
+        PoorMansIPC.Instance.RegisterAction("VS_SOLUTION", IPC_UPDATE_VS_SOLUTION);
+//        PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
+
+        
         PoorMansIPC.Instance.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
+
+
+    private void IPC_UPDATE_VS_SOLUTION(string text)
+    {
+         Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is not MainWindowViewModel mainWindowViewModel)
+            {
+                return;
+            }
+            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.SolutionExport);
+            if (configFromFile is null)
+            {
+                return;
+            }
+
+            string? existingProject = mainWindowViewModel.SolutionViewModel?.SelectedProject.Name;
+            mainWindowViewModel.SolutionViewModel = new SolutionViewModel(configFromFile, mainWindowViewModel);
+            if (string.IsNullOrEmpty(existingProject))
+            {
+                mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault() ?? new ProjectViewModel(new Project(){Name = "Default"});
+            }
+            else
+            {
+                mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault(project=>project.Name==existingProject) ?? new ProjectViewModel(new Project(){Name = "Default"});
+            }
+            // bool selectingNewlyCreatedNode = false;
+            // var existing = mainWindowViewModel.ScopeViewModels.FirstOrDefault(v=>v.ScopeTitle == configFromFile.Name);
+            // if (existing is null)
+            // {
+            //     existing = new ScopeViewModel(mainWindowViewModel, new ScopeConfig());
+            //     existing.ScopeTitle = configFromFile.Name;
+            //     mainWindowViewModel.ScopeViewModels.Add(existing);
+            //     selectingNewlyCreatedNode = true;
+            // }
+            //
+            // existing.SearchPathViewModels.Clear();
+            // foreach (var folder in configFromFile.Folders)
+            // {
+            //     var path = new ConfigSearchPath { Folder = folder, TopLevelOnly = false };
+            //     existing.SearchPathViewModels.Add( new SearchPathViewModel(path,mainWindowViewModel,existing));
+            // }
+            //
+            // var gotoeditorConverter = new GotoEditorImageConverter();
+            // var bitmap = gotoeditorConverter.Convert([configFromFile.ExeForIcon,configFromFile.ExeForIcon],typeof(Bitmap),null, CultureInfo.CurrentCulture) as Bitmap;
+            //
+            // var appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            // var specificFolder = Path.Combine(appFolder, "NathanSilvers", "IMAGES");
+            // Directory.CreateDirectory(specificFolder);
+            // string bitmapPath = Path.Combine(specificFolder, configFromFile.ExeForIcon);
+            // bitmapPath = Path.ChangeExtension(bitmapPath, "png");
+            // bitmap.Save(bitmapPath);
+            // existing.ScopeImage = bitmapPath;
+            // mainWindowViewModel.SelectedScope = existing;
+        });
+        
+    }
+    
 
     private void IPC_UPDATE_WORKSPACE_UPDATE(string text)
     {
@@ -53,40 +115,34 @@ public partial class BlitzMainPanel : UserControl
             {
                 return;
             }
-            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.FolderWorkspace);
-            if (configFromFile is null)
+            
+            if (mainWindowViewModel.SelectedEditorViewModel is not { IsVsCode: true })
             {
                 return;
             }
 
-            bool selectingNewlyCreatedNode = false;
-            var existing = mainWindowViewModel.ScopeViewModels.FirstOrDefault(v=>v.ScopeTitle == configFromFile.Name);
-            if (existing is null)
+            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.FolderWorkspace);
+            if (string.IsNullOrEmpty(configFromFile?.Name))
             {
-                existing = new ScopeViewModel(mainWindowViewModel, new ScopeConfig());
-                existing.ScopeTitle = configFromFile.Name;
-                mainWindowViewModel.ScopeViewModels.Add(existing);
-                selectingNewlyCreatedNode = true;
+                mainWindowViewModel.SolutionViewModel = null;
+                return;
             }
-
-            existing.SearchPathViewModels.Clear();
-            foreach (var folder in configFromFile.Folders)
+            
+            var solutionExport = new SolutionExport(){Name = configFromFile.Name};
+            
+            //for Now we're going to pretend like VS Code Workspaces are Solutions/Project.
+            var fauxProject = new Project() { Name = configFromFile.Name, Files = configFromFile.Folders };
+            solutionExport.Projects = [fauxProject];
+            mainWindowViewModel.SolutionViewModel = new SolutionViewModel(solutionExport, mainWindowViewModel)
+                {
+                    ISVSCodeSolution = true
+                };
+            
+            if (mainWindowViewModel.IsProjectScopeSelected)
             {
-                var path = new ConfigSearchPath { Folder = folder, TopLevelOnly = false };
-                existing.SearchPathViewModels.Add( new SearchPathViewModel(path,mainWindowViewModel,existing));
+                mainWindowViewModel.IsProjectScopeSelected = false;
+                mainWindowViewModel.IsSolutionScopeSelected = true;
             }
-
-            var gotoeditorConverter = new GotoEditorImageConverter();
-            var bitmap = gotoeditorConverter.Convert([configFromFile.ExeForIcon,configFromFile.ExeForIcon],typeof(Bitmap),null, CultureInfo.CurrentCulture) as Bitmap;
-        
-            var appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var specificFolder = Path.Combine(appFolder, "NathanSilvers", "IMAGES");
-            Directory.CreateDirectory(specificFolder);
-            string bitmapPath = Path.Combine(specificFolder, configFromFile.ExeForIcon);
-            bitmapPath = Path.ChangeExtension(bitmapPath, "png");
-            bitmap.Save(bitmapPath);
-            existing.ScopeImage = bitmapPath;
-            mainWindowViewModel.SelectedScope = existing;
         });
     }
 
@@ -131,6 +187,7 @@ public partial class BlitzMainPanel : UserControl
             
             mv.SetSelectedThemeModels();
             BlitzSecondary.FileView.ReApplyTheme();
+            mv.UpdateScopeSelectionForEditor();
         }
     }
 

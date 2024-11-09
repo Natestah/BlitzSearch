@@ -34,8 +34,7 @@
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
     </UserControl.Styles>
-    <ScrollViewer  >
-        
+    <ScrollViewer>
         <DockPanel Margin="15" MinWidth="400" HorizontalAlignment="Left" DockPanel.Dock="Top"
                    LastChildFill="False">
         
@@ -151,17 +150,14 @@
             <TextBox Watermark="Optionally List Extensions in order of priority to search..( 'sln csproj cs json' ) "
                      Text="{Binding ExtensionText}"/>
         </StackPanel>
-        
         <TextBlock DockPanel.Dock="Top" Text="{Binding ExtensionValidation}" />
-        
         <CheckBox VerticalAlignment="Center" DockPanel.Dock="Top" IsChecked="{Binding UseGitIgnore}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
                 <TextBlock Classes="h2"> Use '.gitIgnore and .blitzIgnore' files </TextBlock>
                 <TextBlock Classes="d1"> These are great for skipping code gen files and things.. </TextBlock>
             </StackPanel>
         </CheckBox>
-        
-        <Panel>
+        <DockPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
                 <TextBlock DockPanel.Dock="Top" Text="Display Image" Classes="FolderHeader" />
             </StackPanel>
@@ -169,22 +165,19 @@
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <Button Content="Clear" Click="ClearScopeButton_OnClick"></Button>
                 <Button Click="OpenBitmap_OnClick">
-                    <material:MaterialIcon Height="16" Width="16"
-                                           Margin="2" HorizontalAlignment="Center"
-                                           Padding="4"
-                                           Kind="FileImagePlus"/>
+                <material:MaterialIcon Height="16" Width="16"
+                                       Margin="2" HorizontalAlignment="Center"
+                                       Padding="4"
+                                       Kind="FileImagePlus"/>
                 </Button>
             </StackPanel>
             <Border DockPanel.Dock="Top" HorizontalAlignment="Left" DragDrop.AllowDrop="True" x:Name="DropBox" CornerRadius="15" BorderThickness="2" PointerPressed="DropBox_OnPointerPressed">
                 <Panel Background="Transparent">
-                    <Image  Height="400" Width="400" IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
-                    <material:MaterialIcon Opacity="0.6" Background="Transparent" IsVisible="{Binding !ScopeImageVisible}" Kind="PlusBox" Height="400" Width="400" ></material:MaterialIcon>
+                    <Image  Height="200" Width="200" IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
+                    <material:MaterialIcon Opacity="0.6" Background="Transparent" IsVisible="{Binding !ScopeImageVisible}" Kind="PlusBox" Height="200" Width="200" ></material:MaterialIcon>
                 </Panel>
             </Border>
-        </Panel>
-        
-
+        </DockPanel>
     </DockPanel>
-  
     </ScrollViewer>
 </UserControl>

@@ -30,7 +30,7 @@ namespace Blitz.Avalonia.Controls.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-   
+
     public SearchQuery SearchQuery => _searchQuery;
 
     public AdsCollection AdsCollection { get; }
@@ -58,6 +58,7 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public double GeneralIconSizeAdjustedForComboBox => GeneralIconSize + 30;
 
     public double GeneralIconSize
     {
@@ -66,6 +67,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             Configuration.Instance.EditorConfig.GeneralIconSize = value;
             this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(GeneralIconSizeAdjustedForComboBox));
         }
     }
 
@@ -94,7 +96,7 @@ public class MainWindowViewModel : ViewModelBase
         GotoEditorViewModel? firstEditorThatExists = null;
         foreach (var gotoEditor in new GotoDefinitions().GetBuiltInEditors())
         {
-            var editorVm = new GotoEditorViewModel(gotoEditor)
+            var editorVm = new GotoEditorViewModel(this,gotoEditor)
             {
                 ReadOnly = true
             };
@@ -282,9 +284,35 @@ public class MainWindowViewModel : ViewModelBase
     public GotoEditorViewModel? SelectedEditorViewModel
     {
         get => _selectedEditorViewModel;
-        set => this.RaiseAndSetIfChanged(ref _selectedEditorViewModel!,  value);
+        set
+        {
+            if (value != null)
+            {
+                Configuration.Instance.GotoEditor = value.GotoEditor;
+            }
+            this.RaiseAndSetIfChanged(ref _selectedEditorViewModel!, value);
+            UpdateScopeSelectionForEditor();
+            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+        }
     }
     
+
+    public void UpdateScopeSelectionForEditor()
+    {
+        switch (_selectedEditorViewModel.GotoEditor.CodeExecute)
+        {
+            case "VsCodeGoto": // VSCode
+                PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
+                break;
+            case "VisualStudioPlugin": // Visual Studio
+                PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
+                break;
+            default:
+                SolutionViewModel = null;
+                break;
+        }
+    }
+
     public ObservableCollection<GotoEditorViewModel> GotoEditorCollection { get; } = [];
 
     public bool NewVersionAvailable
@@ -407,7 +435,7 @@ public class MainWindowViewModel : ViewModelBase
                 if (potentialQueries.Length > 0)
                 {
                     var chosenQuery = potentialQueries.Last();
-                    var trimStart = chosenQuery.TrimStart("@|".ToCharArray());
+                    var trimStart = chosenQuery.Trim("^@|".ToCharArray());
                     if (!string.IsNullOrEmpty(trimStart))
                     {
                         ReplaceBoxText = trimStart;
@@ -534,6 +562,11 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public void RaiseSolutionPropertyChanged()
+    {
+        this.RaisePropertyChanged(nameof(SolutionViewModel));
+    }
+
 
 
     private void ToggleFindInFilesFilterCommandRun()
@@ -551,7 +584,6 @@ public class MainWindowViewModel : ViewModelBase
     {
         LiteralSearchEnabled = !LiteralSearchEnabled;
     }
-
     
     private void ToggleRegexSearchCommandRun()
     {
@@ -584,8 +616,70 @@ public class MainWindowViewModel : ViewModelBase
     {
         SplitPane = false;
     }
+    
+    public bool IsProjectScopeSelected
+    {
+        get => Configuration.Instance.IsProjectScopeSelected;
+        set
+        {
+            Configuration.Instance.IsProjectScopeSelected = value;
+            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsProjectScopeSelected)));
+        }
+    }
 
-    public object SelectedScope 
+    public bool IsSolutionScopeSelected
+    {
+        get => Configuration.Instance.IsSolutionScopeSelected;
+        set
+        {
+            Configuration.Instance.IsSolutionScopeSelected = value;
+            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsSolutionScopeSelected)));
+            this.RaisePropertyChanged(nameof(IsFoldersScopeSelected));
+            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+        }
+    }
+
+    public bool ShouldFolderScopeShow
+    {
+        get
+        {
+            if (SolutionViewModel != null)
+            {
+                if (SolutionViewModel.ISVSCodeSolution)
+                {
+                    return !IsSolutionScopeSelected;
+                }
+                return IsFoldersScopeSelected;
+            }
+            return true;
+        }
+    }
+    
+    public bool IsFoldersScopeSelected
+    {
+        get => SolutionViewModel == null || Configuration.Instance.IsFoldersScopeSelected;
+        set
+        {
+            Configuration.Instance.IsFoldersScopeSelected = value;
+            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsFoldersScopeSelected)));
+            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+        }
+    }
+
+
+    private SolutionViewModel? _solutionViewModel;
+
+    public SolutionViewModel? SolutionViewModel
+    {
+        get => _solutionViewModel;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _solutionViewModel, value);
+            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+        }
+    }
+
+    public ScopeViewModel? SelectedScope 
     {
         get => _selectedScope ?? new ScopeViewModel(this, new ScopeConfig(){ ScopeTitle = "Hi"});
         set
@@ -783,9 +877,15 @@ public class MainWindowViewModel : ViewModelBase
             or nameof(EnableSettingsPane)
             or nameof(EnableTextPane)
             or nameof(EnableScopePane)
+            or nameof(ShouldFolderScopeShow)
             or nameof(EnableThemePane)
             or nameof(SplitPane)
             )
+        {
+            return;
+        }
+        
+        if(e.PropertyName != null && _suppressedFileSystemPropertiesForever.Contains(e.PropertyName))
         {
             return;
         }
@@ -807,9 +907,16 @@ public class MainWindowViewModel : ViewModelBase
         SearchingClient.PostSearchRequest(_searchQuery, true);
         SaveQueryTask.Run();
     }
-    
+
+    //Blitz Responds to All the properties
+    private HashSet<string> _suppressedFileSystemPropertiesForever = [];
     private void OnPropertyChangedFileSystemRestart(object? sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName != null)
+        {
+            _suppressedFileSystemPropertiesForever.Add(e.PropertyName);
+        }
+        this.RaisePropertyChanged(e.PropertyName);
         ScopeChangedRunRestart();
     }
 
@@ -861,11 +968,50 @@ public class MainWindowViewModel : ViewModelBase
                 _searchQuery.ReplaceRegexTextQuery = _searchQuery.ReplaceTextQuery;
                 break;
         }
+
+        _searchQuery.FilePaths = [];
         
-        
-        _searchQuery.FilePaths = filePaths;
+        if (IsFoldersScopeSelected || SolutionViewModel == null)
+        {
+            _searchQuery.SelectedProjectName = null;
+            _searchQuery.SolutionExports = null;
+            _searchQuery.FilePaths = filePaths;
+        }
+        else if (SolutionViewModel is { ISVSCodeSolution: true })
+        {
+            _searchQuery.SelectedProjectName = null;
+            _searchQuery.SolutionExports = null;
+            _searchQuery.FilePaths = filePaths;
+        }
+        else if (IsProjectScopeSelected)
+        {
+            var isolatedSolutionExport = new SolutionExport();
+            if (SolutionViewModel != null)
+            {
+                isolatedSolutionExport.Name = SolutionViewModel.Export.Name;
+                isolatedSolutionExport.Projects = [];
+                if (SolutionViewModel.Export.Projects != null && SolutionViewModel.SelectedProject != null)
+                {
+                    var match = SolutionViewModel.Export.Projects.FirstOrDefault(x =>
+                        x.Name == SolutionViewModel.SelectedProject.Name);
+                    if (match != null)
+                    {
+                        isolatedSolutionExport.Projects.Add(match);
+                    }
+                }
+                _searchQuery.SolutionExports = [isolatedSolutionExport];
+            }
+        }
+        else if (IsSolutionScopeSelected && SolutionViewModel != null)
+        {
+            _searchQuery.SolutionExports = [SolutionViewModel.Export];
+        }
+        else
+        {
+            _searchQuery.SolutionExports = null;
+            _searchQuery.FilePaths = filePaths;
+        }
     }
-    
 
     private const string LastLiveQuery = "LastLiveQuery.Blitz";
     private readonly object _saveLoadSync = new();
@@ -957,7 +1103,7 @@ public class MainWindowViewModel : ViewModelBase
     private bool _enableTextPane;
     private bool _enableScopePane;
     private bool _enableThemePane;
-    private object? _selectedScope;
+    private ScopeViewModel? _selectedScope;
     private ScopeViewModel _workingScope;
     private ReplaceModeViewModel _selectedReplaceMode;
 

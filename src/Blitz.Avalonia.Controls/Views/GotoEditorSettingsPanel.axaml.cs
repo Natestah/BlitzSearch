@@ -31,7 +31,7 @@ public partial class GotoEditorSettingsPanel : UserControl
     {
         if (DataContext is MainWindowViewModel mainWindowViewModel)
         {
-            var newEditor = new GotoEditorViewModel(new GotoEditor());
+            var newEditor = new GotoEditorViewModel(mainWindowViewModel,new GotoEditor());
             mainWindowViewModel.GotoEditorCollection.Add(newEditor);
             mainWindowViewModel.SelectedEditorViewModel = newEditor;;
             mainWindowViewModel.RebuildCustomEditorList();
@@ -50,7 +50,7 @@ public partial class GotoEditorSettingsPanel : UserControl
             return;
         }
         copy.Title = $"{copy.Title}_copy";
-        var newEditor = new GotoEditorViewModel(copy);
+        var newEditor = new GotoEditorViewModel(mainWindowViewModel,copy);
         mainWindowViewModel.GotoEditorCollection.Add(newEditor);
         mainWindowViewModel.RebuildCustomEditorList();
     }

@@ -1,12 +1,19 @@
 # Change Log
 
-# 🎉Blitz Search now  Free🎉
-
-Please support Blitz Search by engaging social media's.
+# 🎉 Blitz Search now %100 Free and Open Sourced 🎉
 
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) or [Reddit](https://www.reddit.com/r/BlitzSearch) and give feedback!
 
 Thank you!
+
+### Version 0.0.79
+* Fixed Selected Editor not retaining between sessions
+* In Folder Scope selection, I noticed the large image overlaying some buttons and fixed.
+* Answered to Security Concern voice in Nuget for MessagePack ( upgraded it )
+* Removing Large BlitzLogo/Customized logo from the results pane, because that information is in the combo box dropdown
+* Fix Replace/Special chars https://github.com/Natestah/BlitzSearch/issues/83
+* Fix Preview Mode being an actual run-mode on non - preview mode supporting editors.
+* Adding New GotoEditor Selector right in this new pane.  This affects the Scope visibility and things. 
 
 ### Version 0.0.78
 * Always switch to the project last loaded by VS Code.  Time will tell if we need an opt out of this behavior but it seem right.
@@ -33,7 +40,6 @@ Thank you!
 * Small banner has been added, subject to some more change. I ask that you click this and watch and engage. Help me get the word out..
 * I am checkpointing my work on the built-in text editor. There is a new file tab, with preview mode. More on this later. 
 ### Version 0.0.70
-* Adding 30 day Trial for Premium Blitz
 * Ignore .TMP files ( for Visual Studio )
 ### Version 0.0.69
 * Update to handle Replace This Command from VSCode
@@ -57,7 +63,7 @@ Thank you!
 * Fixed up some Drawing issues with Various Find/Replace operations.
 ### Version 0.0.64
 * Fixed Links to IDE setup in readme area.
-* PREMIUM: Added selector box for Literal/Regular expression on Find/Replace
+* Added selector box for Literal/Regular expression on Find/Replace
 * Some work to Highlighter to better support mismatch in lengths with replacements. 
 ### Version 0.0.63
 * Removed weird inline Left/Right Arrows in favor of "Space Bar" to toggle the text preview. This is clued by the right click menu and also paves way for folding results. 

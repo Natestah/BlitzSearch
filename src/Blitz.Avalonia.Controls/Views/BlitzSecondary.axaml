@@ -68,10 +68,6 @@
             <Setter Property="Padding" Value="0"/>
         </Style>
     </UserControl.Styles>
-    <UserControl.Resources>
-        <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
-
-    </UserControl.Resources>
     <Grid>
         <Panel IsVisible="{Binding EnableHelpPane, Mode=TwoWay}">
             <DockPanel>

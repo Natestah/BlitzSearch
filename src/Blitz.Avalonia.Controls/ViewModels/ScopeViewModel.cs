@@ -20,7 +20,7 @@ public class ScopeViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> AddSearchPath { get; }
     public ObservableCollection<SearchPathViewModel> SearchPathViewModels { get; set; } = [];
     
-    public bool IsFreemium { get; set;  }
+    public MainWindowViewModel MainWindowViewModel => _mainWindowViewModel;
     
     public ScopeViewModel(MainWindowViewModel mainWindowViewModel,  ScopeConfig scopeConfig)
     {
@@ -40,16 +40,15 @@ public class ScopeViewModel : ViewModelBase
                 // ignored
             }
         }
-
         ValidateExtensionText();
     }
-
+    
     public void RemoveMe()
     {
         Configuration.Instance.ScopeConfigs.Remove(_scopeConfig);
     }
 
-    public MainWindowViewModel MainWindowViewModel => _mainWindowViewModel;
+    public MainWindowViewModel MainWindowVM => _mainWindowViewModel;
 
     public string ScopeTitle
     {

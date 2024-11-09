@@ -15,8 +15,8 @@
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
         <PackageReleaseNotes>Limited Time Beta</PackageReleaseNotes>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>0.0.78</AssemblyVersion>
-        <FileVersion>0.0.78</FileVersion>
+        <AssemblyVersion>0.0.79</AssemblyVersion>
+        <FileVersion>0.0.79</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>
@@ -39,14 +39,14 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0-rc2" />
         <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.1" />
         <PackageReference Include="Blitz.Goto" Version="1.0.8" />
-        <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
-        <PackageReference Include="Blitz.Search" Version="1.0.0" />
+        <PackageReference Include="Blitz.Interfacing" Version="1.0.2" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.7" />
         <PackageReference Include="ReactiveUI" Version="20.1.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Blitz.Search\src\Blitz.Search\Blitz.Search.csproj" />
       <ProjectReference Include="..\Blitz.Avalonia.Controls\Blitz.Avalonia.Controls.csproj" />
     </ItemGroup>
 

@@ -8,10 +8,11 @@ using System.IO;
 using System.Linq;
 namespace Blitz.Avalonia.Controls.ViewModels;
 
-public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
+public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEditor gotoEditor) : ViewModelBase
 {
     public GotoEditor GotoEditor => gotoEditor;
 
+    public MainWindowViewModel MainWindowViewModel => mainWindowViewModel;
     public bool ReadOnly
     {
         get => _isReadonly;
@@ -24,7 +25,10 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
 
     public string Title
     {
-        get => gotoEditor.Title;
+        get
+        {
+            return gotoEditor.Title.Replace(" / Blitz Plugin", ""); //Todo: Fix hack after moving Blitz.Goto Into Main Solution
+        }
         set
         {
             gotoEditor.Title = value;
@@ -262,6 +266,12 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
     
     public bool RunTotoOnObjectGoto(object? controlDataContext, bool preview, out string errorMessage)
     {
+        if (preview && !IsVsCode && !IsVisualStudio)
+        {
+            //Todo: Fix this stuff after For Nuget all-in-one repo fix up.  It's hard to work like this.  
+            errorMessage = "Please specify Visual Studio Visual Studio 2019";
+            return true; // not en error so much.
+        }
         errorMessage = string.Empty;
         if (!GetFileGotoInfo(controlDataContext, out var fileToGoto, out var line ,out var column))
         {
@@ -274,4 +284,7 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
     {
         return new GotoAction(GotoEditor).CanDoAction();
     }
+    public bool IsVsCode => GotoEditor.CodeExecute == "VsCodeGoto"; // Todo, this is temporary until I get everything under one happy repo.
+    public bool IsVisualStudio => GotoEditor.CodeExecute == "VisualStudioPlugin"; // Todo, this is temporary until I get everything under one happy repo.
+
 }

@@ -30,7 +30,7 @@
         <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
         <PackageReference Include="Blitz.AvaloniaEdit" Version="1.0.1" />
         <PackageReference Include="Blitz.Goto" Version="1.0.8" />
-        <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
+        <PackageReference Include="Blitz.Interfacing" Version="1.0.2" />
         <PackageReference Include="ColorTextBlock.Avalonia" Version="11.0.3-a1" />
         <PackageReference Include="Humanizer" Version="3.0.0-beta.13" />
         <PackageReference Include="Humanizer.Core" Version="3.0.0-beta.13" />
