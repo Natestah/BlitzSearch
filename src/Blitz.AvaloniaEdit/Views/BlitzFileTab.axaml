@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:viewModels="clr-namespace:Blitz.AvaloniaEdit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:avEditConverters="using:Blitz.AvaloniaEdit.Converters"
+
+             x:DataType="viewModels:BlitzEditorViewModel"
+             x:Class="Blitz.AvaloniaEdit.Views.BlitzFileTab">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GeneralIcon">DarkGray</SolidColorBrush>
+        <avEditConverters:FileTypeIconConverter x:Key="FileTypeIconConverter"></avEditConverters:FileTypeIconConverter>
+        <avEditConverters:DocumentFontStyleConverter x:Key="DocumentFontStyleConverter"></avEditConverters:DocumentFontStyleConverter>
+        <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
+        <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
+    </UserControl.Resources>
+    <UserControl.Styles>
+        
+        <Style Selector="material|MaterialIcon.resultIcon">
+            <!-- Todo: Icon size, in seperate configuration for editor itself. -->
+            <!-- <Setter Property="Width" Value="{CompiledBinding DataType=viewModels:BlitzEditorViewModel, Path=MainWindowViewModel.GeneralIconSize}"/> -->
+            <!-- <Setter Property="Height" Value="{CompiledBinding DataType=viewModels:BlitzEditorViewModel, Path=MainWindowViewModel.GeneralIconSize}"/> -->
+            <Setter Property="Width" Value="22"></Setter>
+            <Setter Property="Height" Value="22"></Setter>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+    <ListBox DockPanel.Dock="Top"
+             HorizontalAlignment="Left"
+             SelectionMode="Multiple"
+             SelectedItems="{Binding SelectedFiles}"
+             ItemsSource="{Binding OpenedFiles}">
+        
+        <ListBox.Styles> 
+            <Style Selector="ListBoxItem"> <Setter Property="Padding" Value="0" /> </Style> 
+        </ListBox.Styles>
+        <ListBox.DataTemplates>
+            <DataTemplate x:DataType="{x:Type viewModels:BlitzDocument}">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" PointerReleased="Tab_PointerReleased" IsHitTestVisible="True" Background="Transparent" >
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <material:MaterialIcon Classes="resultIcon"
+                                               Background="{StaticResource ExtensionHighlight}"
+                                               Foreground="{StaticResource ExtensionForeground}"
+                                               Kind="{Binding FileNameOrTitle,Converter={StaticResource FileTypeIconConverter}}" />
+                        <!--  -->
+                        <TextBlock VerticalAlignment="Center" Text="{Binding TabTitle}" FontStyle="{Binding IsPreviewing, Converter={StaticResource DocumentFontStyleConverter}}" />
+                        <TextBlock Margin="4 0" VerticalAlignment="Center" IsVisible="{Binding IsDirty}" Text="*" />
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+        </ListBox.DataTemplates>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ListBox>
+</UserControl>

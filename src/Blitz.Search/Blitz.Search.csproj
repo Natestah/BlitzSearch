@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+        <IsTrimmable>true</IsTrimmable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Blitz.Search</Title>
+        <Description>File Searching Component for Blitz Search, Deals with Searching AND hosting code for transmitting results to the client, which is currentlly in-process.</Description>
+        <Copyright>2024 Nathan SIlvers</Copyright>
+        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Natestah/Blitz.Search</RepositoryUrl>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Version>1.0.1</Version>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Humanizer" Version="3.0.0-beta.54" />
+        <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Blitz.Files\Blitz.Files.csproj" />
+      <ProjectReference Include="..\Blitz.Interfacing\Blitz.Interfacing.csproj" />
+    </ItemGroup>
+
+</Project>

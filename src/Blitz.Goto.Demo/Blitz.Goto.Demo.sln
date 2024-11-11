@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Goto.Demo", "Blitz.Goto.Demo\Blitz.Goto.Demo.csproj", "{843F53F2-168C-4FB8-9F91-6FA6642472B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Goto", "..\Blitz.Goto\Blitz.Goto\Blitz.Goto.csproj", "{B1BCE6E5-E469-4F88-B53E-DFEFE425E809}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Goto.ConsoleAppDemo", "Blitz.Goto.ConsoleAppDemo\Blitz.Goto.ConsoleAppDemo.csproj", "{6CCB9196-2893-414E-9A33-7C5AAC0F742F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{843F53F2-168C-4FB8-9F91-6FA6642472B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{843F53F2-168C-4FB8-9F91-6FA6642472B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{843F53F2-168C-4FB8-9F91-6FA6642472B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{843F53F2-168C-4FB8-9F91-6FA6642472B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1BCE6E5-E469-4F88-B53E-DFEFE425E809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1BCE6E5-E469-4F88-B53E-DFEFE425E809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1BCE6E5-E469-4F88-B53E-DFEFE425E809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1BCE6E5-E469-4F88-B53E-DFEFE425E809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CCB9196-2893-414E-9A33-7C5AAC0F742F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CCB9196-2893-414E-9A33-7C5AAC0F742F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CCB9196-2893-414E-9A33-7C5AAC0F742F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CCB9196-2893-414E-9A33-7C5AAC0F742F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

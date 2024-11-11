@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="../Blitz.Goto.Avalonia/Blitz.Goto.Avalonia/MainWindow.axaml" value="../Blitz.Goto.Avalonia/Blitz.Goto.Avalonia/Blitz.Goto.Avalonia.csproj" />
+        <entry key="Blitz.Goto.Demo/App.axaml" value="Blitz.Goto.Demo/Blitz.Goto.Demo.csproj" />
+        <entry key="Blitz.Goto.Demo/Views/MainWindow.axaml" value="Blitz.Goto.Demo/Blitz.Goto.Demo.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

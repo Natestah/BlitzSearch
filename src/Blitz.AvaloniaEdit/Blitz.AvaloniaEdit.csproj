@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Blitz.AvaloniaEdit</Title>
+        <Description>Managing FileTabs and Document states for AvaloniaEdit</Description>
+        <Copyright>2024 Nathan Silvers</Copyright>
+        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Natestah/BlitzEdit</RepositoryUrl>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Version>1.0.1</Version>
+        <PackageReleaseNotes>Support for Themes from Files</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.6"/>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.6"/>
+        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
+        <PackageReference Include="Material.Icons" Version="2.1.10" />
+        <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Compile Update="Views\BlitzFileTab.axaml.cs">
+        <DependentUpon>BlitzFileTab.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\BlitzFileView.axaml.cs">
+        <DependentUpon>BlitzFileView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+        <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+
+    </ItemGroup>
+
+
+</Project>

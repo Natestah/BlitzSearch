@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Description>Minimal shared interfaces to house objects shared between Client/Server for Blitz Search.</Description>
+        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <IsTrimmable>true</IsTrimmable>
+        <PublishAot>true</PublishAot>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Blitz Interfacing</Title>
+        <Copyright>2024</Copyright>
+        <RepositoryUrl>https://github.com/natestah/blitz.interfacing</RepositoryUrl>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Version>1.0.2</Version>
+        <PackageReleaseNotes>Added a couple of slots for Solution Projects / flat files lists / Answered some Warnings</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MessagePack" Version="2.5.187" />
+      <PackageReference Include="MessagePack.MSBuild.Tasks" Version="2.5.187">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+       <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+</Project>

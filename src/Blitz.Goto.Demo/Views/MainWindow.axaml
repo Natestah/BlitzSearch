@@ -1,0 +1,137 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Blitz.Goto.Demo.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        mc:Ignorable="d" 
+        x:Class="Blitz.Goto.Demo.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Width="1920"
+        Height="900"
+        Title="Blitz.Goto.Demo">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <Window.Styles>
+        <Style Selector="TextBlock.p1">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+        </Style>
+        <Style Selector="TextBox.e1">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5 2 5 5" />
+        </Style>
+    </Window.Styles>
+    <DockPanel LastChildFill="True">
+        <ListBox Width="400"
+            SelectionMode="Single"
+                 ItemsSource="{Binding GotoEditorCollection}"
+            DoubleTapped="InputElement_OnDoubleTapped"
+            SelectionChanged="SelectingItemsControl_OnSelectionChanged"
+        >
+            <ListBox.DataTemplates>
+                <DataTemplate x:DataType="{x:Type vm:GotoEditorViewModel}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Title}"/>
+                        <TextBlock TextWrapping="Wrap" Width="360" Opacity="0.5" Margin="2" Text="{Binding Notes}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.DataTemplates>
+        </ListBox>
+        <Grid ColumnDefinitions="*, 4, *">
+
+        <DockPanel Grid.Column="0">
+            <TextBlock DockPanel.Dock="Top">  Select Editor to Goto:</TextBlock>
+
+            <StackPanel DockPanel.Dock="Top" DataContext="{Binding ManualEditorEntry }" Orientation="Vertical">
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="Title" />
+                    <TextBox Classes="e1" Text="{Binding Title}" />
+                </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="Executable" />
+                    <TextBox Classes="e1" Text="{Binding Executable}" />
+                </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="WorkingDirectory" />
+                    <TextBox Classes="e1" Text="{Binding ExecutableWorkingDirectory}" />
+                </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="CodeExecute" />
+                    <TextBox Classes="e1" Text="{Binding CodeExecute }" />
+                </DockPanel>
+                
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="RunningProcessName" />
+                    <TextBox Classes="e1" Text="{Binding RunningProcessName }" />
+                </DockPanel>
+                
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="CommandLine" />
+                    <DockPanel>
+                        <ItemsControl DockPanel.Dock="Top"
+                            HorizontalAlignment="Left"
+                            Margin="15 5 5 15"
+                            ItemsSource="{Binding SuggestedNames}"
+                        >
+                            <ItemsControl.DataTemplates>
+                                <DataTemplate x:DataType="{x:Type vm:ArgumentAliasViewModel}">
+                                    <Button Click="Button_OnClick" CornerRadius="10">
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Stretch">
+                                            <TextBlock Text="{Binding Alias}"/>
+                                            <TextBlock Opacity="0.5" Margin="10 2 2 2"  Text="{Binding Description}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.DataTemplates>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel  />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <!-- <ItemsControl.Styles> -->
+                            <!--     <Style Selector="ListBoxItem"> -->
+                            <!--         <Setter Property="Padding" Value="2"></Setter> -->
+                            <!--         <Setter Property="Background" Value="Transparent"></Setter> -->
+                            <!--         <Setter Property="VerticalAlignment" Value="Center"></Setter> -->
+                            <!--     </Style> -->
+                            <!-- </ItemsControl.Styles> -->
+
+                        </ItemsControl> 
+                        <TextBox Classes="e1" Name="CommandLineBox" Text="{Binding CommandLine}" />
+                    </DockPanel>
+                </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="Notes" />
+                    <TextBox Classes="e1" Text="{Binding Notes}" />
+                </DockPanel>
+            </StackPanel>
+            <Button Click="TestGotoButton">
+                Test Goto
+            </Button>
+            <Button Click="TestGotoPreviewButton">
+                Test Goto Preview
+            </Button>
+        </DockPanel>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" IsTabStop="False" />
+        <avaloniaEdit:TextEditor
+            Grid.Column="2"
+            IsTabStop="False"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            CornerRadius="0"
+            x:Name="AvaloniaTextEditor"
+            ShowLineNumbers="True"
+            FontFamily="Cascadia Code,Consolas,Menlo,Monospace" />
+
+    </Grid>
+
+    </DockPanel>
+</Window>

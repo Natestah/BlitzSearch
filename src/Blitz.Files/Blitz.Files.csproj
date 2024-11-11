@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+        <IsTrimmable>true</IsTrimmable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>Blitz.Files</Title>
+        <Description>Cached File Enumeration for Blitz Search.  Maintains dictionary of file paths and updates them with watcher changes</Description>
+        <Copyright>2024 Natestah LLC</Copyright>
+        <PackageReleaseNotes>upgrade to Blitz.Interfacing 1.0.2</PackageReleaseNotes>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/natestah/blitz.files</RepositoryUrl>
+        <Version>1.0.2</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Ignore" Version="0.1.50" />
+      <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
+
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Blitz.Interfacing\Blitz.Interfacing.csproj" />
+    </ItemGroup>
+
+</Project>

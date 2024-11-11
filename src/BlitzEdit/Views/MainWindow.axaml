@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:BlitzEdit.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Blitz.AvaloniaEdit.Views;assembly=Blitz.AvaloniaEdit"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="BlitzEdit.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="BlitzEdit"
+        >
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <DockPanel LastChildFill="True" DataContext="{Binding EditorViewModel}" Background="{Binding ThemeViewModel.BackGroundBrush}">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Command=""/>
+                <Separator/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="Copy"/>
+                <MenuItem Header="Paste"/>
+            </MenuItem>
+            <MenuItem Header="ThemeTest">
+                <MenuItem Header="Import" Click="ThemeImportMenuItem_OnClick"/>
+                <MenuItem Header="Monokai" CommandParameter="Monokai" Click="ThemeBuiltInMenuItem_OnClick"/>
+                <MenuItem Header="DarkPlus" CommandParameter="DarkPlus"  Click="ThemeBuiltInMenuItem_OnClick"/>
+                <MenuItem Header="SolarizedLight" CommandParameter="SolarizedLight"  Click="ThemeBuiltInMenuItem_OnClick"/>
+            </MenuItem>
+        </Menu>
+        
+        <views:BlitzFileTab DockPanel.Dock="Top"/>
+        <views:BlitzFileView x:Name="FileView" DockPanel.Dock="Top" />
+        
+    </DockPanel>
+
+
+</Window>

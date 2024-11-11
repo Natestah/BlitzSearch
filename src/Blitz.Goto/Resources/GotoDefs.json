@@ -1,0 +1,140 @@
+[
+  {
+    "Title": "Notepad\u002B\u002B",
+    "Executable": "notepad\u002B\u002B.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\Notepad\u002B\u002B",
+    "Arguments": "\u0022%filename%\u0022 -p%position%",
+    "Notes": "Plugin Available"
+  },
+  {
+    "Title": "SublimeText",
+    "Executable": "subl.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\Sublime Text",
+    "Arguments": "\u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "BlitzEdit",
+    "CodeExecute": "BlitzEdit",
+    "Executable": "BlitzEdit.exe",
+    "ExecutableWorkingDirectory": "-",
+    "Arguments": "\u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Built in Blitz Text Editor"
+  },
+  {
+    "Title": "VS Code",
+    "Executable": "code.cmd",
+    "CodeExecute": "VsCodeGoto",
+    "RunningProcessName": "code.exe",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "Notepad",
+    "Executable": "notepad.exe",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "\u0022%filename%\u0022",
+    "Notes": "Only supports opening file"
+  },
+  {
+    "Title": "UltraEdit 64",
+    "Executable": "uedit64.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\IDM Computer Solutions\\UltraEdit",
+    "Arguments": "\u0022%filename%\u0022/%line%/1",
+    "Notes": "Only supports line number."
+  },
+  {
+    "Title": "Rider",
+    "Executable": "Rider64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "Intellij IDEA",
+    "Executable": "idea64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "PHP Storm",
+    "Executable": "phpstorm64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "PyCharm",
+    "Executable": "pycharm64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "GoLand",
+    "Executable": "goland64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "RustRover",
+    "Executable": "rustrover64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "CLion",
+    "Executable": "clion64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "Webstorm",
+    "Executable": "webstorm64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "RubyMine",
+    "Executable": "rubymine64.exe",
+    "ExecutableWorkingDirectory": "%JETBRAINS_WORKING_DIR%",
+    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "Fleet",
+    "Executable": "fleet.exe",
+    "ExecutableWorkingDirectory": "%localappdata%\\Programs\\fleet",
+    "Arguments": "--goto=\u0022%filename%\u0022:%line%:%column%",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "Visual Studio / Blitz Plugin",
+    "CodeExecute": "VisualStudioPlugin",
+    "Executable": "-",
+    "ExecutableIconHint": "devenv.exe",
+    "ExecutableWorkingDirectory": "-",
+    "Arguments": "-",
+    "Notes": "Blitz Search plugin required for goto."
+  },
+  {
+    "Title": "Brackets",
+    "Executable": "brackets.exe",
+    "ExecutableWorkingDirectory": "%programfiles(x86)%\\brackets",
+    "Arguments": "\u0022%filename%\u0022",
+    "Notes": "Only Opens file"
+  },
+  {
+    "Title": "Phoenix",
+    "Executable": "Phoenix Code.exe",
+    "ExecutableWorkingDirectory": "%appdata%\\..\\local\\Phoenix Code\\",
+    "Arguments": "\u0022%filename%\u0022",
+    "Notes": "Only Opens file"
+  }
+]

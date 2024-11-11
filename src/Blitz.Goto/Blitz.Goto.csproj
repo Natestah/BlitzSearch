@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Title>Blitz.Goto</Title>
+        <Description>Helper class for suggesting and managing Goto command line parameters for varius popular text editors (VSCode,SublimeText,..)</Description>
+        <PackageReleaseNotes>Fix bug in Visual Studio Goto Execution</PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PublishAot>true</PublishAot>
+        <Copyright>2024 - Nathan Silvers</Copyright>
+        <PackageProjectUrl>https://www.natestah.com</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Natestah/Blitz.GotoEditor/</RepositoryUrl>
+        <TargetFramework>net8.0</TargetFramework>
+        <Version>1.0.8</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="GotoDefs.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include=".\README.md" Pack="true" PackagePath="\"/>
+      <EmbeddedResource Include="Resources\GotoDefs.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Rider_icon.png" />
+    </ItemGroup>
+
+</Project>
