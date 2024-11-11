@@ -462,6 +462,20 @@ public class MainWindowViewModel : ViewModelBase
             ];
         }
     }
+    
+    private const int MaxHistoryEntries = 15;
+
+    public void UpdateHistoryForColllection(ObservableCollection<string> history, string text)
+    {
+        var first = history.FirstOrDefault();
+        if (text == first || string.IsNullOrEmpty(text)) return;
+        history.Remove(text);
+        history.Insert(0, text);
+        while (history.Count > MaxHistoryEntries)
+        {
+            history.RemoveAt(history.Count - 1);
+        }
+    }
 
     public ReplaceModeViewModel SelectedReplaceMode
     {

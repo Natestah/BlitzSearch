@@ -20,7 +20,7 @@
     <DockPanel LastChildFill="True" DataContext="{Binding EditorViewModel}" Background="{Binding ThemeViewModel.BackGroundBrush}">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open..." Command=""/>
+                <MenuItem Header="_Open..."/>
                 <Separator/>
                 <MenuItem Header="_Exit"/>
             </MenuItem>

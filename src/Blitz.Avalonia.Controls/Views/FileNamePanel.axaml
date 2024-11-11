@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.FileNamePanel">
+    <DockPanel DockPanel.Dock="Top" IsVisible="{Binding FileNameSearchEnabled}">
+        <DropDownButton>
+            <DropDownButton.Content>
+                <material:MaterialIcon Classes="m1" Kind="FolderFile" />
+            </DropDownButton.Content>
+            <Button.Flyout>
+                <Flyout>
+                    <ListBox ItemsSource="{Binding SearchFileHistory}"
+                             SelectionChanged="SelectingFileItemsControl_OnSelectionChanged">
+                    </ListBox>
+                </Flyout>
+            </Button.Flyout>
+        </DropDownButton>
+        <Button DockPanel.Dock="Right" Padding="1" Click="FileName_Close_Button_OnClick">
+            <material:MaterialIcon Classes="m1" Kind="Close" />
+        </Button>
+
+        <TextBox DockPanel.Dock="Left" MinWidth="600" Watermark="Filter Filenames with words.."
+                 AttachedToVisualTree="FileNameFilterBox_OnAttachedToVisualTree"
+                 LostFocus="FileNameSearchField_OnLostFocus"
+                 Text="{Binding FileNameSearchTextBox}">
+        </TextBox>
+    </DockPanel>
+
+</UserControl>

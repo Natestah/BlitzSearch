@@ -10,17 +10,7 @@
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.ResultsBox">
     <UserControl.Resources>
-        <avEditConverters:FileTypeIconConverter x:Key="FileTypeIconConverter"></avEditConverters:FileTypeIconConverter>
-        <SolidColorBrush x:Key="TextBackDrop">DimGray</SolidColorBrush>
-        <SolidColorBrush x:Key="GreenCheck">LawnGreen</SolidColorBrush>
-        <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
-        <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
-        <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
-        <MultiBinding  x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}">
-            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="Executable"/>
-            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="ExecutableIconHint"/>
-        </MultiBinding>
-        <SolidColorBrush x:Key="GeneralIcon">DarkGray</SolidColorBrush>
+       
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="material|MaterialIcon.resultIcon">

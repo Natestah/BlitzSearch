@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.InlineScopePanel">
+    <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+        <StackPanel DataContext="{Binding SolutionViewModel}"
+                    IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}"
+                    Orientation="Horizontal">
+            <RadioButton GroupName="SLNPROJ"
+                         IsChecked="{Binding  MainWindowVM.IsSolutionScopeSelected}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding DisplayTitle}"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton IsVisible="{Binding !ISVSCodeSolution}" GroupName="SLNPROJ"
+                         IsChecked="{Binding MainWindowVM.IsProjectScopeSelected}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Project"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+            <RadioButton GroupName="SLNPROJ" IsChecked="{Binding MainWindowVM.IsFoldersScopeSelected}"
+                         DockPanel.Dock="Left">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Folders"></TextBlock>
+                </StackPanel>
+            </RadioButton>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <views:ScopeSelector Margin="10 0 0 0" IsVisible="{Binding ShouldFolderScopeShow}"
+                                 HorizontalAlignment="Stretch" DockPanel.Dock="Left" />
+            <ComboBox IsVisible="{Binding IsProjectScopeSelected}" Margin="10 0 0 0"
+                      VerticalAlignment="Center" VerticalContentAlignment="Center"
+                      HorizontalAlignment="Stretch" DockPanel.Dock="Left"
+                      ItemsSource="{Binding SolutionViewModel.Projects, FallbackValue=''}"
+                      SelectedItem="{Binding SolutionViewModel.SelectedProject, FallbackValue=''}">
+                <ComboBox.DataTemplates>
+                    <DataTemplate x:DataType="vm:ProjectViewModel">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Classes="labelText" Text="{Binding DisplayTitle}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.DataTemplates>
+            </ComboBox>
+        </StackPanel>
+        <views:EditorSelector DockPanel.Dock="Right" />
+    </DockPanel>
+</UserControl>

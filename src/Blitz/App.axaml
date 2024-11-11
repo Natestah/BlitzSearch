@@ -14,5 +14,6 @@
         <FluentTheme />
         <materialIcons:MaterialIconStyles />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://Blitz.Avalonia.Controls/Styles/BlitzStyles.axaml" />
     </Application.Styles>
 </Application>

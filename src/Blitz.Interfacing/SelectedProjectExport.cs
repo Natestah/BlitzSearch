@@ -4,6 +4,9 @@ using MessagePack;
 [MessagePackObject]
 public class SelectedProjectExport
 {
+    [Key(nameof(ActiveFileInProject))] 
+    public string? ActiveFileInProject { get; set; }
+    
     [Key(nameof(Name))] 
     public string? Name { get; set; }
     

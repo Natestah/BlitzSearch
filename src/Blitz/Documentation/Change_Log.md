@@ -9,6 +9,7 @@ Thank you!
 ### Version 0.0.80
 * Answering many Todo notes
 * Early on I added Maximum per-line matches of only 10, this is now removed from the backend matching.
+* Fixed error when leaving a broken Regex, then closing regex search.
 * 
 ### Version 0.0.79
 * Fixed Selected Editor not retaining between sessions

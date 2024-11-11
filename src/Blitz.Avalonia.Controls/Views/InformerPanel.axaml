@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.InformerPanel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"></StyleInclude>
+    </UserControl.Styles>
+    <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+        <Border Classes="opt1" IsVisible="{Binding IsSmartCaseSensitive}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="opt1Text" Text="Smart Case">
+                    <ToolTip.Tip>
+                        <ToolTip
+                            Content="Smart Case Activated with an Uppercase Character, Close this convert to lower case (insensitive)">
+                        </ToolTip>
+                    </ToolTip.Tip>
+                </TextBlock>
+                <Button Classes="opt1Button" Click="SmartCaseOffButton">
+                    <TextBlock Classes="opt1Text" Text="X" />
+                </Button>
+            </StackPanel>
+        </Border>
+        <Border Classes="opt1" IsVisible="{Binding IsSmartReplaceCaseSensitive}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="opt1Text" Text="Replace Smart Case">
+                    <ToolTip.Tip>
+                        <ToolTip
+                            Content="Smart Case Activated with an Uppercase Character, Close this convert to lower case (insensitive)">
+                        </ToolTip>
+                    </ToolTip.Tip>
+                </TextBlock>
+                <Button Classes="opt1Button" Click="SmartCaseReplaceOffButton">
+                    <TextBlock Classes="opt1Text" Text="X" />
+                </Button>
+            </StackPanel>
+        </Border>
+        <Border Classes="opt1" IsVisible="{Binding IsSmartLiteralCaseSensitive}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="opt1Text" Text="Literal Smart Case">
+                    <ToolTip.Tip>
+                        <ToolTip
+                            Content="Smart Case Activated with an Uppercase Character, Close this convert to lower case (insensitive)">
+                        </ToolTip>
+                    </ToolTip.Tip>
+                </TextBlock>
+                <Button Classes="opt1Button" Click="SmartCaseLiteralOffButton">
+                    <TextBlock Classes="opt1Text" Text="X" />
+                </Button>
+            </StackPanel>
+        </Border>
+    </DockPanel>
+</UserControl>

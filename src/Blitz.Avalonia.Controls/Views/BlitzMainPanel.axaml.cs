@@ -43,8 +43,7 @@ public partial class BlitzMainPanel : UserControl
         PoorMansIPC.Instance.RegisterAction("SET_THEME_LIGHT", IPC_SET_THEME_LIGHT);
         PoorMansIPC.Instance.RegisterAction("WORKSPACE_UPDATE", IPC_UPDATE_WORKSPACE_UPDATE);
         PoorMansIPC.Instance.RegisterAction("VS_SOLUTION", IPC_UPDATE_VS_SOLUTION);
-//        PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
-
+        PoorMansIPC.Instance.RegisterAction("VS_PROJECT", IPC_UPDATE_VS_PROJECT);
         
         PoorMansIPC.Instance.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
@@ -74,38 +73,38 @@ public partial class BlitzMainPanel : UserControl
             {
                 mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault(project=>project.Name==existingProject) ?? new ProjectViewModel(new Project(){Name = "Default"});
             }
-            // bool selectingNewlyCreatedNode = false;
-            // var existing = mainWindowViewModel.ScopeViewModels.FirstOrDefault(v=>v.ScopeTitle == configFromFile.Name);
-            // if (existing is null)
+        });
+    }
+    
+    private void IPC_UPDATE_VS_PROJECT(string text)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is not MainWindowViewModel mainWindowViewModel)
+            {
+                return;
+            }
+            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.Project);
+            if (configFromFile is null)
+            {
+                return;
+            }
+            //Todo: Fix this
+            
+            // string? existingProject = mainWindowViewModel.SolutionViewModel?.SelectedProject.Name;
+            // mainWindowViewModel.SolutionViewModel = new SolutionViewModel(configFromFile, mainWindowViewModel);
+            // if (string.IsNullOrEmpty(existingProject))
             // {
-            //     existing = new ScopeViewModel(mainWindowViewModel, new ScopeConfig());
-            //     existing.ScopeTitle = configFromFile.Name;
-            //     mainWindowViewModel.ScopeViewModels.Add(existing);
-            //     selectingNewlyCreatedNode = true;
+            //     mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault() ?? new ProjectViewModel(new Project(){Name = "Default"});
             // }
-            //
-            // existing.SearchPathViewModels.Clear();
-            // foreach (var folder in configFromFile.Folders)
+            // else
             // {
-            //     var path = new ConfigSearchPath { Folder = folder, TopLevelOnly = false };
-            //     existing.SearchPathViewModels.Add( new SearchPathViewModel(path,mainWindowViewModel,existing));
+            //     mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault(project=>project.Name==existingProject) ?? new ProjectViewModel(new Project(){Name = "Default"});
             // }
-            //
-            // var gotoeditorConverter = new GotoEditorImageConverter();
-            // var bitmap = gotoeditorConverter.Convert([configFromFile.ExeForIcon,configFromFile.ExeForIcon],typeof(Bitmap),null, CultureInfo.CurrentCulture) as Bitmap;
-            //
-            // var appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            // var specificFolder = Path.Combine(appFolder, "NathanSilvers", "IMAGES");
-            // Directory.CreateDirectory(specificFolder);
-            // string bitmapPath = Path.Combine(specificFolder, configFromFile.ExeForIcon);
-            // bitmapPath = Path.ChangeExtension(bitmapPath, "png");
-            // bitmap.Save(bitmapPath);
-            // existing.ScopeImage = bitmapPath;
-            // mainWindowViewModel.SelectedScope = existing;
         });
         
     }
-    
+
 
     private void IPC_UPDATE_WORKSPACE_UPDATE(string text)
     {
@@ -174,8 +173,8 @@ public partial class BlitzMainPanel : UserControl
                 BlitzSecondary.GotoPreviewLineRun);
 
             BlitzSecondary.AvaloniaTextEditor.ContextRequested += ContextMenuOnContextRequested;
-            
 
+            SearchPanel.KeyDownAction = MainSearchField_OnKeyDown;
         }
 
         base.OnLoaded(e);
@@ -313,8 +312,8 @@ public partial class BlitzMainPanel : UserControl
 
         var searchText = BlitzSecondary.UpdateSearchThisPreview();
         mainWindowViewModel.SearchTextBox = searchText;
-        MainSearchField.SelectAll();
-        MainSearchField.Focus();
+        SearchPanel.MainSearchField.SelectAll();
+        SearchPanel.MainSearchField.Focus();
     }
 
     private void IPC_SETSEARCH(string search)
@@ -347,8 +346,8 @@ public partial class BlitzMainPanel : UserControl
 
             mainWindowViewModel.SearchTextBox = search;
             mainWindowViewModel.ReplaceInFileEnabled = false;
-            MainSearchField.SelectAll();
-            MainSearchField.Focus();
+            SearchPanel.MainSearchField.SelectAll();
+            SearchPanel.MainSearchField.Focus();
         });
     }
 
@@ -423,8 +422,8 @@ public partial class BlitzMainPanel : UserControl
                 .Where(a => a.IconKind == MaterialIconKind.FileWordBox).FirstOrDefault();
             mainWindowViewModel.ReplaceBoxText = search;
             mainWindowViewModel.ReplaceWithBoxText = search.Replace("@", "").Replace("^", "");
-            ReplaceTextWithBox.SelectAll();
-            ReplaceTextWithBox.Focus();
+            ReplacePanel.ReplaceTextWithBox.SelectAll();
+            ReplacePanel.ReplaceTextWithBox.Focus();
         });
     }
 
@@ -453,276 +452,10 @@ public partial class BlitzMainPanel : UserControl
         BlitzSecondary.ShowPreview(message);
     }
 
-    public Action? InstallerClick;
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void NewVersionButton_OnClick(object? o, RoutedEventArgs e)
-    {
-        InstallerClick?.Invoke();
-    }
-
-    // ReSharper disable once UnusedParameter.Local
-    private void FileNameFilterBox_OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
-    {
-        if (sender is not TextBox textBox)
-        {
-            throw new Exception("NoTextBox");
-        }
-
-        if (DataContext is MainWindowViewModel mainWindowViewModel)
-            mainWindowViewModel.PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == nameof(MainWindowViewModel.FileNameSearchEnabled) &&
-                    mainWindowViewModel.FileNameSearchEnabled)
-                {
-                    textBox.Focus();
-                    textBox.SelectAll();
-                }
-            };
-    }
-
-    // ReSharper disable once UnusedParameter.Local
-    private void LiterSearchTextBox_OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
-    {
-        if (sender is not TextBox textBox)
-        {
-            throw new Exception("NoTextBox");
-        }
-
-        if (DataContext is MainWindowViewModel mainWindowViewModel)
-            mainWindowViewModel.PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == nameof(MainWindowViewModel.LiteralSearchEnabled) &&
-                    mainWindowViewModel.LiteralSearchEnabled)
-                {
-                    textBox.Focus();
-                    textBox.SelectAll();
-                }
-            };
-    }
-
-    // ReSharper disable once UnusedParameter.Local
-    private void RegexSearchTextBox_OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
-    {
-        if (sender is not TextBox textBox)
-        {
-            throw new Exception("NoTextBox");
-        }
-
-        if (DataContext is MainWindowViewModel mainWindowViewModel)
-            mainWindowViewModel.PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == nameof(MainWindowViewModel.RegexSearchEnabled) &&
-                    mainWindowViewModel.RegexSearchEnabled)
-                {
-                    textBox.Focus();
-                    textBox.SelectAll();
-                }
-            };
-    }
-
-    // ReSharper disable once UnusedParameter.Local
-    private void ReplaceWithBox_OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
-    {
-        if (sender is not TextBox textBox)
-        {
-            throw new Exception("NoTextBox");
-        }
-
-        if (DataContext is MainWindowViewModel mainWindowViewModel)
-            mainWindowViewModel.PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == nameof(MainWindowViewModel.ReplaceInFileEnabled) &&
-                    mainWindowViewModel.ReplaceInFileEnabled)
-                {
-                    textBox.Focus();
-                    textBox.SelectAll();
-                }
-            };
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-        {
-            return;
-        }
-
-        mainWindowViewModel.FileNameSearchEnabled = false;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void LiteralSearchCloseButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-        {
-            return;
-        }
-
-        mainWindowViewModel.LiteralSearchEnabled = false;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void RegexSearchCloseButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-        {
-            return;
-        }
-
-        mainWindowViewModel.RegexSearchEnabled = false;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void CloseReplaceBox_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-        {
-            return;
-        }
-
-        mainWindowViewModel.ReplaceInFileEnabled = false;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void SmartCaseOffButton(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        mainWindowViewModel.SearchTextBox =
-            mainWindowViewModel.SearchTextBox.ToLower();
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void SmartCaseLiteralOffButton(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        mainWindowViewModel.LiteralSearchTextBox = mainWindowViewModel.LiteralSearchTextBox.ToLower();
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void SmartCaseRegexOffButton(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        mainWindowViewModel.RegexSearchTextBox = mainWindowViewModel.RegexSearchTextBox.ToLower();
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void SmartCaseReplaceOffButton(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        mainWindowViewModel.ReplaceBoxText = mainWindowViewModel.ReplaceBoxText.ToLower();
-    }
-
-    private const int MaxHistoryEntries = 15;
-
-    private void MainSearchField_OnLostFocus(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        UpdateHistoryForColllection(mainWindowViewModel.SearchTextHistory, mainWindowViewModel.SearchTextBox);
-    }
-
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel || e.AddedItems.Count == 0 ||
-            e.AddedItems[0] is not string itemName) return;
-        mainWindowViewModel.SearchTextBox = itemName;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void FileNameSearchField_OnLostFocus(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        UpdateHistoryForColllection(mainWindowViewModel.SearchFileHistory, mainWindowViewModel.FileNameSearchTextBox);
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void LiteralSearchField_OnLostFocus(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        UpdateHistoryForColllection(mainWindowViewModel.LiteralSearchTextHistory,
-            mainWindowViewModel.LiteralSearchTextBox);
-    }
-
-    private void UpdateHistoryForColllection(ObservableCollection<string> history, string text)
-    {
-        var first = history.FirstOrDefault();
-        if (text == first || string.IsNullOrEmpty(text)) return;
-        history.Remove(text);
-        history.Insert(0, text);
-        while (history.Count > MaxHistoryEntries)
-        {
-            history.RemoveAt(history.Count - 1);
-        }
-    }
-
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void RegexSearchField_OnLostFocus(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        UpdateHistoryForColllection(mainWindowViewModel.RegexSearchTextHistory, mainWindowViewModel.RegexSearchTextBox);
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void ReplaceField_OnLostFocus(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
-        UpdateHistoryForColllection(mainWindowViewModel.SearchFileHistory, mainWindowViewModel.ReplaceBoxText);
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void LiteralSearchControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel || e.AddedItems.Count == 0 ||
-            e.AddedItems[0] is not string itemName) return;
-        mainWindowViewModel.LiteralSearchTextBox = itemName;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void RegexSearchControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel || e.AddedItems.Count == 0 ||
-            e.AddedItems[0] is not string itemName) return;
-        mainWindowViewModel.RegexSearchTextBox = itemName;
-    }
-
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void SelectingFileItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel || e.AddedItems.Count == 0 ||
-            e.AddedItems[0] is not string itemName) return;
-        mainWindowViewModel.FileNameSearchTextBox = itemName;
-    }
-
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void ReplaceHistoryItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel || e.AddedItems.Count == 0 ||
-            e.AddedItems[0] is not string itemName) return;
-        mainWindowViewModel.ReplaceBoxText = itemName;
-    }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local")]
-    private void ReplaceWithHistoryItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel || e.AddedItems.Count == 0 ||
-            e.AddedItems[0] is not string itemName) return;
-        mainWindowViewModel.ReplaceWithBoxText = itemName;
-    }
-
-    public void UpdateSearchThisPreview()
-    {
-        BlitzSecondary.UpdateSearchThisPreview();
-    }
-
+    
     public void SetRestartAction(Action doUpdateAndRestart)
     {
-        this.InstallerClick = doUpdateAndRestart;
+        this.StatusBar.InstallerClick = doUpdateAndRestart;
     }
 
     private async void AcceptChangesClick(object? sender, RoutedEventArgs e)
@@ -776,20 +509,6 @@ public partial class BlitzMainPanel : UserControl
         mainWindowViewModel.SelectedItems.Add(replaceTextViewModel);
     }
 
-    private void SeePremiumPage(object? sender, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-        {
-            return;
-        }
-
-        var processStartInfo = new ProcessStartInfo("https://natestah.com/premium")
-        {
-            UseShellExecute = true
-        };
-        Process.Start(processStartInfo); // todo landing page for new version.
-    }
-
     private void MainSearchField_OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -829,18 +548,7 @@ public partial class BlitzMainPanel : UserControl
             }
         }
     }
+    
+    
 
-    private void AdButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if ((sender as Button)?.DataContext is not AdSpaceViewModel adSpaceViewModel)
-        {
-            return;
-        }
-
-        var processStartInfo = new ProcessStartInfo(adSpaceViewModel.LinkUrl)
-        {
-            UseShellExecute = true
-        };
-        Process.Start(processStartInfo);
-    }
 }

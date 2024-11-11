@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Blitz.Avalonia.Controls.Views.BlitzStatusBar"
+             x:DataType="vm:MainWindowViewModel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"></StyleInclude>
+    </UserControl.Styles>
+    <UserControl.Resources>
+        <system:Double x:Key="StatusItemWidth">86</system:Double>
+    </UserControl.Resources>
+    <DockPanel DockPanel.Dock="Bottom" Background="{Binding EditorViewModel.StatusBarBackground}"
+               IsVisible="{Binding ShowStatusBar}">
+
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="v" Opacity="0.5" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Opacity="0.5" Margin="2 0" VerticalAlignment="Center" Text="{Binding Version}"></TextBlock>
+                    <Button IsVisible="{Binding NewVersionAvailable}" Padding="1" IsTabStop="False"
+                            BorderBrush="Chartreuse" BorderThickness="2" Background="Black" Foreground="White"
+                            IsHitTestVisible="True" Margin="5 0" Click="NewVersionButton_OnClick">
+                        <ToolTip.Tip>
+                            <TextBlock Text="{Binding WhatsInUpdate}"></TextBlock>
+                        </ToolTip.Tip>
+                        <StackPanel Orientation="Horizontal">
+                            <avalonia:MaterialIcon Classes="updateAvailable" Kind="Download" />
+                            <TextBlock Foreground="White">
+                                <Run Foreground="White">Update (</Run>
+                                <Run Foreground="White" Text="{Binding NewVersionString}" />
+                                <Run Foreground="White">) Available! </Run>
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Background="{Binding EditorViewModel.StatusBarBackground}" DockPanel.Dock="Right">
+                    <StackPanel DataContext="{Binding AdsCollection.FirstAdSpace}" Orientation="Horizontal"
+                                Margin="4 0">
+                        <avalonia:MaterialIcon Foreground="Red" Classes="adspaceResults" Kind="{Binding Icon}" />
+                        <Button Classes="hyperlink" Click="AdButton_OnClick" Content="{Binding TextInformation}"
+                                FontSize="14" />
+                    </StackPanel>
+                </StackPanel>
+
+                <DockPanel DockPanel.Dock="Bottom">
+                    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False"
+                               DataContext="{Binding Path=FileSearchStatus}">
+
+                        <StackPanel IsVisible="{Binding FilesDiscoveredCount}" VerticalAlignment="Center"
+                                    Orientation="Vertical" MinWidth="{StaticResource StatusItemWidth}">
+                            <StackPanel Orientation="Horizontal">
+                                <avalonia:MaterialIcon Classes="statusMaterial" Kind="FileMultiple"
+                                                       Foreground="{Binding StatusBarForeground}" />
+                                <TextBlock Classes="statusBar" Text="{Binding FilesDiscoveredHumanized}"
+                                           Foreground="{Binding StatusBarForeground}">
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel IsVisible="{Binding}" VerticalAlignment="Center" Orientation="Horizontal"
+                                    MinWidth="{StaticResource StatusItemWidth}">
+                            <avalonia:MaterialIcon Classes="statusMaterial" Kind="Files"
+                                                   Foreground="{Binding StatusBarForeground}" />
+                            <TextBlock Classes="statusBar" Text="{Binding TotalFileSizeHumanized}"
+                                       Foreground="{Binding StatusBarForeground}">
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal"
+                                    MinWidth="{StaticResource StatusItemWidth}">
+                            <avalonia:MaterialIcon Classes="statusMaterial" Kind="Timer"
+                                                   Foreground="{Binding StatusBarForeground}" />
+
+                            <TextBlock Classes="statusBar" Text="{Binding LastResultTimeHumanized}"
+                                       Foreground="{Binding StatusBarForeground}" />
+
+                            <TextBlock Classes="statusBarSlash" Text="/"
+                                       IsVisible="{Binding TimerDisplayTotalSearchTIme}" />
+                            <avalonia:MaterialIcon Classes="statusMaterial" Kind="Timer"
+                                                   Foreground="{Binding StatusBarForeground}"
+                                                   IsVisible="{Binding TimerDisplayTotalSearchTIme}" />
+                            <TextBlock Classes="statusBar" Text="{Binding RunningTimeHumanized}"
+                                       Foreground="{Binding StatusBarForeground}"
+                                       IsVisible="{Binding TimerDisplayTotalSearchTIme}">
+                            </TextBlock>
+                        </StackPanel>
+                    </DockPanel>
+
+
+                </DockPanel>
+            </DockPanel>
+</UserControl>

@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.ReplacePanel">
+    <DockPanel DockPanel.Dock="Top" IsVisible="{Binding ReplaceInFileEnabled}">
+                        <Button DockPanel.Dock="Right" Padding="1" Click="CloseReplaceBox_OnClick">
+                            <material:MaterialIcon Classes="m1" Kind="Close" />
+                        </Button>
+
+                        <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <material:MaterialIcon Classes="m1" Kind="FileReplace" />
+                                <TextBlock Classes="labelText" Text="Replace in Files" />
+                                <material:MaterialIcon Classes="m1" Kind="ArrowRight" />
+                                <ComboBox ItemsSource="{Binding ReplaceModeViewModels}"
+                                          SelectedItem="{Binding SelectedReplaceMode}">
+                                    <ComboBox.DataTemplates>
+                                        <DataTemplate x:DataType="vm:ReplaceModeViewModel">
+                                            <StackPanel Orientation="Horizontal">
+                                                <material:MaterialIcon Classes="results" Kind="{Binding IconKind}" />
+                                                <TextBlock Classes="labelText" Text="{Binding Title}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.DataTemplates>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <ToggleButton DockPanel.Dock="Left"
+                                              Padding="2"
+                                              Margin="4 0"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding IsReplaceCaseSensitive}">
+                                    <ToolTip.Tip>
+                                        Toggle Case Sensitivity
+                                    </ToolTip.Tip>
+                                    <ToggleButton.Content>
+                                        <material:MaterialIcon Classes="m1" Kind="FormatLowercase" />
+                                    </ToggleButton.Content>
+                                </ToggleButton>
+                                <DropDownButton IsTabStop="False">
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <ListBox ItemsSource="{Binding ReplaceHistory}"
+                                                     SelectionChanged="ReplaceHistoryItemsControl_OnSelectionChanged">
+                                            </ListBox>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </DropDownButton>
+                                <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="Replace.."
+                                         LostFocus="ReplaceField_OnLostFocus"
+                                         Text="{Binding ReplaceBoxText}">
+                                </TextBox>
+                                <material:MaterialIcon Classes="m1" Kind="ArrowRight" />
+                                <DropDownButton IsTabStop="False">
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <ListBox ItemsSource="{Binding ReplaceWithHistory}"
+                                                     SelectionChanged="ReplaceWithHistoryItemsControl_OnSelectionChanged">
+                                            </ListBox>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </DropDownButton>
+                                <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="With.."
+                                         x:Name="ReplaceTextWithBox"
+                                         AttachedToVisualTree="ReplaceWithBox_OnAttachedToVisualTree"
+                                         LostFocus="ReplaceWithField_OnLostFocus"
+                                         Text="{Binding ReplaceWithBoxText}">
+                                </TextBox>
+
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+</UserControl>

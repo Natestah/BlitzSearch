@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:material="using:Material.Icons.Avalonia"
-             xmlns:controls="using:Blitz.Avalonia.Controls"
              xmlns:md="https://github.com/whistyun/Markdown.Avalonia.Tight"
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:views="clr-namespace:Blitz.AvaloniaEdit.Views;assembly=Blitz.AvaloniaEdit"

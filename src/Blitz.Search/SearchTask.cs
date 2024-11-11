@@ -1230,7 +1230,7 @@ public class SearchTask
             }
         }
 
-        if (!string.IsNullOrEmpty(SearchQuery.RegexSearchQuery))
+        if (SearchQuery.RegexSearchEnabled && !string.IsNullOrEmpty(SearchQuery.RegexSearchQuery))
         {
             try
             {

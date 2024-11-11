@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.SearchPanel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"/>
+    </UserControl.Styles>
+
+    <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                        <DropDownButton>
+                            <DropDownButton.Content>
+                                <material:MaterialIcon Classes="m1" Kind="Search" />
+                            </DropDownButton.Content>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <ListBox ItemsSource="{Binding SearchTextHistory}"
+                                             SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                                    </ListBox>
+                                </Flyout>
+                            </Button.Flyout>
+                        </DropDownButton>
+                        <DropDownButton DockPanel.Dock="Right" HorizontalAlignment="Stretch">
+                            <DropDownButton.Content>
+                                <material:MaterialIcon Classes="m1" Kind="FilterPlus" />
+                            </DropDownButton.Content>
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuItem Icon="{material:MaterialIconExt TextBoxSearch}"
+                                              Command="{Binding ToggleLiteralSearchCommand}"
+                                              IsChecked="{Binding  LiteralSearchEnabled}"
+                                              ToggleType="CheckBox"
+                                              Header="{Binding LiteralSearchHeader}">
+                                        <MenuItem.InputGesture>
+                                            <KeyGesture>Control+Shift+L</KeyGesture>
+                                        </MenuItem.InputGesture>
+                                    </MenuItem>
+                                    <MenuItem Icon="{material:MaterialIconExt Regex}"
+                                              Command="{Binding ToggleRegexSearchCommand}"
+                                              IsChecked="{Binding  RegexSearchEnabled}"
+                                              ToggleType="CheckBox"
+                                              Header="{Binding RegexMatchHeader}">
+                                        <MenuItem.InputGesture>
+                                            <KeyGesture>Control+Shift+R</KeyGesture>
+                                        </MenuItem.InputGesture>
+                                    </MenuItem>
+                                    <MenuItem Icon="{material:MaterialIconExt FolderFile}"
+                                              Command="{Binding ToggleFileNameFilterCommand}"
+                                              IsChecked="{Binding FileNameSearchEnabled}"
+                                              ToggleType="CheckBox"
+                                              Header="Find-in-files">
+                                        <MenuItem.InputGesture>
+                                            <KeyGesture>Control+Shift+F</KeyGesture>
+                                        </MenuItem.InputGesture>
+                                    </MenuItem>
+                                    <MenuItem Icon="{material:MaterialIconExt FindReplace}"
+                                              Command="{Binding ToggleFindInFilesFilterCommand}"
+                                              IsChecked="{Binding ReplaceInFileEnabled}"
+                                              ToggleType="CheckBox"
+                                              Header="Replace">
+                                        <MenuItem.InputGesture>
+                                            <KeyGesture>Control+Shift+H</KeyGesture>
+                                        </MenuItem.InputGesture>
+                                    </MenuItem>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </DropDownButton>
+                        <TextBox LostFocus="MainSearchField_OnLostFocus"
+                                 x:Name="MainSearchField"
+                                 VerticalAlignment="Center"
+                                 DockPanel.Dock="Left"
+                                 MinWidth="100"
+                                 KeyDown="MainSearchField_OnKeyDown"
+                                 Watermark="{Binding SearchTextWaterMark}"
+                                 Margin="4"
+                                 Text="{Binding SearchTextBox}">
+                        </TextBox>
+                    </DockPanel>
+
+</UserControl>

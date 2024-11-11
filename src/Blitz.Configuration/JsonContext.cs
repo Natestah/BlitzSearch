@@ -15,6 +15,7 @@ namespace Blitz;
 [JsonSerializable(typeof(FolderWorkspace))]
 [JsonSerializable(typeof(Interfacing.SolutionExport))]
 [JsonSerializable(typeof(Interfacing.Project))]
+[JsonSerializable(typeof(Interfacing.SelectedProjectExport))]
 [JsonSerializable(typeof(BlitzTheme))]
 [JsonSerializable(typeof(BlitzColor))]
 [JsonSerializable(typeof(Avalonia.Rect))]

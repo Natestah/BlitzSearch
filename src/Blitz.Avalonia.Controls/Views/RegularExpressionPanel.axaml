@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:material="using:Material.Icons.Avalonia"
+             xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
+             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             x:Name="MainPanel"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.RegularExpressionPanel">
+    <DockPanel DockPanel.Dock="Top" IsVisible="{Binding RegexSearchEnabled}">
+                        <DropDownButton>
+                            <DropDownButton.Content>
+                                <material:MaterialIcon Classes="m1" Kind="Regex" />
+                            </DropDownButton.Content>
+                            <Button.Flyout>
+                                <Flyout>
+                                    <ListBox ItemsSource="{Binding RegexSearchTextHistory}"
+                                             SelectionChanged="RegexSearchControl_OnSelectionChanged">
+                                    </ListBox>
+                                </Flyout>
+                            </Button.Flyout>
+                        </DropDownButton>
+                        <Button DockPanel.Dock="Right" Padding="1" Click="RegexSearchCloseButton_OnClick">
+                            <material:MaterialIcon Classes="m1" Kind="Close" />
+                        </Button>
+                        <ToggleButton DockPanel.Dock="Left"
+                                      Padding="2"
+                                      Margin="4 0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsRegexCaseSensitive}">
+                            <ToolTip.Tip>
+                                Toggle Case Sensitivity
+                            </ToolTip.Tip>
+                            <ToggleButton.Content>
+                                <material:MaterialIcon Classes="m1" Kind="FormatLowercase" />
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                        <TextBox DockPanel.Dock="Left" MinWidth="600" Watermark="Enter a Regular Expression"
+                                 AttachedToVisualTree="RegexSearchTextBox_OnAttachedToVisualTree"
+                                 LostFocus="RegexSearchField_OnLostFocus"
+                                 Text="{Binding RegexSearchTextBox}">
+                        </TextBox>
+                    </DockPanel>
+</UserControl>
