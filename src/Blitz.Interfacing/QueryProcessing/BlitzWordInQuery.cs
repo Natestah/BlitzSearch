@@ -39,11 +39,6 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
     }
 
     
-    //Todo: I did this as an optimization to search terms like "a" yielding inhuman and clunky results..
-    //Should look to add it as optional parameter.
-    private const int MaxMatches = 10;   
-    
-    
     public bool LineMatches(string lineText, bool _, out List<BlitzMatch> matches)
     {
         if (WholeWord)
@@ -69,11 +64,6 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
             hitAny = true;
             matches.Add(new BlitzMatch{MatchIndex = indexOf, MatchLength = SearchWord.Length});
             startingIndex = indexOf + SearchWord.Length;
-
-            if (matches.Count > MaxMatches)
-            {
-                break;
-            }
         }
 
         return IsExclude ? !hitAny : hitAny;

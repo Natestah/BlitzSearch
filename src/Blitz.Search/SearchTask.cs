@@ -101,8 +101,8 @@ public class SearchTask
         }
     }
 
-    //Todo: Results Cap Option? 
-    const int resultsCap = 10000;
+    
+    const int resultsCap = 10000; //Make optional -> https://github.com/Natestah/BlitzSearch/issues/86
 
 
     private bool DebugMatchesFile(BlitzAndQuery? debugFileQuery, string file)
@@ -526,7 +526,7 @@ public class SearchTask
             }
             catch (ArgumentException)
             {
-                //todo: what now? 
+                // it's ok, we report exceptions in the pre-search section. 
                 regex = null;
             }
         }
@@ -1035,7 +1035,6 @@ public class SearchTask
                 return ContentResult.Skipped;
             }
 
-            //todo:
             if (SearchQuery.EnableRobotFileFilterDefer)
             {
                 DeferredRobotFiles[file] = searchFileInformation;
@@ -1043,7 +1042,6 @@ public class SearchTask
                 return ContentResult.Deferred;
             }
 
-            //todo
             if (SearchQuery.EnableRobotFileFilterSkipAndReport)
             {
                 DeferredRobotFiles[file] = searchFileInformation;

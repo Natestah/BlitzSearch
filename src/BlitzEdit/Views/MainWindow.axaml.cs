@@ -122,7 +122,7 @@ public partial class MainWindow : Window
             }
             catch (Exception exception)
             {
-                //Todo: Still need a proper message box for editor..
+                //Need a box for the message,  https://github.com/Natestah/BlitzSearch/issues/85
                 Console.WriteLine(exception);
                 return;
             }

@@ -6,6 +6,10 @@
 
 Thank you!
 
+### Version 0.0.80
+* Answering many Todo notes
+* Early on I added Maximum per-line matches of only 10, this is now removed from the backend matching.
+* 
 ### Version 0.0.79
 * Fixed Selected Editor not retaining between sessions
 * In Folder Scope selection, I noticed the large image overlaying some buttons and fixed.

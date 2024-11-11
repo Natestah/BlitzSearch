@@ -51,6 +51,10 @@ public class PoorMansIPC
         try
         {
             string action = Path.GetFileNameWithoutExtension(fullFilename).ToUpper();
+            if (!File.Exists(fullFilename))
+            {
+                return;
+            }
             if (_actions.TryGetValue(action, out var function))
             {
                 function.Invoke(File.ReadAllText(fullFilename));
@@ -59,7 +63,7 @@ public class PoorMansIPC
         }
         catch (Exception e)
         {
-            //Todo Message box.
+            //Need a box for the message,  https://github.com/Natestah/BlitzSearch/issues/85
             Console.WriteLine(e);
         }
     }

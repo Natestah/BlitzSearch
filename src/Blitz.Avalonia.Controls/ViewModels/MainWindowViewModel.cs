@@ -301,10 +301,10 @@ public class MainWindowViewModel : ViewModelBase
     {
         switch (_selectedEditorViewModel.GotoEditor.CodeExecute)
         {
-            case "VsCodeGoto": // VSCode
+            case CodeExecuteNames.VSCode:
                 PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
                 break;
-            case "VisualStudioPlugin": // Visual Studio
+            case CodeExecuteNames.VisualStudio:
                 PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
                 break;
             default:
@@ -438,7 +438,7 @@ public class MainWindowViewModel : ViewModelBase
                     var trimStart = chosenQuery.Trim("^@|".ToCharArray());
                     if (!string.IsNullOrEmpty(trimStart))
                     {
-                        ReplaceBoxText = trimStart;
+                        ReplaceBoxText = chosenQuery;
                         ReplaceWithBoxText = trimStart;
                     }
                 }
@@ -551,7 +551,7 @@ public class MainWindowViewModel : ViewModelBase
     private void ToggleTextEditRun()
     {
         SplitPane = !SplitPane;
-        JiggleSelection();
+        ShowPaneIfSelection();
     }
 
 
@@ -598,17 +598,16 @@ public class MainWindowViewModel : ViewModelBase
         SplitPane = true;
         if (!wasShown)
         {
-            JiggleSelection();
+            ShowPaneIfSelection();
         }
     }
 
-    public void JiggleSelection()
+    public void ShowPaneIfSelection()
     {
-        //Todo: fix funky AvalonEdit interactions so I can operate a little better here. 
-        // Stimulate a selection changed event in order to show the things.
-        var selected = SelectedItems.ToList();
-        SelectedItems.Clear();
-        SelectedItems.AddRange(selected);
+        if (SelectedItems.FirstOrDefault() is { } firstOrDefault)
+        {
+            UpdatePreviewForItem(firstOrDefault);
+        }
     }
     
     
@@ -1530,6 +1529,20 @@ public class MainWindowViewModel : ViewModelBase
             {
                 Configuration.Instance.CustomEditors.Add(gotoEditorViewModel.GotoEditor);
             }
+        }
+    }
+
+    public void UpdatePreviewForItem(object eAddedItem)
+    {
+        if (SplitPane == true) 
+        {
+            //update preview on internal text pane.
+            ShowPreview?.Invoke(eAddedItem);
+        }
+        else if (SelectedEditorViewModel != null && !SelectedEditorViewModel.RunTotoOnObjectGoto(eAddedItem,true,
+                     out string errorMessage))
+        {
+            ShowImportantMessage?.Invoke(errorMessage);
         }
     }
 }

@@ -17,8 +17,6 @@ public class SearchFileInformation
         NeedsUpdateDueToFileWatcherOverFLow,
         Read,
         Skipped
-        //Todo:
-        //LiveAndDirty // reserved for editor plugin to be able to inform about Dirty files
     }
     
     /// <summary>

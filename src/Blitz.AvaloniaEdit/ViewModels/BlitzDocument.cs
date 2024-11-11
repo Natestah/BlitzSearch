@@ -15,9 +15,8 @@ public class BlitzDocument : ViewModelBase
     private bool _isPreviewing;
     public string FileNameOrTitle { get; set; }
 
-    //Todo: work out how we want to Scroll restore, it should prefer the actual scroll position
-    //Scroll Position would get cleared when "Goto line/column" is initiated.
-    //Also, this would go to a Model.. where we could disk store the states.
+    //ScrollViewer, when sleeping files needs to go back to the last scroll position. -> https://github.com/Natestah/BlitzSearch/issues/89
+
     public int AlignViewLine
     {
         get => _alignViewLine;

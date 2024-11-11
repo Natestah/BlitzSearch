@@ -26,18 +26,17 @@ public class BlitzEditorViewModel : ViewModelBase
 
     public Action<TextMate.Installation>? BackGroundForeGroundUpdate;
 
-    private ThemeViewModel _blitzThemeViewModel;
+    private ThemeViewModel? _blitzThemeViewModel;
     public ThemeViewModel? ThemeViewModel
     {
         get => _blitzThemeViewModel;
         set
         {
             if (value == null)
+            {
                 return;
+            }
 
-            //Todo: Configuration
-            //Configuration.Instance.CurrentTheme = value.Theme;
-            
             if (!AllThemeViewModels.Contains(value))
             {
                 AllThemeViewModels.Add(value);

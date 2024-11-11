@@ -68,7 +68,6 @@ public class FileNameResultViewModel : ViewModelBase, IResultCopiable
             string fileName = FileName;
             int startingIndex = 0;
 
-            //Todo: proper style based coloring
             var foreground = Brushes.White;
             
             for (int workingIndex = 0; workingIndex < fileName.Length; workingIndex++)

@@ -163,7 +163,8 @@ public partial class BlitzMainPanel : UserControl
                     font.Name.Equals(Configuration.Instance.EditorConfig.FontFamily));
             mainWindowViewModel.ShowImportantMessage = ShowImportantMessage;
 
-            //Todo: user configurable bindings.. For now lets keep it simple and apply in code, as opposed to xaml bindings and such. 
+            //This is here for now, but needs to be configurable
+            //https://github.com/Natestah/BlitzSearch/issues/87
             AddDefaultKeyBoundCommand(CommandNames.SaveFile, Key.S, KeyModifiers.Control,
                 BlitzSecondary.FileView.SaveCurrentDocument);
             AddDefaultKeyBoundCommand(CommandNames.SearchThis, Key.F8, KeyModifiers.Control, SearchThisAction);
@@ -374,7 +375,7 @@ public partial class BlitzMainPanel : UserControl
             }
             catch (Exception exception)
             {
-                //Todo: Still need a proper message box for editor..
+                //Need a box for the message,  https://github.com/Natestah/BlitzSearch/issues/85
                 Console.WriteLine(exception);
                 return;
             }

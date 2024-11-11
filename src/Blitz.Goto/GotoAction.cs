@@ -86,15 +86,15 @@ public class GotoAction(GotoEditor gotoEditor)
         {
             switch (gotoEditor.CodeExecute)
             {
-                case "VsCodeGoto":
+                case CodeExecuteNames.VSCode:
                     executeGotoByPoorMansIPC(gotoDirective, "VS_CODE_GOTO", ";", preview);
                     runExecutable = ExecutableBootRequired();
                     break;
-                case "VisualStudioPlugin":
+                case CodeExecuteNames.VisualStudio:
                     executeGotoByPoorMansIPC(gotoDirective, "VISUAL_STUDIO_GOTO", ",", preview);
                     runExecutable = false;
                     break;
-                case "BlitzEdit":
+                case CodeExecuteNames.BlitzEdit:
                     executeGotoByPoorMansIPC(gotoDirective, "BLITZ_EDIT_GOTO", ";", preview);
                     runExecutable = false;
                     break;
@@ -141,9 +141,9 @@ public class GotoAction(GotoEditor gotoEditor)
     {
         switch (gotoEditor.CodeExecute)
         {
-            case "VisualStudioPlugin":
+            case CodeExecuteNames.VisualStudio:
                 return AnySystemPathContains("Visual Studio");
-            case "VsCodeGoto":
+            case CodeExecuteNames.VSCode:
                 return AnySystemPathContains("Microsoft VS Code");
         }
         return LocateExecutable(out _, out _);

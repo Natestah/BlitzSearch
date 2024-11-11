@@ -43,29 +43,11 @@ public partial class ResultsBox : UserControl
             return;
         }
         
-        
-        
-        if (e.Source is Control control )
+        var addedFirst = e.AddedItems[0];
+        if (e.Source is Control && addedFirst != null )
         {
-            if (mainWindowViewModel.SplitPane == true) 
-            {
-                //update preview on internal text pane.
-                mainWindowViewModel.ShowPreview?.Invoke(e.AddedItems[0]!);
-            }
-            else if (!mainWindowViewModel.SelectedEditorViewModel.RunTotoOnObjectGoto(e.AddedItems[0],true,
-                    out string errorMessage))
-            {
-                mainWindowViewModel.ShowImportantMessage?.Invoke(errorMessage);
-            }
+            mainWindowViewModel.UpdatePreviewForItem(addedFirst);
         }
-        
-       
-        
-        if (mainWindowViewModel.SelectedEditorViewModel == null)
-        {
-            return;
-        }
-
     }
     
     private  void GotoOtherEditorRun(int parameter)

@@ -23,7 +23,7 @@ public partial class TogglePreviewArrows : UserControl
         if (mainWindowViewModel.SplitPane)
         {
             mainWindowViewModel.EnableTextPane = true;
-            mainWindowViewModel.JiggleSelection();
+            mainWindowViewModel.ShowPaneIfSelection();
         }
     }
 }

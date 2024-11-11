@@ -25,10 +25,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
 
     public string Title
     {
-        get
-        {
-            return gotoEditor.Title.Replace(" / Blitz Plugin", ""); //Todo: Fix hack after moving Blitz.Goto Into Main Solution
-        }
+        get => gotoEditor.Title;
         set
         {
             gotoEditor.Title = value;
@@ -268,8 +265,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     {
         if (preview && !IsVsCode && !IsVisualStudio)
         {
-            //Todo: Fix this stuff after For Nuget all-in-one repo fix up.  It's hard to work like this.  
-            errorMessage = "Please specify Visual Studio Visual Studio 2019";
+            errorMessage = string.Empty;
             return true; // not en error so much.
         }
         errorMessage = string.Empty;
@@ -284,7 +280,8 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     {
         return new GotoAction(GotoEditor).CanDoAction();
     }
-    public bool IsVsCode => GotoEditor.CodeExecute == "VsCodeGoto"; // Todo, this is temporary until I get everything under one happy repo.
-    public bool IsVisualStudio => GotoEditor.CodeExecute == "VisualStudioPlugin"; // Todo, this is temporary until I get everything under one happy repo.
+
+    public bool IsVsCode => GotoEditor.CodeExecute == CodeExecuteNames.VSCode;
+    public bool IsVisualStudio => GotoEditor.CodeExecute == CodeExecuteNames.VisualStudio;
 
 }

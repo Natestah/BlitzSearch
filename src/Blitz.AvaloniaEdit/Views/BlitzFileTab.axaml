@@ -19,7 +19,7 @@
     <UserControl.Styles>
         
         <Style Selector="material|MaterialIcon.resultIcon">
-            <!-- Todo: Icon size, in seperate configuration for editor itself. -->
+            <!-- Once BlitzEditor has its own configuration fix this ->  https://github.com/Natestah/BlitzSearch/issues/88 -->
             <!-- <Setter Property="Width" Value="{CompiledBinding DataType=viewModels:BlitzEditorViewModel, Path=MainWindowViewModel.GeneralIconSize}"/> -->
             <!-- <Setter Property="Height" Value="{CompiledBinding DataType=viewModels:BlitzEditorViewModel, Path=MainWindowViewModel.GeneralIconSize}"/> -->
             <Setter Property="Width" Value="22"></Setter>

@@ -83,7 +83,7 @@ public class Configuration
         }
         catch (Exception e)
         {
-            //Todo: expose to user via message.
+            //Make message box -> https://github.com/Natestah/BlitzSearch/issues/85
             Console.WriteLine(e);
         }
         return new Configuration();
@@ -154,7 +154,7 @@ public class Configuration
         }
         catch (Exception e)
         {
-            //Todo Message box this:
+            //Need a box for the message,  https://github.com/Natestah/BlitzSearch/issues/85
             Console.WriteLine(e);
         }
     }

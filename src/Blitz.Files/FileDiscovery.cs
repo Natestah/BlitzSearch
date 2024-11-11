@@ -131,7 +131,7 @@ public class FileDiscovery
                     continue;
                 }
                 
-                //Todo: separate preference.
+                //Separate preference for .blitzIgnore -> https://github.com/Natestah/BlitzSearch/issues/92
                 if (_useGitIgnore && blitzIgnoreStack.Any(ignoreInstance => ignoreInstance.IsIgnored(fileName)))
                 {
                     continue;

@@ -25,6 +25,7 @@
     "Title": "VS Code",
     "Executable": "code.cmd",
     "CodeExecute": "VsCodeGoto",
+    "SupportsPreview": true,
     "RunningProcessName": "code.exe",
     "ExecutableWorkingDirectory": "",
     "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
@@ -115,7 +116,7 @@
     "Notes": "Extension Available"
   },
   {
-    "Title": "Visual Studio / Blitz Plugin",
+    "Title": "Visual Studio",
     "CodeExecute": "VisualStudioPlugin",
     "Executable": "-",
     "ExecutableIconHint": "devenv.exe",

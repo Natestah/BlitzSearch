@@ -29,7 +29,7 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
             
             //Sometimes files can show up in their entirety on one line.
             //this can over-burden things. (huge performance hitch and horizontal scrolling).  simply truncate here
-            const int maxLineDisplayChars = 1024; //Todo: Optional?
+            const int maxLineDisplayChars = 1024; //Make this optional? -> https://github.com/Natestah/BlitzSearch/issues/84
             
             
             if (!string.IsNullOrEmpty(fileContentResultResult.ReplacedContents))

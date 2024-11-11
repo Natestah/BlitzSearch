@@ -3,8 +3,7 @@ using Blitz.Interfacing.QueryProcessing;
 
 namespace Blitz.Search;
 
-//Todo: this is a bit messy, I would like for maybe Regex, and Literal Searches to be a part of Blitz Query and stacked into "textBoxQuery"
-//Todo: which is just "BlitzAndQuery", would make for a lot cleaner code througout and Enable potentially stacking multiples of those too! 
+//
 
 /// <summary>
 /// SearchTaskParameters takes care of translating all the UI generated parameters into something we can pass around the search functions. 

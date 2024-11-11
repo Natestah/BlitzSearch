@@ -247,7 +247,7 @@ public partial class BlitzSecondary : UserControl
         }
         else if (previewing is ReplaceTextViewModel replaceTextViewModel)
         {
-            //Todo: This seems weird, can't remember why I don't have the extension available here..   
+            //This seems weird, can't remember why I don't have the extension available here..   
             var baseOptions = mainWindowViewModel.EditorViewModel.ThemeViewModel.RegistryOptions.BaseOptions;
             
             var language =  baseOptions.GetLanguageByExtension(".txt") 

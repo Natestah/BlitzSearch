@@ -202,7 +202,6 @@
                     </ListBox.ContextMenu>
                     <ListBox.Styles>
                         <Style Selector="ListBoxItem">
-                            <!-- <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundThemeBrush}"/> -->
                             <Setter Property="Background" Value="Transparent"></Setter>
                             <Setter Property="MinHeight" Value="24" />
                             <Setter Property="VerticalAlignment" Value="Center"></Setter>
@@ -215,7 +214,6 @@
                             <Setter Property="BorderBrush" Value="{DynamicResource GreenCheck}" />
                         </Style>
 
-                        <!-- Todo: style configuration, for now just dark oriented -->
                         <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderBrush" Value="DimGray" />

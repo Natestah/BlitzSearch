@@ -49,9 +49,6 @@ public class SearchQuery : MessageWithIdentity
     [Key(nameof(ReplaceInFileEnabled))]
     public bool ReplaceInFileEnabled { get; set; }
 
-
-    //Todo: FilePaths / Extensions go to their own exportable Discipline export
-
     [Key(nameof(FilePaths))] 
     public List<SearchPath> FilePaths { get; set; } = [];
 
@@ -139,10 +136,7 @@ public class SearchQuery : MessageWithIdentity
         EnableResultsRecycling = enableResultsRecycling;
     }
 
-    //Todo: Put stuff below in it's own "helper" class
-
     [IgnoreMember] private string? _rawExtension;
-
     private static readonly char[] Spacechars = new[] { ' ', '\t' };
 
     [IgnoreMember]

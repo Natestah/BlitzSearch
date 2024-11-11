@@ -57,9 +57,9 @@ public partial class BlitzFileView : UserControl
             File.WriteAllText(_currentDocument.FileNameOrTitle, AvaloniaTextEditor.Text);
             _currentDocument.IsDirty = false;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            //todo: need a message box window to show problems..
+            //Need a box for the message,  https://github.com/Natestah/BlitzSearch/issues/85
         }
     }
 
@@ -82,7 +82,7 @@ public partial class BlitzFileView : UserControl
         {
            await AddFileToView(blitzDocument);
 
-           //Todo: Scroll to specific offset, instead of caret position line
+           //Scroll to specific offset, instead of caret position line -> https://github.com/Natestah/BlitzSearch/issues/89
         
            await ScrollToPosition(blitzDocument.AlignViewLine, blitzDocument.AlignViewColumn);
         }
@@ -216,7 +216,8 @@ public partial class BlitzFileView : UserControl
     
     private async Task ScrollToPosition( int lineNumer, int column)
     {
-        //Todo: I don't like this, Maybe we can work it into AvaloniaEdit itself "Load a document and center it on this line when things are finished"
+        //I don't like this, Maybe we can work it into AvaloniaEdit itself "Load a document and center it on this line when things are finished"
+        // Bugged -> https://github.com/AvaloniaUI/AvaloniaEdit/issues/469
         for (int i = 0; i < 2; i++)
         {
             AvaloniaTextEditor.ScrollTo(lineNumer, 1);

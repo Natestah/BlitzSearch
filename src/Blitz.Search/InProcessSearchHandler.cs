@@ -2,7 +2,7 @@ namespace Blitz.Search;
 
 /// <summary>
 /// Handles search messages In process, ISearchingClient
-/// Todo: ISearchingClient has intents for being a client to a separate process that would do the work. 
+/// ISearchingClient has intents for being a client to a separate process that would do the work. 
 /// </summary>
 public class InProcessSearchHandler : ISearchingClient
 {
