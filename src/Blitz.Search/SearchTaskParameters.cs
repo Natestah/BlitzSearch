@@ -31,9 +31,12 @@ public class SearchTaskParameters(BlitzAndQuery textBoxQuery,
     Regex? regex = null,
     bool literalCaseSensitive = false,
     bool regexCaseSensitive = false,
-    bool replaceCaseSensitive = false
+    bool replaceCaseSensitive = false,
+    bool folderCache = false
     )
 {
+    
+    public bool DoFolderCache => folderCache;
     public BlitzAndQuery TextBoxQuery => textBoxQuery;
     public BlitzAndQuery? FileNameQuery => fileNameQuery;
     public BlitzAndQuery? DebugFileNameQuery => debugFileNameQuery;

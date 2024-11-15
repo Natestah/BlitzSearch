@@ -261,6 +261,27 @@ public class SearchTask
         }
     }
 
+    public IEnumerable<string> FlatFileListEnumerator(string extension, CancellationTokenSource cancellationTokenSource)
+    {
+        if(SearchQuery.FlatSearchFilesList == null) yield break;
+        foreach (var file in SearchQuery.FlatSearchFilesList )
+        {
+            string fileExtension = string.Empty;
+            try
+            {
+                fileExtension = Path.GetExtension(file);
+            }
+            catch (Exception e)
+            {
+                //don't bother with things that aren't a file
+                continue;
+            }
+            if (fileExtension == extension)
+            {
+                yield return file;
+            }
+        }
+    }
     public delegate IEnumerable<string> SearchEnumerator(string extension, CancellationTokenSource cancellationTokenSource);
     
     private bool SearchExtension(SearchTaskParameters taskParameters, SearchExtension extension, SearchEnumerator enumerator)
@@ -531,6 +552,8 @@ public class SearchTask
             }
         }
 
+        bool doFolderCache = SearchQuery.SolutionExports == null && SearchQuery.FlatSearchFilesList == null;
+
 
         return new SearchTaskParameters(searchTextBox, 
             fileNameQuery,
@@ -543,7 +566,8 @@ public class SearchTask
             regex, 
             SearchQuery.LiteralCaseSensitive,
             SearchQuery.RegexCaseSensitive,
-            SearchQuery.ReplaceCaseSensitive
+            SearchQuery.ReplaceCaseSensitive,
+            doFolderCache
             );
     }
 
@@ -641,7 +665,14 @@ public class SearchTask
             {
 
                 //For now this is a radio selection.  and SolutionExports != null means it's time to search solutions only.
-                if (SearchQuery.SolutionExports != null)
+                if (SearchQuery.FlatSearchFilesList != null)
+                {
+                    if (SearchExtension(taskParameters, extension, FlatFileListEnumerator ))
+                    {
+                        foundAnything = true;
+                    }
+                }
+                else if (SearchQuery.SolutionExports != null)
                 {
                     if (SearchExtension(taskParameters, extension, SolutionEnumerator ))
                     {
@@ -671,7 +702,7 @@ public class SearchTask
 
         EmptyUnionResults();
 
-        if (SearchQuery.SolutionExports != null)
+        if (taskParameters.DoFolderCache)
         {
             SearchRoot.FileDiscoverer?.WaitUntilFinished(CancellationTokenSource);
             CleanupCache();
@@ -682,7 +713,7 @@ public class SearchTask
             return;
         }
 
-        if (SearchQuery.SolutionExports == null)
+        if (taskParameters.DoFolderCache)
         {
             foreach (var lateExtensions in SearchRoot.FileDiscoverer!.GetFoundExtensions())
             {
@@ -749,7 +780,7 @@ public class SearchTask
             ReportFilesNotFoundMessage(SearchQuery.TextBoxQuery, SearchQuery.FileNameQuery);
         }
 
-        if (SearchQuery.SolutionExports == null)
+        if (taskParameters.DoFolderCache)
         {
             foreach (var extension in orderedSearch)
             {

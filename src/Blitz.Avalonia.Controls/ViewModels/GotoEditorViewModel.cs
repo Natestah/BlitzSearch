@@ -115,7 +115,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
         get
         {
             var gotoAction = new GotoAction(gotoEditor);
-            var directive = new GotoDirective(@"c:\sample.txt", 3, 1);
+            var directive = new GotoDirective(null, @"c:\sample.txt", 3, 1);
             var startInfo =  gotoAction.GetStartinfoForDirective(directive, true);
             return $"{startInfo.FileName} {startInfo.Arguments}";
         }
@@ -234,7 +234,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     public bool RunGoto(bool preview, string fileToGoto, int line, int column, out string errorMessage)
     {
         var gotoAction = new GotoAction(GotoEditor);
-        var directive = new GotoDirective(fileToGoto, line, column);
+        var directive = new GotoDirective(mainWindowViewModel.SolutionViewModel?.Export?.Name,fileToGoto, line, column);
         errorMessage = string.Empty;
         try
         {

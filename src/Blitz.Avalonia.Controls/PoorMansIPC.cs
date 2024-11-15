@@ -55,9 +55,32 @@ public class PoorMansIPC
             {
                 return;
             }
-            if (_actions.TryGetValue(action, out var function))
+
+            if (!_actions.TryGetValue(action, out var function))
             {
-                function.Invoke(File.ReadAllText(fullFilename));
+                return;
+            }
+            Exception? lastException = null;
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    using var file = new FileStream(fullFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    using var streamReader = new StreamReader(file);
+                    var text = streamReader.ReadToEnd();
+                    function.Invoke(text);
+                    return;
+
+                }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+                }
+            }
+
+            if (lastException != null)
+            {
+                Console.WriteLine(lastException);
             }
 
         }

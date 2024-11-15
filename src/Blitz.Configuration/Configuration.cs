@@ -128,6 +128,12 @@ public class Configuration
     [DefaultValue(true)]
     public bool IsFoldersScopeSelected { get; set; } = true;
 
+    [DefaultValue(true)]
+    public bool IsOpenScopeSelected { get; set; } = true;
+
+    [DefaultValue(true)]
+    public bool IsActiveFileSelected { get; set; } = true;
+
     [JsonIgnore] public bool _cleanSlateShutdown = false;
 
     public void CleanSlateShutdown()

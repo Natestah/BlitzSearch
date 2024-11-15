@@ -2,15 +2,19 @@
 
 # 🎉 Blitz Search now %100 Free and Open Sourced 🎉
 
-#### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) or [Reddit](https://www.reddit.com/r/BlitzSearch) and give feedback!
+#### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
 Thank you!
 
 ### Version 0.0.80
 * Answering many Todo notes
-* Early on I added Maximum per-line matches of only 10, this is now removed from the backend matching.
+* Removed maximum 10 results from the backend matching.
 * Fixed error when leaving a broken Regex, then closing regex search.
-* 
+* Reorganize preview pane, sits beneath the Search Input box instead of beside it.
+* VS Code uses Solution / Folder scope instead of creating a new Folder scope
+* Active Files / Current file scopes added.  
+* Fixed a cache pollution issue that would create results for files that don't exist in the folder scope. 
+
 ### Version 0.0.79
 * Fixed Selected Editor not retaining between sessions
 * In Folder Scope selection, I noticed the large image overlaying some buttons and fixed.

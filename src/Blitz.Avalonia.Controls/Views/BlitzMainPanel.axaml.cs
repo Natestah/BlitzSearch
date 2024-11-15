@@ -22,6 +22,7 @@ using Blitz.AvaloniaEdit.Models;
 using Blitz.AvaloniaEdit.ViewModels;
 using Blitz.Goto;
 using Blitz.Interfacing;
+using DynamicData;
 using Markdown.Avalonia;
 using Material.Icons;
 using Material.Icons.Avalonia;
@@ -43,27 +44,67 @@ public partial class BlitzMainPanel : UserControl
         PoorMansIPC.Instance.RegisterAction("SET_THEME_LIGHT", IPC_SET_THEME_LIGHT);
         PoorMansIPC.Instance.RegisterAction("WORKSPACE_UPDATE", IPC_UPDATE_WORKSPACE_UPDATE);
         PoorMansIPC.Instance.RegisterAction("VS_SOLUTION", IPC_UPDATE_VS_SOLUTION);
-        PoorMansIPC.Instance.RegisterAction("VS_PROJECT", IPC_UPDATE_VS_PROJECT);
+        PoorMansIPC.Instance.RegisterAction("VS_PROJECT", IPC_UPDATE_VS_PROJECT_SELECTED);
+        PoorMansIPC.Instance.RegisterAction("VS_ACTIVE_FILES", IPC_UPDATE_VS_ACTIVE_FILES);
         
         PoorMansIPC.Instance.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
 
+    void IPC_UPDATE_VS_ACTIVE_FILES(string text)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (DataContext is not MainWindowViewModel mainWindowViewModel
+                || string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+            var list = JsonSerializer.Deserialize(text,JsonContext.Default.ActiveFilesList);
+            if (list is null || mainWindowViewModel.SolutionViewModel == null
+                ||mainWindowViewModel.SolutionViewModel.ActiveFiles.SequenceEqual(list.ActiveFiles))
+            {
+                return;
+            }
+            
+            mainWindowViewModel.SolutionViewModel.ActiveFiles.Clear();
+            mainWindowViewModel.SolutionViewModel.ActiveFiles.AddRange(list.ActiveFiles);
+            if (mainWindowViewModel.IsActiveFileSelected)
+            {
+                mainWindowViewModel.UpdateActiveFile();
+            }
+        });
+    }
 
     private void IPC_UPDATE_VS_SOLUTION(string text)
     {
-         Dispatcher.UIThread.Post(() =>
+        Dispatcher.UIThread.Post(() =>
         {
             if (DataContext is not MainWindowViewModel mainWindowViewModel)
             {
                 return;
             }
-            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.SolutionExport);
-            if (configFromFile is null)
+
+            if (string.IsNullOrEmpty(text))
             {
                 return;
             }
 
-            string? existingProject = mainWindowViewModel.SolutionViewModel?.SelectedProject.Name;
+            SolutionExport? configFromFile = null;
+            try
+            {
+                configFromFile = JsonSerializer.Deserialize(text,JsonContext.Default.SolutionExport);
+                if (configFromFile is null)
+                {
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            string? existingProject = mainWindowViewModel.SolutionViewModel?.SelectedProject?.Name;
             mainWindowViewModel.SolutionViewModel = new SolutionViewModel(configFromFile, mainWindowViewModel);
             if (string.IsNullOrEmpty(existingProject))
             {
@@ -76,7 +117,7 @@ public partial class BlitzMainPanel : UserControl
         });
     }
     
-    private void IPC_UPDATE_VS_PROJECT(string text)
+    private void IPC_UPDATE_VS_PROJECT_SELECTED(string text)
     {
         Dispatcher.UIThread.Post(() =>
         {
@@ -84,23 +125,29 @@ public partial class BlitzMainPanel : UserControl
             {
                 return;
             }
-            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.Project);
+
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.SelectedProjectExport);
             if (configFromFile is null)
             {
                 return;
             }
-            //Todo: Fix this
+
+            if (mainWindowViewModel.SolutionViewModel == null || mainWindowViewModel.SolutionViewModel.Export.Name != configFromFile.BelongsToSolution)
+            {
+                return;
+            }
             
-            // string? existingProject = mainWindowViewModel.SolutionViewModel?.SelectedProject.Name;
-            // mainWindowViewModel.SolutionViewModel = new SolutionViewModel(configFromFile, mainWindowViewModel);
-            // if (string.IsNullOrEmpty(existingProject))
-            // {
-            //     mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault() ?? new ProjectViewModel(new Project(){Name = "Default"});
-            // }
-            // else
-            // {
-            //     mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault(project=>project.Name==existingProject) ?? new ProjectViewModel(new Project(){Name = "Default"});
-            // }
+            var existingProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault( project=>project.Name == configFromFile.Name );
+            if (existingProject == null)
+            {
+                return;
+            }
+
+            mainWindowViewModel.SolutionViewModel.SelectedProject = existingProject;
         });
         
     }

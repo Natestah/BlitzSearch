@@ -10,6 +10,7 @@ public class SolutionViewModel : ViewModelBase
     private SolutionExport _export;
     private ProjectViewModel? _selectedProject;
     private MainWindowViewModel _mainWindowViewModel;
+    private ObservableCollection<string> _activeFiles = [];
     public MainWindowViewModel MainWindowVM => _mainWindowViewModel;
 
     public ObservableCollection<ProjectViewModel> Projects { get; } = [];
@@ -22,6 +23,12 @@ public class SolutionViewModel : ViewModelBase
             this.RaiseAndSetIfChanged(ref _selectedProject, value);
             _mainWindowViewModel.RaiseSolutionPropertyChanged();
         }
+    }
+    
+    public ObservableCollection<string> ActiveFiles
+    {
+        get => _activeFiles;
+        set => this.RaiseAndSetIfChanged(ref _activeFiles, value);
     }
 
     public string Title => _export?.Name?? "Untitled";

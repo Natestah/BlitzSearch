@@ -33,6 +33,13 @@
         <!-- <Grid  Background="{Binding BlitzThemeViewModel.WindowBackground}"> -->
         <DockPanel>
             <models:BlitzStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom"/>
+            <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top"/>
+            <models:LiteralSearchPanel DockPanel.Dock="Top"/>
+            <models:RegularExpressionPanel DockPanel.Dock="Top"/>
+            <models:FileNamePanel DockPanel.Dock="Top"/>
+            <models:ReplacePanel x:Name="ReplacePanel" DockPanel.Dock="Top"/>
+            <models:InlineScopePanel DockPanel.Dock="Top"/>
+            <models:InformerPanel DockPanel.Dock="Top"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MinWidth="270" />
@@ -49,13 +56,7 @@
                 <!-- </Border> -->
 
                 <DockPanel Grid.Column="0" LastChildFill="True">
-                    <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top"/>
-                    <models:LiteralSearchPanel DockPanel.Dock="Top"/>
-                    <models:RegularExpressionPanel DockPanel.Dock="Top"/>
-                    <models:FileNamePanel DockPanel.Dock="Top"/>
-                    <models:ReplacePanel x:Name="ReplacePanel" DockPanel.Dock="Top"/>
-                    <models:InlineScopePanel DockPanel.Dock="Top"/>
-                    <models:InformerPanel DockPanel.Dock="Top"/>
+                   
                     
                     <DockPanel  DockPanel.Dock="Bottom" Background="{StaticResource ReplaceHighlight}" LastChildFill="False"
                                 IsVisible="{Binding ReplaceInFileEnabled}">

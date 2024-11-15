@@ -306,6 +306,8 @@ public class MainWindowViewModel : ViewModelBase
                 break;
             case CodeExecuteNames.VisualStudio:
                 PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
+                PoorMansIPC.Instance.ExecuteNamedAction("VS_PROJECT");
+                PoorMansIPC.Instance.ExecuteNamedAction("VS_ACTIVE_FILES");
                 break;
             default:
                 SolutionViewModel = null;
@@ -649,10 +651,23 @@ public class MainWindowViewModel : ViewModelBase
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsSolutionScopeSelected)));
             this.RaisePropertyChanged(nameof(IsFoldersScopeSelected));
             this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+            this.RaisePropertyChanged(nameof(ShouldOpenScopeShow));
         }
     }
 
     public bool ShouldFolderScopeShow
+    {
+        get
+        {
+            if (SolutionViewModel == null) return true;
+            if (SolutionViewModel.ISVSCodeSolution)
+            {
+                return !IsSolutionScopeSelected;
+            }
+            return IsFoldersScopeSelected;
+        }
+    }
+     public bool ShouldOpenScopeShow
     {
         get
         {
@@ -676,6 +691,29 @@ public class MainWindowViewModel : ViewModelBase
             Configuration.Instance.IsFoldersScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsFoldersScopeSelected)));
             this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+        }
+    }
+
+    public bool IsOpenScopeSelected
+    {
+        get => Configuration.Instance.IsOpenScopeSelected;
+        set
+        {
+            Configuration.Instance.IsOpenScopeSelected = value;
+            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsOpenScopeSelected)));
+            this.RaisePropertyChanged(nameof(ShouldOpenScopeShow)); //Todo: fix me
+        }
+    }
+
+
+    public bool IsActiveFileSelected
+    {
+        get => Configuration.Instance.IsActiveFileSelected;
+        set
+        {
+            Configuration.Instance.IsActiveFileSelected = value;
+            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
+            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow)); //Todo: fix me
         }
     }
 
@@ -916,7 +954,7 @@ public class MainWindowViewModel : ViewModelBase
         _scheduledClear = true;
         LastInputTime = DateTime.Now;;
         IsMissingScopeRequirements = false;
-        ApplyConfigurationToQuery();
+        ApplyConfigurationToQuery(); 
         SearchingClient.PostSearchRequest(_searchQuery, true);
         SaveQueryTask.Run();
     }
@@ -983,7 +1021,7 @@ public class MainWindowViewModel : ViewModelBase
         }
 
         _searchQuery.FilePaths = [];
-        
+        _searchQuery.FlatSearchFilesList = null;
         if (IsFoldersScopeSelected || SolutionViewModel == null)
         {
             _searchQuery.SelectedProjectName = null;
@@ -1018,6 +1056,22 @@ public class MainWindowViewModel : ViewModelBase
         else if (IsSolutionScopeSelected && SolutionViewModel != null)
         {
             _searchQuery.SolutionExports = [SolutionViewModel.Export];
+        }
+        else if (IsOpenScopeSelected && SolutionViewModel != null)
+        {
+            _searchQuery.SelectedProjectName = null;
+            _searchQuery.SolutionExports = null;
+            _searchQuery.FlatSearchFilesList = SolutionViewModel.ActiveFiles.ToList();
+        }
+        else if (IsActiveFileSelected && SolutionViewModel != null)
+        {
+            _searchQuery.SelectedProjectName = null;
+            _searchQuery.SolutionExports = null;
+
+            if (SolutionViewModel.ActiveFiles.Count > 0)
+            {
+                _searchQuery.FlatSearchFilesList = [SolutionViewModel.ActiveFiles[0]];
+            }
         }
         else
         {
@@ -1558,5 +1612,10 @@ public class MainWindowViewModel : ViewModelBase
         {
             ShowImportantMessage?.Invoke(errorMessage);
         }
+    }
+
+    public void UpdateActiveFile()
+    {
+        this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
     }
 }

@@ -9,29 +9,99 @@
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.InlineScopePanel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"></StyleInclude>
+        <Style Selector="TextBlock.scopeButtons">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="3 0" />
+        </Style>
+    </UserControl.Styles>
     <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-        <StackPanel DataContext="{Binding SolutionViewModel}"
-                    IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}"
-                    Orientation="Horizontal">
-            <RadioButton GroupName="SLNPROJ"
-                         IsChecked="{Binding  MainWindowVM.IsSolutionScopeSelected}">
+        <ListBox DataContext="{Binding SolutionViewModel}"
+                 Background="Transparent"
+                 IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}">
+            
+            <ListBoxItem IsSelected="{Binding  MainWindowVM.IsSolutionScopeSelected}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding DisplayTitle}"></TextBlock>
+                    <material:MaterialIcon Classes="m1ForSolution" Kind="FolderHome" />
+                    <TextBlock Classes="scopeButtons" Text="{Binding DisplayTitle}" />
                 </StackPanel>
-            </RadioButton>
-            <RadioButton IsVisible="{Binding !ISVSCodeSolution}" GroupName="SLNPROJ"
-                         IsChecked="{Binding MainWindowVM.IsProjectScopeSelected}">
+            </ListBoxItem>
+            
+            <ListBoxItem IsVisible="{Binding !ISVSCodeSolution}" IsSelected="{Binding  MainWindowVM.IsProjectScopeSelected}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Project"></TextBlock>
+                    <material:MaterialIcon Classes="m1ForSolution" Kind="FolderText" />
+                    <TextBlock Classes="scopeButtons" Text="Project" />
                 </StackPanel>
-            </RadioButton>
-            <RadioButton GroupName="SLNPROJ" IsChecked="{Binding MainWindowVM.IsFoldersScopeSelected}"
-                         DockPanel.Dock="Left">
+            </ListBoxItem>
+             
+            <ListBoxItem IsVisible="{Binding !ISVSCodeSolution}" IsSelected="{Binding MainWindowVM.IsOpenScopeSelected}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Folders"></TextBlock>
+                    <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocumentMultiple" />
+                    <TextBlock Classes="scopeButtons" Text="Opened" />
                 </StackPanel>
-            </RadioButton>
-        </StackPanel>
+            </ListBoxItem>
+            
+            <ListBoxItem IsVisible="{Binding !ISVSCodeSolution}" IsSelected="{Binding MainWindowVM.IsActiveFileSelected}">
+                <StackPanel Orientation="Horizontal">
+                    <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocument" />
+                    <TextBlock Classes="scopeButtons" Text="Active" />
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem IsSelected="{Binding MainWindowVM.IsFoldersScopeSelected}">
+                <StackPanel Orientation="Horizontal">
+                    <material:MaterialIcon Classes="m1ForSolution" Kind="FolderMultiple" />
+                    <TextBlock Classes="scopeButtons" Text="Folders" />
+                </StackPanel>
+            </ListBoxItem>
+           
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="MinHeight" Value="12" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Padding" Value="2" />
+                    <Setter Property="Margin" Value="1" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundUnselected}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="CornerRadius" Value="4" />
+                </Style>
+                <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                    <Setter Property="BorderBrush" Value="{DynamicResource GreenCheck}" />
+                    <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+                </Style>
+
+                <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
+                    <Setter Property="BorderBrush" Value="DimGray" />
+                </Style>
+
+                <Style Selector="ListBoxItem:selected:focus /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="DodgerBlue" />
+                </Style>
+
+                <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+
+                <Style Selector="ListBoxItem:selected:focus:pointerover /template/ ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="DodgerBlue" />
+                </Style>
+            </ListBox.Styles>
+        </ListBox>
+
+
         <StackPanel Orientation="Horizontal">
             <views:ScopeSelector Margin="10 0 0 0" IsVisible="{Binding ShouldFolderScopeShow}"
                                  HorizontalAlignment="Stretch" DockPanel.Dock="Left" />

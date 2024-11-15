@@ -17,10 +17,10 @@
         <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
         <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
         <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
-        <!-- <MultiBinding  x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}"> -->
-        <!--     <CompiledBinding DataType="vm:GotoEditorViewModel" Path="Executable"/> -->
-        <!--     <CompiledBinding DataType="vm:GotoEditorViewModel" Path="ExecutableIconHint"/> -->
-        <!-- </MultiBinding> -->
+        <MultiBinding  x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}">
+            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="Executable"/>
+            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="ExecutableIconHint"/>
+        </MultiBinding>
     </Styles.Resources>
         <Style Selector="material|MaterialIcon.m1">
             <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
@@ -45,6 +45,12 @@
             <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
+
+    <Style Selector="material|MaterialIcon.m1ForSolution">
+        <Setter Property="Width" Value="{CompiledBinding DataType=vm:SolutionViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Height" Value="{CompiledBinding DataType=vm:SolutionViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 
         <Style Selector="material|MaterialIcon.results">
             <Setter Property="Width"

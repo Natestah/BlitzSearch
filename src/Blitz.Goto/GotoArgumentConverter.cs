@@ -14,7 +14,7 @@ public class GotoArgumentConverter(GotoDirective gotoDirective)
 
     public static IEnumerable<ArgumentAlias> GetArgumentAliases(GotoDirective? gotoDirective)
     {
-        gotoDirective ??= new GotoDirective(string.Empty);
+        gotoDirective ??= new GotoDirective(null, string.Empty);
         
         return new List<ArgumentAlias>
         {

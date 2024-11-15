@@ -50,15 +50,42 @@ public class GotoAction(GotoEditor gotoEditor)
         return false;
     }
 
-
+    public static string GetFolder()
+    {
+        var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var specificFolder = Path.Combine(folder, "NathanSilvers", "POORMANS_IPC");
+        Directory.CreateDirectory(specificFolder);
+        return specificFolder;
+    }
+    
     private void executeGotoByPoorMansIPC( GotoDirective gotoDirective, string ipcIdentity, string pathSeperator =";", bool preview = true)
     {
-        var appdata = Environment.ExpandEnvironmentVariables("%appdata%");
-        string path = Path.Combine(appdata, "NathanSilvers", "POORMANS_IPC");
-        Directory.CreateDirectory(path);
+        string path = GetFolder();
         string previewSuffix = preview ? "_PREVIEW": string.Empty;
         string file = Path.Combine(path, $"{ipcIdentity}{previewSuffix}.txt");
         File.WriteAllText(file, $"{gotoDirective.FileName}{pathSeperator}{gotoDirective.Line}{pathSeperator}{gotoDirective.Column}");
+    }
+
+
+    private void executeGotoWithJson( GotoDirective gotoDirective, string ipcIdentity, string pathSeperator =";", bool preview = true)
+    {
+        string path = GetFolder();
+        string previewSuffix = preview ? "_PREVIEW_JSON": "_JSON";
+        string file = Path.Combine(path, $"{ipcIdentity}{previewSuffix}.txt");
+        string contents = System.Text.Json.JsonSerializer.Serialize(gotoDirective, JsonContext.Default.GotoDirective);
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                File.WriteAllText(file, contents);
+                break;
+                System.Threading.Thread.Sleep(50);
+
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 
     bool ExecutableBootRequired()
@@ -91,7 +118,7 @@ public class GotoAction(GotoEditor gotoEditor)
                     runExecutable = ExecutableBootRequired();
                     break;
                 case CodeExecuteNames.VisualStudio:
-                    executeGotoByPoorMansIPC(gotoDirective, "VISUAL_STUDIO_GOTO", ",", preview);
+                    executeGotoWithJson(gotoDirective, "VISUAL_STUDIO_GOTO", ",", preview);
                     runExecutable = false;
                     break;
                 case CodeExecuteNames.BlitzEdit:
