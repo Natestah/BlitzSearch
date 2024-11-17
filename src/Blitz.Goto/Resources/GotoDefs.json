@@ -32,6 +32,16 @@
     "Notes": "Extension Available"
   },
   {
+    "Title": "Cursor",
+    "Executable": "cursor.cmd",
+    "CodeExecute": "CursorGoto",
+    "SupportsPreview": true,
+    "RunningProcessName": "code.exe",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Extension Available"
+  },
+  {
     "Title": "Notepad",
     "Executable": "notepad.exe",
     "ExecutableWorkingDirectory": "",

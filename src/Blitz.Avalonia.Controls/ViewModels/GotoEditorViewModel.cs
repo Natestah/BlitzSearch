@@ -263,7 +263,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     
     public bool RunTotoOnObjectGoto(object? controlDataContext, bool preview, out string errorMessage)
     {
-        if (preview && !IsVsCode && !IsVisualStudio)
+        if (preview && !IsVsCode && !IsVisualStudio && !IsCursor)
         {
             errorMessage = string.Empty;
             return true; // not en error so much.
@@ -282,6 +282,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     }
 
     public bool IsVsCode => GotoEditor.CodeExecute == CodeExecuteNames.VSCode;
+    public bool IsCursor => GotoEditor.CodeExecute == CodeExecuteNames.Cursor;
     public bool IsVisualStudio => GotoEditor.CodeExecute == CodeExecuteNames.VisualStudio;
 
 }

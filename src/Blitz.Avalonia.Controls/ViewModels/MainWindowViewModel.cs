@@ -302,6 +302,7 @@ public class MainWindowViewModel : ViewModelBase
         switch (_selectedEditorViewModel.GotoEditor.CodeExecute)
         {
             case CodeExecuteNames.VSCode:
+            case CodeExecuteNames.Cursor:
                 PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
                 break;
             case CodeExecuteNames.VisualStudio:

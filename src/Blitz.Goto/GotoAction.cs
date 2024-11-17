@@ -114,6 +114,7 @@ public class GotoAction(GotoEditor gotoEditor)
             switch (gotoEditor.CodeExecute)
             {
                 case CodeExecuteNames.VSCode:
+                case CodeExecuteNames.Cursor:
                     executeGotoByPoorMansIPC(gotoDirective, "VS_CODE_GOTO", ";", preview);
                     runExecutable = ExecutableBootRequired();
                     break;
@@ -172,6 +173,9 @@ public class GotoAction(GotoEditor gotoEditor)
                 return AnySystemPathContains("Visual Studio");
             case CodeExecuteNames.VSCode:
                 return AnySystemPathContains("Microsoft VS Code");
+            case CodeExecuteNames.Cursor:
+                string environmentVariable = Environment.ExpandEnvironmentVariables("%appdata%\\..\\Local\\Programs\\cursor\\Cursor.exe");
+                return Path.Exists(environmentVariable);
         }
         return LocateExecutable(out _, out _);
     }

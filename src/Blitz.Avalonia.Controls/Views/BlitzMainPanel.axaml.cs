@@ -162,7 +162,7 @@ public partial class BlitzMainPanel : UserControl
                 return;
             }
             
-            if (mainWindowViewModel.SelectedEditorViewModel is not { IsVsCode: true })
+            if (mainWindowViewModel.SelectedEditorViewModel is not { IsVsCode: true } and not { IsCursor: true })
             {
                 return;
             }

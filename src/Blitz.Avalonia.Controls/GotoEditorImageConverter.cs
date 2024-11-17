@@ -25,6 +25,7 @@ public class GotoEditorImageConverter : IMultiValueConverter
         {"rubymine64.exe", "rubymine.png"},
         {"notepad++.exe", "Notepad_plus_plus.png"},
         {"Code.cmd", "vscode.png"},
+        {"cursor.cmd", "cursor.png"},
         {"uedit64.exe", "uelogo.png"},
         {"fleet.exe", "Fleet.png"},
         {"devenv.exe", "VisualStudio2022PNG.png"},

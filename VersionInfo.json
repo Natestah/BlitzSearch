@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.82",
+    "Changes": "* Add Cursor Support\r\n\r\n"
+  },
+  {
     "Revision": "0.0.81",
     "Changes": "* VS Code filter fix\r\n\r\n"
   },

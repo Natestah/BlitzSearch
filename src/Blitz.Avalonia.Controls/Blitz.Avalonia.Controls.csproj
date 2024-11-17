@@ -82,6 +82,8 @@
       <AvaloniaResource Include="Resources\rubymine.png" />
       <None Remove="Resources\Fleet.png" />
       <AvaloniaResource Include="Resources\Fleet.png" />
+      <None Remove="Resources\cursor.png" />
+      <AvaloniaResource Include="Resources\cursor.png" />
     </ItemGroup>
 
 

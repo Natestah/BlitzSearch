@@ -6,6 +6,9 @@
 
 Thank you!
 
+### Version 0.0.82
+* Add Cursor Support
+
 ### Version 0.0.81
 * VS Code filter fix
 
