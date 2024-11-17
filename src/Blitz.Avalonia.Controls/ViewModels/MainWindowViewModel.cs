@@ -637,16 +637,31 @@ public class MainWindowViewModel : ViewModelBase
         get => Configuration.Instance.IsProjectScopeSelected;
         set
         {
+            if (value)
+            {
+                RadioClearConfig();
+            }
             Configuration.Instance.IsProjectScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsProjectScopeSelected)));
         }
     }
 
+    public void RadioClearConfig()
+    {
+        //Since this is setup as a listbox with items, the results of the next selection has events firing before the previous one.
+        Configuration.Instance.IsFoldersScopeSelected = false;
+        Configuration.Instance.IsProjectScopeSelected = false;
+        Configuration.Instance.IsSolutionScopeSelected = false;
+    }
     public bool IsSolutionScopeSelected
     {
         get => Configuration.Instance.IsSolutionScopeSelected;
         set
         {
+            if (value)
+            {
+                RadioClearConfig();
+            }
             Configuration.Instance.IsSolutionScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsSolutionScopeSelected)));
             this.RaisePropertyChanged(nameof(IsFoldersScopeSelected));
@@ -688,6 +703,10 @@ public class MainWindowViewModel : ViewModelBase
         get => SolutionViewModel == null || Configuration.Instance.IsFoldersScopeSelected;
         set
         {
+            if (value)
+            {
+                RadioClearConfig();                
+            }
             Configuration.Instance.IsFoldersScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsFoldersScopeSelected)));
             this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
@@ -1032,7 +1051,25 @@ public class MainWindowViewModel : ViewModelBase
         {
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
-            _searchQuery.FilePaths = filePaths;
+            _searchQuery.FilePaths = [];
+            if (SolutionViewModel.Export.Projects != null)
+            {
+                
+                foreach (var project in SolutionViewModel.Export.Projects)
+                {
+                    if (project != null)
+                    {
+                        foreach (var vsCodeFilePath in project.Files)
+                        {
+                            if (Directory.Exists(vsCodeFilePath))
+                            {
+                                _searchQuery.FilePaths.Add(new SearchPath { TopLevelOnly = false, Folder = vsCodeFilePath });
+                            }
+                        }
+                    }
+                }
+                
+            }
         }
         else if (IsProjectScopeSelected)
         {

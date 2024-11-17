@@ -6,6 +6,9 @@
 
 Thank you!
 
+### Version 0.0.81
+* VS Code filter fix
+
 ### Version 0.0.80
 * Answering many Todo notes
 * Removed maximum 10 results from the backend matching.

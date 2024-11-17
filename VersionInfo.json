@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.81",
+    "Changes": "* VS Code filter fix\r\n\r\n"
+  },
+  {
     "Revision": "0.0.80",
     "Changes": "* Answering many Todo notes\r\n* Removed maximum 10 results from the backend matching.\r\n* Fixed error when leaving a broken Regex, then closing regex search.\r\n* Reorganize preview pane, sits beneath the Search Input box instead of beside it.\r\n* VS Code uses Solution / Folder scope instead of creating a new Folder scope\r\n* Active Files / Current file scopes added.  \r\n* Fixed a cache pollution issue that would create results for files that don\u0027t exist in the folder scope. \r\n\r\n"
   },
