@@ -14,7 +14,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>1.0.1</Version>
         <PackageReleaseNotes>Support for Themes from Files</PackageReleaseNotes>
-        <TargetFrameworks>net8.0</TargetFrameworks>
+        <TargetFramework>net9.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
