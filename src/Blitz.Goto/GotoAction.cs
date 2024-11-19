@@ -8,7 +8,7 @@ public class GotoAction(GotoEditor gotoEditor)
     
     private bool LocateDirectoryFromSystemPath(string inputWorkingDirectory, string exeName, out string workingDirectory)
     {
-        workingDirectory = null;
+        workingDirectory = string.Empty;
         
         if (!string.IsNullOrEmpty(inputWorkingDirectory))
         {
@@ -40,7 +40,7 @@ public class GotoAction(GotoEditor gotoEditor)
                     continue;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 continue;
             }
@@ -79,11 +79,10 @@ public class GotoAction(GotoEditor gotoEditor)
             {
                 File.WriteAllText(file, contents);
                 break;
-                System.Threading.Thread.Sleep(50);
-
             }
             catch (Exception)
             {
+                Thread.Sleep(50);
             }
         }
     }

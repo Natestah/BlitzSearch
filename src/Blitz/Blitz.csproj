@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -35,11 +35,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.1.1" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia" Version="11.2.1" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.7" />
         <PackageReference Include="ReactiveUI" Version="20.1.1" />
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>

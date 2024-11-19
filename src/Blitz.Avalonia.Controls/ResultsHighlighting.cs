@@ -17,14 +17,8 @@ namespace Blitz.Avalonia.Controls;
 /// <summary>
 /// Helper for TextmateSharp.
 /// </summary>
-public class ResultsHighlighting
+public class ResultsHighlighting(MainWindowViewModel mainWindowViewModel)
 {
-    private  MainWindowViewModel _mainWindowViewModel;
-    public ResultsHighlighting(MainWindowViewModel mainWindowViewModel)
-    {
-        _mainWindowViewModel = mainWindowViewModel;
-    }
-
     public CharState[] GetCharStatesFromInlines(  InlineCollection inlineCollection, string displayContents )
     {
         var states = new CharState[displayContents.Length];
@@ -48,10 +42,10 @@ public class ResultsHighlighting
 
     public InlineCollection GetInlinesFromTextMateSharp(string line, string fileNameForContext, double opacity = 1)
     {
-        if (_mainWindowViewModel == null) return [];
+        if (mainWindowViewModel.EditorViewModel.ThemeViewModel == null) return [];
         //This needs work in EditorViewModel..
-        var options = _mainWindowViewModel.EditorViewModel.ThemeViewModel.RegistryOptions.BaseOptions;
-        var themeVM = _mainWindowViewModel.EditorViewModel.ThemeViewModel;
-        return options != null ? TextMateInlineGenerator.GetInlinesFromTextMateSharp( themeVM.Theme, themeVM.RegistryOptions.BaseOptions,themeVM.Registry, line, fileNameForContext, opacity) : [];
+        var options = mainWindowViewModel.EditorViewModel.ThemeViewModel.RegistryOptions.BaseOptions;
+        var themeVm = mainWindowViewModel.EditorViewModel.ThemeViewModel;
+        return TextMateInlineGenerator.GetInlinesFromTextMateSharp( themeVm.Theme, themeVm.RegistryOptions.BaseOptions,themeVm.Registry, line, fileNameForContext, opacity);
     }
 }

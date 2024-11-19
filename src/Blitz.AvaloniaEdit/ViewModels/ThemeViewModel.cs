@@ -14,7 +14,7 @@ public class ThemeViewModel : ViewModelBase
      private readonly BlitzTheme _blitzTheme;
 
     public BlitzTheme Theme => _blitzTheme;
-    BlitzTextMateGrammarsRegistryOptions? _options;
+    private readonly BlitzTextMateGrammarsRegistryOptions _options;
 
     public Registry Registry { get; }
     

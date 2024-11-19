@@ -10,7 +10,7 @@ namespace Blitz.Avalonia.Controls.Views;
 
 public partial class SearchPanel : UserControl
 {
-    public Action<object,KeyEventArgs> KeyDownAction { get; set; }
+    public Action<object,KeyEventArgs>? KeyDownAction { get; set; }
     
     public SearchPanel()
     {
@@ -25,7 +25,7 @@ public partial class SearchPanel : UserControl
 
     private void MainSearchField_OnKeyDown(object? sender, KeyEventArgs e)
     {
-        KeyDownAction?.Invoke(sender, e);
+        KeyDownAction?.Invoke(sender!, e);
     }
 
     private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)

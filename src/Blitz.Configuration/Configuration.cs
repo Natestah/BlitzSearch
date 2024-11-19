@@ -117,7 +117,7 @@ public class Configuration
 
 
     public bool ShowTotalSearchTime { get; set; } = false;
-    public string SelectedScope { get; set; }
+    public string SelectedScope { get; set; } = string.Empty;
 
     [DefaultValue(false)]
     public bool IsSolutionScopeSelected { get; set; } = false;

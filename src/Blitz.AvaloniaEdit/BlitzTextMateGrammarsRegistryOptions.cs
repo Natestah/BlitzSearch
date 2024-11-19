@@ -15,7 +15,6 @@ namespace Blitz.AvaloniaEdit;
 /// <param name="themeFileName"></param>
 public class BlitzTextMateGrammarsRegistryOptions(RegistryOptions options, string? themeFileName=null) : IRegistryOptions
 {
-    private readonly string? _themeFileName = themeFileName;
     public RegistryOptions BaseOptions { get; } = options;
 
     public IRawTheme GetTheme(string scopeName) => BaseOptions.GetTheme(scopeName);

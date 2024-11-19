@@ -7,10 +7,10 @@ using MessagePack;
 public class FileNameResult : MessageWithIdentity
 {
     [Key(nameof(FileName))]
-    public string? FileName { get; set; }
-    
-    [Key(nameof(BlitzMatches))]
-    public List<BlitzMatch>? BlitzMatches { get; set; }
+    public string FileName { get; set; } = string.Empty;
+
+    [Key(nameof(BlitzMatches))] 
+    public List<BlitzMatch> BlitzMatches { get; set; } = [];
 
     [Key(nameof(ContentResults))] 
     public List<FileContentResult> ContentResults { get; set; } = [];

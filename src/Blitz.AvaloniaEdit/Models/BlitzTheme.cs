@@ -29,20 +29,22 @@ public class BlitzTheme
         ContentHighlightReplaceBackground = Colors.LightBlue,
         ContentHighlightReplaceBorder = Colors.Lime,
         AvaloniaThemeVariant = "Light",
+        SelectedItemBackground =Colors.LightGray,
         ThemeName = "LightPlus"
     };
 
-    public BlitzColor PassiveIcon { get; set; }
     
-    public BlitzColor TextForeground { get; set; }
-    public BlitzColor WindowBackground { get; set; }
+    public BlitzColor PassiveIcon { get; set; } = Colors.Goldenrod;
+    
+    public BlitzColor TextForeground { get; set; }= Colors.Black;
+    public BlitzColor WindowBackground { get; set; }= Colors.White;
 
-    public BlitzColor ContentHighlightBackground { get; set; }
-    public BlitzColor ContentHighlightBorder { get; set; }
-    public BlitzColor ContentHighlightReplaceBackground { get; set; }
-    public BlitzColor ContentHighlightReplaceBorder { get; set; }
-    public BlitzColor SelectedItemBackground { get; set; }
+    public BlitzColor ContentHighlightBackground { get; set; } = Colors.Khaki;
+    public BlitzColor ContentHighlightBorder { get; set; } = Colors.DarkCyan;
+    public BlitzColor ContentHighlightReplaceBackground { get; set; } = Colors.LightBlue;
+    public BlitzColor ContentHighlightReplaceBorder { get; set; }= Colors.Lime;
+    public BlitzColor SelectedItemBackground { get; set; } = Colors.LightGray;
 
-    public string AvaloniaThemeVariant { get; set; }
-    public string ThemeName { get; set; }
+    public string AvaloniaThemeVariant { get; set; } ="Light";
+    public string ThemeName { get; set; } = "LightPlus";
 }

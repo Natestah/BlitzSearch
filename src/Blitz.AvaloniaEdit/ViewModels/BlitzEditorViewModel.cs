@@ -157,7 +157,7 @@ public class BlitzEditorViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _textMateInstallation, value);
     }
 
-    private FontFamily _selectedFontFamily;
+    private FontFamily _selectedFontFamily = FontFamily.Default;
 
     
     
@@ -201,7 +201,7 @@ public class BlitzEditorViewModel : ViewModelBase
 
     public FontFamily SelectedFontFamily
     {
-        get => _selectedFontFamily ?? FontFamily.Default;
+        get => _selectedFontFamily;
         set => this.RaiseAndSetIfChanged(ref _selectedFontFamily, value);
     }
 

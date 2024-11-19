@@ -246,7 +246,7 @@ public class SearchTask
                     {
                         fileExtension = Path.GetExtension(file);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         //don't bother with things that aren't a file
                         continue;
@@ -271,7 +271,7 @@ public class SearchTask
             {
                 fileExtension = Path.GetExtension(file);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //don't bother with things that aren't a file
                 continue;

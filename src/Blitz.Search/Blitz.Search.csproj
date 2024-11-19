@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <PublishAot>true</PublishAot>
         <IsTrimmable>true</IsTrimmable>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Blitz.Search</Title>
         <Description>File Searching Component for Blitz Search, Deals with Searching AND hosting code for transmitting results to the client, which is currentlly in-process.</Description>
         <Copyright>2024 Nathan SIlvers</Copyright>

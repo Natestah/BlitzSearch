@@ -88,6 +88,11 @@ public partial class MainWindow : Window
                 var text = await sr.ReadToEndAsync();
 
                 var versions = BlitzVersion.DeserializeFrom(text);
+                if (versions is null)
+                {
+                    vm.NewVersionAvailable = false;
+                    return;
+                }
                 _detectedVersion = versions.First().Revision; 
                 var fromChanges = versions.First().Revision + ".0"; // Blitz doesn't use this.. 
 

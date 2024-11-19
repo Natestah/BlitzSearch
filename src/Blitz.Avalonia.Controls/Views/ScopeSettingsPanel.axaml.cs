@@ -23,10 +23,12 @@ public partial class ScopeSettingsPanel : UserControl
 
     private void DropHandler(object? sender, DragEventArgs e)
     {
-        if (this.DataContext is not ScopeViewModel scopeSettingsVM) return;
+        if (DataContext is not ScopeViewModel scopeSettingsVm) return;
 
         var file = e.Data?.GetFiles()?.FirstOrDefault()?.Path;
-        scopeSettingsVM.ScopeImage = file.LocalPath;
+        if(file is null)
+            return;
+        scopeSettingsVm.ScopeImage = file.LocalPath;
     }
 
     private void DragOverHandler(object? sender, DragEventArgs e)

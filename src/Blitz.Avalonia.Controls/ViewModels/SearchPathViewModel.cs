@@ -102,7 +102,7 @@ public class SearchPathViewModel : ViewModelBase
                             CompletionItems.Add(pathEnum);
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         continue;
                     }

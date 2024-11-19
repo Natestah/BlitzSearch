@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <PublishAot>true</PublishAot>
         <IsTrimmable>true</IsTrimmable>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <TargetFrameworks>net9.0</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <IsAotCompatible>True</IsAotCompatible>
@@ -18,13 +18,13 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Labs.Controls" Version="11.0.10.1" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Labs.Controls" Version="11.2.0" />
         <PackageReference Include="Avalonia.Svg" Version="11.1.0-rc2" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
         <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />

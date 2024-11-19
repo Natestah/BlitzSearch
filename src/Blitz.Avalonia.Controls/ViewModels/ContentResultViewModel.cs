@@ -19,11 +19,6 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
     {
         get
         {
-            if (fileContentResultResult.CapturedContents == null)
-            {
-                return [new Run("<NULL FILE CONTENTS>")];
-            }
-
             bool replacing = fileContentResultResult.Replacing;
             string renderedContents = fileContentResultResult.CapturedContents;
             
@@ -60,5 +55,5 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
         this.RaisePropertyChanged(nameof(LineHeight));
     }
 
-    public string CopyText => fileContentResultResult.CapturedContents ?? string.Empty;
+    public string CopyText => fileContentResultResult.CapturedContents;
 }

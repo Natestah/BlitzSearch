@@ -4,7 +4,7 @@ namespace Blitz.Avalonia.Controls;
 
 public class CharState
 {
-    public IBrush Foreground { get; set; } 
+    public IBrush Foreground { get; set; } = Brushes.Black; 
     public int Index { get; set; }
     public HighLightState BackGroundState { get; set; }
     

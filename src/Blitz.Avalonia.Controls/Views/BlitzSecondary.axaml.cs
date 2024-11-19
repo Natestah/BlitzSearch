@@ -175,7 +175,6 @@ public partial class BlitzSecondary : UserControl
         var editorViewModel = mainWindowViewModel.EditorViewModel;
 
         BlitzDocument? gotoDocument = null;
-        bool loadFile = false;
         FileNameResult? fileNameResult = null;
 
 
@@ -248,8 +247,12 @@ public partial class BlitzSecondary : UserControl
         else if (previewing is ReplaceTextViewModel replaceTextViewModel)
         {
             //This seems weird, can't remember why I don't have the extension available here..   
-            var baseOptions = mainWindowViewModel.EditorViewModel.ThemeViewModel.RegistryOptions.BaseOptions;
-            
+            var baseOptions = mainWindowViewModel.EditorViewModel.ThemeViewModel?.RegistryOptions.BaseOptions;
+
+            if (baseOptions == null)
+            {
+                throw new NullReferenceException();
+            }
             var language =  baseOptions.GetLanguageByExtension(".txt") 
                             ?? baseOptions.GetAvailableLanguages().FirstOrDefault();
             if (language == null)

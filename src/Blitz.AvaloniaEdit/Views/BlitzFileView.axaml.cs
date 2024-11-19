@@ -134,7 +134,7 @@ public partial class BlitzFileView : UserControl
                     filePreviewText = await File.ReadAllTextAsync(file.FileNameOrTitle, _currentToken.Token);
 
                 }
-                catch (IOException e)
+                catch (IOException)
                 {
                     if (_currentToken.IsCancellationRequested) return;
                     await Task.Delay(50,_currentToken.Token);
@@ -235,7 +235,11 @@ public partial class BlitzFileView : UserControl
 
             try
             {
-                await Task.Delay(50,_currentToken.Token);
+                if (_currentToken == null)
+                {
+                    return;
+                }
+                await Task.Delay(50, _currentToken.Token);
             }
             catch (OperationCanceledException)
             {

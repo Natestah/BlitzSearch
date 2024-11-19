@@ -253,7 +253,7 @@ public partial class BlitzMainPanel : UserControl
                 return;
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             //Selected theme can be the enum name for built ins
             return;
@@ -268,29 +268,35 @@ public partial class BlitzMainPanel : UserControl
     private void ContextMenuOnContextRequested(object? sender, ContextRequestedEventArgs e)
     {
         var vm = this.DataContext as MainWindowViewModel;
-        if (BlitzSecondary.AvaloniaTextEditor.ContextMenu == null)
+        if (vm == null)
         {
-            BlitzSecondary.AvaloniaTextEditor.ContextMenu = new ContextMenu();
+            return;
         }
+        
+        BlitzSecondary.AvaloniaTextEditor.ContextMenu ??= new ContextMenu();
 
         var menu = BlitzSecondary.AvaloniaTextEditor.ContextMenu;
         menu.Items.Clear();
 
         string text = BlitzSecondary.UpdateSearchThisPreview();
-        if (!string.IsNullOrEmpty(text))
+        if (string.IsNullOrEmpty(text))
         {
-            var keyShortcut = _commandKeybindings[CommandNames.SearchThis];
-            var menuItem = new MenuItem
-            {
-                Header = $"Search '{text}'",
-                InputGesture = keyShortcut.Gesture,
-                Command = keyShortcut.Command,
-            };
-            menu.Items.Add(menuItem);
+            return;
+        }
+        var keyShortcut = _commandKeybindings[CommandNames.SearchThis];
+        var menuItem = new MenuItem
+        {
+            Header = $"Search '{text}'",
+            InputGesture = keyShortcut.Gesture,
+            Command = keyShortcut.Command,
+        };
+        menu.Items.Add(menuItem);
 
-            keyShortcut = _commandKeybindings[CommandNames.GotoInEditor];
-            var iconConverter = new GotoEditorImageConverter();
-            var gotoEditorVm = vm.SelectedEditorViewModel;
+        keyShortcut = _commandKeybindings[CommandNames.GotoInEditor];
+        var iconConverter = new GotoEditorImageConverter();
+        var gotoEditorVm = vm.SelectedEditorViewModel;
+        if (gotoEditorVm != null)
+        {
             var convertedIcon = iconConverter.Convert([gotoEditorVm.Executable, gotoEditorVm.ExecutableIconHint],
                 typeof(Bitmap), null, CultureInfo.CurrentCulture);
             var image = new Image
@@ -305,24 +311,24 @@ public partial class BlitzMainPanel : UserControl
                 Command = keyShortcut.Command,
                 Icon = image
             };
-
-            menu.Items.Add(menuItem);
-
-            keyShortcut = _commandKeybindings[CommandNames.SearchThisGithub];
-            var materialIcon = new MaterialIcon
-            {
-                Kind = MaterialIconKind.Github,
-            };
-            menuItem = new MenuItem
-            {
-                Header = $"Search GitHub for '{text}'",
-                InputGesture = keyShortcut.Gesture,
-                Command = keyShortcut.Command,
-                Icon = materialIcon
-            };
-
             menu.Items.Add(menuItem);
         }
+        
+
+        keyShortcut = _commandKeybindings[CommandNames.SearchThisGithub];
+        var materialIcon = new MaterialIcon
+        {
+            Kind = MaterialIconKind.Github,
+        };
+        menuItem = new MenuItem
+        {
+            Header = $"Search GitHub for '{text}'",
+            InputGesture = keyShortcut.Gesture,
+            Command = keyShortcut.Command,
+            Icon = materialIcon
+        };
+
+        menu.Items.Add(menuItem);
     }
 
 

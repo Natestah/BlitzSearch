@@ -74,7 +74,7 @@ public class ScopeViewModel : ViewModelBase
             {
                 return new Bitmap(ScopeImage);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -97,7 +97,7 @@ public class ScopeViewModel : ViewModelBase
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 ScopeImageVisible = false;
             }

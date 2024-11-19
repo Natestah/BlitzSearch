@@ -11,7 +11,7 @@ public class ExceptionViewModel : ViewModelBase
         _exceptionResult = exceptionResult;
     }
 
-    public string Message => _exceptionResult.ExceptionMessage;
+    public string Message => _exceptionResult.ExceptionMessage ?? string.Empty;
 
-    public string StackInfo => _exceptionResult.ExceptionStack;
+    public string StackInfo => _exceptionResult.ExceptionStack ?? string.Empty;
 }

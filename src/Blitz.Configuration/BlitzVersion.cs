@@ -4,11 +4,11 @@ namespace Blitz;
 
 public class BlitzVersion
 {
-    public string Revision { get; set; }
+    public string Revision { get; set; } = string.Empty;
     
-    public string Changes { get; set; }
+    public string Changes { get; set; } = string.Empty;
 
-    public static BlitzVersionList DeserializeFrom(string text)
+    public static BlitzVersionList? DeserializeFrom(string text)
     {
         return JsonSerializer.Deserialize<BlitzVersionList>(text, JsonContext.Default.BlitzVersionList);
     }

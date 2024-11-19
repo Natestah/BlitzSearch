@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -15,6 +14,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>1.0.1</Version>
         <PackageReleaseNotes>Support for Themes from Files</PackageReleaseNotes>
+        <TargetFrameworks>net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,6 +34,7 @@
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
         <PackageReference Include="Material.Icons" Version="2.1.10" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
 
 
@@ -47,7 +48,6 @@
         <SubType>Code</SubType>
       </Compile>
         <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
-
     </ItemGroup>
 
 

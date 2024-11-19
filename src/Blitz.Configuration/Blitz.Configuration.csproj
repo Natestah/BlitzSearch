@@ -3,9 +3,9 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <TargetFramework>net8.0</TargetFramework>
         <PublishAot>true</PublishAot>
         <IsTrimmable>true</IsTrimmable>
+        <TargetFrameworks>net9.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

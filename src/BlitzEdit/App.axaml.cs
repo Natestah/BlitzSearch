@@ -29,7 +29,7 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
     
-    private async void Goto(string gotoCommand)
+    private void Goto(string gotoCommand)
     {
         var splitString = gotoCommand.Split(';');
         if (splitString.Length != 3)

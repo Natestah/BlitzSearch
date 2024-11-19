@@ -18,7 +18,6 @@ public static class TextMateInlineGenerator
     
     public static InlineCollection GetInlinesFromTextMateSharp(BlitzTheme currentTheme, RegistryOptions options, Registry registry,string text, string fileNameForContext, double opacity = 1)
     {
-        var inlineCollection = new InlineCollection();
         var extension = Path.GetExtension(fileNameForContext);
         var language = options.GetLanguageByExtension(extension)
                        ?? options.GetAvailableLanguages().FirstOrDefault();

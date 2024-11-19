@@ -94,6 +94,7 @@ public class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel( ISearchingClient searchingClient)
     {
         GotoEditorViewModel? firstEditorThatExists = null;
+        bool foundConfiguredEditor = false;
         foreach (var gotoEditor in new GotoDefinitions().GetBuiltInEditors())
         {
             var editorVm = new GotoEditorViewModel(this,gotoEditor)
@@ -103,18 +104,19 @@ public class MainWindowViewModel : ViewModelBase
             GotoEditorCollection.Add(editorVm);
             if (gotoEditor.Title == Configuration.Instance.GotoEditor.Title)
             {
+                foundConfiguredEditor = true;
                 _selectedEditorViewModel = editorVm;
             }
 
-            if (firstEditorThatExists == null && editorVm.EditorExists())
+            if (firstEditorThatExists==null && editorVm.EditorExists())
             {
                 firstEditorThatExists = editorVm;;
             }
         }
 
-        if (_selectedEditorViewModel == null)
+        if (!foundConfiguredEditor && firstEditorThatExists != null)
         {
-            _selectedEditorViewModel = firstEditorThatExists ?? GotoEditorCollection.FirstOrDefault();
+            _selectedEditorViewModel = firstEditorThatExists;
         }
         
         SearchingClient = searchingClient;
@@ -219,7 +221,7 @@ public class MainWindowViewModel : ViewModelBase
 
 
 
-    private GotoEditorViewModel _selectedEditorViewModel;
+    private GotoEditorViewModel? _selectedEditorViewModel;
     private bool _newVersionAvailable;
     private string? _cacheStatus;
     private bool _cacheCleaning;
@@ -242,7 +244,6 @@ public class MainWindowViewModel : ViewModelBase
     private SingleTask SaveQueryTask => _saveQueryTask ??= new SingleTask(SaveQuery);
     public ReactiveCommand<Unit,Unit> CopyCommand { get; set; }
     public ReactiveCommand<Unit,Unit> GotoSelectedExternal { get; set; }
-    public ReactiveCommand<Unit,Unit> GotoPreviewLineSelectedExternal { get; set; }
     public ReactiveCommand<Unit,Unit> GotoSelectedExplorer { get; set; }
     public ReactiveCommand<Unit,Unit> GotoSelectedCmd { get; set; }
     
@@ -299,6 +300,10 @@ public class MainWindowViewModel : ViewModelBase
 
     public void UpdateScopeSelectionForEditor()
     {
+        if (_selectedEditorViewModel == null)
+        {
+            return;
+        }
         switch (_selectedEditorViewModel.GotoEditor.CodeExecute)
         {
             case CodeExecuteNames.VSCode:
@@ -480,12 +485,15 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public ReplaceModeViewModel SelectedReplaceMode
+    public ReplaceModeViewModel? SelectedReplaceMode
     {
         get => _selectedReplaceMode;
         set
         {
-            Configuration.Instance.ReplaceMode = value.Title;
+            if (value != null)
+            {
+                Configuration.Instance.ReplaceMode = value.Title;
+            }
             this.RaiseAndSetIfChanged(ref _selectedReplaceMode, value);
         }
     }
@@ -761,7 +769,7 @@ public class MainWindowViewModel : ViewModelBase
             }
 
             _selectedScope = value;
-            if (value is ScopeViewModel scopeViewModel )
+            if (value is { } scopeViewModel )
             {
                 Configuration.Instance.SelectedScope = scopeViewModel.ScopeTitle;
                 WorkingScope = scopeViewModel;
@@ -1012,7 +1020,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             if (!string.IsNullOrEmpty(selectedFirst.ExtensionValidation))
             {
-                _searchQuery.RawExtensionList = selectedFirst?.ExtensionText;
+                _searchQuery.RawExtensionList = selectedFirst.ExtensionText;
             }
             else
             {
@@ -1179,7 +1187,6 @@ public class MainWindowViewModel : ViewModelBase
     private ObservableCollection<object> _selectedItems;
     private FileDiscoveryStatusViewModel _fileSearchStatus;
     private bool _isMissingScopeRequirements;
-    private TextMate.Installation? _textMateInstallation;
     private IBrush? _textForeground;
     private string? _whatsInUpdate;
     private string _newVersionString = "0.0.0.0";
@@ -1209,8 +1216,8 @@ public class MainWindowViewModel : ViewModelBase
     private bool _enableScopePane;
     private bool _enableThemePane;
     private ScopeViewModel? _selectedScope;
-    private ScopeViewModel _workingScope;
-    private ReplaceModeViewModel _selectedReplaceMode;
+    private ScopeViewModel? _workingScope;
+    private ReplaceModeViewModel? _selectedReplaceMode;
 
 
     public void CaseSmartCaseNotify()
@@ -1310,7 +1317,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public string FileNameSearchTextBox
     {
-        get =>  _searchQuery.FileNameQuery;
+        get =>  _searchQuery.FileNameQuery ?? string.Empty;
         set
         {
             bool raise = value != _searchQuery.FileNameQuery;
@@ -1324,7 +1331,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public string LiteralSearchTextBox
     {
-        get =>  _searchQuery.LiteralSearchQuery;
+        get =>  _searchQuery.LiteralSearchQuery ?? string.Empty;
         set
         {
             bool raise = value != _searchQuery.LiteralSearchQuery;
@@ -1345,7 +1352,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public string RegexSearchTextBox
     {
-        get =>  _searchQuery.RegexSearchQuery;
+        get =>  _searchQuery.RegexSearchQuery ?? string.Empty;
         set
         {
             bool raise = value != _searchQuery.RegexSearchQuery;
@@ -1360,7 +1367,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public string ReplaceBoxText
     {
-        get =>  _searchQuery.ReplaceTextQuery;
+        get =>  _searchQuery.ReplaceTextQuery ?? string.Empty;
         set
         {
             bool raise = value != _searchQuery.ReplaceTextQuery;
@@ -1375,7 +1382,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public string ReplaceWithBoxText
     {
-        get =>  _searchQuery.ReplaceTextWithQuery;
+        get =>  _searchQuery.ReplaceTextWithQuery ?? string.Empty;
         set
         {
             bool raise = value != _searchQuery.ReplaceTextWithQuery;
@@ -1593,7 +1600,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public Action<object>? ShowPreview { get; set; }
 
-    public ScopeViewModel WorkingScope
+    public ScopeViewModel? WorkingScope
     {
         get => _workingScope;
         set
