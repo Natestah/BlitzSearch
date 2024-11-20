@@ -552,7 +552,24 @@ public class SearchTask
             }
         }
 
-        bool doFolderCache = SearchQuery.SolutionExports == null && SearchQuery.FlatSearchFilesList == null;
+        SearchExtensionCache.CacheScopeType cacheType = SearchExtensionCache.CacheScopeType.Folders;
+        if (SearchQuery.FlatSearchFilesList != null )
+        {
+            cacheType = SearchExtensionCache.CacheScopeType.FlatFiles;
+        }
+        else if (SearchQuery.SolutionExports != null)
+        {
+            cacheType = SearchExtensionCache.CacheScopeType.Solution;
+            if (!string.IsNullOrEmpty(SearchQuery.SelectedProjectName))
+            {
+                cacheType = SearchExtensionCache.CacheScopeType.SolutionAndProject;
+            }
+        }
+        else if (SearchQuery.WorkspaceExport != null)
+        {
+            cacheType = SearchExtensionCache.CacheScopeType.Workspace;
+        }
+
 
 
         return new SearchTaskParameters(searchTextBox, 
@@ -567,7 +584,7 @@ public class SearchTask
             SearchQuery.LiteralCaseSensitive,
             SearchQuery.RegexCaseSensitive,
             SearchQuery.ReplaceCaseSensitive,
-            doFolderCache
+            cacheType
             );
     }
 
@@ -663,10 +680,17 @@ public class SearchTask
             }
             try
             {
+                
+                string selectedSolution = SearchQuery.SelectedSolutionExports; 
+                if (string.IsNullOrEmpty(selectedSolution))
+                {
+                    selectedSolution = "unknown";
+                }
 
                 //For now this is a radio selection.  and SolutionExports != null means it's time to search solutions only.
                 if (SearchQuery.FlatSearchFilesList != null)
                 {
+                    SearchRoot.ExtensionCache.RestoreCache(paths, selectedSolution, taskParameters.CacheScopeType, !SearchQuery.EnableRobotFileFilterDefer,SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,extension.Extension!,CancellationTokenSource.Token);
                     if (SearchExtension(taskParameters, extension, FlatFileListEnumerator ))
                     {
                         foundAnything = true;
@@ -674,6 +698,7 @@ public class SearchTask
                 }
                 else if (SearchQuery.SolutionExports != null)
                 {
+                    SearchRoot.ExtensionCache.RestoreCache(paths, selectedSolution, taskParameters.CacheScopeType, !SearchQuery.EnableRobotFileFilterDefer,SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,extension.Extension!,CancellationTokenSource.Token);
                     if (SearchExtension(taskParameters, extension, SolutionEnumerator ))
                     {
                         foundAnything = true;
@@ -681,7 +706,7 @@ public class SearchTask
                 }
                 else
                 {
-                    SearchRoot.ExtensionCache.RestoreCache(paths, !SearchQuery.EnableRobotFileFilterDefer,SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,extension.Extension!,CancellationTokenSource.Token);
+                    SearchRoot.ExtensionCache.RestoreCache(paths, selectedSolution, taskParameters.CacheScopeType, !SearchQuery.EnableRobotFileFilterDefer,SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,extension.Extension!,CancellationTokenSource.Token);
                     if (SearchExtension(taskParameters, extension, SearchRoot.ExtensionCache.EnumCacheFileExtensions ))
                     {
                         foundAnything = true;
@@ -725,7 +750,7 @@ public class SearchTask
                 if (orderedSearch.All(extension => extension.Extension != lateExtensions))
                 {
                     //only restore if they were late in this discovery.
-                    SearchRoot.ExtensionCache.RestoreCache(paths, !SearchQuery.EnableRobotFileFilterDefer,SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,lateExtensions,CancellationTokenSource.Token);
+                    SearchRoot.ExtensionCache.RestoreCache(paths,string.Empty, taskParameters.CacheScopeType, !SearchQuery.EnableRobotFileFilterDefer,SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,lateExtensions,CancellationTokenSource.Token);
                 }
                 
                 SearchRoot.ExtensionCache.ExtensionsEverKnown[lateExtensions] = 1;
@@ -793,7 +818,7 @@ public class SearchTask
                 {
                     if (SearchRoot.FileDiscoverer is { IsFinished: true })
                     {
-                        SearchRoot.ExtensionCache.SaveCache(paths, !SearchQuery.EnableRobotFileFilterDefer,
+                        SearchRoot.ExtensionCache.SaveCache(paths, string.Empty, taskParameters.CacheScopeType, !SearchQuery.EnableRobotFileFilterDefer,
                             SearchQuery.RobotFilterMaxSizeMB, SearchQuery.RobotFilterMaxLineChars, SearchQuery.UseGitIgnore,
                             extension.Extension!);
                     }
@@ -1054,6 +1079,8 @@ public class SearchTask
                 SearchRoot.ExtensionCache.DirtyCache(extension);
                 var updatedParsing = new SearchFileParsing(file, SearchQuery);
                 searchFileInformation = updatedParsing.ParseFile(fileCache);
+                
+                
                 fileCache.SetFile(file,searchFileInformation);
             }
         }

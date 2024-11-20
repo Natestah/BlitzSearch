@@ -1,5 +1,13 @@
 [
   {
+    "Revision": "0.0.84",
+    "Changes": "* Fixed Crash ( Backed out .Net 9.0 upgrade for now )\r\n* Various Nuget Jiggling to get back to working state.\r\n\r\n"
+  },
+  {
+    "Revision": "0.0.83",
+    "Changes": "* Made Workspaces ( vscode style with folders ) different from Solutions. This will help with upcoming Sublime Text work.\r\n* Migrate to .Net 9.0\r\n* All Code Compile Warnings resolved.\r\n* Fixed up some Cache Bleeding, introduced Per Scope caching for these new types.\r\n* Some Security warnings relating to JSON Nugets have been addressed.\r\n\r\n"
+  },
+  {
     "Revision": "0.0.82",
     "Changes": "* Add Cursor Support\r\n\r\n"
   },

@@ -43,15 +43,16 @@ public partial class GotoEditorSettingsPanel : UserControl
         {
             return;
         }
-        var fileContents =  JsonSerializer.Serialize(mainWindowViewModel.SelectedEditorViewModel.GotoEditor, JsonContext.Default.Configuration);
-        var copy = JsonSerializer.Deserialize<GotoEditor>(fileContents, JsonContext.Default.GotoEditor);
-        if (copy == null)
-        {
-            return;
-        }
-        copy.Title = $"{copy.Title}_copy";
-        var newEditor = new GotoEditorViewModel(mainWindowViewModel,copy);
-        mainWindowViewModel.GotoEditorCollection.Add(newEditor);
-        mainWindowViewModel.RebuildCustomEditorList();
+         var fileContents =  JsonSerializer.Serialize(mainWindowViewModel.SelectedEditorViewModel.GotoEditor, JsonContext.Default.GotoEditor);
+         var copy = JsonSerializer.Deserialize<GotoEditor>(fileContents, JsonContext.Default.GotoEditor);
+         if (copy == null)
+         {
+             return;
+         }
+         copy.Title = $"{copy.Title}_copy";
+         var newEditor = new GotoEditorViewModel(mainWindowViewModel,copy);
+         mainWindowViewModel.GotoEditorCollection.Add(newEditor);
+         mainWindowViewModel.RebuildCustomEditorList();
+         mainWindowViewModel.SelectedEditorViewModel = newEditor;
     }
 }

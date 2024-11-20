@@ -17,41 +17,54 @@
         </Style>
     </UserControl.Styles>
     <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-        <ListBox DataContext="{Binding SolutionViewModel}"
+        <ListBox 
                  Background="Transparent"
-                 IsVisible="{Binding ., Converter={x:Static ObjectConverters.IsNotNull}}">
+                 >
+            <ListBoxItem IsVisible="{Binding IsWorkspaceStyle}" 
+                         IsSelected="{Binding  IsWorkspaceScopeSelected}">
+                <StackPanel DataContext="{Binding WorkspaceScopeViewModel}"  Orientation="Horizontal">
+                    <material:MaterialIcon Classes="m1ForWorkspace" Kind="FolderHome" />
+                    <TextBlock Classes="scopeButtons" Text="{Binding DisplayTitle}" />
+                </StackPanel>
+            </ListBoxItem>
             
-            <ListBoxItem IsSelected="{Binding  MainWindowVM.IsSolutionScopeSelected}">
-                <StackPanel Orientation="Horizontal">
+            <ListBoxItem  IsVisible="{Binding IsSolutionStyle}" 
+                         IsSelected="{Binding  IsSolutionScopeSelected}">
+                <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderHome" />
                     <TextBlock Classes="scopeButtons" Text="{Binding DisplayTitle}" />
                 </StackPanel>
             </ListBoxItem>
             
-            <ListBoxItem IsVisible="{Binding !ISVSCodeSolution}" IsSelected="{Binding  MainWindowVM.IsProjectScopeSelected}">
-                <StackPanel Orientation="Horizontal">
+            <ListBoxItem IsVisible="{Binding IsSolutionStyle}" 
+                         IsSelected="{Binding  IsProjectScopeSelected}">
+                <StackPanel DataContext="{Binding SolutionViewModel}"  Orientation="Horizontal"  >
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderText" />
                     <TextBlock Classes="scopeButtons" Text="Project" />
                 </StackPanel>
             </ListBoxItem>
              
-            <ListBoxItem IsVisible="{Binding !ISVSCodeSolution}" IsSelected="{Binding MainWindowVM.IsOpenScopeSelected}">
-                <StackPanel Orientation="Horizontal">
+            <ListBoxItem 
+                         IsVisible="{Binding IsSolutionStyle}" 
+                         IsSelected="{Binding IsOpenScopeSelected}"
+            >
+                <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocumentMultiple" />
                     <TextBlock Classes="scopeButtons" Text="Opened" />
                 </StackPanel>
             </ListBoxItem>
             
-            <ListBoxItem IsVisible="{Binding !ISVSCodeSolution}" IsSelected="{Binding MainWindowVM.IsActiveFileSelected}">
-                <StackPanel Orientation="Horizontal">
+            <ListBoxItem IsVisible="{Binding IsSolutionStyle}"  
+                         IsSelected="{Binding IsActiveFileSelected}">
+                <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocument" />
                     <TextBlock Classes="scopeButtons" Text="Active" />
                 </StackPanel>
             </ListBoxItem>
 
-            <ListBoxItem IsSelected="{Binding MainWindowVM.IsFoldersScopeSelected}">
+            <ListBoxItem IsSelected="{Binding IsFoldersScopeSelected}">
                 <StackPanel Orientation="Horizontal">
-                    <material:MaterialIcon Classes="m1ForSolution" Kind="FolderMultiple" />
+                    <material:MaterialIcon Classes="m1" Kind="FolderMultiple" />
                     <TextBlock Classes="scopeButtons" Text="Folders" />
                 </StackPanel>
             </ListBoxItem>
@@ -103,7 +116,7 @@
 
 
         <StackPanel Orientation="Horizontal">
-            <views:ScopeSelector Margin="10 0 0 0" IsVisible="{Binding ShouldFolderScopeShow}"
+            <views:ScopeSelector Margin="10 0 0 0" IsVisible="{Binding IsFoldersScopeSelected}"
                                  HorizontalAlignment="Stretch" DockPanel.Dock="Left" />
             <ComboBox IsVisible="{Binding IsProjectScopeSelected}" Margin="10 0 0 0"
                       VerticalAlignment="Center" VerticalContentAlignment="Center"

@@ -95,7 +95,9 @@ public class MainWindowViewModel : ViewModelBase
     {
         GotoEditorViewModel? firstEditorThatExists = null;
         bool foundConfiguredEditor = false;
-        foreach (var gotoEditor in new GotoDefinitions().GetBuiltInEditors())
+        var gotoEditors = new GotoDefinitions().GetBuiltInEditors().ToList();
+        gotoEditors.AddRange(Configuration.Instance.CustomEditors);
+        foreach (var gotoEditor in gotoEditors)
         {
             var editorVm = new GotoEditorViewModel(this,gotoEditor)
             {
@@ -293,7 +295,6 @@ public class MainWindowViewModel : ViewModelBase
             }
             this.RaiseAndSetIfChanged(ref _selectedEditorViewModel!, value);
             UpdateScopeSelectionForEditor();
-            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
         }
     }
     
@@ -304,6 +305,11 @@ public class MainWindowViewModel : ViewModelBase
         {
             return;
         }
+
+        IsWorkspaceScopeSelected = false;
+        IsSolutionScopeSelected = false;
+        SolutionViewModel = null;
+        WorkspaceScopeViewModel = null;
         switch (_selectedEditorViewModel.GotoEditor.CodeExecute)
         {
             case CodeExecuteNames.VSCode:
@@ -661,10 +667,27 @@ public class MainWindowViewModel : ViewModelBase
         Configuration.Instance.IsFoldersScopeSelected = false;
         Configuration.Instance.IsProjectScopeSelected = false;
         Configuration.Instance.IsSolutionScopeSelected = false;
+        Configuration.Instance.IsWorkspaceScopeSelected = false;
+        Configuration.Instance.IsOpenScopeSelected = false;
+        Configuration.Instance.IsActiveFileSelected = false;
     }
+
+    public void RadioNotify()
+    {
+        this.RaisePropertyChanged(nameof(IsProjectScopeSelected));
+        this.RaisePropertyChanged(nameof(IsProjectScopeSelected));
+        this.RaisePropertyChanged(nameof(IsSolutionScopeSelected));
+        this.RaisePropertyChanged(nameof(IsWorkspaceScopeSelected));
+        this.RaisePropertyChanged(nameof(IsOpenScopeSelected));
+        this.RaisePropertyChanged(nameof(IsActiveFileSelected));
+    }
+    
+    
+    
+    
     public bool IsSolutionScopeSelected
     {
-        get => Configuration.Instance.IsSolutionScopeSelected;
+        get => SolutionViewModel != null && Configuration.Instance.IsSolutionScopeSelected;
         set
         {
             if (value)
@@ -673,43 +696,29 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsSolutionScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsSolutionScopeSelected)));
-            this.RaisePropertyChanged(nameof(IsFoldersScopeSelected));
-            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
-            this.RaisePropertyChanged(nameof(ShouldOpenScopeShow));
+            RadioNotify();
+        }
+    }
+    public bool IsWorkspaceScopeSelected
+    {
+        get => Configuration.Instance.IsWorkspaceScopeSelected;
+        set
+        {
+            if (value)
+            {
+                RadioClearConfig();
+            }
+            Configuration.Instance.IsWorkspaceScopeSelected = value;
+            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsWorkspaceScopeSelected)));
+            RadioNotify();
+
         }
     }
 
-    public bool ShouldFolderScopeShow
-    {
-        get
-        {
-            if (SolutionViewModel == null) return true;
-            if (SolutionViewModel.ISVSCodeSolution)
-            {
-                return !IsSolutionScopeSelected;
-            }
-            return IsFoldersScopeSelected;
-        }
-    }
-     public bool ShouldOpenScopeShow
-    {
-        get
-        {
-            if (SolutionViewModel != null)
-            {
-                if (SolutionViewModel.ISVSCodeSolution)
-                {
-                    return !IsSolutionScopeSelected;
-                }
-                return IsFoldersScopeSelected;
-            }
-            return true;
-        }
-    }
     
     public bool IsFoldersScopeSelected
     {
-        get => SolutionViewModel == null || Configuration.Instance.IsFoldersScopeSelected;
+        get => Configuration.Instance.IsFoldersScopeSelected;
         set
         {
             if (value)
@@ -718,7 +727,8 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsFoldersScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsFoldersScopeSelected)));
-            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+            RadioNotify();
+
         }
     }
 
@@ -727,9 +737,14 @@ public class MainWindowViewModel : ViewModelBase
         get => Configuration.Instance.IsOpenScopeSelected;
         set
         {
+            if (value)
+            {
+                RadioClearConfig();
+            }
             Configuration.Instance.IsOpenScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsOpenScopeSelected)));
-            this.RaisePropertyChanged(nameof(ShouldOpenScopeShow)); //Todo: fix me
+            RadioNotify();
+
         }
     }
 
@@ -739,9 +754,14 @@ public class MainWindowViewModel : ViewModelBase
         get => Configuration.Instance.IsActiveFileSelected;
         set
         {
+            if (value)
+            {
+                RadioClearConfig();
+            }
             Configuration.Instance.IsActiveFileSelected = value;
-            this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
-            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow)); //Todo: fix me
+            OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
+            RadioNotify();
+
         }
     }
 
@@ -754,7 +774,22 @@ public class MainWindowViewModel : ViewModelBase
         set
         {
             this.RaiseAndSetIfChanged(ref _solutionViewModel, value);
-            this.RaisePropertyChanged(nameof(ShouldFolderScopeShow));
+            this.RaisePropertyChanged(nameof(IsSolutionStyle));
+        }
+    }
+
+    public bool IsSolutionStyle => _solutionViewModel != null;
+    public bool IsWorkspaceStyle => _workspaceScopeViewModel != null;
+
+    private WorkspaceScopeViewModel? _workspaceScopeViewModel;
+
+    public WorkspaceScopeViewModel? WorkspaceScopeViewModel
+    {
+        get => _workspaceScopeViewModel;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _workspaceScopeViewModel, value);
+            this.RaisePropertyChanged(nameof(IsWorkspaceStyle));
         }
     }
 
@@ -774,7 +809,8 @@ public class MainWindowViewModel : ViewModelBase
                 Configuration.Instance.SelectedScope = scopeViewModel.ScopeTitle;
                 WorkingScope = scopeViewModel;
             }
-            this.OnPropertyChangedFileSystemRestart(this,
+            this.RaisePropertyChanged(nameof(IsSolutionStyle));
+            OnPropertyChangedFileSystemRestart(this,
                 new PropertyChangedEventArgs(nameof(SelectedScope)));
         }
     }
@@ -956,7 +992,6 @@ public class MainWindowViewModel : ViewModelBase
             or nameof(EnableSettingsPane)
             or nameof(EnableTextPane)
             or nameof(EnableScopePane)
-            or nameof(ShouldFolderScopeShow)
             or nameof(EnableThemePane)
             or nameof(SplitPane)
             )
@@ -1050,74 +1085,74 @@ public class MainWindowViewModel : ViewModelBase
 
         _searchQuery.FilePaths = [];
         _searchQuery.FlatSearchFilesList = null;
-        if (IsFoldersScopeSelected || SolutionViewModel == null)
+        if (IsFoldersScopeSelected)
         {
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
             _searchQuery.FilePaths = filePaths;
         }
-        else if (SolutionViewModel is { ISVSCodeSolution: true })
+        else if (IsWorkspaceScopeSelected)
         {
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
             _searchQuery.FilePaths = [];
-            if (SolutionViewModel.Export.Projects != null)
+            if (WorkspaceScopeViewModel == null)
             {
-                
-                foreach (var project in SolutionViewModel.Export.Projects)
-                {
-                    if (project != null)
-                    {
-                        foreach (var vsCodeFilePath in project.Files)
-                        {
-                            if (Directory.Exists(vsCodeFilePath))
-                            {
-                                _searchQuery.FilePaths.Add(new SearchPath { TopLevelOnly = false, Folder = vsCodeFilePath });
-                            }
-                        }
-                    }
-                }
-                
+                return;
+            }
+            foreach (var folder in WorkspaceScopeViewModel.WorkspaceExport.Folders)
+            {
+                _searchQuery.FilePaths.Add(new SearchPath { TopLevelOnly = false, Folder = folder });
             }
         }
         else if (IsProjectScopeSelected)
         {
             var isolatedSolutionExport = new SolutionExport();
-            if (SolutionViewModel != null)
+            if (SolutionViewModel == null)
             {
-                isolatedSolutionExport.Name = SolutionViewModel.Export.Name;
-                isolatedSolutionExport.Projects = [];
-                if (SolutionViewModel.Export.Projects != null && SolutionViewModel.SelectedProject != null)
-                {
-                    var match = SolutionViewModel.Export.Projects.FirstOrDefault(x =>
-                        x.Name == SolutionViewModel.SelectedProject.Name);
-                    if (match != null)
-                    {
-                        isolatedSolutionExport.Projects.Add(match);
-                    }
-                }
-                _searchQuery.SolutionExports = [isolatedSolutionExport];
+                return;
             }
+            isolatedSolutionExport.Name = SolutionViewModel.Export.Name;
+            isolatedSolutionExport.Projects = [];
+            if (SolutionViewModel.SelectedProject != null)
+            {
+                var match = SolutionViewModel.Export.Projects.FirstOrDefault(x =>
+                    x.Name == SolutionViewModel.SelectedProject.Name);
+                if (match != null)
+                {
+                    isolatedSolutionExport.Projects.Add(match);
+                }
+            }
+            _searchQuery.SolutionExports = [isolatedSolutionExport];
         }
-        else if (IsSolutionScopeSelected && SolutionViewModel != null)
+        else if (IsSolutionScopeSelected)
         {
+            if (SolutionViewModel == null)
+            {
+                return;
+            }
             _searchQuery.SolutionExports = [SolutionViewModel.Export];
+            _searchQuery.SelectedSolutionExports = SolutionViewModel.Export.Name;
         }
-        else if (IsOpenScopeSelected && SolutionViewModel != null)
+        else if (IsOpenScopeSelected)
         {
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
+            if (SolutionViewModel == null)
+            {
+                return;
+            }
             _searchQuery.FlatSearchFilesList = SolutionViewModel.ActiveFiles.ToList();
         }
-        else if (IsActiveFileSelected && SolutionViewModel != null)
+        else if (IsActiveFileSelected)
         {
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
-
-            if (SolutionViewModel.ActiveFiles.Count > 0)
+            if (SolutionViewModel is { ActiveFiles.Count: > 0 })
             {
                 _searchQuery.FlatSearchFilesList = [SolutionViewModel.ActiveFiles[0]];
             }
+
         }
         else
         {

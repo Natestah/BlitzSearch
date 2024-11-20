@@ -32,11 +32,11 @@ public class SearchTaskParameters(BlitzAndQuery textBoxQuery,
     bool literalCaseSensitive = false,
     bool regexCaseSensitive = false,
     bool replaceCaseSensitive = false,
-    bool folderCache = false
+    SearchExtensionCache.CacheScopeType cacheScopeType = SearchExtensionCache.CacheScopeType.None
     )
 {
-    
-    public bool DoFolderCache => folderCache;
+    public SearchExtensionCache.CacheScopeType CacheScopeType => cacheScopeType;
+    public bool DoFolderCache => cacheScopeType == SearchExtensionCache.CacheScopeType.Folders;
     public BlitzAndQuery TextBoxQuery => textBoxQuery;
     public BlitzAndQuery? FileNameQuery => fileNameQuery;
     public BlitzAndQuery? DebugFileNameQuery => debugFileNameQuery;

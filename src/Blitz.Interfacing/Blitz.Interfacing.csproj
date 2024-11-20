@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Description>Minimal shared interfaces to house objects shared between Client/Server for Blitz Search.</Description>
@@ -16,11 +15,12 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>1.0.2</Version>
         <PackageReleaseNotes>Added a couple of slots for Solution Projects / flat files lists / Answered some Warnings</PackageReleaseNotes>
+        <TargetFrameworks>net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MessagePack" Version="2.5.187" />
-      <PackageReference Include="MessagePack.MSBuild.Tasks" Version="2.5.187">
+      <PackageReference Include="MessagePack" Version="2.5.192" />
+      <PackageReference Include="MessagePack.MSBuild.Tasks" Version="2.5.192">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>

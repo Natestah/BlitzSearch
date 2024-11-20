@@ -121,6 +121,15 @@ public class SearchQuery : MessageWithIdentity
     [Key( nameof(SolutionExports))]
     public List<SolutionExport>? SolutionExports;
     
+    [Key(nameof(SelectedSolutionExports))]
+    public string SelectedSolutionExports { get; set; } = string.Empty;
+
+    [Key( nameof(WorkspaceExport))]
+    public List<WorkspaceExport>? WorkspaceExport;
+    
+    [Key(nameof(SelectedWorkspaceExport))]
+    public string SelectedWorkspaceExport { get; set; } = string.Empty;
+    
     [Key(nameof(SelectedProjectName))]
     public string? SelectedProjectName { get; set; }
     

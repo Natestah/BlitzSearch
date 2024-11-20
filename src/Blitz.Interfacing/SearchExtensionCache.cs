@@ -172,7 +172,7 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
     
     
 
-    public void SaveCache(IEnumerable<string> paths,  bool ignoreHeavies, double robotMaxBytesMb, int maxLineChars , bool useGitIgnore, string extension)
+    public void SaveCache(IEnumerable<string> paths,string slnOrWorkspaceFolder, CacheScopeType scopeType,  bool ignoreHeavies, double robotMaxBytesMb, int maxLineChars , bool useGitIgnore, string extension)
     {
         if (!_initiallySaved.TryAdd(extension, true))
         {
@@ -186,7 +186,7 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
             }
         }
         
-        string fileName = GetCacheFileName(paths, ignoreHeavies, robotMaxBytesMb, maxLineChars, useGitIgnore, extension);
+        string fileName = GetCacheFileName(paths, slnOrWorkspaceFolder, scopeType, ignoreHeavies, robotMaxBytesMb, maxLineChars, useGitIgnore, extension);
         
         
         if (TryGetValue(extension, out var fileDictionary))
@@ -212,14 +212,14 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
         }
     }
 
-    public void RestoreCache(IEnumerable<string> paths, bool ignoreHeavies, double robotMaxBytesMb, int maxLineChars, bool useGitIgnore, string extension, CancellationToken token)
+    public void RestoreCache(IEnumerable<string> paths,string slnOrWorkspaceFolder, CacheScopeType scopeType, bool ignoreHeavies, double robotMaxBytesMb, int maxLineChars, bool useGitIgnore, string extension, CancellationToken token)
     {
         AllKnownExtensions[extension] = 1;
         if (ContainsKey(extension))
         {
             return;
         }
-        string fileName = GetCacheFileName(paths, ignoreHeavies,robotMaxBytesMb,maxLineChars, useGitIgnore, extension);
+        string fileName = GetCacheFileName(paths,slnOrWorkspaceFolder,scopeType, ignoreHeavies,robotMaxBytesMb,maxLineChars, useGitIgnore, extension);
         if (!File.Exists(fileName))
         {
             return;
@@ -266,21 +266,55 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
             return (isLowercase) ? hash.ToLower() : hash;
         }
     }
+
+
+    public enum CacheScopeType
+    {
+        None,
+        Folders,
+        Solution,
+        FlatFiles,
+        SolutionAndProject,
+        Workspace
+    }
     /// <summary>
     /// Caches can be different, based on things like 'UseGitIgnore' and other Optional Optimizations
     /// </summary>
     /// <returns></returns>
-    private string GetCacheFileName(IEnumerable<string> paths, bool ignoringHeavies, double maxmb, int maxCols, bool useGitIgnore, string extension)
+    private string GetCacheFileName(IEnumerable<string> paths,string slnOrWorkspaceFolder, CacheScopeType scopeType, bool ignoringHeavies, double maxmb, int maxCols, bool useGitIgnore, string extension)
     {
         var name = new StringBuilder();
-        var hashPrefix = Md5(string.Concat(paths));
+        string hashPrefix = Md5(string.Concat(paths));
         name.Append(extension.TrimStart('.'));
         name.Append("_");
+        if (scopeType != CacheScopeType.Folders)
+        {
+            hashPrefix = Md5(slnOrWorkspaceFolder);
+        }
         name.Append(hashPrefix);
         name.Append("_");
         if (useGitIgnore)
         {
             name.Append("GI");
+        }
+
+        switch (scopeType)
+        {
+            case CacheScopeType.Folders:
+                name.Append("_FO_");
+                break;
+            case CacheScopeType.Solution:
+                name.Append("_SO_");
+                break;
+            case CacheScopeType.FlatFiles:
+                name.Append("_SO_");
+                break;
+            case CacheScopeType.SolutionAndProject:
+                name.Append("_SP_");
+                break;
+            case CacheScopeType.Workspace:
+                name.Append("_WS_");
+                break;
         }
 
         if (ignoringHeavies)

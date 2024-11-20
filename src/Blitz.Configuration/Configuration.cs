@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -72,17 +73,18 @@ public class Configuration
             var fileName = _getStoreFile(ConfigurationFileName);
             if (File.Exists(fileName))
             {
-                var configFromFile = JsonSerializer.Deserialize<Configuration>(File.ReadAllText(fileName),
-                    JsonContext.Default.Configuration);
-                if (configFromFile != null)
-                {
-                    configFromFile.FromFile = true;
-                    return configFromFile;
-                }
+                 var configFromFile = JsonSerializer.Deserialize<Configuration>(File.ReadAllText(fileName),
+                     JsonContext.Default.Configuration);
+                 if (configFromFile != null)
+                 {
+                     configFromFile.FromFile = true;
+                     return configFromFile;
+                 }
             }
         }
         catch (Exception e)
         {
+            Debugger.Break();
             //Make message box -> https://github.com/Natestah/BlitzSearch/issues/85
             Console.WriteLine(e);
         }
@@ -117,10 +119,15 @@ public class Configuration
 
 
     public bool ShowTotalSearchTime { get; set; } = false;
+    
+    [DefaultValue("")]
     public string SelectedScope { get; set; } = string.Empty;
 
     [DefaultValue(false)]
     public bool IsSolutionScopeSelected { get; set; } = false;
+    
+    [DefaultValue(false)]
+    public bool IsWorkspaceScopeSelected { get; set; } = false;
     
     [DefaultValue(false)]
     public bool IsProjectScopeSelected { get; set; } = false;

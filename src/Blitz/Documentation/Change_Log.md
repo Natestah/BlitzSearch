@@ -6,6 +6,17 @@
 
 Thank you!
 
+### Version 0.0.84
+* Fixed Crash ( Backed out .Net 9.0 upgrade for now )
+* Various Nuget Jiggling to get back to working state.
+
+### Version 0.0.83
+* Made Workspaces ( vscode style with folders ) different from Solutions. This will help with upcoming Sublime Text work.
+* Migrate to .Net 9.0
+* All Code Compile Warnings resolved.
+* Fixed up some Cache Bleeding, introduced Per Scope caching for these new types.
+* Some Security warnings relating to JSON Nugets have been addressed.
+
 ### Version 0.0.82
 * Add Cursor Support
 

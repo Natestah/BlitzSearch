@@ -59,19 +59,19 @@ public partial class BlitzMainPanel : UserControl
             {
                 return;
             }
-            var list = JsonSerializer.Deserialize(text,JsonContext.Default.ActiveFilesList);
-            if (list is null || mainWindowViewModel.SolutionViewModel == null
-                ||mainWindowViewModel.SolutionViewModel.ActiveFiles.SequenceEqual(list.ActiveFiles))
-            {
-                return;
-            }
+             var list = JsonSerializer.Deserialize(text,JsonContext.Default.ActiveFilesList);
+             if (list is null || mainWindowViewModel.SolutionViewModel == null
+                 ||mainWindowViewModel.SolutionViewModel.ActiveFiles.SequenceEqual(list.ActiveFiles))
+             {
+                 return;
+             }
             
-            mainWindowViewModel.SolutionViewModel.ActiveFiles.Clear();
-            mainWindowViewModel.SolutionViewModel.ActiveFiles.AddRange(list.ActiveFiles);
-            if (mainWindowViewModel.IsActiveFileSelected)
-            {
-                mainWindowViewModel.UpdateActiveFile();
-            }
+             mainWindowViewModel.SolutionViewModel.ActiveFiles.Clear();
+             mainWindowViewModel.SolutionViewModel.ActiveFiles.AddRange(list.ActiveFiles);
+             if (mainWindowViewModel.IsActiveFileSelected)
+             {
+                 mainWindowViewModel.UpdateActiveFile();
+             }
         });
     }
 
@@ -92,8 +92,8 @@ public partial class BlitzMainPanel : UserControl
             SolutionExport? configFromFile = null;
             try
             {
-                configFromFile = JsonSerializer.Deserialize(text,JsonContext.Default.SolutionExport);
-                if (configFromFile is null)
+                 configFromFile = JsonSerializer.Deserialize(text,JsonContext.Default.SolutionExport);
+                 if (configFromFile is null)
                 {
                     return;
                 }
@@ -114,6 +114,11 @@ public partial class BlitzMainPanel : UserControl
             {
                 mainWindowViewModel.SolutionViewModel.SelectedProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault(project=>project.Name==existingProject) ?? new ProjectViewModel(new Project(){Name = "Default"});
             }
+
+            if (!mainWindowViewModel.IsFoldersScopeSelected)
+            {
+                mainWindowViewModel.IsSolutionScopeSelected = true;
+            }
         });
     }
     
@@ -121,33 +126,33 @@ public partial class BlitzMainPanel : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (DataContext is not MainWindowViewModel mainWindowViewModel)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(text))
-            {
-                return;
-            }
-            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.SelectedProjectExport);
-            if (configFromFile is null)
-            {
-                return;
-            }
-
-            if (mainWindowViewModel.SolutionViewModel == null || mainWindowViewModel.SolutionViewModel.Export.Name != configFromFile.BelongsToSolution)
-            {
-                return;
-            }
+             if (DataContext is not MainWindowViewModel mainWindowViewModel)
+             {
+                 return;
+             }
             
-            var existingProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault( project=>project.Name == configFromFile.Name );
-            if (existingProject == null)
-            {
-                return;
-            }
-
-            mainWindowViewModel.SolutionViewModel.SelectedProject = existingProject;
+             if (string.IsNullOrEmpty(text))
+             {
+                 return;
+             }
+             var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.SelectedProjectExport);
+             if (configFromFile is null)
+             {
+                 return;
+             }
+            
+             if (mainWindowViewModel.SolutionViewModel == null || mainWindowViewModel.SolutionViewModel.Export.Name != configFromFile.BelongsToSolution)
+             {
+                 return;
+             }
+            
+             var existingProject = mainWindowViewModel.SolutionViewModel.Projects.FirstOrDefault( project=>project.Name == configFromFile.Name );
+             if (existingProject == null)
+             {
+                 return;
+             }
+            
+             mainWindowViewModel.SolutionViewModel.SelectedProject = existingProject;
         });
         
     }
@@ -157,38 +162,34 @@ public partial class BlitzMainPanel : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (DataContext is not MainWindowViewModel mainWindowViewModel)
-            {
-                return;
-            }
+             if (DataContext is not MainWindowViewModel mainWindowViewModel)
+             {
+                 return;
+             }
             
-            if (mainWindowViewModel.SelectedEditorViewModel is not { IsVsCode: true } and not { IsCursor: true })
-            {
-                return;
-            }
-
-            var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.FolderWorkspace);
-            if (string.IsNullOrEmpty(configFromFile?.Name))
-            {
-                mainWindowViewModel.SolutionViewModel = null;
-                return;
-            }
+             if (mainWindowViewModel.SelectedEditorViewModel is not { IsVsCode: true } and not { IsCursor: true })
+             {
+                 return;
+             }
             
-            var solutionExport = new SolutionExport(){Name = configFromFile.Name};
+             var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.FolderWorkspace);
+             mainWindowViewModel.IsWorkspaceScopeSelected = false;
+             if (string.IsNullOrEmpty(configFromFile?.Name))
+             {
+                 mainWindowViewModel.WorkspaceScopeViewModel = null;
+                 return;
+             }
             
-            //for Now we're going to pretend like VS Code Workspaces are Solutions/Project.
-            var fauxProject = new Project() { Name = configFromFile.Name, Files = configFromFile.Folders };
-            solutionExport.Projects = [fauxProject];
-            mainWindowViewModel.SolutionViewModel = new SolutionViewModel(solutionExport, mainWindowViewModel)
-                {
-                    ISVSCodeSolution = true
-                };
+             var workspaceExport = new WorkspaceExport()
+                 { Name = configFromFile.Name, Folders = configFromFile.Folders };
             
-            if (mainWindowViewModel.IsProjectScopeSelected)
-            {
-                mainWindowViewModel.IsProjectScopeSelected = false;
-                mainWindowViewModel.IsSolutionScopeSelected = true;
-            }
+             mainWindowViewModel.WorkspaceScopeViewModel = new WorkspaceScopeViewModel(mainWindowViewModel, workspaceExport);
+             mainWindowViewModel.SolutionViewModel = null;
+            
+             if (!mainWindowViewModel.IsFoldersScopeSelected)
+             {
+                 mainWindowViewModel.IsWorkspaceScopeSelected = true;
+             }
         });
     }
 

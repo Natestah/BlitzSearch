@@ -14,7 +14,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>1.0.1</Version>
         <PackageReleaseNotes>Support for Themes from Files</PackageReleaseNotes>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFrameworks>net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,18 +23,17 @@
 
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.0.6"/>
+        <PackageReference Include="Avalonia" Version="11.2.1" />
         <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.6"/>
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6"/>
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.6"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6"/>
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.6"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.1" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.1" />
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
         <PackageReference Include="Material.Icons" Version="2.1.10" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
-        <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
 
 

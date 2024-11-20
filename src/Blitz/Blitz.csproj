@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -15,8 +15,8 @@
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
         <PackageReleaseNotes>Limited Time Beta</PackageReleaseNotes>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>0.0.82</AssemblyVersion>
-        <FileVersion>0.0.82</FileVersion>
+        <AssemblyVersion>0.0.84</AssemblyVersion>
+        <FileVersion>0.0.84</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>
@@ -38,9 +38,8 @@
         <PackageReference Include="Avalonia" Version="11.2.1" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.7" />
-        <PackageReference Include="ReactiveUI" Version="20.1.1" />
-        <PackageReference Include="System.Text.Json" Version="9.0.0" />
+        <PackageReference Include="ReactiveUI" Version="20.1.63" />
+        <PackageReference Include="ReactiveUI.XamForms" Version="19.6.12" />
     </ItemGroup>
 
     <ItemGroup>
@@ -48,9 +47,6 @@
       <ProjectReference Include="..\Blitz.Search\Blitz.Search.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ReferencePathWithRefAssemblies Update="C:\Users\Silvers\.nuget\packages\reactiveui\18.3.1\lib\net6.0\ReactiveUI.dll" />
-    </ItemGroup>
 
 
     <ItemGroup>

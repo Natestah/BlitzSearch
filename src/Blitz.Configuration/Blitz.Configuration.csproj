@@ -5,11 +5,11 @@
         <Nullable>enable</Nullable>
         <PublishAot>true</PublishAot>
         <IsTrimmable>true</IsTrimmable>
-        <TargetFrameworks>net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.1.1" />
+        <PackageReference Include="Avalonia" Version="11.2.1" />
     </ItemGroup>
 
     <ItemGroup>
