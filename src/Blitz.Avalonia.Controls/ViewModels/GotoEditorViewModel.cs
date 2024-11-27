@@ -282,6 +282,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     }
 
     public bool IsVsCode => GotoEditor.CodeExecute == CodeExecuteNames.VSCode;
+    public bool IsSublimeText => GotoEditor.CodeExecute == CodeExecuteNames.SublimeText;
     public bool IsCursor => GotoEditor.CodeExecute == CodeExecuteNames.Cursor;
     public bool IsVisualStudio => GotoEditor.CodeExecute == CodeExecuteNames.VisualStudio;
 

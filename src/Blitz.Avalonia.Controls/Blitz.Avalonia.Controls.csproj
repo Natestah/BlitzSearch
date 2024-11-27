@@ -6,7 +6,7 @@
         <PublishAot>true</PublishAot>
         <IsTrimmable>true</IsTrimmable>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <TargetFrameworks>net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <IsAotCompatible>True</IsAotCompatible>
@@ -23,10 +23,10 @@
         <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
         <PackageReference Include="Avalonia.Labs.Controls" Version="11.2.0" />
         <PackageReference Include="Avalonia.Svg" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.1" />
         <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
         <PackageReference Include="ColorTextBlock.Avalonia" Version="11.0.3-a1" />
         <PackageReference Include="Humanizer" Version="3.0.0-beta.13" />

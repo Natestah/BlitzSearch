@@ -7,7 +7,17 @@
     "Notes": "Plugin Available"
   },
   {
+    "Title": "Visual Studio",
+    "CodeExecute": "VisualStudioPlugin",
+    "Executable": "-",
+    "ExecutableIconHint": "devenv.exe",
+    "ExecutableWorkingDirectory": "-",
+    "Arguments": "-",
+    "Notes": "Blitz Search plugin required for goto."
+  },
+  {
     "Title": "SublimeText",
+    "CodeExecute": "SublimeText",
     "Executable": "subl.exe",
     "ExecutableWorkingDirectory": "%programfiles%\\Sublime Text",
     "Arguments": "\u0022%filename%\u0022:%line%:%column_plus_one%",
@@ -40,20 +50,6 @@
     "ExecutableWorkingDirectory": "",
     "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
     "Notes": "Extension Available"
-  },
-  {
-    "Title": "Notepad",
-    "Executable": "notepad.exe",
-    "ExecutableWorkingDirectory": "",
-    "Arguments": "\u0022%filename%\u0022",
-    "Notes": "Only supports opening file"
-  },
-  {
-    "Title": "UltraEdit 64",
-    "Executable": "uedit64.exe",
-    "ExecutableWorkingDirectory": "%programfiles%\\IDM Computer Solutions\\UltraEdit",
-    "Arguments": "\u0022%filename%\u0022/%line%/1",
-    "Notes": "Only supports line number."
   },
   {
     "Title": "Rider",
@@ -126,13 +122,18 @@
     "Notes": "Extension Available"
   },
   {
-    "Title": "Visual Studio",
-    "CodeExecute": "VisualStudioPlugin",
-    "Executable": "-",
-    "ExecutableIconHint": "devenv.exe",
-    "ExecutableWorkingDirectory": "-",
-    "Arguments": "-",
-    "Notes": "Blitz Search plugin required for goto."
+    "Title": "Notepad",
+    "Executable": "notepad.exe",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "\u0022%filename%\u0022",
+    "Notes": "Only supports opening file"
+  },
+  {
+    "Title": "UltraEdit 64",
+    "Executable": "uedit64.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\IDM Computer Solutions\\UltraEdit",
+    "Arguments": "\u0022%filename%\u0022/%line%/1",
+    "Notes": "Only supports line number."
   },
   {
     "Title": "Brackets",

@@ -10,7 +10,6 @@
              x:DataType="vm:MainWindowViewModel">
     <UserControl.Resources>
         <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
-
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.p1">

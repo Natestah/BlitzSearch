@@ -7,11 +7,11 @@ public class WorkspaceScopeViewModel : ViewModelBase
 {
     public MainWindowViewModel MainWindowVM { get; }
     
-    public WorkspaceExport WorkspaceExport { get; }
+    public WorkspaceExport WorkspaceExport { get; set; }
 
     public string Title => WorkspaceExport.Name;
 
-    
+    public string ExecutableIconHint { get; set; } = "";
     public WorkspaceScopeViewModel(MainWindowViewModel mainWindowViewModel, WorkspaceExport workspaceExport)
     {
         MainWindowVM = mainWindowViewModel;

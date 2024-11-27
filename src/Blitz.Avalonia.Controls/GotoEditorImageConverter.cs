@@ -10,6 +10,25 @@ using Avalonia.Platform;
 
 namespace Blitz.Avalonia.Controls;
 
+
+public class DirectEditorImageConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if(value is string convertedString && GotoEditorImageConverter.TryFromResource(convertedString, out var bitmap)
+                                           && bitmap != null)
+        {
+            return bitmap;
+        }
+        return GotoEditorImageConverter.CreateBitmap(Brushes.Chartreuse);
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public class GotoEditorImageConverter : IMultiValueConverter
 {
     private static readonly Dictionary<string, string> ExeNameToResourceLocator = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -34,7 +53,7 @@ public class GotoEditorImageConverter : IMultiValueConverter
     };
     
     
-    private Bitmap? CreateBitmap(IBrush brush)
+    public static Bitmap? CreateBitmap(IBrush brush)
     {
         var internalImage = new DrawingImage
         {
@@ -68,7 +87,7 @@ public class GotoEditorImageConverter : IMultiValueConverter
         throw new NotImplementedException();
     }
 
-    private bool TryFromResource(string? exe, out Bitmap? bitmap)
+    public static bool TryFromResource(string? exe, out Bitmap? bitmap)
     {
         if (string.IsNullOrEmpty(exe))
         {
@@ -97,7 +116,6 @@ public class GotoEditorImageConverter : IMultiValueConverter
 
         var exe = values[0] as string;
         var exeHint = values[1] as string;
-
 
         if (TryFromResource(exeHint, out var bitmap)
             || TryFromResource(exe, out bitmap))

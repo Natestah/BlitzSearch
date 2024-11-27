@@ -46,6 +46,7 @@ public partial class BlitzMainPanel : UserControl
         PoorMansIPC.Instance.RegisterAction("VS_SOLUTION", IPC_UPDATE_VS_SOLUTION);
         PoorMansIPC.Instance.RegisterAction("VS_PROJECT", IPC_UPDATE_VS_PROJECT_SELECTED);
         PoorMansIPC.Instance.RegisterAction("VS_ACTIVE_FILES", IPC_UPDATE_VS_ACTIVE_FILES);
+        PoorMansIPC.Instance.RegisterAction("SUBLIME_TEXT_WORKSPACE", IPC_SUBLIME_TEXT_WORKSPACE);
         
         PoorMansIPC.Instance.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
@@ -126,22 +127,14 @@ public partial class BlitzMainPanel : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-             if (DataContext is not MainWindowViewModel mainWindowViewModel)
-             {
-                 return;
-             }
-            
-             if (string.IsNullOrEmpty(text))
+             if (DataContext is not MainWindowViewModel mainWindowViewModel || string.IsNullOrEmpty(text))
              {
                  return;
              }
              var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.SelectedProjectExport);
-             if (configFromFile is null)
-             {
-                 return;
-             }
-            
-             if (mainWindowViewModel.SolutionViewModel == null || mainWindowViewModel.SolutionViewModel.Export.Name != configFromFile.BelongsToSolution)
+             if (configFromFile is null 
+                 || mainWindowViewModel.SolutionViewModel == null 
+                 || mainWindowViewModel.SolutionViewModel.Export.Name != configFromFile.BelongsToSolution)
              {
                  return;
              }
@@ -173,19 +166,145 @@ public partial class BlitzMainPanel : UserControl
              }
             
              var configFromFile = JsonSerializer.Deserialize(text,Blitz.JsonContext.Default.FolderWorkspace);
-             mainWindowViewModel.IsWorkspaceScopeSelected = false;
              if (string.IsNullOrEmpty(configFromFile?.Name))
              {
-                 mainWindowViewModel.WorkspaceScopeViewModel = null;
+                 mainWindowViewModel.SelectedWorkspaceScopeViewModel = null;
                  return;
              }
             
              var workspaceExport = new WorkspaceExport()
                  { Name = configFromFile.Name, Folders = configFromFile.Folders };
-            
-             mainWindowViewModel.WorkspaceScopeViewModel = new WorkspaceScopeViewModel(mainWindowViewModel, workspaceExport);
+             
+             
+             var workspaceScopeViewModel = mainWindowViewModel.WorkspaceScopeViewModels.FirstOrDefault(space=>space.WorkspaceExport.Name==configFromFile.Name);
+
+             if (workspaceScopeViewModel is null)
+             {
+                 workspaceScopeViewModel = new WorkspaceScopeViewModel(mainWindowViewModel, workspaceExport)
+                 {
+                     ExecutableIconHint = configFromFile.ExeForIcon
+                 };
+                 mainWindowViewModel.WorkspaceScopeViewModels.Add(workspaceScopeViewModel);
+             }
+             else
+             {
+                 workspaceScopeViewModel.ExecutableIconHint = configFromFile.ExeForIcon;
+                 workspaceScopeViewModel.WorkspaceExport = workspaceExport;
+             }
+             
+             mainWindowViewModel.SelectedWorkspaceScopeViewModel = workspaceScopeViewModel;
              mainWindowViewModel.SolutionViewModel = null;
             
+             if (!mainWindowViewModel.IsFoldersScopeSelected)
+             {
+                 mainWindowViewModel.IsWorkspaceScopeSelected = true;
+             }
+        });
+    }
+
+    private string GetNameFromWorkspace(FolderWorkspace workspace)
+    {
+        if (!string.IsNullOrEmpty(workspace.ProjectName))
+        {
+            try
+            {
+                return Path.GetFileNameWithoutExtension(workspace.ProjectName);
+            }
+            catch (Exception)
+            {
+                return workspace.ProjectName;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(workspace.WorkspaceFileName))
+        {
+            try
+            {
+                return Path.GetFileNameWithoutExtension(workspace.WorkspaceFileName);
+            }
+            catch (Exception)
+            {
+                return workspace.WorkspaceFileName;
+            }
+            
+        }
+        StringBuilder builder = new();
+        builder.Append('(');
+        bool continuation = false;
+        foreach (var folder in workspace.Folders)
+        {
+            try
+            {
+                if (continuation)
+                {
+                    builder.Append(',');
+                }
+                builder.Append( System.IO.Path.GetFileName(folder) );
+                continuation = true;
+            }
+            catch (Exception)
+            {
+                builder.Append('-');
+                throw;
+            }
+        }
+        builder.Append(')');
+        return builder.ToString();
+    }
+    
+    private void IPC_SUBLIME_TEXT_WORKSPACE(string text)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+             if (DataContext is not MainWindowViewModel { SelectedEditorViewModel.IsSublimeText: true } mainWindowViewModel)
+             {
+                 return;
+             }
+            
+             if(string.IsNullOrEmpty(text)) return;
+             
+             var workspaces = JsonSerializer.Deserialize(text, JsonContext.Default.ListFolderWorkspace);
+
+
+             if (workspaces is null)
+             {
+                 return;
+             }
+
+             //switching to workspace
+             mainWindowViewModel.SolutionViewModel = null;
+                
+             bool selectedWorkspace = false;
+             bool existingIsSelected = false;
+
+             foreach (var folderWorkspace in workspaces)
+             {
+                 var name = GetNameFromWorkspace(folderWorkspace);
+                 var existing = mainWindowViewModel.WorkspaceScopeViewModels.FirstOrDefault(space=>space.Title==name);
+                 var updatedExport = new WorkspaceExport{Name = name, Folders = folderWorkspace.Folders};
+                 if (existing != null)
+                 {
+                     existing.WorkspaceExport = updatedExport;
+                     if (existing == mainWindowViewModel.SelectedWorkspaceScopeViewModel)
+                     {
+                         existingIsSelected = true;
+                     }
+                 }
+                 else
+                 {
+                     var workspaceScopeViewModel = new WorkspaceScopeViewModel(mainWindowViewModel, updatedExport){ExecutableIconHint = folderWorkspace.ExeForIcon};
+                     mainWindowViewModel.WorkspaceScopeViewModels.Insert(0,workspaceScopeViewModel);
+                     mainWindowViewModel.SelectedWorkspaceScopeViewModel = workspaceScopeViewModel;
+                     selectedWorkspace = true;
+                 }
+             }
+
+             if (!existingIsSelected && !selectedWorkspace)
+             {
+                 mainWindowViewModel.SelectedWorkspaceScopeViewModel =
+                     mainWindowViewModel.WorkspaceScopeViewModels.FirstOrDefault();
+             }
+             
              if (!mainWindowViewModel.IsFoldersScopeSelected)
              {
                  mainWindowViewModel.IsWorkspaceScopeSelected = true;

@@ -34,6 +34,7 @@
         <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
         <PackageReference Include="Material.Icons" Version="2.1.10" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
     </ItemGroup>
 
 

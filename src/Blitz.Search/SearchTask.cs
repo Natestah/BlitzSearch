@@ -1251,6 +1251,30 @@ public class SearchTask
         SearchRoot.RaiseNewSearchTaskResult(searchTaskResult);
     }
 
+    private void AppendScopeInformation(StringBuilder message)
+    {
+        if (SearchQuery.SolutionExports != null)
+        {
+            message.AppendLine("Solution selected:");
+            message.AppendLine();
+            message.AppendLine(SearchQuery.SelectedSolutionExports);
+        }
+        else if (SearchQuery.FlatSearchFilesList is { Count: > 0 })
+        {
+            message.AppendLine("Files Selected:");
+            foreach (var filePath in SearchQuery.FlatSearchFilesList)
+            {
+                message.Append(filePath);
+            }
+        }
+        else if (SearchQuery.FilePaths.Count > 0)
+        {
+            message.AppendLine("Folders Selected:");
+            message.AppendLine();
+            AppendInFoldersToMessage(message);
+        }
+    }
+
     private bool ReportPreSearchProblem(out SearchTaskResult searchTaskResult)
     {
         searchTaskResult = new SearchTaskResult();
@@ -1264,10 +1288,18 @@ public class SearchTask
             searchTaskResult.MissingRequirements.AddRange(SearchRoot.FileDiscoverer.ErrorInFileDiscoverMessage);
         }
 
-        if (SearchQuery.TextBoxQuery.Trim().Length == 0 && !SearchQuery.ReplaceInFileEnabled && !SearchQuery.LiteralSearchEnabled && !SearchQuery.RegexSearchEnabled) 
+        if (SearchQuery.TextBoxQuery.Trim().Length == 0 && !SearchQuery.ReplaceInFileEnabled && !SearchQuery.LiteralSearchEnabled && !SearchQuery.RegexSearchEnabled)
         {
-            searchTaskResult.MissingRequirements.Add(new MissingRequirementResult()
-                { CustomMessage = "Enter a Search Term..", MissingRequirement = MissingRequirementResult.Requirement.SearchWords});
+            StringBuilder message = new();
+            message.AppendLine("Enter a Search Term..");
+            message.AppendLine();
+            AppendScopeInformation(message);
+            var missingRequirement = new MissingRequirementResult()
+            {
+                CustomMessage = message.ToString(),
+                MissingRequirement = MissingRequirementResult.Requirement.SearchWords
+            };
+            searchTaskResult.MissingRequirements.Add(missingRequirement);
         }
 
         if (SearchQuery.ReplaceInFileEnabled)
@@ -1306,6 +1338,23 @@ public class SearchTask
         return searchTaskResult.MissingRequirements.Count > 0;
     }
 
+    private void AppendInFoldersToMessage(StringBuilder message)
+    {
+        if (SearchQuery.FilePaths.Count == 0)
+        {
+            message.AppendLine($"No Folders selected..");
+        }
+        foreach (var filePath in SearchQuery.FilePaths)
+        {
+            message.Append(filePath.Folder);
+            if (filePath.TopLevelOnly)
+            {
+                message.Append("(TOP LEVEL ONLY)");
+            }
+            message.AppendLine();
+        }
+    }
+
     private void ReportFilesNotFoundMessage(string rawSearchString, string? rawFileNamestring)
     {
         var searchTaskResult = new SearchTaskResult();
@@ -1340,17 +1389,8 @@ public class SearchTask
         message.AppendLine($"{_fileNameCount} files were searched");
         message.AppendLine();
         message.AppendLine("In folders:");
-        foreach (var filePath in SearchQuery.FilePaths)
-        {
-            message.Append(filePath.Folder);
-            if (filePath.TopLevelOnly)
-            {
-                message.Append("(TOP LEVEL ONLY)");
-            }
-
-            message.AppendLine();
-        }
-
+        AppendInFoldersToMessage(message);
+        
         if (SearchQuery.FileNameQueryEnabled && !string.IsNullOrEmpty(rawFileNamestring))
         {
             message.AppendLine();

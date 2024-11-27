@@ -5,6 +5,7 @@
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:material="using:Material.Icons.Avalonia"
              xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
+             xmlns:controls="clr-namespace:Blitz.Avalonia.Controls"
              mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
@@ -16,45 +17,46 @@
             <Setter Property="Margin" Value="3 0" />
         </Style>
     </UserControl.Styles>
+    
     <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-        <ListBox 
-                 Background="Transparent"
-                 >
-            <ListBoxItem IsVisible="{Binding IsWorkspaceStyle}" 
+        <ListBox
+            Background="Transparent">
+
+            <ListBoxItem IsVisible="{Binding IsWorkspaceStyle}"
                          IsSelected="{Binding  IsWorkspaceScopeSelected}">
-                <StackPanel DataContext="{Binding WorkspaceScopeViewModel}"  Orientation="Horizontal">
+                <StackPanel DataContext="{Binding SelectedWorkspaceScopeViewModel}" Orientation="Horizontal">
                     <material:MaterialIcon Classes="m1ForWorkspace" Kind="FolderHome" />
-                    <TextBlock Classes="scopeButtons" Text="{Binding DisplayTitle}" />
+                    <TextBlock Classes="scopeButtons" Text="Workspace" />
+
                 </StackPanel>
             </ListBoxItem>
-            
-            <ListBoxItem  IsVisible="{Binding IsSolutionStyle}" 
+
+            <ListBoxItem IsVisible="{Binding IsSolutionStyle}"
                          IsSelected="{Binding  IsSolutionScopeSelected}">
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderHome" />
                     <TextBlock Classes="scopeButtons" Text="{Binding DisplayTitle}" />
                 </StackPanel>
             </ListBoxItem>
-            
-            <ListBoxItem IsVisible="{Binding IsSolutionStyle}" 
+
+            <ListBoxItem IsVisible="{Binding IsSolutionStyle}"
                          IsSelected="{Binding  IsProjectScopeSelected}">
-                <StackPanel DataContext="{Binding SolutionViewModel}"  Orientation="Horizontal"  >
+                <StackPanel DataContext="{Binding SolutionViewModel}" Orientation="Horizontal">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderText" />
                     <TextBlock Classes="scopeButtons" Text="Project" />
                 </StackPanel>
             </ListBoxItem>
-             
-            <ListBoxItem 
-                         IsVisible="{Binding IsSolutionStyle}" 
-                         IsSelected="{Binding IsOpenScopeSelected}"
-            >
+
+            <ListBoxItem
+                IsVisible="{Binding IsSolutionStyle}"
+                IsSelected="{Binding IsOpenScopeSelected}">
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocumentMultiple" />
                     <TextBlock Classes="scopeButtons" Text="Opened" />
                 </StackPanel>
             </ListBoxItem>
-            
-            <ListBoxItem IsVisible="{Binding IsSolutionStyle}"  
+
+            <ListBoxItem IsVisible="{Binding IsSolutionStyle}"
                          IsSelected="{Binding IsActiveFileSelected}">
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocument" />
@@ -68,7 +70,7 @@
                     <TextBlock Classes="scopeButtons" Text="Folders" />
                 </StackPanel>
             </ListBoxItem>
-           
+
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -115,8 +117,23 @@
         </ListBox>
 
 
-        <StackPanel Orientation="Horizontal">
-            <views:ScopeSelector Margin="10 0 0 0" IsVisible="{Binding IsFoldersScopeSelected}"
+        <StackPanel Margin="20 0 0 0" Orientation="Horizontal">
+            <ComboBox IsVisible="{Binding IsWorkspaceScopeSelected}"
+                      VerticalAlignment="Center" VerticalContentAlignment="Center"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding WorkspaceScopeViewModels}"
+                      SelectedItem="{Binding SelectedWorkspaceScopeViewModel}">
+                <ComboBox.DataTemplates>
+                    <DataTemplate x:DataType="vm:WorkspaceScopeViewModel">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32" Source="{Binding ExecutableIconHint,Converter={StaticResource DirectEditorImageConverter}}"  />
+                            <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.DataTemplates>
+            </ComboBox>
+
+            <views:ScopeSelector IsVisible="{Binding IsFoldersScopeSelected}"
                                  HorizontalAlignment="Stretch" DockPanel.Dock="Left" />
             <ComboBox IsVisible="{Binding IsProjectScopeSelected}" Margin="10 0 0 0"
                       VerticalAlignment="Center" VerticalContentAlignment="Center"

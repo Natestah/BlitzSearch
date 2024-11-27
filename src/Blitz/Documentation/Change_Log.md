@@ -5,7 +5,11 @@
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
 Thank you!
-
+### Version 0.0.85
+* Moving Visual Studio up in the list / Notepad to the bottom
+* Sublime Text Workspace support.
+* Sublime Text "Replace this Support"
+ 
 ### Version 0.0.84
 * Fixed Crash ( Backed out .Net 9.0 upgrade for now )
 * Various Nuget Jiggling to get back to working state.

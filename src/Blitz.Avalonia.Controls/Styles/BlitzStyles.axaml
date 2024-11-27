@@ -15,6 +15,7 @@
         <SolidColorBrush x:Key="GreenCheck">LawnGreen</SolidColorBrush>
         <converters:FileTypeIconConverter x:Key="FileTypeIconConverter"></converters:FileTypeIconConverter>
         <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"></controls:GotoEditorImageConverter>
+        <controls:DirectEditorImageConverter x:Key="DirectEditorImageConverter"></controls:DirectEditorImageConverter>
         <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
         <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
         <MultiBinding  x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}">

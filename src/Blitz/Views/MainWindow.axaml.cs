@@ -254,7 +254,7 @@ public partial class MainWindow : Window
     {
         if (e.PropertyName == nameof(MainWindowViewModel.FontSize))
         {
-            this.MinWidth = double.NaN;
+            this.MinWidth = 0;
         }
     }
 

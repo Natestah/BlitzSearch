@@ -309,12 +309,15 @@ public class MainWindowViewModel : ViewModelBase
         IsWorkspaceScopeSelected = false;
         IsSolutionScopeSelected = false;
         SolutionViewModel = null;
-        WorkspaceScopeViewModel = null;
+        SelectedWorkspaceScopeViewModel = null;
         switch (_selectedEditorViewModel.GotoEditor.CodeExecute)
         {
             case CodeExecuteNames.VSCode:
             case CodeExecuteNames.Cursor:
                 PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
+                break;
+            case CodeExecuteNames.SublimeText:
+                PoorMansIPC.Instance.ExecuteNamedAction("SUBLIME_TEXT_WORKSPACE");
                 break;
             case CodeExecuteNames.VisualStudio:
                 PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
@@ -779,17 +782,21 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public bool IsSolutionStyle => _solutionViewModel != null;
-    public bool IsWorkspaceStyle => _workspaceScopeViewModel != null;
+    public bool IsWorkspaceStyle => _selectedWorkspaceScopeViewModel != null;
 
-    private WorkspaceScopeViewModel? _workspaceScopeViewModel;
+    
+    public ObservableCollection<WorkspaceScopeViewModel> WorkspaceScopeViewModels { get; } = [];
+    private WorkspaceScopeViewModel? _selectedWorkspaceScopeViewModel;
 
-    public WorkspaceScopeViewModel? WorkspaceScopeViewModel
+    public WorkspaceScopeViewModel? SelectedWorkspaceScopeViewModel
     {
-        get => _workspaceScopeViewModel;
+        get => _selectedWorkspaceScopeViewModel;
         set
         {
-            this.RaiseAndSetIfChanged(ref _workspaceScopeViewModel, value);
+            this.RaiseAndSetIfChanged(ref _selectedWorkspaceScopeViewModel, value);
             this.RaisePropertyChanged(nameof(IsWorkspaceStyle));
+            OnPropertyChangedFileSystemRestart(this,
+                new PropertyChangedEventArgs(nameof(SelectedWorkspaceScopeViewModel)));
         }
     }
 
@@ -1096,11 +1103,11 @@ public class MainWindowViewModel : ViewModelBase
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
             _searchQuery.FilePaths = [];
-            if (WorkspaceScopeViewModel == null)
+            if (SelectedWorkspaceScopeViewModel == null)
             {
                 return;
             }
-            foreach (var folder in WorkspaceScopeViewModel.WorkspaceExport.Folders)
+            foreach (var folder in SelectedWorkspaceScopeViewModel.WorkspaceExport.Folders)
             {
                 _searchQuery.FilePaths.Add(new SearchPath { TopLevelOnly = false, Folder = folder });
             }

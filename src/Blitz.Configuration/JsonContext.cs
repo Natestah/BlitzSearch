@@ -14,6 +14,7 @@ namespace Blitz;
 [JsonSerializable(typeof(GotoEditor))]
 [JsonSerializable(typeof(List<GotoEditor>))]
 [JsonSerializable(typeof(FolderWorkspace))]
+[JsonSerializable(typeof(List<FolderWorkspace>))]
 [JsonSerializable(typeof(Interfacing.SolutionExport))]
 [JsonSerializable(typeof(Interfacing.WorkspaceExport))]
 [JsonSerializable(typeof(Interfacing.Project))]

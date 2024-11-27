@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.85",
+    "Changes": "* Moving Visual Studio up in the list / Notepad to the bottom\r\n* Sublime Text Workspace support.\r\n* Sublime Text \u0022Replace this Support\u0022\r\n \r\n"
+  },
+  {
     "Revision": "0.0.84",
     "Changes": "* Fixed Crash ( Backed out .Net 9.0 upgrade for now )\r\n* Various Nuget Jiggling to get back to working state.\r\n\r\n"
   },
