@@ -150,6 +150,13 @@ public class Searching
 
         if (oldTask.SearchQuery.SolutionExports != null && newQuery.SolutionExports != null)
         {
+            if (newQuery.SolutionExports.Count == 0 || oldTask.SearchQuery.SolutionExports.Count == 0)
+            {
+                acceptedExclusions = [];
+                fileNameResults = [];
+                return;
+            }
+
             if (oldTask.SearchQuery.SolutionExports.Count != 1 && newQuery.SolutionExports.Count != 1)
             {
                 throw new NotImplementedException(

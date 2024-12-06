@@ -35,7 +35,7 @@
                          IsSelected="{Binding  IsSolutionScopeSelected}">
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderHome" />
-                    <TextBlock Classes="scopeButtons" Text="{Binding DisplayTitle}" />
+                    <TextBlock Classes="scopeButtons" Text="Solution" />
                 </StackPanel>
             </ListBoxItem>
 
@@ -117,7 +117,23 @@
         </ListBox>
 
 
-        <StackPanel Margin="20 0 0 0" Orientation="Horizontal">
+        <StackPanel Margin="20 0 0 0" Orientation="Horizontal" >
+            
+            <ComboBox IsVisible="{Binding IsSolutionScopeSelected}"
+                      VerticalAlignment="Center" VerticalContentAlignment="Center"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding SolutionViewModels}"
+                      SelectedItem="{Binding SolutionViewModel}">
+                <ComboBox.DataTemplates>
+                    <DataTemplate x:DataType="vm:SolutionViewModel">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- <Image Width="32" Height="32" Source="{Binding ExecutableIconHint,Converter={StaticResource DirectEditorImageConverter}}"  /> -->
+                            <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.DataTemplates>
+            </ComboBox>
+            
             <ComboBox IsVisible="{Binding IsWorkspaceScopeSelected}"
                       VerticalAlignment="Center" VerticalContentAlignment="Center"
                       HorizontalAlignment="Stretch"
@@ -134,21 +150,24 @@
             </ComboBox>
 
             <views:ScopeSelector IsVisible="{Binding IsFoldersScopeSelected}"
-                                 HorizontalAlignment="Stretch" DockPanel.Dock="Left" />
-            <ComboBox IsVisible="{Binding IsProjectScopeSelected}" Margin="10 0 0 0"
-                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                      HorizontalAlignment="Stretch" DockPanel.Dock="Left"
-                      ItemsSource="{Binding SolutionViewModel.Projects, FallbackValue=''}"
-                      SelectedItem="{Binding SolutionViewModel.SelectedProject, FallbackValue=''}">
-                <ComboBox.DataTemplates>
-                    <DataTemplate x:DataType="vm:ProjectViewModel">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Classes="labelText" Text="{Binding DisplayTitle}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.DataTemplates>
-            </ComboBox>
+                                 HorizontalAlignment="Stretch"  />
+            <Grid IsVisible="{Binding IsProjectScopeSelected}">
+                <ComboBox DataContext="{Binding SolutionViewModel}" Margin="10 0 0 0"
+                          VerticalAlignment="Center" VerticalContentAlignment="Center"
+                          HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding Projects, FallbackValue=''}"
+                          SelectedItem="{Binding SelectedProject, FallbackValue=''}">
+                    <ComboBox.DataTemplates>
+                        <DataTemplate x:DataType="vm:ProjectViewModel">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Classes="labelText" Text="{Binding DisplayTitle}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.DataTemplates>
+                </ComboBox>
+            </Grid>
         </StackPanel>
+
         <views:EditorSelector DockPanel.Dock="Right" />
     </DockPanel>
 </UserControl>

@@ -84,6 +84,8 @@
       <AvaloniaResource Include="Resources\Fleet.png" />
       <None Remove="Resources\cursor.png" />
       <AvaloniaResource Include="Resources\cursor.png" />
+      <None Remove="Resources\windsurf-logo.png" />
+      <AvaloniaResource Include="Resources\windsurf-logo.png" />
     </ItemGroup>
 
 

@@ -24,14 +24,6 @@
     "Notes": "Extension Available"
   },
   {
-    "Title": "BlitzEdit",
-    "CodeExecute": "BlitzEdit",
-    "Executable": "BlitzEdit.exe",
-    "ExecutableWorkingDirectory": "-",
-    "Arguments": "\u0022%filename%\u0022:%line%:%column_plus_one%",
-    "Notes": "Built in Blitz Text Editor"
-  },
-  {
     "Title": "VS Code",
     "Executable": "code.cmd",
     "CodeExecute": "VsCodeGoto",
@@ -46,7 +38,17 @@
     "Executable": "cursor.cmd",
     "CodeExecute": "CursorGoto",
     "SupportsPreview": true,
-    "RunningProcessName": "code.exe",
+    "RunningProcessName": "Cursor.exe",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Extension Available"
+  },
+  {
+    "Title": "Windsurf",
+    "Executable": "windsurf.cmd",
+    "CodeExecute": "WindsurfGoto",
+    "SupportsPreview": true,
+    "RunningProcessName": "windsurf.exe",
     "ExecutableWorkingDirectory": "",
     "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
     "Notes": "Extension Available"
@@ -148,5 +150,13 @@
     "ExecutableWorkingDirectory": "%appdata%\\..\\local\\Phoenix Code\\",
     "Arguments": "\u0022%filename%\u0022",
     "Notes": "Only Opens file"
+  }, 
+  {
+  "Title": "BlitzEdit",
+  "CodeExecute": "BlitzEdit",
+  "Executable": "BlitzEdit.exe",
+  "ExecutableWorkingDirectory": "-",
+  "Arguments": "\u0022%filename%\u0022:%line%:%column_plus_one%",
+  "Notes": "Built in Blitz Text Editor"
   }
 ]

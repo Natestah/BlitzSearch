@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.86",
+    "Changes": "* Windsurf support\r\n* Visual Studio - Supports multiple Solutions / Instances better ( get the extension update )\r\n* Continued to add more feedback on what\u0027s being searched when you have an empty query.\r\n* Title bar\r\n\r\n"
+  },
+  {
     "Revision": "0.0.85",
     "Changes": "* Moving Visual Studio up in the list / Notepad to the bottom\r\n* Sublime Text Workspace support.\r\n* Sublime Text \u0022Replace this Support\u0022\r\n \r\n"
   },

@@ -90,7 +90,7 @@ public class Configuration
         }
         return new Configuration();
     }
-
+    
     public RobotDetectionSettings RobotDetectionSettings { get; set; } = new();
     
 
@@ -142,6 +142,14 @@ public class Configuration
     public bool IsActiveFileSelected { get; set; } = true;
 
     [JsonIgnore] public bool _cleanSlateShutdown = false;
+
+    public List<SolutionID> SolutionsVisited { get; set; } = [];
+
+    public Dictionary<string, string> SolutionProjectSelection { get; set; } = [];
+    public string SelectedSolutionTitle { get; set; } = string.Empty;
+    public SolutionID SelectedSolutionID { get; set; } = SolutionID.None;
+    
+    public Dictionary<string,List<string>> SolutionActiveFiles { get; set; } = [];
 
     public void CleanSlateShutdown()
     {

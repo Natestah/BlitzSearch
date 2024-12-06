@@ -224,6 +224,14 @@
                                IsHitTestVisible="False"
                                Text="Search">
                     </TextBlock>
+                    
+                    <TextBlock x:Name="BlitzScopeTitle"
+                               Margin="10 0 0 0"
+                               Opacity="0.5"
+                               Foreground="{Binding EditorViewModel.StatusBarForeground}"
+                               IsHitTestVisible="False"
+                               Text="{Binding ScopeTitle}">
+                    </TextBlock>
                 </StackPanel>
 
             </DockPanel>

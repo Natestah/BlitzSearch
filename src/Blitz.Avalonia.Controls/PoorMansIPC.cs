@@ -11,6 +11,7 @@ public class PoorMansIPC
     private Dictionary<string, Action<string>> _actions = new Dictionary<string, Action<string>>();
 
     private FileSystemWatcher _fileSystemWatcher;
+
     public PoorMansIPC()
     {
         var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -24,6 +25,39 @@ public class PoorMansIPC
          watcher.Deleted += WatcherOnDeleted;
          watcher.Changed += WatcherOnChanged;
          _fileSystemWatcher = watcher;
+    }
+
+    public bool GetSolutionRecord(SolutionID searchingSolutionId, out string path)
+    {
+        return GetCommandPathFromSolutionID(searchingSolutionId,"VS_SOLUTION" , out path);
+       }
+
+    
+    public bool GetCommandPathFromSolutionID(SolutionID searchingSolutionId, string command, out string path)
+    {
+        foreach (var solutionId in GetSolutionTitles())
+        {
+            if (solutionId.Equals(searchingSolutionId))
+            {
+                path = Path.Combine(_fileSystemWatcher.Path, $"{command},{solutionId.Title},{solutionId.Identity}.txt");
+                return File.Exists(path);
+            }
+        }
+        path = string.Empty;
+        return false;
+    }
+    public IEnumerable<SolutionID> GetSolutionTitles()
+    {
+        string solutionCommand = $"VS_SOLUTION";
+        foreach (var file in Directory.EnumerateFiles(_fileSystemWatcher.Path, solutionCommand+"*.txt"))
+        {
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file);
+            var split = fileNameWithoutExtension.Split(',');
+            if (split.Length == 3)
+            {
+                yield return new SolutionID{Title = split[1],Identity = split[2]};
+            }
+        }
     }
 
     public void RegisterAction(string name, Action<string> action)
@@ -55,11 +89,23 @@ public class PoorMansIPC
             {
                 return;
             }
+            
+            if (action.Contains(','))
+            {
+                var split = action.Split(',');
+                if (split.Length != 3)
+                {
+                    //action,solutionname,solutionIdentityMD5
+                    return;
+                }
+                action = split[0];
+            }
 
             if (!_actions.TryGetValue(action, out var function))
             {
                 return;
             }
+            
             Exception? lastException = null;
             for (int i = 0; i < 3; i++)
             {

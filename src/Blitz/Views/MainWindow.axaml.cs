@@ -290,7 +290,8 @@ public partial class MainWindow : Window
         bool blitzShouldBeVisible = BlitzLabelBlitz.IsVisible = spaceForBothBlitzSearchLabels > BlitzLabelBlitz.Bounds.Width;
         bool blitzSearchShouldBeVisible = spaceForBothBlitzSearchLabels >
                                           (BlitzLabelBlitz.Bounds.Width + BlitzLabelSearch.Bounds.Width);
-
+        bool blitzScopeNameShouldBeVisible = spaceForBothBlitzSearchLabels >
+                                          (BlitzLabelBlitz.Bounds.Width + BlitzLabelSearch.Bounds.Width);
         if (!blitzShouldBeVisible)
         {
             this.MinWidth = Configuration.Instance.BlitzPosWidth;

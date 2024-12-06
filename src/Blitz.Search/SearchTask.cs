@@ -1258,13 +1258,24 @@ public class SearchTask
             message.AppendLine("Solution selected:");
             message.AppendLine();
             message.AppendLine(SearchQuery.SelectedSolutionExports);
+
+            message.AppendLine();
+            message.AppendLine("With Projects:");
+            message.AppendLine();
+            foreach (var solutionExport in SearchQuery.SolutionExports)
+            {
+                foreach (var project in solutionExport.Projects)
+                {
+                    message.AppendLine(project.Name);
+                }
+            }
         }
         else if (SearchQuery.FlatSearchFilesList is { Count: > 0 })
         {
             message.AppendLine("Files Selected:");
             foreach (var filePath in SearchQuery.FlatSearchFilesList)
             {
-                message.Append(filePath);
+                message.AppendLine(filePath);
             }
         }
         else if (SearchQuery.FilePaths.Count > 0)

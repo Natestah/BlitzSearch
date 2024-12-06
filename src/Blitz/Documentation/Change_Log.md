@@ -5,6 +5,13 @@
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
 Thank you!
+
+### Version 0.0.86
+* Windsurf support
+* Visual Studio - Supports multiple Solutions / Instances better ( get the extension update )
+* Continued to add more feedback on what's being searched when you have an empty query.
+* Title bar
+
 ### Version 0.0.85
 * Moving Visual Studio up in the list / Notepad to the bottom
 * Sublime Text Workspace support.

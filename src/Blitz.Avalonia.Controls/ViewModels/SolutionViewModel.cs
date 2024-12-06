@@ -1,5 +1,10 @@
 using System;
+using System.Threading;
+using System.IO;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
+using AvaloniaEdit.Utils;
 using ReactiveUI;
 
 namespace Blitz.Avalonia.Controls.ViewModels;
@@ -7,73 +12,167 @@ using Interfacing;
 
 public class SolutionViewModel : ViewModelBase
 {
-    private SolutionExport _export;
+    private SolutionExport? _export;
     private ProjectViewModel? _selectedProject;
     private MainWindowViewModel _mainWindowViewModel;
     private ObservableCollection<string> _activeFiles = [];
+    private readonly ObservableCollection<ProjectViewModel> _projects = [];
     public MainWindowViewModel MainWindowVM => _mainWindowViewModel;
 
-    public ObservableCollection<ProjectViewModel> Projects { get; } = [];
+    public ObservableCollection<ProjectViewModel> Projects
+    {
+        get
+        {
+            InitExport();
+            return _projects;
+        }
+    }
+    
+    
 
     public ProjectViewModel? SelectedProject
     {
-        get => _selectedProject;
+        get
+        {
+            InitExport();
+            return _selectedProject;
+        }
         set
         {
+            InitExport();
+            if (value != null)
+            {
+                Configuration.Instance.SolutionProjectSelection[SolutionIdentity.Identity] = value.Name; ;
+            }
             this.RaiseAndSetIfChanged(ref _selectedProject, value);
             _mainWindowViewModel.RaiseSolutionPropertyChanged();
         }
     }
-    
-    public ObservableCollection<string> ActiveFiles
+
+    public void RestoreActiveFilesFromIPC()
     {
-        get => _activeFiles;
-        set => this.RaiseAndSetIfChanged(ref _activeFiles, value);
+        ActiveFiles.Clear();
+        if (!PoorMansIPC.Instance.GetCommandPathFromSolutionID(this.SolutionIdentity,"VS_ACTIVE_FILES", out var path))
+        {
+            return;
+        }
+        var text = File.ReadAllText(path);
+        var activeFileList = JsonSerializer.Deserialize(text,JsonContext.Default.ActiveFilesList);
+        if (activeFileList != null)
+        {
+           
+            ActiveFiles.AddRange(activeFileList.ActiveFiles);
+        }
+
     }
 
-    public string Title => _export?.Name?? "Untitled";
-
-    
-    /// <summary>
-    /// Try to Translate Long paths to something shorter and presentable.
-    /// </summary>
-    public string DisplayTitle
+    public ObservableCollection<string> ActiveFiles
     {
         get
         {
-            try
+            if (_activeFiles == null || _activeFiles.Count == 0)
             {
-                string path = System.IO.Path.GetFileName(Title);
-                if (path.Length == 0)
-                {
-                    return System.IO.Path.GetDirectoryName(Title) ?? Title;
-                }
-                return path;
+                
             }
-            catch (Exception)
-            {
-                //Any problems just return the title..
-                return Title;
-            }
+            return _activeFiles;
         }
+        set => this.RaiseAndSetIfChanged(ref _activeFiles, value);
+    }
+
+    public string Title => SolutionIdentity.Title;
+
+
+    /// <summary>
+    /// Try to Translate Long paths to something shorter and presentable.
+    /// </summary>
+    public string DisplayTitle => $"{Title}.sln";
+    
+    
+    private static string GetSolutionCacheFile(string solutionName)
+    {
+        var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var specificFolder = Path.Combine(folder, "NathanSilvers", "SolutionCache");
+        Directory.CreateDirectory(specificFolder);
+        return Path.Combine(specificFolder, $"{solutionName}.txt"); 
+    }
+
+    private SolutionExport? GetSolutionExport()
+    {
+        return !PoorMansIPC.Instance.GetSolutionRecord(SolutionIdentity, out var cacheFile) 
+            ? null 
+            : JsonSerializer.Deserialize(File.ReadAllText(cacheFile), JsonContext.Default.SolutionExport);
     }
 
 
-    public SolutionExport Export => _export;
-    public bool ISVSCodeSolution { get; set; } 
-
-    public SolutionViewModel(SolutionExport export, MainWindowViewModel mainWindowViewModel)
+    public void RestoreSelectionFromConfiguration()
     {
-        _mainWindowViewModel = mainWindowViewModel;
-        _export = export;
-        foreach (var project in export.Projects)
+        bool hasProject = Configuration.Instance.SolutionProjectSelection.TryGetValue(SolutionIdentity.Identity, out var selectedProject);
+        bool didSelect = false;
+        foreach (var projectVM in Projects)
         {
-            Projects.Add(new ProjectViewModel(project));
+            if (hasProject && projectVM.Name.Equals(selectedProject, StringComparison.OrdinalIgnoreCase))
+            {
+                SelectedProject = projectVM;
+                didSelect = true;
+            }
         }
-        if (Projects.Count > 0)
+        if (!didSelect && Projects.Count > 0)
         {
             SelectedProject = Projects[0];
         }
+
+    }
+    
+
+    private void UpdateProjectViewModels(SolutionExport export)
+    {
+        foreach (var project in export.Projects)
+        {
+            var projectVM =new ProjectViewModel(project);
+            Projects.Add(projectVM);
+        }
+        RestoreSelectionFromConfiguration();
+    }
+
+    private void InitExport()
+    {
+        if (_export != null)
+        {
+            return;
+        }
+        
+        _export = GetSolutionExport();
+        if (_export != null)
+        {
+            UpdateProjectViewModels(_export);
+        }
+    }
+
+    public SolutionExport? Export
+    {
+        get
+        {
+            InitExport();
+            return _export;
+        }
+        set
+        {
+            _export = value;
+            if (_export != null)
+            {
+                UpdateProjectViewModels(_export);
+            }
+            this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(SelectedProject));
+        }
+    }
+    
+    public SolutionID SolutionIdentity { get; }
+
+    public SolutionViewModel(SolutionID solutionId, MainWindowViewModel mainWindowViewModel)
+    {
+        SolutionIdentity = solutionId;
+        _mainWindowViewModel = mainWindowViewModel;
     }
 }
 

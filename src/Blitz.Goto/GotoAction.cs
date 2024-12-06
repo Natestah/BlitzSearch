@@ -67,11 +67,31 @@ public class GotoAction(GotoEditor gotoEditor)
     }
 
 
-    private void executeGotoWithJson( GotoDirective gotoDirective, string ipcIdentity, string pathSeperator =";", bool preview = true)
+    private void executeGotoWithJson( GotoDirective gotoDirective, string ipcIdentity, bool preview = true)
     {
         string path = GetFolder();
         string previewSuffix = preview ? "_PREVIEW_JSON": "_JSON";
         string file = Path.Combine(path, $"{ipcIdentity}{previewSuffix}.txt");
+        string contents = System.Text.Json.JsonSerializer.Serialize(gotoDirective, JsonContext.Default.GotoDirective);
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                File.WriteAllText(file, contents);
+                break;
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(50);
+            }
+        }
+    }
+
+    private void executeGotoWithJsonAndNamedParameters( GotoDirective gotoDirective, string ipcIdentity, string slnParameter, bool preview = true)
+    {
+        string path = GetFolder();
+        string previewSuffix = preview ? "_PREVIEW_JSON": "_JSON";
+        string file = Path.Combine(path, $"{ipcIdentity}{previewSuffix},{slnParameter}.txt");
         string contents = System.Text.Json.JsonSerializer.Serialize(gotoDirective, JsonContext.Default.GotoDirective);
         for (int i = 0; i < 3; i++)
         {
@@ -114,11 +134,12 @@ public class GotoAction(GotoEditor gotoEditor)
             {
                 case CodeExecuteNames.VSCode:
                 case CodeExecuteNames.Cursor:
+                case CodeExecuteNames.Windsurf:
                     executeGotoByPoorMansIPC(gotoDirective, "VS_CODE_GOTO", ";", preview);
                     runExecutable = ExecutableBootRequired();
                     break;
                 case CodeExecuteNames.VisualStudio:
-                    executeGotoWithJson(gotoDirective, "VISUAL_STUDIO_GOTO", ",", preview);
+                    executeGotoWithJsonAndNamedParameters(gotoDirective, "VISUAL_STUDIO_GOTO",  System.IO.Path.GetFileNameWithoutExtension(gotoDirective.SolutionName) ?? string.Empty, preview);
                     runExecutable = false;
                     break;
                 case CodeExecuteNames.BlitzEdit:
@@ -175,6 +196,9 @@ public class GotoAction(GotoEditor gotoEditor)
             case CodeExecuteNames.Cursor:
                 string environmentVariable = Environment.ExpandEnvironmentVariables("%appdata%\\..\\Local\\Programs\\cursor\\Cursor.exe");
                 return Path.Exists(environmentVariable);
+            case CodeExecuteNames.Windsurf:
+                string windsurfEnv = Environment.ExpandEnvironmentVariables("%appdata%\\..\\Local\\Programs\\windsurf\\Windsurf.exe");
+                return Path.Exists(windsurfEnv);
         }
         return LocateExecutable(out _, out _);
     }

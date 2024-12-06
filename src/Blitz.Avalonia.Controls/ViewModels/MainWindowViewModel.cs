@@ -297,7 +297,17 @@ public class MainWindowViewModel : ViewModelBase
             UpdateScopeSelectionForEditor();
         }
     }
-    
+
+    void ApplyVisualStudioFromConfiguration()
+    {
+        var selectedSolutionTitle = Configuration.Instance.SelectedSolutionTitle;
+        var existingSolutionViewModel = SolutionViewModels.FirstOrDefault(model => model.Title == selectedSolutionTitle);
+        SolutionViewModel = existingSolutionViewModel ?? SolutionViewModels.FirstOrDefault();
+        if (!AnyScopeSelected || IsWorkspaceScopeSelected)
+        {
+            IsSolutionScopeSelected = true;
+        }
+    }
 
     public void UpdateScopeSelectionForEditor()
     {
@@ -314,18 +324,16 @@ public class MainWindowViewModel : ViewModelBase
         {
             case CodeExecuteNames.VSCode:
             case CodeExecuteNames.Cursor:
+            case CodeExecuteNames.Windsurf:
                 PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
                 break;
             case CodeExecuteNames.SublimeText:
                 PoorMansIPC.Instance.ExecuteNamedAction("SUBLIME_TEXT_WORKSPACE");
                 break;
             case CodeExecuteNames.VisualStudio:
-                PoorMansIPC.Instance.ExecuteNamedAction("VS_SOLUTION");
-                PoorMansIPC.Instance.ExecuteNamedAction("VS_PROJECT");
-                PoorMansIPC.Instance.ExecuteNamedAction("VS_ACTIVE_FILES");
+                ApplyVisualStudioFromConfiguration();
                 break;
             default:
-                SolutionViewModel = null;
                 break;
         }
     }
@@ -674,8 +682,17 @@ public class MainWindowViewModel : ViewModelBase
         Configuration.Instance.IsOpenScopeSelected = false;
         Configuration.Instance.IsActiveFileSelected = false;
     }
+    
+    public bool AnyScopeSelected =>        
+        Configuration.Instance.IsFoldersScopeSelected ||
+        Configuration.Instance.IsProjectScopeSelected  ||
+        Configuration.Instance.IsSolutionScopeSelected  ||
+        Configuration.Instance.IsWorkspaceScopeSelected  ||
+        Configuration.Instance.IsOpenScopeSelected  ||
+        Configuration.Instance.IsActiveFileSelected;
 
-    public void RadioNotify()
+
+    public void RadioNotifyAndUpdateTitle()
     {
         this.RaisePropertyChanged(nameof(IsProjectScopeSelected));
         this.RaisePropertyChanged(nameof(IsProjectScopeSelected));
@@ -683,6 +700,7 @@ public class MainWindowViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(IsWorkspaceScopeSelected));
         this.RaisePropertyChanged(nameof(IsOpenScopeSelected));
         this.RaisePropertyChanged(nameof(IsActiveFileSelected));
+        this.UpdateScopeTitle();
     }
     
     
@@ -690,7 +708,7 @@ public class MainWindowViewModel : ViewModelBase
     
     public bool IsSolutionScopeSelected
     {
-        get => SolutionViewModel != null && Configuration.Instance.IsSolutionScopeSelected;
+        get => Configuration.Instance.IsSolutionScopeSelected;
         set
         {
             if (value)
@@ -699,7 +717,7 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsSolutionScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsSolutionScopeSelected)));
-            RadioNotify();
+            RadioNotifyAndUpdateTitle();
         }
     }
     public bool IsWorkspaceScopeSelected
@@ -713,7 +731,7 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsWorkspaceScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsWorkspaceScopeSelected)));
-            RadioNotify();
+            RadioNotifyAndUpdateTitle();
 
         }
     }
@@ -730,7 +748,7 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsFoldersScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsFoldersScopeSelected)));
-            RadioNotify();
+            RadioNotifyAndUpdateTitle();
 
         }
     }
@@ -746,7 +764,7 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsOpenScopeSelected = value;
             this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsOpenScopeSelected)));
-            RadioNotify();
+            RadioNotifyAndUpdateTitle();
 
         }
     }
@@ -763,7 +781,7 @@ public class MainWindowViewModel : ViewModelBase
             }
             Configuration.Instance.IsActiveFileSelected = value;
             OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
-            RadioNotify();
+            RadioNotifyAndUpdateTitle();
 
         }
     }
@@ -776,10 +794,20 @@ public class MainWindowViewModel : ViewModelBase
         get => _solutionViewModel;
         set
         {
+            if (value != null)
+            {
+                Configuration.Instance.SelectedSolutionTitle = value.Title;
+                value.RestoreSelectionFromConfiguration();
+                value.RestoreActiveFilesFromIPC();
+
+            }
             this.RaiseAndSetIfChanged(ref _solutionViewModel, value);
             this.RaisePropertyChanged(nameof(IsSolutionStyle));
+            this.RaisePropertyChanged(nameof(IsSolutionScopeSelected));
         }
     }
+
+    public ObservableCollection<SolutionViewModel> SolutionViewModels { get; } = [];
 
     public bool IsSolutionStyle => _solutionViewModel != null;
     public bool IsWorkspaceStyle => _selectedWorkspaceScopeViewModel != null;
@@ -819,6 +847,7 @@ public class MainWindowViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(IsSolutionStyle));
             OnPropertyChangedFileSystemRestart(this,
                 new PropertyChangedEventArgs(nameof(SelectedScope)));
+            UpdateScopeTitle();
         }
     }
 
@@ -1119,15 +1148,20 @@ public class MainWindowViewModel : ViewModelBase
             {
                 return;
             }
-            isolatedSolutionExport.Name = SolutionViewModel.Export.Name;
-            isolatedSolutionExport.Projects = [];
-            if (SolutionViewModel.SelectedProject != null)
+
+            var currentExport = SolutionViewModel.Export;
+            if (currentExport != null)
             {
-                var match = SolutionViewModel.Export.Projects.FirstOrDefault(x =>
-                    x.Name == SolutionViewModel.SelectedProject.Name);
-                if (match != null)
+                isolatedSolutionExport.Name = currentExport.Name;
+                isolatedSolutionExport.Projects = [];
+                if (SolutionViewModel.SelectedProject != null)
                 {
-                    isolatedSolutionExport.Projects.Add(match);
+                    var match = currentExport.Projects.FirstOrDefault(x =>
+                        x.Name == SolutionViewModel.SelectedProject.Name);
+                    if (match != null)
+                    {
+                        isolatedSolutionExport.Projects.Add(match);
+                    }
                 }
             }
             _searchQuery.SolutionExports = [isolatedSolutionExport];
@@ -1138,8 +1172,16 @@ public class MainWindowViewModel : ViewModelBase
             {
                 return;
             }
-            _searchQuery.SolutionExports = [SolutionViewModel.Export];
-            _searchQuery.SelectedSolutionExports = SolutionViewModel.Export.Name;
+
+            if (SolutionViewModel.Export != null)
+            {
+                _searchQuery.SolutionExports = [SolutionViewModel.Export];
+                _searchQuery.SelectedSolutionExports = SolutionViewModel.Export.Name;
+            }
+            else
+            {
+                _searchQuery.SolutionExports = [];
+            }
         }
         else if (IsOpenScopeSelected)
         {
@@ -1159,7 +1201,6 @@ public class MainWindowViewModel : ViewModelBase
             {
                 _searchQuery.FlatSearchFilesList = [SolutionViewModel.ActiveFiles[0]];
             }
-
         }
         else
         {
@@ -1260,6 +1301,7 @@ public class MainWindowViewModel : ViewModelBase
     private ScopeViewModel? _selectedScope;
     private ScopeViewModel? _workingScope;
     private ReplaceModeViewModel? _selectedReplaceMode;
+    private string _scopeTitle;
 
 
     public void CaseSmartCaseNotify()
@@ -1701,8 +1743,56 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void UpdateActiveFile()
+    public string ScopeTitle
     {
-        this.OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
+        get => _scopeTitle;
+        set
+        {
+            _scopeTitle = value;
+            this.RaisePropertyChanged();
+        }
+    }
+
+    private void UpdateScopeTitle()
+    {
+        ScopeTitle = string.Empty;
+        if (IsFoldersScopeSelected)
+        {
+            if (SelectedScope != null)
+            {
+                ScopeTitle = $"({SelectedScope.ScopeTitle})";
+            }
+        }
+        else if (IsSolutionStyle)
+        {
+            if (SolutionViewModel != null)
+            {
+                ScopeTitle = $"({SolutionViewModel.DisplayTitle})";
+            }
+        }
+        else if (IsWorkspaceStyle)
+        {
+            if (SelectedWorkspaceScopeViewModel != null)
+            {
+                ScopeTitle = $"({SelectedWorkspaceScopeViewModel.Title})";
+            }
+        }
+    }
+
+    public void UpdateActiveFiles(ActiveFilesList? list)
+    {
+        if (list is null || SolutionViewModel == null
+                         ||SolutionViewModel.ActiveFiles.SequenceEqual(list.ActiveFiles))
+        {
+            return;
+        }
+            
+        SolutionViewModel.ActiveFiles.Clear();
+        SolutionViewModel.ActiveFiles.AddRange(list.ActiveFiles);
+        if (IsActiveFileSelected)
+        {
+            OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
+        }
+        
     }
 }
