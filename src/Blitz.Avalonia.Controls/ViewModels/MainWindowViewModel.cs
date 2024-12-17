@@ -48,6 +48,25 @@ public class MainWindowViewModel : ViewModelBase
         return true;
     }
 
+    private readonly Action<MainWindowViewModel> _requestMainWindowActivate;
+    private readonly Action<MainWindowViewModel> _selectAndFocusSearch;
+    private readonly Action<MainWindowViewModel> _selectAndFocusReplace;
+
+    public void ActivateMainWindow()
+    {
+        _requestMainWindowActivate(this);
+    }
+
+    public void FocusSearch()
+    {
+        _selectAndFocusSearch(this);
+    }
+    public void FocusReplace()
+    {
+        _selectAndFocusReplace(this);
+    }
+    
+
     public bool TimerDisplayTotalSearchTIme
     {
         get => Configuration.Instance.ShowTotalSearchTime;
@@ -60,16 +79,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public double GeneralIconSizeAdjustedForComboBox => GeneralIconSize + 30;
 
-    public double GeneralIconSize
-    {
-        get => Configuration.Instance.EditorConfig.GeneralIconSize;
-        set
-        {
-            Configuration.Instance.EditorConfig.GeneralIconSize = value;
-            this.RaisePropertyChanged();
-            this.RaisePropertyChanged(nameof(GeneralIconSizeAdjustedForComboBox));
-        }
-    }
+    public double GeneralIconSize => Configuration.Instance.EditorConfig.FontSize + 10;
 
     public bool ShowStatusBar
     {
@@ -91,8 +101,14 @@ public class MainWindowViewModel : ViewModelBase
 
     public event EventHandler? SelectedFileChanged; 
     
-    public MainWindowViewModel( ISearchingClient searchingClient)
+    public MainWindowViewModel( ISearchingClient searchingClient, 
+        Action<MainWindowViewModel> requestMainWindowActivate, 
+        Action<MainWindowViewModel> selectAndFocusSearch,
+        Action<MainWindowViewModel> selectAndFocusReplace)
     {
+        _requestMainWindowActivate = requestMainWindowActivate;
+        _selectAndFocusSearch = selectAndFocusSearch;
+        _selectAndFocusReplace = selectAndFocusReplace;
         GotoEditorViewModel? firstEditorThatExists = null;
         bool foundConfiguredEditor = false;
         var gotoEditors = new GotoDefinitions().GetBuiltInEditors().ToList();
@@ -325,10 +341,11 @@ public class MainWindowViewModel : ViewModelBase
             case CodeExecuteNames.VSCode:
             case CodeExecuteNames.Cursor:
             case CodeExecuteNames.Windsurf:
-                PoorMansIPC.Instance.ExecuteNamedAction("WORKSPACE_UPDATE");
+                RecallVisualStudioCodeWorkspacesVisited();
                 break;
             case CodeExecuteNames.SublimeText:
-                PoorMansIPC.Instance.ExecuteNamedAction("SUBLIME_TEXT_WORKSPACE");
+                //Sublime Text always updates a single summary of it's Windows and workspaces.
+                PluginCommands.Instance.ExecuteNamedAction(PluginCommands.SublimeTextWorkspaceUpdate);
                 break;
             case CodeExecuteNames.VisualStudio:
                 ApplyVisualStudioFromConfiguration();
@@ -389,6 +406,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             Configuration.Instance.EditorConfig.FontSize = value;
             this.RaisePropertyChanged();
+            this.RaisePropertyChanged(nameof(GeneralIconSize));
         }
     }
 
@@ -700,7 +718,6 @@ public class MainWindowViewModel : ViewModelBase
         this.RaisePropertyChanged(nameof(IsWorkspaceScopeSelected));
         this.RaisePropertyChanged(nameof(IsOpenScopeSelected));
         this.RaisePropertyChanged(nameof(IsActiveFileSelected));
-        this.UpdateScopeTitle();
     }
     
     
@@ -798,7 +815,7 @@ public class MainWindowViewModel : ViewModelBase
             {
                 Configuration.Instance.SelectedSolutionTitle = value.Title;
                 value.RestoreSelectionFromConfiguration();
-                value.RestoreActiveFilesFromIPC();
+                value.RestoreActiveFilesFromVisualStudio();
 
             }
             this.RaiseAndSetIfChanged(ref _solutionViewModel, value);
@@ -821,6 +838,10 @@ public class MainWindowViewModel : ViewModelBase
         get => _selectedWorkspaceScopeViewModel;
         set
         {
+            if (value != null && SelectedEditorViewModel != null)
+            {
+                Configuration.Instance.EditorWorkSpaceTitleSelection[SelectedEditorViewModel.Title] = value.Title;
+            }
             this.RaiseAndSetIfChanged(ref _selectedWorkspaceScopeViewModel, value);
             this.RaisePropertyChanged(nameof(IsWorkspaceStyle));
             OnPropertyChangedFileSystemRestart(this,
@@ -847,7 +868,6 @@ public class MainWindowViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(IsSolutionStyle));
             OnPropertyChangedFileSystemRestart(this,
                 new PropertyChangedEventArgs(nameof(SelectedScope)));
-            UpdateScopeTitle();
         }
     }
 
@@ -1132,7 +1152,7 @@ public class MainWindowViewModel : ViewModelBase
             _searchQuery.SelectedProjectName = null;
             _searchQuery.SolutionExports = null;
             _searchQuery.FilePaths = [];
-            if (SelectedWorkspaceScopeViewModel == null)
+            if (SelectedWorkspaceScopeViewModel?.WorkspaceExport == null)
             {
                 return;
             }
@@ -1301,7 +1321,6 @@ public class MainWindowViewModel : ViewModelBase
     private ScopeViewModel? _selectedScope;
     private ScopeViewModel? _workingScope;
     private ReplaceModeViewModel? _selectedReplaceMode;
-    private string _scopeTitle;
 
 
     public void CaseSmartCaseNotify()
@@ -1743,42 +1762,6 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public string ScopeTitle
-    {
-        get => _scopeTitle;
-        set
-        {
-            _scopeTitle = value;
-            this.RaisePropertyChanged();
-        }
-    }
-
-    private void UpdateScopeTitle()
-    {
-        ScopeTitle = string.Empty;
-        if (IsFoldersScopeSelected)
-        {
-            if (SelectedScope != null)
-            {
-                ScopeTitle = $"({SelectedScope.ScopeTitle})";
-            }
-        }
-        else if (IsSolutionStyle)
-        {
-            if (SolutionViewModel != null)
-            {
-                ScopeTitle = $"({SolutionViewModel.DisplayTitle})";
-            }
-        }
-        else if (IsWorkspaceStyle)
-        {
-            if (SelectedWorkspaceScopeViewModel != null)
-            {
-                ScopeTitle = $"({SelectedWorkspaceScopeViewModel.Title})";
-            }
-        }
-    }
-
     public void UpdateActiveFiles(ActiveFilesList? list)
     {
         if (list is null || SolutionViewModel == null
@@ -1794,5 +1777,137 @@ public class MainWindowViewModel : ViewModelBase
             OnPropertyChangedFileSystemRestart(this, new PropertyChangedEventArgs(nameof(IsActiveFileSelected)));
         }
         
+    }
+
+    public void RecallVisualStudioCodeWorkspacesVisited()
+    {
+        if (SelectedEditorViewModel is not { IsVsCode: true } and not { IsCursor: true } and not
+            { IsWindsurf: true })
+        {
+            return;
+        }
+
+        WorkspaceScopeViewModels.Clear();
+        int max = 20;
+        int count = 0;
+        foreach (var solutionId in PluginCommands.Instance.GetSolutionIDsForCommands(PluginCommands.VisualStudioCodeWorkspaceUpdate))
+        {
+            string fileName = PluginCommands.Instance.GetCommandPath($"{PluginCommands.VisualStudioCodeWorkspaceUpdate},{solutionId.Title},{solutionId.Identity}");
+            var workspaceScopeViewModel = new WorkspaceScopeViewModel(this, solutionId);
+            WorkspaceScopeViewModels.Add(workspaceScopeViewModel);
+            count++;
+            if (count > max)
+                break;
+        }
+
+        if (Configuration.Instance.EditorWorkSpaceTitleSelection.TryGetValue(SelectedEditorViewModel.Title,
+                out var configTitle))
+        {
+            SelectedWorkspaceScopeViewModel = WorkspaceScopeViewModels.FirstOrDefault(vm=>vm.Title == configTitle);
+        }
+        
+        SelectedWorkspaceScopeViewModel ??= WorkspaceScopeViewModels.FirstOrDefault();
+
+        SolutionViewModel = null;
+
+        if (!IsFoldersScopeSelected)
+        {
+            IsWorkspaceScopeSelected = true;
+        }
+    }
+
+    private string GetNameFromSublimeTextWorkspace(FolderWorkspace workspace)
+    {
+        if (!string.IsNullOrEmpty(workspace.ProjectName))
+        {
+            try
+            {
+                return Path.GetFileNameWithoutExtension(workspace.ProjectName);
+            }
+            catch (Exception)
+            {
+                return workspace.ProjectName;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(workspace.WorkspaceFileName))
+        {
+            try
+            {
+                return Path.GetFileNameWithoutExtension(workspace.WorkspaceFileName);
+            }
+            catch (Exception)
+            {
+                return workspace.WorkspaceFileName;
+            }
+        }
+
+        StringBuilder builder = new();
+        builder.Append('(');
+        bool continuation = false;
+        foreach (var folder in workspace.Folders)
+        {
+            try
+            {
+                if (continuation)
+                {
+                    builder.Append(',');
+                }
+
+                builder.Append(System.IO.Path.GetFileName(folder));
+                continuation = true;
+            }
+            catch (Exception)
+            {
+                builder.Append('-');
+                throw;
+            }
+        }
+
+        builder.Append(')');
+        return builder.ToString();
+    }
+
+    public void ApplySublimeTextListOfWorkspaces(List<FolderWorkspace> workspaces)
+    {
+        SolutionViewModel = null;
+
+
+        var sublimeTextViewModels = new HashSet<WorkspaceScopeViewModel>();
+        
+        WorkspaceScopeViewModels.Clear();
+        
+        foreach (var folderWorkspace in workspaces)
+        {
+            if (string.IsNullOrEmpty(folderWorkspace.Name))
+            {
+                folderWorkspace.Name = GetNameFromSublimeTextWorkspace(folderWorkspace);
+            }
+
+            var solutionId = SolutionID.CreateFromSolutionPath(folderWorkspace.Name);
+            var workspaceScopeViewModel = new WorkspaceScopeViewModel(this, solutionId,true)
+            {
+                WorkspaceExport = folderWorkspace
+            };
+            WorkspaceScopeViewModels.Insert(0, workspaceScopeViewModel);
+            sublimeTextViewModels.Add(workspaceScopeViewModel);
+        }
+
+        if (SelectedEditorViewModel is not null)
+        {
+            if (Configuration.Instance.EditorWorkSpaceTitleSelection.TryGetValue(SelectedEditorViewModel.Title,
+                    out var configTitle))
+            {
+                SelectedWorkspaceScopeViewModel =
+                    WorkspaceScopeViewModels.FirstOrDefault(vm => vm.Title == configTitle);
+            }
+        }
+
+        SelectedWorkspaceScopeViewModel ??= WorkspaceScopeViewModels.FirstOrDefault();
+
+        if (!IsFoldersScopeSelected)
+        {
+            IsWorkspaceScopeSelected = true;
+        }
     }
 }

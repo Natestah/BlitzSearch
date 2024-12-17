@@ -19,55 +19,97 @@
     </UserControl.Styles>
     
     <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+        <views:EditorSelector DockPanel.Dock="Left" />
+        <ComboBox DockPanel.Dock="Left"
+                  IsVisible="{Binding IsSolutionStyle}"
+            VerticalAlignment="Center" VerticalContentAlignment="Center"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding SolutionViewModels}"
+            SelectedItem="{Binding SolutionViewModel}">
+            <ComboBox.DataTemplates>
+                <DataTemplate x:DataType="vm:SolutionViewModel">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.DataTemplates>
+        </ComboBox>
+        <ComboBox IsVisible="{Binding IsWorkspaceStyle}"
+                  VerticalAlignment="Center" VerticalContentAlignment="Center"
+                  HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding WorkspaceScopeViewModels}"
+                  SelectedItem="{Binding SelectedWorkspaceScopeViewModel}">
+            <ComboBox.DataTemplates>
+                <DataTemplate x:DataType="vm:WorkspaceScopeViewModel">
+                    <StackPanel Orientation="Horizontal">
+                        <!-- <Image Width="32" Height="32" Source="{Binding ExecutableIconHint,Converter={StaticResource DirectEditorImageConverter}}"  /> -->
+                        <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.DataTemplates>
+        </ComboBox>
         <ListBox
             Background="Transparent">
 
             <ListBoxItem IsVisible="{Binding IsWorkspaceStyle}"
                          IsSelected="{Binding  IsWorkspaceScopeSelected}">
                 <StackPanel DataContext="{Binding SelectedWorkspaceScopeViewModel}" Orientation="Horizontal">
+                    <ToolTip.Tip>
+                        <ToolTip Content="Find in Workspace"/>
+                    </ToolTip.Tip>
                     <material:MaterialIcon Classes="m1ForWorkspace" Kind="FolderHome" />
-                    <TextBlock Classes="scopeButtons" Text="Workspace" />
+                    <!-- <TextBlock Classes="scopeButtons" Text="Workspace" /> -->
 
                 </StackPanel>
             </ListBoxItem>
 
             <ListBoxItem IsVisible="{Binding IsSolutionStyle}"
                          IsSelected="{Binding  IsSolutionScopeSelected}">
+                <ToolTip.Tip>
+                    <ToolTip Content="Find in Solution"/>
+                </ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderHome" />
-                    <TextBlock Classes="scopeButtons" Text="Solution" />
                 </StackPanel>
             </ListBoxItem>
 
             <ListBoxItem IsVisible="{Binding IsSolutionStyle}"
                          IsSelected="{Binding  IsProjectScopeSelected}">
+                <ToolTip.Tip>
+                    <ToolTip Content="Find in Project"/>
+                </ToolTip.Tip>
                 <StackPanel DataContext="{Binding SolutionViewModel}" Orientation="Horizontal">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FolderText" />
-                    <TextBlock Classes="scopeButtons" Text="Project" />
                 </StackPanel>
             </ListBoxItem>
 
             <ListBoxItem
                 IsVisible="{Binding IsSolutionStyle}"
                 IsSelected="{Binding IsOpenScopeSelected}">
+                <ToolTip.Tip>
+                    <ToolTip Content="Find in Opened Files"/>
+                </ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocumentMultiple" />
-                    <TextBlock Classes="scopeButtons" Text="Opened" />
                 </StackPanel>
             </ListBoxItem>
 
             <ListBoxItem IsVisible="{Binding IsSolutionStyle}"
                          IsSelected="{Binding IsActiveFileSelected}">
+                <ToolTip.Tip>
+                    <ToolTip Content="Find in Active File"/>
+                </ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" DataContext="{Binding SolutionViewModel}">
                     <material:MaterialIcon Classes="m1ForSolution" Kind="FileDocument" />
-                    <TextBlock Classes="scopeButtons" Text="Active" />
                 </StackPanel>
             </ListBoxItem>
 
             <ListBoxItem IsSelected="{Binding IsFoldersScopeSelected}">
+                <ToolTip.Tip>
+                    <ToolTip Content="Find in Folders"/>
+                </ToolTip.Tip>
                 <StackPanel Orientation="Horizontal">
-                    <material:MaterialIcon Classes="m1" Kind="FolderMultiple" />
-                    <TextBlock Classes="scopeButtons" Text="Folders" />
+                    <material:MaterialIcon Classes="m1" Kind="Telescope" />
                 </StackPanel>
             </ListBoxItem>
 
@@ -118,36 +160,7 @@
 
 
         <StackPanel Margin="20 0 0 0" Orientation="Horizontal" >
-            
-            <ComboBox IsVisible="{Binding IsSolutionScopeSelected}"
-                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding SolutionViewModels}"
-                      SelectedItem="{Binding SolutionViewModel}">
-                <ComboBox.DataTemplates>
-                    <DataTemplate x:DataType="vm:SolutionViewModel">
-                        <StackPanel Orientation="Horizontal">
-                            <!-- <Image Width="32" Height="32" Source="{Binding ExecutableIconHint,Converter={StaticResource DirectEditorImageConverter}}"  /> -->
-                            <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.DataTemplates>
-            </ComboBox>
-            
-            <ComboBox IsVisible="{Binding IsWorkspaceScopeSelected}"
-                      VerticalAlignment="Center" VerticalContentAlignment="Center"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding WorkspaceScopeViewModels}"
-                      SelectedItem="{Binding SelectedWorkspaceScopeViewModel}">
-                <ComboBox.DataTemplates>
-                    <DataTemplate x:DataType="vm:WorkspaceScopeViewModel">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32" Source="{Binding ExecutableIconHint,Converter={StaticResource DirectEditorImageConverter}}"  />
-                            <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.DataTemplates>
-            </ComboBox>
+
 
             <views:ScopeSelector IsVisible="{Binding IsFoldersScopeSelected}"
                                  HorizontalAlignment="Stretch"  />
@@ -168,6 +181,6 @@
             </Grid>
         </StackPanel>
 
-        <views:EditorSelector DockPanel.Dock="Right" />
+        
     </DockPanel>
 </UserControl>

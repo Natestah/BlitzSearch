@@ -6,6 +6,15 @@
 
 Thank you!
 
+### Version 0.0.87
+* Visual Studio Code - Improved multi-Instanced workflow
+* Workspace/Solution Scope selectors always Visible, important for knowing where Goto will land.
+* Removed Icon Size variable. Generally I've found myself adding 10 to the font size. so I'm just removing this setting and doing it automatically.
+* Editor Icon Resource size reduction.
+* Editor Selection Moved to left. 
+* Text Labels for scopes Icon only with labels moved to ToolTip.
+* When Running "Search This" from the latest VS Code Extension, VS Code Editor will auto-select for that instance.
+
 ### Version 0.0.86
 * Windsurf support
 * Visual Studio - Supports multiple Solutions / Instances better ( get the extension update )

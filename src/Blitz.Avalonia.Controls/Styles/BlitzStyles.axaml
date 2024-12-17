@@ -54,6 +54,7 @@
     </Style>
 
     <Style Selector="material|MaterialIcon.m1ForWorkspace">
+        <Setter Property="Margin" Value="4 2"></Setter>
         <Setter Property="Width" Value="{CompiledBinding DataType=vm:WorkspaceScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
         <Setter Property="Height" Value="{CompiledBinding DataType=vm:WorkspaceScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
         <Setter Property="VerticalAlignment" Value="Center" />

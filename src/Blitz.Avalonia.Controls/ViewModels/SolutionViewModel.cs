@@ -49,10 +49,10 @@ public class SolutionViewModel : ViewModelBase
         }
     }
 
-    public void RestoreActiveFilesFromIPC()
+    public void RestoreActiveFilesFromVisualStudio()
     {
         ActiveFiles.Clear();
-        if (!PoorMansIPC.Instance.GetCommandPathFromSolutionID(this.SolutionIdentity,"VS_ACTIVE_FILES", out var path))
+        if (!PluginCommands.Instance.GetCommandPathFromSolutionId(this.SolutionIdentity,PluginCommands.UpdateVisualStudioActiveFiles, out var path))
         {
             return;
         }
@@ -63,19 +63,11 @@ public class SolutionViewModel : ViewModelBase
            
             ActiveFiles.AddRange(activeFileList.ActiveFiles);
         }
-
     }
 
     public ObservableCollection<string> ActiveFiles
     {
-        get
-        {
-            if (_activeFiles == null || _activeFiles.Count == 0)
-            {
-                
-            }
-            return _activeFiles;
-        }
+        get => _activeFiles;
         set => this.RaiseAndSetIfChanged(ref _activeFiles, value);
     }
 
@@ -87,18 +79,10 @@ public class SolutionViewModel : ViewModelBase
     /// </summary>
     public string DisplayTitle => $"{Title}.sln";
     
-    
-    private static string GetSolutionCacheFile(string solutionName)
-    {
-        var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var specificFolder = Path.Combine(folder, "NathanSilvers", "SolutionCache");
-        Directory.CreateDirectory(specificFolder);
-        return Path.Combine(specificFolder, $"{solutionName}.txt"); 
-    }
 
     private SolutionExport? GetSolutionExport()
     {
-        return !PoorMansIPC.Instance.GetSolutionRecord(SolutionIdentity, out var cacheFile) 
+        return !PluginCommands.Instance.GetSolutionRecord(SolutionIdentity, out var cacheFile) 
             ? null 
             : JsonSerializer.Deserialize(File.ReadAllText(cacheFile), JsonContext.Default.SolutionExport);
     }

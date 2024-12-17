@@ -9,9 +9,10 @@
   {
     "Title": "Visual Studio",
     "CodeExecute": "VisualStudioPlugin",
-    "Executable": "-",
+    "Executable": "",
     "ExecutableIconHint": "devenv.exe",
     "ExecutableWorkingDirectory": "-",
+    "RunningProcessName": "devenv.exe",
     "Arguments": "-",
     "Notes": "Blitz Search plugin required for goto."
   },

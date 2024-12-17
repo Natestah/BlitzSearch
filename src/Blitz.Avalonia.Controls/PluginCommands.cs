@@ -1,18 +1,40 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Blitz.Avalonia.Controls.ViewModels;
 
 namespace Blitz.Avalonia.Controls;
 
-public class PoorMansIPC
+
+/// <summary>
+/// Plugin Commands acts as a shared Configuration folder between the various IDE/Plugins and Blitz Search,
+/// it is used to communicate and store commands and context from each IDE to Blitz Search
+/// Commands Deposited to filesystem, do not need to deal with the trappings of connections, ports and things.
+/// A File System Watcher is installed to update Blitz Search when those things change.
+/// </summary>
+public class PluginCommands
 {
-    public static PoorMansIPC Instance = new PoorMansIPC();
+
+    // Command Names Shared with Plugins, string changes need to be reflected in Plugin code.
+    public const string SetSearch = "SET_SEARCH";  
+    public const string SetReplace = "SET_REPLACE";  
+    public const string SetContextSearch = "SET_CONTEXT_SEARCH";  
+    public const string SetContextReplace = "SET_CONTEXT_REPLACE";  
+    public const string UpdateVisualStudioSolution = "VS_SOLUTION";  
+    public const string SetTheme = "SET_THEME";  
+    public const string SetThemeLight = "SET_THEME_LIGHT";  
+    public const string VisualStudioCodeWorkspaceUpdate = "WORKSPACE_UPDATE";  
+    public const string SublimeTextWorkspaceUpdate = "SUBLIME_TEXT_WORKSPACE";  
+    public const string UpdateVisualStudioProject = "VS_PROJECT";  
+    public const string UpdateVisualStudioActiveFiles = "VS_ACTIVE_FILES";  
+    
+    public static PluginCommands Instance = new PluginCommands();
 
     private Dictionary<string, Action<string>> _actions = new Dictionary<string, Action<string>>();
 
     private FileSystemWatcher _fileSystemWatcher;
 
-    public PoorMansIPC()
+    public PluginCommands()
     {
         var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var specificFolder = Path.Combine(folder, "NathanSilvers", "POORMANS_IPC");
@@ -29,13 +51,12 @@ public class PoorMansIPC
 
     public bool GetSolutionRecord(SolutionID searchingSolutionId, out string path)
     {
-        return GetCommandPathFromSolutionID(searchingSolutionId,"VS_SOLUTION" , out path);
-       }
-
+        return GetCommandPathFromSolutionId(searchingSolutionId, UpdateVisualStudioSolution, out path);
+    }
     
-    public bool GetCommandPathFromSolutionID(SolutionID searchingSolutionId, string command, out string path)
+    public bool GetCommandPathFromSolutionId(SolutionID searchingSolutionId, string command, out string path)
     {
-        foreach (var solutionId in GetSolutionTitles())
+        foreach (var solutionId in GetSolutionIDsForCommands(command))
         {
             if (solutionId.Equals(searchingSolutionId))
             {
@@ -48,10 +69,17 @@ public class PoorMansIPC
     }
     public IEnumerable<SolutionID> GetSolutionTitles()
     {
-        string solutionCommand = $"VS_SOLUTION";
-        foreach (var file in Directory.EnumerateFiles(_fileSystemWatcher.Path, solutionCommand+"*.txt"))
+        return GetSolutionIDsForCommands(UpdateVisualStudioSolution);
+    }
+    
+    public IEnumerable<SolutionID> GetSolutionIDsForCommands(string command)
+    {
+        var di = new DirectoryInfo(_fileSystemWatcher.Path);
+        FileInfo[] files = di.GetFiles(@command+"*.txt");
+        Array.Sort(files, (x, y) => Comparer<DateTime>.Default.Compare(x.LastWriteTime, y.LastWriteTime));
+        foreach (var file in files)
         {
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FullName);
             var split = fileNameWithoutExtension.Split(',');
             if (split.Length == 3)
             {
@@ -60,10 +88,13 @@ public class PoorMansIPC
         }
     }
 
+
     public void RegisterAction(string name, Action<string> action)
     {
         _actions[name] = action;
     }
+    
+    public string GetCommandPath(string name) => Path.Combine(_fileSystemWatcher.Path, $"{name}.txt");
 
     public void ExecuteNamedAction(string name)
     {
@@ -71,7 +102,8 @@ public class PoorMansIPC
         {
             return;
         }
-        string filePath = Path.Combine(_fileSystemWatcher.Path, $"{name}.txt");
+
+        string filePath = GetCommandPath(name);
         if (!File.Exists(filePath))
         {
             return;

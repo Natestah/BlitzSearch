@@ -11,6 +11,7 @@ namespace Blitz;
 [JsonSerializable(typeof(BlitzEditorConfig))]
 [JsonSerializable(typeof(BlitzVersion))]
 [JsonSerializable(typeof(BlitzVersionList))]
+[JsonSerializable(typeof(SetSearchBoxContext))]
 [JsonSerializable(typeof(GotoEditor))]
 [JsonSerializable(typeof(List<GotoEditor>))]
 [JsonSerializable(typeof(FolderWorkspace))]

@@ -58,7 +58,7 @@ public class GotoAction(GotoEditor gotoEditor)
         return specificFolder;
     }
     
-    private void executeGotoByPoorMansIPC( GotoDirective gotoDirective, string ipcIdentity, string pathSeperator =";", bool preview = true)
+    private void executeLabeledGotoCommand( GotoDirective gotoDirective, string ipcIdentity, string pathSeperator =";", bool preview = true)
     {
         string path = GetFolder();
         string previewSuffix = preview ? "_PREVIEW": string.Empty;
@@ -106,6 +106,27 @@ public class GotoAction(GotoEditor gotoEditor)
             }
         }
     }
+    private void executeGotoWithSolutionId( GotoDirective gotoDirective, string commandIdentity, bool preview = true)
+    {
+        string title = gotoDirective.Title ?? string.Empty;
+        string identity = gotoDirective.SolutionId ?? string.Empty;
+        string path = GetFolder();
+        string previewSuffix = preview ? "_PREVIEW_JSON": "_JSON";
+        string file = Path.Combine(path, $"{commandIdentity}{previewSuffix},{title},{identity}.txt");
+        string contents = System.Text.Json.JsonSerializer.Serialize(gotoDirective, JsonContext.Default.GotoDirective);
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                File.WriteAllText(file, contents);
+                break;
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(50);
+            }
+        }
+    }
 
     bool ExecutableBootRequired()
     {
@@ -135,19 +156,19 @@ public class GotoAction(GotoEditor gotoEditor)
                 case CodeExecuteNames.VSCode:
                 case CodeExecuteNames.Cursor:
                 case CodeExecuteNames.Windsurf:
-                    executeGotoByPoorMansIPC(gotoDirective, "VS_CODE_GOTO", ";", preview);
+                    executeGotoWithSolutionId(gotoDirective, "VS_CODE_GOTO", preview);
                     runExecutable = ExecutableBootRequired();
                     break;
                 case CodeExecuteNames.VisualStudio:
-                    executeGotoWithJsonAndNamedParameters(gotoDirective, "VISUAL_STUDIO_GOTO",  System.IO.Path.GetFileNameWithoutExtension(gotoDirective.SolutionName) ?? string.Empty, preview);
+                    //Todo: visit Visual Studio Plugin and use executeGotoWithSolutionId, not super important but would like to reduce edge case file contention.
+                    executeGotoWithJsonAndNamedParameters(gotoDirective, "VISUAL_STUDIO_GOTO",  Path.GetFileNameWithoutExtension(gotoDirective.SolutionName) ?? string.Empty, preview);
                     runExecutable = false;
                     break;
                 case CodeExecuteNames.BlitzEdit:
-                    executeGotoByPoorMansIPC(gotoDirective, "BLITZ_EDIT_GOTO", ";", preview);
-                    runExecutable = false;
+                    executeLabeledGotoCommand(gotoDirective, "BLITZ_EDIT_GOTO", ";", preview);
+                    runExecutable = false;  
                     break;
             }
-            
         }
 
         if (!runExecutable)

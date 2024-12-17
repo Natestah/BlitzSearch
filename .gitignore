@@ -11,12 +11,12 @@ src/BlitzSearch.sln.DotSettings.user
 /src/Blitz.AvaloniaEdit/obj
 /src/Blitz.Files.Tests/bin
 /src/Blitz.Files.Tests/obj
-/src/Blitz.Goto.ConsoleAppDemo/bin
-/src/Blitz.Goto.ConsoleAppDemo/obj
-/src/Blitz.Goto.Demo/bin
-/src/Blitz.Goto.Demo/obj
-/src/Blitz.Goto/bin
-/src/Blitz.Goto/obj
+src/Blitz.Goto.ConsoleAppDemo/bin
+src/Blitz.Goto.ConsoleAppDemo/obj
+src/Blitz.Goto.Demo/bin
+src/Blitz.Goto.Demo/obj
+src/Blitz.Goto/bin
+src/Blitz.Goto/obj
 /src/Blitz.Interfacing/bin
 /src/Blitz.Interfacing/obj
 /src/Blitz.Search.Tests/bin
@@ -28,3 +28,4 @@ src/BlitzSearch.sln.DotSettings.user
 /src/BlitzEdit/bin
 /src/BlitzEdit/obj
 src/BlitzSearch.sln.DotSettings.user
+

@@ -150,6 +150,8 @@ public class Configuration
     public SolutionID SelectedSolutionID { get; set; } = SolutionID.None;
     
     public Dictionary<string,List<string>> SolutionActiveFiles { get; set; } = [];
+    
+    public Dictionary<string, string> EditorWorkSpaceTitleSelection { get; set; } = [];
 
     public void CleanSlateShutdown()
     {

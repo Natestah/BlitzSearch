@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.87",
+    "Changes": "* Visual Studio Code - Improved multi-Instanced workflow\r\n* Workspace/Solution Scope selectors always Visible, important for knowing where Goto will land.\r\n* Removed Icon Size variable. Generally I\u0027ve found myself adding 10 to the font size. so I\u0027m just removing this setting and doing it automatically.\r\n* Editor Icon Resource size reduction.\r\n* Editor Selection Moved to left. \r\n* Text Labels for scopes Icon only with labels moved to ToolTip.\r\n* When Running \u0022Search This\u0022 from the latest VS Code Extension, VS Code Editor will auto-select for that instance.\r\n\r\n"
+  },
+  {
     "Revision": "0.0.86",
     "Changes": "* Windsurf support\r\n* Visual Studio - Supports multiple Solutions / Instances better ( get the extension update )\r\n* Continued to add more feedback on what\u0027s being searched when you have an empty query.\r\n* Title bar\r\n\r\n"
   },

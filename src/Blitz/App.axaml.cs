@@ -41,12 +41,48 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            _mainWindowViewModel = new MainWindowViewModel(new InProcessSearchHandler());
+            var activateIntoViewAction = new Action<MainWindowViewModel>(mainWindowViewModel =>
+            {
+                if (desktop.MainWindow is not MainWindow window)
+                {
+                    return;
+                }
+                if (window.WindowState == WindowState.Minimized)
+                {
+                    window.WindowState = mainWindowViewModel.LastNonMinizedState;
+                }
+                else
+                {
+                    window.WindowState = WindowState.Minimized;
+                    window.WindowState = mainWindowViewModel.LastNonMinizedState;
+                }
 
-            var mainWindow = desktop.MainWindow = new MainWindow
+                window.BringIntoView();
+                window.Activate();
+            });
+            var selectAndFocusSearchField = new Action<MainWindowViewModel>(mainWindowViewModel =>
+            {
+                if (desktop.MainWindow is MainWindow window)
+                {
+                    window.BlitzMainPanel.SelectAndFocusMainSearchField();
+                }
+            });
+            var selectAndFocusReplaceField = new Action<MainWindowViewModel>(mainWindowViewModel =>
+            {
+                if (desktop.MainWindow is MainWindow window)
+                {
+                    window.BlitzMainPanel.SelectAndFocusReplaceBoxField();
+                }
+            });
+            _mainWindowViewModel = new MainWindowViewModel(new InProcessSearchHandler(),activateIntoViewAction, selectAndFocusSearchField, selectAndFocusReplaceField);
+
+            var mainwindow = new MainWindow
             {
                 DataContext = _mainWindowViewModel,
             };
+            var mainWindow = desktop.MainWindow = mainwindow;
+
+            
             _mainWindowViewModel.EditorViewModel.BackGroundForeGroundUpdate = (textMateInstallation) =>
             {
                 ApplyBrushAction(textMateInstallation, "editor.background",brush => mainWindow.Background = brush);

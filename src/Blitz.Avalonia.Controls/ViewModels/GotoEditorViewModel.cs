@@ -235,6 +235,13 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     {
         var gotoAction = new GotoAction(GotoEditor);
         var directive = new GotoDirective(mainWindowViewModel.SolutionViewModel?.Export?.Name,fileToGoto, line, column);
+
+        if(mainWindowViewModel is { IsWorkspaceStyle: true, SelectedWorkspaceScopeViewModel: {} selectedWorkspaceScopeViewModel })
+        {
+            directive.Title = selectedWorkspaceScopeViewModel.SolutionIdentity.Title;
+            directive.SolutionId = selectedWorkspaceScopeViewModel.SolutionIdentity.Identity;
+        }
+        
         errorMessage = string.Empty;
         try
         {
