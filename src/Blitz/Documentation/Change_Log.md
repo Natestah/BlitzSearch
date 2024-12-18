@@ -5,6 +5,8 @@
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
 Thank you!
+### Version 0.0.88
+-when opening Visual Studio Solution, Select Visual Studio Editor automatically
 
 ### Version 0.0.87
 * Visual Studio Code - Improved multi-Instanced workflow

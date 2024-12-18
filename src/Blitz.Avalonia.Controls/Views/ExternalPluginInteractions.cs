@@ -282,6 +282,19 @@ public class ExternalPluginInteractions
                 throw;
             }
 
+            if (_viewModel.SelectedEditorViewModel is { IsVisualStudio: false })
+            {
+                foreach (var editor in _viewModel.GotoEditorCollection)
+                {
+                    if (editor.IsVisualStudio)
+                    {
+                        _viewModel.SelectedEditorViewModel = editor;
+                        break;
+                    }
+                }
+            }
+            
+
             var existingProject = _viewModel.SolutionViewModel?.SelectedProject?.Name;
 
             var solutionId = SolutionID.CreateFromSolutionPath(configFromFile.Name);
