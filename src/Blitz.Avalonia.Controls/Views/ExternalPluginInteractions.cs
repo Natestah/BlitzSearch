@@ -19,28 +19,62 @@ namespace Blitz.Avalonia.Controls.Views;
 public class ExternalPluginInteractions
 {
     private readonly MainWindowViewModel _viewModel;
-
+    private readonly PluginCommands _commander;
     public ExternalPluginInteractions(MainWindowViewModel viewModel)
     {
         _viewModel = viewModel;
+        _commander = new PluginCommands();
         RegisterCommands();
     }
+    
+    public PluginCommands Commander => _commander;
 
     private void RegisterCommands()
     {
-        var commander = PluginCommands.Instance;
-        commander.RegisterAction(PluginCommands.SetSearch, SetSearchBoxText);
-        commander.RegisterAction(PluginCommands.SetContextSearch, SetSearchBoxContextSearch);
-        commander.RegisterAction(PluginCommands.SetReplace, SetReplaceBoxText);
-        commander.RegisterAction(PluginCommands.SetContextReplace, SetSearchBoxContextReplace);
-        commander.RegisterAction(PluginCommands.SetTheme, SetTheme);
-        commander.RegisterAction(PluginCommands.SetThemeLight, SetThemeLight);
-        commander.RegisterAction(PluginCommands.VisualStudioCodeWorkspaceUpdate, UpdateVisualStudioCodeFolderWorkspace);
-        commander.RegisterAction(PluginCommands.UpdateVisualStudioSolution, UpdateVisualStudioSolution);
-        commander.RegisterAction(PluginCommands.UpdateVisualStudioProject, UpdateVisualStudioSelectedProject);
-        commander.RegisterAction(PluginCommands.UpdateVisualStudioActiveFiles, UpdateVisualStudioActiveFilesList);
-        commander.RegisterAction(PluginCommands.SublimeTextWorkspaceUpdate, UpdateSublimeTextWorkspace);
-        commander.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+        _commander.RegisterAction(PluginCommands.SetSearch, SetSearchBoxText);
+        _commander.RegisterAction(PluginCommands.SetContextSearch, SetSearchBoxContextSearch);
+        _commander.RegisterAction(PluginCommands.SetReplace, SetReplaceBoxText);
+        _commander.RegisterAction(PluginCommands.SetContextReplace, SetSearchBoxContextReplace);
+        _commander.RegisterAction(PluginCommands.SetTheme, SetTheme);
+        _commander.RegisterAction(PluginCommands.SetThemeLight, SetThemeLight);
+        _commander.RegisterAction(PluginCommands.VisualStudioCodeWorkspaceUpdate, UpdateVisualStudioCodeFolderWorkspace);
+        _commander.RegisterAction(PluginCommands.UpdateVisualStudioSolution, UpdateVisualStudioSolution);
+        _commander.RegisterAction(PluginCommands.UpdateVisualStudioProject, UpdateVisualStudioSelectedProject);
+        _commander.RegisterAction(PluginCommands.UpdateVisualStudioActiveFiles, UpdateVisualStudioActiveFilesList);
+        _commander.RegisterAction(PluginCommands.SublimeTextWorkspaceUpdate, UpdateSublimeTextWorkspace);
+        _commander.RegisterAction(PluginCommands.SimpleFolderSearch, SetSimpleFolderSearch);
+        _commander.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+    }
+
+    void SetSimpleFolderSearch(string text)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            const string ExplorerFolder = "Explorer";
+            var existing = _viewModel.ScopeViewModels.FirstOrDefault(x => x.ScopeTitle == ExplorerFolder);
+            var path = new ConfigSearchPath
+            {
+                Folder = text,
+            };
+            var index = 0;
+            if (existing != null)
+            {
+                index = _viewModel.ScopeViewModels.IndexOf(existing);
+                _viewModel.ScopeViewModels.Remove(existing);
+            }
+            
+            var scopeConfig = new ScopeConfig()
+            {
+                ScopeTitle = ExplorerFolder,
+                SearchPaths = [path],
+            };
+        
+            var newVm = new ScopeViewModel(_viewModel, scopeConfig);
+            _viewModel.ScopeViewModels.Insert(index, newVm);
+            _viewModel.SelectedScope = newVm;
+            _viewModel.IsFoldersScopeSelected = true;
+            _viewModel.ActivateMainWindow();
+        });
     }
 
     void UpdateVisualStudioActiveFilesList(string text)
@@ -427,7 +461,7 @@ public class ExternalPluginInteractions
             visited.Add(solution.Identity);
         
         // Add outside of configuration ( say if VS sent the command but Blitz was shut down )
-        foreach (var solutionId in PluginCommands.Instance.GetSolutionTitles())
+        foreach (var solutionId in _viewModel.ExternalPluginInteractions.Commander.GetSolutionTitles())
         {
             if (visited.Contains(solutionId.Identity))
             {

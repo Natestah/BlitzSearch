@@ -24,7 +24,6 @@ namespace Blitz.Avalonia.Controls.Views;
 
 public partial class BlitzMainPanel : UserControl
 {
-    private ExternalPluginInteractions? _externalPluginInteractions = null;
     public BlitzMainPanel()
     {
         InitializeComponent();
@@ -38,7 +37,6 @@ public partial class BlitzMainPanel : UserControl
         if (DataContext is MainWindowViewModel viewModel)
         {
             _mainWindowViewModel = viewModel;
-            _externalPluginInteractions = new ExternalPluginInteractions(_mainWindowViewModel);
             BlitzSecondary.ShowHelp();
             viewModel.SelectedFileChanged += (o, _) =>
             {
@@ -65,7 +63,7 @@ public partial class BlitzMainPanel : UserControl
             BlitzSecondary.AvaloniaTextEditor.ContextRequested += ContextMenuOnContextRequested;
 
             SearchPanel.KeyDownAction = MainSearchField_OnKeyDown;
-            _externalPluginInteractions.RecallSharedConfigurations();
+            _mainWindowViewModel.ExternalPluginInteractions.RecallSharedConfigurations();
             base.OnLoaded(e);
             viewModel.EditorViewModel.PopulateThemeModels();
 

@@ -5,6 +5,7 @@ using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reactive;
+using System.Text;
 using Avalonia.Media.Imaging;
 using Blitz.Interfacing;
 
@@ -19,11 +20,35 @@ public class ScopeViewModel : ViewModelBase
     private bool _scopeImageVisible;
     public ReactiveCommand<Unit, Unit> AddSearchPath { get; }
     public ObservableCollection<SearchPathViewModel> SearchPathViewModels { get; set; } = [];
+
+    public string FoldersList
+    {
+        get
+        {
+            if (SearchPathViewModels.Count == 0)
+            {
+                return string.Empty;
+            }
+            
+            var builder = new StringBuilder();
+            builder.Append(SearchPathViewModels[0].ConfigSearchPath.Folder);
+            if (SearchPathViewModels.Count <= 1)
+            {
+                return builder.ToString();
+            }
+            var diff = SearchPathViewModels.Count - 1;
+            builder.AppendLine();
+            builder.Append($"+ {diff} folders..");
+            return builder.ToString();
+            
+        }
+    }
     
     public MainWindowViewModel MainWindowViewModel => _mainWindowViewModel;
     
     public ScopeViewModel(MainWindowViewModel mainWindowViewModel,  ScopeConfig scopeConfig)
     {
+        SearchPathViewModels.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(FoldersList));
         _mainWindowViewModel = mainWindowViewModel;
         _scopeConfig = scopeConfig;
         AddSearchPath = ReactiveCommand.Create(RunAddSearchCommand);

@@ -26,27 +26,30 @@ public class PluginCommands
     public const string VisualStudioCodeWorkspaceUpdate = "WORKSPACE_UPDATE";  
     public const string SublimeTextWorkspaceUpdate = "SUBLIME_TEXT_WORKSPACE";  
     public const string UpdateVisualStudioProject = "VS_PROJECT";  
-    public const string UpdateVisualStudioActiveFiles = "VS_ACTIVE_FILES";  
+    public const string UpdateVisualStudioActiveFiles = "VS_ACTIVE_FILES";
+    public static string SimpleFolderSearch = "SIMPLE_FOLDER_SEARCH";
     
-    public static PluginCommands Instance = new PluginCommands();
-
     private Dictionary<string, Action<string>> _actions = new Dictionary<string, Action<string>>();
 
     private FileSystemWatcher _fileSystemWatcher;
 
-    public PluginCommands()
+    public static string GetCommandsFolder()
     {
         var folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var specificFolder = Path.Combine(folder, "NathanSilvers", "POORMANS_IPC");
         Directory.CreateDirectory(specificFolder);
-         
-         var watcher = new FileSystemWatcher(specificFolder, "*");
-         watcher.EnableRaisingEvents = true;
-         watcher.Created += WatcherOnCreated;
-         watcher.Renamed += WatcherOnRenamed;
-         watcher.Deleted += WatcherOnDeleted;
-         watcher.Changed += WatcherOnChanged;
-         _fileSystemWatcher = watcher;
+        return specificFolder;
+    }
+    public PluginCommands()
+    {
+        var specificFolder = GetCommandsFolder();
+        var watcher = new FileSystemWatcher(specificFolder, "*");
+        watcher.EnableRaisingEvents = true;
+        watcher.Created += WatcherOnCreated;
+        watcher.Renamed += WatcherOnRenamed;
+        watcher.Deleted += WatcherOnDeleted;
+        watcher.Changed += WatcherOnChanged;
+        _fileSystemWatcher = watcher;
     }
 
     public bool GetSolutionRecord(SolutionID searchingSolutionId, out string path)

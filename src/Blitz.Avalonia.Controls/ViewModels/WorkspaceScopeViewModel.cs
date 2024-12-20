@@ -47,8 +47,9 @@ public class WorkspaceScopeViewModel : ViewModelBase
             //Sublime Text operates under one executable so it's export is unified.. 
             throw new NotImplementedException("Sublime Text GetWorkspaceExportFromLastPluginCommand is unsupported.");
         }
-        
-        return !PluginCommands.Instance.GetCommandPathFromSolutionId(SolutionIdentity, PluginCommands.VisualStudioCodeWorkspaceUpdate, out var cacheFile) 
+
+        var pluginCommander = MainWindowVM.ExternalPluginInteractions.Commander;
+        return !pluginCommander.GetCommandPathFromSolutionId(SolutionIdentity, PluginCommands.VisualStudioCodeWorkspaceUpdate, out var cacheFile) 
             ? null 
             : JsonSerializer.Deserialize(File.ReadAllText(cacheFile), JsonContext.Default.FolderWorkspace);
     }

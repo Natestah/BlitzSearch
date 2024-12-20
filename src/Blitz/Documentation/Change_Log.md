@@ -5,8 +5,13 @@
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
 Thank you!
+
+### Version 0.0.89
+* opening the executable with -find, will create a Folder search for the working directory of the -find command.
+* Update to the dropdown for folders to show the first folder path.
+
 ### Version 0.0.88
--when opening Visual Studio Solution, Select Visual Studio Editor automatically
+* when opening Visual Studio Solution, Select Visual Studio Editor automatically
 
 ### Version 0.0.87
 * Visual Studio Code - Improved multi-Instanced workflow

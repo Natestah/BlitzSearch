@@ -4,11 +4,13 @@ using System;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Blitz.Avalonia.Controls;
 using ReactiveUI;
 namespace Blitz;
 
@@ -22,6 +24,10 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        if (args.Any(a => a == "-find"))
+        {
+            WriteFindDirective();
+        }
         string mainMutex = "BlitzMainMutex";
         try
         {
@@ -49,6 +55,13 @@ sealed class Program
         {
            GlobalExceptionReport(e);
         }
+    }
+
+    private static void WriteFindDirective()
+    {
+        string commandFolder = PluginCommands.GetCommandsFolder();
+        var workingDirectory = Environment.CurrentDirectory;
+        File.WriteAllText(Path.Combine(commandFolder, $"{PluginCommands.SimpleFolderSearch}"), workingDirectory);
     }
 
     private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)

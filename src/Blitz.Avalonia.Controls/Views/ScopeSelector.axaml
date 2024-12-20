@@ -9,7 +9,7 @@
              x:Class="Blitz.Avalonia.Controls.Views.ScopeSelector">
     <DropDownButton DockPanel.Dock="Right">
         <StackPanel DataContext="{Binding WorkingScope}" Orientation="Horizontal" Margin="2 2 6 2">
-            <avalonia:MaterialIcon Kind="Telescope" 
+            <avalonia:MaterialIcon Kind="Folder" 
                                    Width="{Binding MainWindowViewModel.GeneralIconSize}"
                                    Height="{Binding MainWindowViewModel.GeneralIconSize}"
                                     IsVisible="{Binding !ScopeImageVisible}"  />
@@ -27,10 +27,14 @@
                         <DataTemplate x:DataType="vm:ScopeViewModel">
                             <StackPanel Orientation="Horizontal">
                                 <Panel Height="32" Width="32">
-                                    <avalonia:MaterialIcon Width="32" IsVisible="{Binding !ScopeImageVisible}" Height="32" Kind="Telescope" />
+                                    <avalonia:MaterialIcon Width="32" IsVisible="{Binding !ScopeImageVisible}" Height="32" Kind="Folder" />
                                     <Image Height="32"  Width="32" IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
                                 </Panel>
-                                <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding ScopeTitle}"></TextBlock>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding ScopeTitle}"></TextBlock>
+                                    <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding FoldersList}" Opacity="0.5"></TextBlock>
+                                    
+                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.DataTemplates>

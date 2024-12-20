@@ -52,7 +52,8 @@ public class SolutionViewModel : ViewModelBase
     public void RestoreActiveFilesFromVisualStudio()
     {
         ActiveFiles.Clear();
-        if (!PluginCommands.Instance.GetCommandPathFromSolutionId(this.SolutionIdentity,PluginCommands.UpdateVisualStudioActiveFiles, out var path))
+        var pluginCommander = MainWindowVM.ExternalPluginInteractions.Commander;
+        if (!pluginCommander.GetCommandPathFromSolutionId(this.SolutionIdentity,PluginCommands.UpdateVisualStudioActiveFiles, out var path))
         {
             return;
         }
@@ -82,7 +83,8 @@ public class SolutionViewModel : ViewModelBase
 
     private SolutionExport? GetSolutionExport()
     {
-        return !PluginCommands.Instance.GetSolutionRecord(SolutionIdentity, out var cacheFile) 
+        var pluginCommander = MainWindowVM.ExternalPluginInteractions.Commander;
+        return !pluginCommander.GetSolutionRecord(SolutionIdentity, out var cacheFile) 
             ? null 
             : JsonSerializer.Deserialize(File.ReadAllText(cacheFile), JsonContext.Default.SolutionExport);
     }

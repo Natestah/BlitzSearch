@@ -19,6 +19,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using AvaloniaEdit.TextMate;
 using AvaloniaEdit.Utils;
+using Blitz.Avalonia.Controls.Views;
 using Blitz.Interfacing;
 using Blitz.AvaloniaEdit.Models;
 using Blitz.AvaloniaEdit.ViewModels;
@@ -35,6 +36,8 @@ public class MainWindowViewModel : ViewModelBase
 
     public AdsCollection AdsCollection { get; }
 
+    
+    public ExternalPluginInteractions ExternalPluginInteractions { get; } 
     bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
     {
         if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))
@@ -179,6 +182,7 @@ public class MainWindowViewModel : ViewModelBase
         BuildScopesViewModelsFromConfig();
         AdsCollection = new AdsCollection(this);
         ResultsHighlighting = new ResultsHighlighting(this);
+        ExternalPluginInteractions = new ExternalPluginInteractions(this);
     }
 
     public ResultsHighlighting ResultsHighlighting { get; set; } 
@@ -345,7 +349,7 @@ public class MainWindowViewModel : ViewModelBase
                 break;
             case CodeExecuteNames.SublimeText:
                 //Sublime Text always updates a single summary of it's Windows and workspaces.
-                PluginCommands.Instance.ExecuteNamedAction(PluginCommands.SublimeTextWorkspaceUpdate);
+                ExternalPluginInteractions.Commander.ExecuteNamedAction(PluginCommands.SublimeTextWorkspaceUpdate);
                 break;
             case CodeExecuteNames.VisualStudio:
                 ApplyVisualStudioFromConfiguration();
@@ -1790,9 +1794,8 @@ public class MainWindowViewModel : ViewModelBase
         WorkspaceScopeViewModels.Clear();
         int max = 20;
         int count = 0;
-        foreach (var solutionId in PluginCommands.Instance.GetSolutionIDsForCommands(PluginCommands.VisualStudioCodeWorkspaceUpdate))
+        foreach (var solutionId in ExternalPluginInteractions.Commander.GetSolutionIDsForCommands(PluginCommands.VisualStudioCodeWorkspaceUpdate))
         {
-            string fileName = PluginCommands.Instance.GetCommandPath($"{PluginCommands.VisualStudioCodeWorkspaceUpdate},{solutionId.Title},{solutionId.Identity}");
             var workspaceScopeViewModel = new WorkspaceScopeViewModel(this, solutionId);
             WorkspaceScopeViewModels.Add(workspaceScopeViewModel);
             count++;

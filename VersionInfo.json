@@ -1,7 +1,11 @@
 [
   {
+    "Revision": "0.0.89",
+    "Changes": "* opening the executable with -find, will create a Folder search for the working directory of the -find command.\r\n* Update to the dropdown for folders to show the first folder path.\r\n\r\n"
+  },
+  {
     "Revision": "0.0.88",
-    "Changes": "-when opening Visual Studio Solution, Select Visual Studio Editor automatically\r\n\r\n"
+    "Changes": "* when opening Visual Studio Solution, Select Visual Studio Editor automatically\r\n\r\n"
   },
   {
     "Revision": "0.0.87",
