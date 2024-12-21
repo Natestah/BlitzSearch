@@ -27,14 +27,18 @@ sealed class Program
     public static void Main(string[] args)
     {
         var findIndex = args.IndexOf("-find");
-        if (args.Any(a => a == "-find"))
+        if (findIndex != -1)
         {
-            if (args.Count() > findIndex)
+            if (args.Length > findIndex + 1)
             {
                 WriteFindDirective(args[findIndex+1]);
             }
-            WriteFindDirective();
+            else
+            {
+                WriteFindDirective();
+            }
         }
+        
         string mainMutex = "BlitzMainMutex";
         try
         {
