@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Web;
 using Blitz.Avalonia.Controls;
 using ReactiveUI;
+using Xamarin.Forms.Internals;
+
 namespace Blitz;
 
 sealed class Program
@@ -24,8 +26,13 @@ sealed class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        var findIndex = args.IndexOf("-find");
         if (args.Any(a => a == "-find"))
         {
+            if (args.Count() > findIndex)
+            {
+                WriteFindDirective(args[findIndex+1]);
+            }
             WriteFindDirective();
         }
         string mainMutex = "BlitzMainMutex";
@@ -57,11 +64,11 @@ sealed class Program
         }
     }
 
-    private static void WriteFindDirective()
+    private static void WriteFindDirective(string? inWorkingDirectory = null)
     {
         string commandFolder = PluginCommands.GetCommandsFolder();
-        var workingDirectory = Environment.CurrentDirectory;
-        File.WriteAllText(Path.Combine(commandFolder, $"{PluginCommands.SimpleFolderSearch}"), workingDirectory);
+        inWorkingDirectory ??= Environment.CurrentDirectory;
+        File.WriteAllText(Path.Combine(commandFolder, $"{PluginCommands.SimpleFolderSearch}"), inWorkingDirectory);
     }
 
     private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -6,6 +6,9 @@
 
 Thank you!
 
+### Version 0.0.90
+* -find parameter takes a path now option too.  
+
 ### Version 0.0.89
 * opening the executable with -find, will create a Folder search for the working directory of the -find command.
 * Update to the dropdown for folders to show the first folder path.
