@@ -148,4 +148,9 @@ public partial class ScopeSettingsPanel : UserControl
         if (DataContext is not ScopeViewModel scopeViewModel) return;
         scopeViewModel.ScopeImage = string.Empty;
     }
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        throw new System.NotImplementedException();
+    }
 }

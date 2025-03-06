@@ -16,9 +16,15 @@ public class Searching
 
     public TimeSpan LastResult { get; set; } = TimeSpan.Zero;
 
+
     public void ProcessSearchingRequest(SearchQuery currentQuery, bool needsFileSystemRestart)
     {
         SearchQuery query = currentQuery.Clone();
+        ProcessSearchingRequestInternal(query, needsFileSystemRestart);
+    }
+    
+    private void ProcessSearchingRequestInternal(SearchQuery query, bool needsFileSystemRestart)
+    {
         ImmutableHashSet<string> recycledExclusions = [];
         var recycleList = new List<FileNameResult>();
         var messageDictionary = _messageProcesses.GetOrAdd(query.ProcessIdentity, _ => new MessageInstanceDictionary());
@@ -29,11 +35,20 @@ public class Searching
             recycle = true;
             workingTask.CancellationTokenSource.Cancel();
             _fileChangedCancel.Cancel();
+            if (query.RestartedFromGitIGnore)
+            {
+                query.RestartedFromGitIGnore = false;
+                var searchTaskResult = new SearchTaskResult
+                {
+                    ServerResultsResetClear = true
+                };
+                searchTaskResult.AlignIdentity(query);
+                RaiseNewSearchTaskResult(searchTaskResult);
+            }
 
             if (!needsFileSystemRestart)
             {
                 DoPriorResultsRecycling(query, workingTask, out recycledExclusions, out recycleList);
-
             }
             else
             {
@@ -46,30 +61,29 @@ public class Searching
         if (needsFileSystemRestart || FileDiscoverer == null)
         {
             FileDiscoverer?.DisableWatchers();
-
-            FileDiscoverer = new FileDiscovery(query.FilePaths, query.UseGitIgnore);
+            FileDiscoverer = new FileDiscovery(query.FilePaths, query.UseGitIgnore, query.UseBlitzIgnore, query.UseGlobalIgnore);
             ExtensionCache = new SearchExtensionCache();
             FileDiscoverer.FileChanged += FileChanged;
         }
 
         if (recycle)
         {
-            newTask.RecycledExclusions = recycledExclusions;
+            newTask.Recycling.RecycledExclusions = recycledExclusions;
             foreach (var file in recycledExclusions)
             {
-                newTask.FilesWithNoResults.TryAdd(file,1);
+                newTask.Recycling.FilesWithNoResults.TryAdd(file,1);
             }
 
-            newTask.RecyclingResultsInOrder = recycleList.ToImmutableList();
+            newTask.Recycling.RecyclingResultsInOrder = recycleList.ToImmutableList();
             foreach (var recycled in recycleList)
             {
                 if (recycled.FileName != null)
                 {
-                    newTask.RetainedResults.TryAdd(recycled.FileName, recycled);
+                    newTask.Recycling.RetainedResults.TryAdd(recycled.FileName, recycled);
                 }
             }
 
-            newTask.RecyclingResults = newTask.RetainedResults.ToImmutableDictionary();
+            newTask.Recycling.RecyclingResults = newTask.Recycling.RetainedResults.ToImmutableDictionary();
         }
 
         messageDictionary[query.InstanceIdentity] = newTask;
@@ -124,6 +138,10 @@ public class Searching
                 _changedFiles.TryRemove(changedFile, out _);
                 foreach (var task in tasks)
                 {
+                    if (task.RestartIfGitIgnore(changedFile))
+                    {
+                        continue;
+                    }
                     task.UpdateFileChanged(changedFile,_fileChangedCancel);
                 }
             }
@@ -286,8 +304,6 @@ public class Searching
                 continue;
             }
             
-           
-            
             acceptedExclusions = [];
             fileNameResults = [];
             return;
@@ -316,11 +332,11 @@ public class Searching
             }
         }
 
-        acceptedExclusions = oldTask.FilesWithNoResults.Keys.ToImmutableHashSet();
+        acceptedExclusions = oldTask.Recycling.FilesWithNoResults.Keys.ToImmutableHashSet();
 
         fileNameResults = [];
         var newList = new List<FileNameResult>();
-        foreach (var fileResult in oldTask.RetainedResults)
+        foreach (var fileResult in oldTask.Recycling.RetainedResults)
         {
             string fileName = fileResult.Key;
             var update = new FileNameResult { FileName = fileName };
@@ -404,30 +420,24 @@ public class Searching
         return runningTime > QuietTime;
     }
     
-    
 
     public void UnionTaskResult(SearchTaskResult searchTaskResult, SearchTask currentSearchTask)
     {
-        
-        // if (_messageProcesses.TryGetValue(searchTaskResult.ProcessIdentity, out var dictionary) &&
-        //     dictionary.TryGetValue(searchTaskResult.InstanceIdentity, out var currentSearchTask))
+        var runningTime = DateTime.Now - currentSearchTask.StartTime;
+        LastResult = runningTime;
+        if (runningTime > QuietTime )
         {
-            var runningTime = DateTime.Now - currentSearchTask.StartTime;
-            LastResult = runningTime;
-            if (runningTime > QuietTime )
-            {
-                currentSearchTask.EmptyUnionResults();
-                RaiseNewSearchTaskResult(searchTaskResult);
-                return;
-            }
-            
-            var newResult = new SearchTaskResult();
-            newResult.AlignIdentity(searchTaskResult);
-            var newListOfResults = new List<FileNameResult>(currentSearchTask.UnionResults.FileNames);
-            newListOfResults.AddRange(searchTaskResult.FileNames);
-            newResult.FileNames = newListOfResults;
-            currentSearchTask.UnionResults = newResult;
+            currentSearchTask.EmptyUnionResults();
+            RaiseNewSearchTaskResult(searchTaskResult);
+            return;
         }
+        
+        var newResult = new SearchTaskResult();
+        newResult.AlignIdentity(searchTaskResult);
+        var newListOfResults = new List<FileNameResult>(currentSearchTask.UnionResults.FileNames);
+        newListOfResults.AddRange(searchTaskResult.FileNames);
+        newResult.FileNames = newListOfResults;
+        currentSearchTask.UnionResults = newResult;
     }
 
     public void RaiseNewSearchTaskResult(SearchTaskResult searchTaskResult)

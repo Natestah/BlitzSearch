@@ -76,7 +76,6 @@
                     <ListBoxItem>IDE Setup</ListBoxItem>
                     <ListBoxItem>Change Log</ListBoxItem>
                     <ListBoxItem>Support Blitz</ListBoxItem>
-                    <ListBoxItem>RoadMap</ListBoxItem>
                     <ListBoxItem>About</ListBoxItem>
                 </ListBox>
                 <md:MarkdownScrollViewer
@@ -96,12 +95,11 @@
                            <ScrollViewer>
                 <StackPanel Orientation="Vertical">
                     <StackPanel Margin="0 20 0 0" Orientation="Vertical">
-                        
                         <CheckBox Classes="OptionBox" IsChecked="{Binding EnableSearchIndex}">
                             <StackPanel Classes="DescriptorPanel">
                                 <TextBlock Classes="h2"> Search Indexing </TextBlock>
-                                <TextBlock Classes="d1"> Search Indexing helps reduce the workload by Parsing the file for unique words.  It is the backbone of what makes blitz search fast!</TextBlock>
                             </StackPanel>
+                            <ToolTip.Tip> Search Indexing helps reduce the workload by Parsing the file for unique words.  It is the backbone of what makes blitz search fast!</ToolTip.Tip>
                         </CheckBox>
                         <StackPanel Orientation="Vertical">
                             <StackPanel Classes="DescriptorPanel">
@@ -110,76 +108,69 @@
                                     <TextBlock Margin="4" VerticalAlignment="Center" Text="{Binding SearchThreads}"> </TextBlock>
                                     <Slider Width="480" Value="{Binding SearchThreads}"
                                             Maximum="{Binding SearchThreadsMax}"
-                                            Minimum="{Binding SearchThreadsMin}" />
+                                            Minimum="{Binding SearchThreadsMin}" >
+                                        <ToolTip.Tip>Searching Files in parallel can return results faster.</ToolTip.Tip>
+                                    </Slider>
                                 </StackPanel>
-                                <TextBlock Classes="d1"> Searching Files in parallel can return results faster.</TextBlock>
                             </StackPanel>
                         </StackPanel>
-
-                        <CheckBox Classes="OptionBox" IsChecked="{Binding VerboseFileSystemException }">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Enable Extra File System errors </TextBlock>
-                                <TextBlock Classes="d1"> File system errors such as Unauthorized Access are ignored, use for debugging or tuning your .gitignore</TextBlock>
-                            </StackPanel>
-                        </CheckBox>
 
                         <StackPanel Orientation="Vertical">
                             <StackPanel Classes="DescriptorPanel">
                                 <TextBlock Classes="h2"> DebugFile </TextBlock>
-                                <TextBlock Classes="d1"> For files that match this blitz query Add a result with debug information ( why it was excluded), Clicking that result will show the reason.</TextBlock>
                             </StackPanel>
                             <TextBox Text="{Binding DebugFileNameSearchTextBox}"
                                      Watermark="Search for words separated by space..">
+                                <ToolTip.Tip>For files that match this blitz query Add a result with debug information ( why it was excluded), Clicking that result will show the reason.</ToolTip.Tip>
                             </TextBox>
                         </StackPanel>
 
                         <CheckBox Classes="OptionBox" IsChecked="{Binding EnableResultsRecycling }">
                             <StackPanel Classes="DescriptorPanel">
                                 <TextBlock Classes="h2"> Results Recycling </TextBlock>
-                                <TextBlock Classes="d1"> Under certain conditions, the results of a prior search, can be recycled to improve the speed.</TextBlock>
                             </StackPanel>
+                            <ToolTip.Tip>Under certain conditions, the results of a prior search, can be recycled to improve the speed.</ToolTip.Tip>
                         </CheckBox>
 
                         <TextBlock Text="Generated Text file handling" />
                         <StackPanel Margin="40 4 0 0" Orientation="Vertical">
-                            <TextBlock Classes="d1">
-                                Save memory by ignoring / skipping detected Generated Text files.
-                                View the report to get an idea of where the memory is going.
-                            </TextBlock>
                             <StackPanel Orientation="Vertical">
                                 <RadioButton VerticalAlignment="Center" GroupName="RobotFilter" IsChecked="{Binding EnableRobotFileFilterIgnore}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Classes="radio" Text="Ignore" />
-                                        <TextBlock Classes="d1" Text="Memory saving, removes message" />
                                     </StackPanel>
+                                    <ToolTip.Tip>Memory saving, removes message</ToolTip.Tip>
                                 </RadioButton>
                                 <RadioButton VerticalAlignment="Center" GroupName="RobotFilter" IsChecked="{Binding EnableRobotFileFilterDefer}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Classes="radio" VerticalAlignment="Top" Text="Defer" />
-                                        <TextBlock Classes="d1" Text="No memory saved but ordered heavy files to last" />
                                     </StackPanel>
+                                    <ToolTip.Tip>No memory saved but ordered heavy files to last</ToolTip.Tip>
                                 </RadioButton>
                                 <RadioButton VerticalAlignment="Center" GroupName="RobotFilter"
                                              IsChecked="{Binding EnableRobotFileFilterSkipAndReport}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Classes="radio" VerticalAlignment="Top" Text="Report and Skip (default)" />
-                                        <TextBlock Classes="d1" Text="Saves Memory but provides information" />
                                     </StackPanel>
+                                    <ToolTip.Tip>Saves Memory but provides information</ToolTip.Tip>
                                 </RadioButton>
                             </StackPanel>
                             <StackPanel Classes="DescriptorPanel">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Classes="h2">Max Human File Size (MB)</TextBlock>
                                     <NumericUpDown Increment="0.1" FormatString="0.0" Minimum="0"
-                                                   Value="{Binding RobotFileDetectionSizeMB}" />
+                                                   Value="{Binding RobotFileDetectionSizeMB}" >
+                                        <ToolTip.Tip>Files Larger than this will be considered Generated files.</ToolTip.Tip>
+                                    </NumericUpDown>
                                 </StackPanel>
-                                <TextBlock Classes="d1">Files Larger than this will be considered Generated files.</TextBlock>
+                                <TextBlock Classes="d1"></TextBlock>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Classes="h2">Max Human Line Size in Characters</TextBlock>
                                     <NumericUpDown Increment="100" Minimum="1000"
-                                                   Value="{Binding RobotContentLineDetection}" />
+                                                   Value="{Binding RobotContentLineDetection}" >
+                                        <ToolTip.Tip>If the first line of the file is Greater than this (IE large non-pretty json files )</ToolTip.Tip>
+                                    </NumericUpDown>
                                 </StackPanel>
-                                <TextBlock Classes="d1">If the first line of the file is Greater than this (IE large non-pretty json files )</TextBlock>
                             </StackPanel>
                         </StackPanel>
                     
@@ -187,17 +178,17 @@
                     <StackPanel Orientation="Vertical" >
                         <CheckBox Classes="OptionBox" IsChecked="{Binding ShowOnTaskBar }">
                             <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Show on Taskbar </TextBlock>
-                                <TextBlock Classes="d1"> Show the icon on windows taskbar ( icon always shows in tray )</TextBlock>
+                                <TextBlock Classes="h2"> Show Icon on Taskbar </TextBlock>
                             </StackPanel>
+                            <ToolTip.Tip>Show the icon on windows taskbar ( icon always shows in tray )</ToolTip.Tip>
                         </CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" >
                         <CheckBox Classes="OptionBox" IsChecked="{Binding TimerDisplayTotalSearchTIme }">
                             <StackPanel Classes="DescriptorPanel">
                                 <TextBlock Classes="h2"> Show Total time spent searching </TextBlock>
-                                <TextBlock Classes="d1"> The default time shown is time-to-last result, enabling this will show the total time to completion .</TextBlock>
                             </StackPanel>
+                            <ToolTip.Tip>The default time shown is time-to-last result, enabling this will show the total time to completion .</ToolTip.Tip>
                         </CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -206,6 +197,7 @@
                             <TextBlock  Classes="h2" Text="{Binding CacheStatus }"></TextBlock>
                             <TextBlock Classes="d1"> Manually Clean up the cache</TextBlock>
                         </StackPanel>
+                        
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Garbage Collect" Click="CollectGarbage_OnClick"></Button>

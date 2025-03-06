@@ -34,8 +34,6 @@ public class MainWindowViewModel : ViewModelBase
 
     public SearchQuery SearchQuery => _searchQuery;
 
-    public AdsCollection AdsCollection { get; }
-
     
     public ExternalPluginInteractions ExternalPluginInteractions { get; } 
     bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
@@ -94,6 +92,15 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public bool ShowScopeImage
+    {
+        get => Configuration.Instance.ShowScopeImage;
+        set
+        {
+            Configuration.Instance.ShowScopeImage = value;
+            this.RaisePropertyChanged();
+        }
+    }
     public BlitzEditorViewModel EditorViewModel { get; set; } = new BlitzEditorViewModel();
 
     public IBrush? TextForeground
@@ -180,7 +187,6 @@ public class MainWindowViewModel : ViewModelBase
         }
         
         BuildScopesViewModelsFromConfig();
-        AdsCollection = new AdsCollection(this);
         ResultsHighlighting = new ResultsHighlighting(this);
         ExternalPluginInteractions = new ExternalPluginInteractions(this);
     }
@@ -897,6 +903,11 @@ public class MainWindowViewModel : ViewModelBase
         {
             DoScheduledClear();
         }
+
+        if (searchTaskResult.ServerResultsResetClear)
+        {
+            _resultBoxItems.Clear();
+        }
         
 
         var timeSinceInput = DateTime.Now - LastInputTime;
@@ -1127,6 +1138,8 @@ public class MainWindowViewModel : ViewModelBase
                 filePaths.Add(new SearchPath{ TopLevelOnly = path.TopLevelOnly, Folder = path.SearchPath});
             }
             _searchQuery.UseGitIgnore = selectedFirst.UseGitIgnore;
+            _searchQuery.UseBlitzIgnore = selectedFirst.UseBlitzIgnore;
+            _searchQuery.UseGlobalIgnore = selectedFirst.UseGlobalGitIgnore;
         }
 
         _searchQuery.ReplaceLiteralTextQuery = string.Empty;
@@ -1514,16 +1527,6 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public bool VerboseFileSystemException
-    {
-        get => _searchQuery.VerboseFileSystemException;
-        set
-        {
-            _searchQuery.VerboseFileSystemException = value;
-            this.OnPropertyChangedFileSystemRestart(this,
-                new PropertyChangedEventArgs(nameof(VerboseFileSystemException)));
-        }
-    }
 
     public bool EnableResultsRecycling
     {

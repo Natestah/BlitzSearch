@@ -37,15 +37,6 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel Background="{Binding EditorViewModel.StatusBarBackground}" DockPanel.Dock="Right">
-                    <StackPanel DataContext="{Binding AdsCollection.FirstAdSpace}" Orientation="Horizontal"
-                                Margin="4 0">
-                        <avalonia:MaterialIcon Foreground="Red" Classes="adspaceResults" Kind="{Binding Icon}" />
-                        <Button Classes="hyperlink" Click="AdButton_OnClick" Content="{Binding TextInformation}"
-                                FontSize="14" />
-                    </StackPanel>
-                </StackPanel>
-
                 <DockPanel DockPanel.Dock="Bottom">
                     <DockPanel DockPanel.Dock="Bottom" LastChildFill="False"
                                DataContext="{Binding Path=FileSearchStatus}">

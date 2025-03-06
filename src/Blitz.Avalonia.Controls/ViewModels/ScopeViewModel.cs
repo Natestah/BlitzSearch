@@ -48,7 +48,11 @@ public class ScopeViewModel : ViewModelBase
     
     public ScopeViewModel(MainWindowViewModel mainWindowViewModel,  ScopeConfig scopeConfig)
     {
-        SearchPathViewModels.CollectionChanged += (sender, args) => this.RaisePropertyChanged(nameof(FoldersList));
+        SearchPathViewModels.CollectionChanged += (sender, args) =>
+        {
+            this.RaisePropertyChanged(nameof(FoldersList));
+            this.RaisePropertyChanged(nameof(FirstNameSummary));
+        };
         _mainWindowViewModel = mainWindowViewModel;
         _scopeConfig = scopeConfig;
         AddSearchPath = ReactiveCommand.Create(RunAddSearchCommand);
@@ -66,6 +70,30 @@ public class ScopeViewModel : ViewModelBase
             }
         }
         ValidateExtensionText();
+    }
+
+    public string FirstNameSummary
+    {
+        get
+        {
+            try
+            {
+                if (SearchPathViewModels.Count == 0)
+                {
+                    return string.Empty;
+                }
+                if (SearchPathViewModels.Count == 1)
+                {
+                    return "\\"+ Path.GetFileName(SearchPathViewModels[0].ConfigSearchPath.Folder);
+                }
+                var diff = SearchPathViewModels.Count - 1;
+                return "\\"+ Path.GetFileName(SearchPathViewModels[0].ConfigSearchPath.Folder) + $"+{diff}";
+            }
+            catch (Exception)
+            {
+                return "Error";
+            }
+        }
     }
     
     public void RemoveMe()
@@ -140,6 +168,31 @@ public class ScopeViewModel : ViewModelBase
             _mainWindowViewModel.ScopeChangedRunRestart();
         }
     }
+    
+    public bool UseBlitzIgnore
+    {
+        get => _scopeConfig.UseBlitzGitIgnore;
+        set
+        {
+            _scopeConfig.UseBlitzGitIgnore = value;
+            this.RaisePropertyChanged();
+            _mainWindowViewModel.ScopeChangedRunRestart();
+        }
+    }
+
+    public bool UseGlobalGitIgnore
+    {
+        get => _scopeConfig.UseGlobalGitIgnore;
+        set
+        {
+            _scopeConfig.UseGlobalGitIgnore = value;
+            this.RaisePropertyChanged();
+            _mainWindowViewModel.ScopeChangedRunRestart();
+        }
+    }
+    
+    
+    
     public string ExtensionText
     {
         get => _scopeConfig.RawExtensionList;

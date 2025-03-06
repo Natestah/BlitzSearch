@@ -1,10 +1,22 @@
 # Change Log
 
-# 🎉 Blitz Search now %100 Free and Open Sourced 🎉
-
 #### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+I am approaching 1.0, to which I hope to slow updates significantly. Please help make that build as stable as possible and report issues.
+
+
 Thank you!
+
+### Version 0.0.92
+* Adding support for Global Git Ignore, this is applied to each root path
+* Decoupling option for .blitzIgnore files. Use .blitzIgnore when you want to ignore files that you do not want in .gitIgnore
+* Hints in Settings are in Tooltips now, saving vertical space
+* Removed Opt-out for Exception Verbosity, You NEED to know when files are locked.
+* Fixed Crash that happened when I forced Exception. ( It should show a result node for files that generate exception )
+* Restoring Icon in the background, with option to disable it.
+* Remove the broken YouTube channel link as well as the link in the Task Bar.
+* Removed RoadMap
+* Changing .gitIgnore/.blitzIgnore reflects Immediately
 
 ### Version 0.0.91
 * -find parameter takes a path now option too.  

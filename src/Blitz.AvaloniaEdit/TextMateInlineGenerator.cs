@@ -11,6 +11,7 @@ using TextMateSharp.Registry;
 using TextMateSharp.Themes;
 using FontStyle = Avalonia.Media.FontStyle;
 
+using Blitz.Interfacing;
 namespace Blitz.AvaloniaEdit;
 
 public static class TextMateInlineGenerator
@@ -19,6 +20,10 @@ public static class TextMateInlineGenerator
     public static InlineCollection GetInlinesFromTextMateSharp(BlitzTheme currentTheme, RegistryOptions options, Registry registry,string text, string fileNameForContext, double opacity = 1)
     {
         var extension = Path.GetExtension(fileNameForContext);
+
+        //I'd like to put this in the hands of the user - https://github.com/Natestah/BlitzSearch/issues/107
+        extension = ExtensionAsMap.Get(extension);
+        
         var language = options.GetLanguageByExtension(extension)
                        ?? options.GetAvailableLanguages().FirstOrDefault();
 

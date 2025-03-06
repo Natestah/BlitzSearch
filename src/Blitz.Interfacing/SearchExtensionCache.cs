@@ -21,8 +21,7 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
     
     
     [Key(nameof(FileInformations))]
-    public ConcurrentDictionary<string, SearchFileInformation> FileInformations { get; set; }=
-        new ConcurrentDictionary<string, SearchFileInformation>();
+    public ConcurrentDictionary<string, SearchFileInformation> FileInformations { get; set; } = new();
 
     [IgnoreMember]
     public IEnumerable<string> Keys => FileInformations.Keys;
@@ -31,7 +30,7 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
         FileInformations.TryGetValue(key, out fileInformation);
 
     public bool TryRemove(string key, out SearchFileInformation? fileInformation) =>
-        FileInformations.TryGetValue(key, out fileInformation);
+        FileInformations.TryRemove(key, out fileInformation);
 
     public void Clear() => FileInformations.Clear();
 
@@ -172,32 +171,28 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
     
     
 
-    public void SaveCache(IEnumerable<string> paths,string slnOrWorkspaceFolder, CacheScopeType scopeType,  bool ignoreHeavies, double robotMaxBytesMb, int maxLineChars , bool useGitIgnore, string extension)
+    public void SaveCache(Description description)
     {
-        if (!_initiallySaved.TryAdd(extension, true))
+        if (!_initiallySaved.TryAdd(description.Extension, true))
         {
-            if (!_dirtyCaches.ContainsKey(extension))
+            if (!_dirtyCaches.ContainsKey(description.Extension))
             {
                 return;
             }
-            if (!_dirtyCaches.TryRemove(extension, out _))
+            if (!_dirtyCaches.TryRemove(description.Extension, out _))
             {
                 return;
             }
         }
         
-        string fileName = GetCacheFileName(paths, slnOrWorkspaceFolder, scopeType, ignoreHeavies, robotMaxBytesMb, maxLineChars, useGitIgnore, extension);
+        string fileName = GetCacheFileName(description);
         
-        
-        if (TryGetValue(extension, out var fileDictionary))
+        if (TryGetValue(description.Extension, out var fileDictionary))
         {
             byte[] bytes = MessagePackSerializer.Serialize(fileDictionary);
             File.WriteAllBytes(fileName, bytes);
         }
     }
-
-
-    private static ConcurrentDictionary<string, byte> AllKnownExtensions = [];
 
     public IEnumerable<string> EnumCacheFileExtensions(string extensions, CancellationTokenSource cancellationTokenSource)
     {
@@ -211,15 +206,14 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
             }
         }
     }
-
-    public void RestoreCache(IEnumerable<string> paths,string slnOrWorkspaceFolder, CacheScopeType scopeType, bool ignoreHeavies, double robotMaxBytesMb, int maxLineChars, bool useGitIgnore, string extension, CancellationToken token)
+    
+    public void RestoreCache(Description description, CancellationToken token)
     {
-        AllKnownExtensions[extension] = 1;
-        if (ContainsKey(extension))
+        if (ContainsKey(description.Extension))
         {
             return;
         }
-        string fileName = GetCacheFileName(paths,slnOrWorkspaceFolder,scopeType, ignoreHeavies,robotMaxBytesMb,maxLineChars, useGitIgnore, extension);
+        string fileName = GetCacheFileName(description);
         if (!File.Exists(fileName))
         {
             return;
@@ -230,24 +224,23 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
             var bytes = File.ReadAllBytes(fileName);
             var fileDictionary =
                 MessagePackSerializer.Deserialize<FilesByExtension>(bytes);
-            TryAdd(extension, fileDictionary);
+            TryAdd(description.Extension, fileDictionary);
         }
         catch (Exception ex) when (ex is MessagePackSerializationException)
         {
             if (ex.InnerException is OperationCanceledException)
             {
-                TryRemove(extension, out _);
+                TryRemove(description.Extension, out _);
             }
             else
             {
                 //it's ok, I'll likely change the format of SearchFileInformation.
-                this[extension] = new FilesByExtension();
-
+                this[description.Extension] = new FilesByExtension();
             }
         }
         catch (TaskCanceledException)
         {
-            TryRemove(extension, out _);
+            TryRemove(description.Extension, out _);
         }
         catch (Exception ex)
         {
@@ -281,24 +274,37 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
     /// Caches can be different, based on things like 'UseGitIgnore' and other Optional Optimizations
     /// </summary>
     /// <returns></returns>
-    private string GetCacheFileName(IEnumerable<string> paths,string slnOrWorkspaceFolder, CacheScopeType scopeType, bool ignoringHeavies, double maxmb, int maxCols, bool useGitIgnore, string extension)
+    private string GetCacheFileName(Description description)
     {
         var name = new StringBuilder();
-        string hashPrefix = Md5(string.Concat(paths));
-        name.Append(extension.TrimStart('.'));
+        string hashPrefix = Md5(string.Concat(description.Paths));
+        name.Append(description.Extension.TrimStart('.'));
         name.Append("_");
-        if (scopeType != CacheScopeType.Folders)
+        if (description.ScopeType != CacheScopeType.Folders)
         {
-            hashPrefix = Md5(slnOrWorkspaceFolder);
+            hashPrefix = Md5(description.SlnOrWorkspaceFolder);
         }
         name.Append(hashPrefix);
-        name.Append("_");
-        if (useGitIgnore)
+        if (description.UseGitIgnore)
         {
+            name.Append("_");
             name.Append("GI");
         }
 
-        switch (scopeType)
+        if (description.UseBlitzIgnore)
+        {
+            name.Append("_");
+            name.Append("BI");
+        }
+        
+        if(description.UseGlobalIgnore)
+        {
+            name.Append("_");
+            name.Append("GLI");
+        }
+
+        name.Append("_");
+        switch (description.ScopeType)
         {
             case CacheScopeType.Folders:
                 name.Append("_FO_");
@@ -317,13 +323,13 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
                 break;
         }
 
-        if (ignoringHeavies)
+        if (description.IgnoreHeavies)
         {
             name.Append("_IH_");
         }
-        name.Append(maxmb.ToString().Replace(".", "-"));
+        name.Append(description.RobotMaxBytesMb.ToString().Replace(".", "-"));
         name.Append("_");
-        name.Append(maxCols.ToString());
+        name.Append(description.MaxLineChars.ToString());
 
         name.Append("_v5");
         name.Append(".bc");
@@ -336,7 +342,43 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
         _dirtyCaches[extension] = true;
     }
 
-
-    
-    
+   
+ 
+    /// <summary>
+    /// Extension Cache Description provides Details used for Cache file name creation.
+    /// </summary>
+    /// <param name="paths"></param>
+    /// <param name="slnOrWorkspaceFolder"></param>
+    /// <param name="scopeType"></param>
+    /// <param name="ignoreHeavies"></param>
+    /// <param name="robotMaxBytesMb"></param>
+    /// <param name="maxLineChars"></param>
+    /// <param name="useGitIgnore"></param>
+    /// <param name="useBlitzIgnore"></param>
+    /// <param name="useGlobalIgnore"></param>
+    /// <param name="extension"></param>
+    public class Description(
+        IEnumerable<string> paths,
+        string slnOrWorkspaceFolder,
+        CacheScopeType scopeType,
+        bool ignoreHeavies,
+        double robotMaxBytesMb,
+        int maxLineChars,
+        bool useGitIgnore,
+        bool useBlitzIgnore,
+        bool useGlobalIgnore,
+        string extension)
+    {
+        public IEnumerable<string> Paths { get; } = paths;
+        public string SlnOrWorkspaceFolder { get; } = slnOrWorkspaceFolder;
+        public CacheScopeType ScopeType{ get; } = scopeType;
+        public bool IgnoreHeavies{ get; } = ignoreHeavies;
+        public double RobotMaxBytesMb{ get; } = robotMaxBytesMb;
+        public int MaxLineChars{ get; } = maxLineChars;
+        public bool UseGitIgnore{ get; } = useGitIgnore;
+        public bool UseBlitzIgnore{ get; } = useBlitzIgnore;
+        public bool UseGlobalIgnore{ get; } = useGlobalIgnore;
+        public string Extension{ get; } = extension;
+    }
+   
 }

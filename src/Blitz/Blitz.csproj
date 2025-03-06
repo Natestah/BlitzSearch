@@ -15,8 +15,8 @@
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
         <PackageReleaseNotes>Limited Time Beta</PackageReleaseNotes>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>0.0.91</AssemblyVersion>
-        <FileVersion>0.0.91</FileVersion>
+        <AssemblyVersion>0.0.92</AssemblyVersion>
+        <FileVersion>0.0.92</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>
@@ -60,7 +60,6 @@
       </None>
     </ItemGroup>
 
-
     <ItemGroup>
       <None Remove="Documentation\AboutImage.png" />
       <Content Include="Documentation\AboutImage.png">
@@ -86,25 +85,14 @@
       <Content Include="Documentation\IDE_Setup.md">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Update="Documentation\RoadMap.md">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Documentation\RoadMap.md" />
-      <Content Include="Documentation\RoadMap.md">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Documentation\Support_Blitz_Search.md" />
       <Content Update="Documentation\Support_Blitz_Search.md">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-
         <None Include="..\..\readme.md" Pack="true" PackagePath="\"/>
-
         <None Remove="Documentation\Support_Blitz.md" />
-
         <Content Include="Documentation\Support_Blitz.md">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-
     </ItemGroup>
 </Project>

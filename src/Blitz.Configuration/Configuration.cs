@@ -112,6 +112,9 @@ public class Configuration
     [DefaultValue(true)]
     public bool ShowStatusBar { get; set; } = true;
 
+    [DefaultValue(true)]
+    public bool ShowScopeImage { get; set; } = true;
+
 
     [DefaultValue("Words Query")]
     public string ReplaceMode { get; set; } = "Words Query";

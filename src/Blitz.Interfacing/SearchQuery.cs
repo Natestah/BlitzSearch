@@ -59,9 +59,14 @@ public class SearchQuery : MessageWithIdentity
     [DefaultValue(true)]
     public bool UseGitIgnore;
 
-    [Key(nameof(VerboseFileSystemException))]
+    [Key(nameof(UseBlitzIgnore))] 
     [DefaultValue(true)]
-    public bool VerboseFileSystemException;
+    public bool UseBlitzIgnore;
+
+    [Key(nameof(UseGlobalIgnore))] 
+    [DefaultValue(true)]
+    public bool UseGlobalIgnore;
+    
 
     [Key(nameof(EnableSearchIndex))] 
     [DefaultValue(true)]
@@ -134,12 +139,14 @@ public class SearchQuery : MessageWithIdentity
     public string? SelectedProjectName { get; set; }
     
     public SearchQuery(string textBoxQuery, List<SearchPath> filePaths, List<SearchExtension> priorityExtensions,
-        bool useGitIgnore = true, bool enableSearchIndex = true, bool enableResultsRecycling = true, int searchThreads = 32)
+        bool useGitIgnore = true, bool useBlitzIgnore=true,bool useGlobalIgnore=true, bool enableSearchIndex = true, bool enableResultsRecycling = true, int searchThreads = 32)
     {
         TextBoxQuery = textBoxQuery;
         FilePaths = filePaths;
         PriorityExtensions = priorityExtensions ?? [];
         UseGitIgnore = useGitIgnore;
+        UseBlitzIgnore = useBlitzIgnore;
+        UseGlobalIgnore = useGlobalIgnore;
         EnableSearchIndex = enableSearchIndex;
         SearchThreads = searchThreads;
         EnableResultsRecycling = enableResultsRecycling;
@@ -194,6 +201,9 @@ public class SearchQuery : MessageWithIdentity
         }
     }
     
+    [Key(nameof(RestartedFromGitIGnore))]
+    public bool RestartedFromGitIGnore { get; set; }
+
 
     public static void SaveFile(string storeFile, SearchQuery query)
     {

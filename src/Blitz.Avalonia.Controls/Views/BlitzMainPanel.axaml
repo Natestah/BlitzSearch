@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             xmlns:svg="clr-namespace:Avalonia.Svg;assembly=Avalonia.Svg"
              xmlns:lb="clr-namespace:Blitz_Behavior"
              xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
              mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
@@ -20,7 +21,6 @@
                 <GradientStop Offset="1" Color="#BBCA772E" />
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
-        <!-- <sys:Double x:Key="StatusItemWidth">86</sys:Double> -->
         <CompiledBinding x:Key="TitleBinding" DataType="vm:GotoEditorViewModel" Path="Title"></CompiledBinding>
     </UserControl.Resources>
     <UserControl.KeyBindings>
@@ -30,7 +30,6 @@
         <KeyBinding Gesture="Ctrl+Shift+H" Command="{Binding ToggleFindInFilesFilterCommand}" />
     </UserControl.KeyBindings>
     <Grid>
-        <!-- <Grid  Background="{Binding BlitzThemeViewModel.WindowBackground}"> -->
         <DockPanel>
             <models:BlitzStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom"/>
             <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top"/>
@@ -46,24 +45,18 @@
                     <ColumnDefinition Width="4" lb:ColumnDefinition.IsVisible="{Binding SplitPane}" />
                     <ColumnDefinition Width="*" lb:ColumnDefinition.IsVisible="{Binding SplitPane}" />
                 </Grid.ColumnDefinitions>
-
-                <!-- Trying this off for the next release, lets see if anyone complains.. Because I have both the title and the Icon in the bar this seems good.-->
-                <!-- <Border Grid.Column="0"> -->
-                <!--     <Grid> -->
-                <!--         <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image> -->
-                <!--         <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" /> -->
-                <!--     </Grid> -->
-                <!-- </Border> -->
-
+                <Border Grid.Column="0">
+                    <Grid IsVisible="{Binding ShowScopeImage}">
+                        <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image>
+                        <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" />
+                    </Grid>
+                </Border>
                 <DockPanel Grid.Column="0" LastChildFill="True">
-                   
-                    
                     <DockPanel  DockPanel.Dock="Bottom" Background="{StaticResource ReplaceHighlight}" LastChildFill="False"
                                 IsVisible="{Binding ReplaceInFileEnabled}">
                         <Button Content="Apply Changes" DockPanel.Dock="Right" Margin="5" Padding="15 5" Foreground="WhiteSmoke"
                                 Click="AcceptChangesClick"/>
                     </DockPanel>
-                    
                     <Grid DockPanel.Dock="Bottom">
                         <ProgressBar Margin="0 0 0 2" MinWidth="70" VerticalAlignment="Bottom" 
                             DataContext="{Binding Path=FileSearchStatus}"

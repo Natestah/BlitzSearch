@@ -69,7 +69,7 @@
                         </DataTemplate>
                         <DataTemplate x:DataType="vm:ExceptionViewModel">
                             <StackPanel Orientation="Horizontal" Focusable="True" Background="Red">
-                                <material:MaterialIcon Classes="m1" Foreground="Black" Kind="Error" />
+                                <material:MaterialIcon  Classes="m2" Foreground="Black" Kind="Error" />
                                 <Border CornerRadius="4" Padding="4 1 20 1" Background="{StaticResource TextBackDrop}"
                                         BorderThickness="1" BorderBrush="Transparent">
                                     <TextBlock VerticalAlignment="Center" Text="{Binding Message }"

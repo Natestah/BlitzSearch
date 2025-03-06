@@ -12,6 +12,11 @@ public class ScopeConfig
     public string ScopeTitle { get; set; } = string.Empty;
     [DefaultValue(true)]
     public bool UseGitIgnore { get; set; } = true;
+    [DefaultValue(true)]
+    public bool UseBlitzGitIgnore { get; set; } = true;
+    
+    [DefaultValue(true)]
+    public bool UseGlobalGitIgnore { get; set; } = true;
     public List<ConfigSearchPath> SearchPaths { get; set; } =[];
 }
 

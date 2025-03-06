@@ -14,20 +14,10 @@ The more I can smooth over the end-user experience the better chance Blitz Searc
 
 ## Engage Social Media
 
-Social media algorithms favor posts with user engagement.  
-
-* Up-votes are easiest but take it a step farther and comment
-* I am providing links in the banner with updates.
-* Watch them through, comment, share, subscribe.
-
-#### [LinkedIn - Nathan Silvers](https://www.linkedin.com/in/nathan-silvers-a17308a8/) - Contains Several Articles about my experience in game development
-
-#### [LinkedIn - Blitz Search Company page](https://www.linkedin.com/company/blitz-search/) - Follow please!
-
 #### [Blitz Search on X](https://x.com/BlitzSearch) - Follow me!
 
-#### [YouTube ](https://www.youtube.com/@BlitzSearch-qb2oq) "Blitz Search" Channel..
+#### [YouTube ](https://www.youtube.com/@NatestahsSpace) "Natestah's Space" Channel..
 
 #### [Natestah.com](https://natestah.com/) - Blitz Search Homepage.
 
-
+#### [LinkedIn - Nathan Silvers](https://www.linkedin.com/in/nathan-silvers-a17308a8/) - Hire me to work. 

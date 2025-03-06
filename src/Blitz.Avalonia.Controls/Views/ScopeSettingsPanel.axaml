@@ -153,9 +153,21 @@
         <TextBlock DockPanel.Dock="Top" Text="{Binding ExtensionValidation}" />
         <CheckBox VerticalAlignment="Center" DockPanel.Dock="Top" IsChecked="{Binding UseGitIgnore}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
-                <TextBlock Classes="h2"> Use '.gitIgnore and .blitzIgnore' files </TextBlock>
-                <TextBlock Classes="d1"> These are great for skipping code gen files and things.. </TextBlock>
+                <TextBlock Classes="h2"> Use '.gitIgnore' files </TextBlock>
             </StackPanel>
+            <ToolTip.Tip> mask search results typically unwanted files</ToolTip.Tip>
+        </CheckBox>
+        <CheckBox VerticalAlignment="Center" DockPanel.Dock="Top" IsChecked="{Binding UseBlitzIgnore}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                <TextBlock Classes="h2"> Use '.blitzIgnore' files </TextBlock>
+            </StackPanel>
+            <ToolTip.Tip > provided to ignore files without bothering the .gitIgnore setup.</ToolTip.Tip>
+        </CheckBox>
+        <CheckBox VerticalAlignment="Center" DockPanel.Dock="Top" IsChecked="{Binding UseGlobalGitIgnore}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                <TextBlock Classes="h2"> Use Global GitIgnore</TextBlock>
+            </StackPanel>
+            <ToolTip.Tip> Git Ignore file Specified by 'git config --global core.excludesFile' is applied to each search path.</ToolTip.Tip>
         </CheckBox>
         <DockPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
@@ -171,7 +183,7 @@
                                        Kind="FileImagePlus"/>
                 </Button>
             </StackPanel>
-            <Border DockPanel.Dock="Top" HorizontalAlignment="Left" DragDrop.AllowDrop="True" x:Name="DropBox" CornerRadius="15" BorderThickness="2" PointerPressed="DropBox_OnPointerPressed">
+            <Border DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Left" DragDrop.AllowDrop="True" x:Name="DropBox" CornerRadius="15" BorderThickness="2" PointerPressed="DropBox_OnPointerPressed">
                 <Panel Background="Transparent">
                     <Image  Height="200" Width="200" IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
                     <material:MaterialIcon Opacity="0.6" Background="Transparent" IsVisible="{Binding !ScopeImageVisible}" Kind="PlusBox" Height="200" Width="200" ></material:MaterialIcon>

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Blitz.Interfacing;
 using ReactiveUI;
 
 namespace Blitz.AvaloniaEdit.ViewModels;
@@ -59,8 +60,15 @@ public class BlitzDocument : ViewModelBase
     
     public string? ExtensionOverride { get; set; } = null;
     
-    public string Extension => ExtensionOverride ?? (Type==DocumentType.File? Path.GetExtension(FileNameOrTitle): ".txt");
-    
+    public string Extension
+    {
+        get
+        {
+            var extension = ExtensionOverride ?? (Type == DocumentType.File ?  Path.GetExtension(FileNameOrTitle) : ".txt");
+            return ExtensionAsMap.Get(extension);
+        }
+    }
+
     public DateTime LastModified { get; set; } = DateTime.MinValue;
 
     public bool IsDirty

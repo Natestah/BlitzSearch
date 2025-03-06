@@ -69,17 +69,7 @@
             <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-
-        <Style Selector="material|MaterialIcon.adspaceResults">
-            <Setter Property="Width"
-                    Value="{CompiledBinding DataType=vm:AdSpaceViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
-            <Setter Property="Height"
-                    Value="{CompiledBinding DataType=vm:AdSpaceViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
-            <Setter Property="Margin" Value="4 0" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-
+        
         <Style Selector="material|MaterialIcon.statusMaterial">
             <Setter Property="Width"
                     Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}" />

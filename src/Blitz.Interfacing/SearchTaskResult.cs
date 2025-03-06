@@ -26,7 +26,7 @@ public class SearchTaskResult : MessageWithIdentity
     
     /// <summary>
     /// Exceptions during search.
-    /// </summary>
+    /// </summary> 
     [Key(nameof(Exceptions))]
     public List<ExceptionResult> Exceptions { get; set; }= [];
 
@@ -46,5 +46,8 @@ public class SearchTaskResult : MessageWithIdentity
     
     [Key(nameof(ScheduledClear))]
     public bool ScheduledClear { get; set; }
+    
+    [Key(nameof(ServerResultsResetClear))]
+    public bool ServerResultsResetClear { get; set; }
 
 }

@@ -6,46 +6,53 @@ using Ignore;
 
 public class IgnorePath
 {
-    private readonly string _directory;
     private Ignore _ignore;
     private DateTime _lastModified = DateTime.MinValue;
-    private StringBuilder _errorLog = new StringBuilder();
+    private readonly StringBuilder _errorLog = new StringBuilder();
+    private readonly string _gitRelativePath;
+    private readonly string _directory;
 
     /// <summary>
     /// Retains ignore for directory.
     /// </summary>
     /// <param name="ignoreFile"></param>
+    /// <param name="rootDirectory">Override for relative path of this IgnorePath, used for global ignores</param>
     /// <exception cref="FileNotFoundException"></exception>
     /// <exception cref="InvalidOperationException"></exception>
-    public IgnorePath(string ignoreFile)
+    public IgnorePath(string ignoreFile, string? rootDirectory = null)
     {
         _ignore = new Ignore();
         if (!File.Exists(ignoreFile))
         {
             throw new FileNotFoundException(ignoreFile);
         }
-        _directory = Path.GetDirectoryName(ignoreFile) ?? throw new InvalidOperationException();
+
+        IgnoreFileName = ignoreFile;
+        _directory = rootDirectory ?? Path.GetDirectoryName(ignoreFile) ?? string.Empty;
+        _gitRelativePath = _directory.Replace("\\","/");
     }
+    
+    public string IgnoreFileName { get; }
 
 
-    private static TimeSpan OneMicroSecond = TimeSpan.FromMicroseconds(1);
+    private static readonly TimeSpan OneMicroSecond = TimeSpan.FromMicroseconds(1);
     /// <summary>
     /// Passively parse the .gitIgnore file
     /// </summary>
     /// <param name="ignoreFile"></param>
     /// <returns></returns>
-    public bool ParseIgnore(string ignoreFile)
+    public bool ParseIgnore()
     {
         lock (this)
         {
             try
             {
-                var lastWriteTimeNow = File.GetLastWriteTimeUtc(ignoreFile);
+                var lastWriteTimeNow = File.GetLastWriteTimeUtc(IgnoreFileName);
                 if (lastWriteTimeNow-_lastModified > OneMicroSecond)
                 {
                     var freshIgnore = new Ignore();
-                    using var file = new FileStream(ignoreFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    using var streamReader = new StreamReader(ignoreFile);
+                    using var file = new FileStream(IgnoreFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    using var streamReader = new StreamReader(IgnoreFileName);
                     while (streamReader.Peek() != -1)
                     {
                         string line = streamReader.ReadLine() ?? throw new ArgumentNullException("streamReader.ReadLine()");
@@ -80,12 +87,12 @@ public class IgnorePath
     /// <returns></returns>
     public bool IsIgnored(string filename)
     {
-        if (!filename.StartsWith(_directory))
+        if (!filename.StartsWith(_directory, StringComparison.OrdinalIgnoreCase))
         {
-            return false;
+             return false;
         }
 
-        var relativePath = Path.GetRelativePath(_directory, filename).Replace("\\","/");
+        var relativePath = Path.GetRelativePath(_gitRelativePath, filename).Replace("\\","/");
         try
         {
             return _ignore.IsIgnored(relativePath);
@@ -94,7 +101,5 @@ public class IgnorePath
         {
             return false;
         }
-        
     }
-    
 }

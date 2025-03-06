@@ -113,6 +113,11 @@
                         <TextBlock Margin="0 0 5 0" Text="Show Status: "></TextBlock>
                         <CheckBox IsChecked="{Binding ShowStatusBar}" />
                     </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Margin="0 0 5 0" Text="Show Scope Image in Background: "></TextBlock>
+                        <CheckBox IsChecked="{Binding ShowScopeImage}" />
+                    </StackPanel>
                 </StackPanel>
             </Panel>
         </StackPanel>

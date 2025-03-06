@@ -20,18 +20,4 @@ public partial class BlitzStatusBar : UserControl
     {
         InstallerClick?.Invoke();
     }
-
-    private void AdButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if ((sender as Button)?.DataContext is not AdSpaceViewModel adSpaceViewModel)
-        {
-            return;
-        }
-
-        var processStartInfo = new ProcessStartInfo(adSpaceViewModel.LinkUrl)
-        {
-            UseShellExecute = true
-        };
-        Process.Start(processStartInfo);
-    }
 }

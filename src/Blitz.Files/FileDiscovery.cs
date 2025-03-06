@@ -10,26 +10,120 @@ public class FileDiscovery
     private readonly object _populationTaskLockObject = new();
     private bool _resetPopulation;
     private Task _enumerateDirectoriesTask = Task.CompletedTask;
-    private readonly IEnumerable<SearchPath> _rootPaths;
-    private readonly List<FileSystemWatcher> _watchers = [];
-    private readonly bool _useGitIgnore;
+    
+    private readonly List<FileDiscoveryPath> _fileRootPaths = [];
+    public readonly bool UseGitIgnore;
+    public readonly bool UseBlitzIgnore;
+    public readonly bool UseGlobalIgnore;
     private readonly CancellationTokenSource _cancelPopulateToken = new();
+
+    public bool CleanupCache(FilesByExtension extToDictionary)
+    {
+        bool updated = false;
+        foreach (var fileName in extToDictionary.Keys)
+        {
+            if (!FileValidate(fileName))
+            {
+                updated = true;
+            }
+        }
+        return updated;
+    }
+
+    public bool FileValidate(string fileName)
+    {
+        var anyPathMatches = false;
+        var validFile = true;
+        foreach (var filePath in _fileRootPaths)
+        {
+            if (filePath.Folder == null)
+            {
+                continue;
+            }
+            if (!filePath.ContainsFile(fileName))
+            {
+                continue;
+            }
+
+            if (filePath.IsIgnored(fileName))
+            {
+                validFile = false;
+            }
+            anyPathMatches = true;
+        }
+
+        if (!anyPathMatches)
+        {
+            validFile = false;
+        }
+        return validFile;
+    }
+    
+    public void RegisterException(Exception exception)
+    {
+        ExceptionResults.Add(ExceptionResult.CreateFromException(exception));
+    }
+    public void UpdateDeletedFile(string fileName)
+    {
+        var extension = Path.GetExtension(fileName);
+        var fileSet = _filesByExtension.GetOrAdd(extension, (_) => new ConcurrentDictionary<string, byte>());
+        fileSet.TryRemove(fileName, out _);
+    }
+
+    public void UpdateCreatedFile(string fileName,bool signalChange = true)
+    {
+        Task.Run(() => 
+        { 
+            var extension = Path.GetExtension(fileName);
+            var fileSet = _filesByExtension.GetOrAdd(extension, (_) => new ConcurrentDictionary<string, byte>());
+            fileSet.TryAdd(fileName, 1);
+            if (signalChange)
+            {
+                FileChanged?.Invoke(this, fileName);
+            }
+        },_cancelPopulateToken.Token);
+    }
 
     /// <summary>
     /// Keeps files in memory, using a filesystem watcher to keep files up to date.
     /// </summary>
     /// <param name="rootPaths">Collection of SearchPaths used for Defining roots of the FileDiscovery</param>
     /// <param name="useGitIgnore">Use .gitignore files to ignore in results, Also can save memory</param>
-    public FileDiscovery(IEnumerable<SearchPath> rootPaths, bool useGitIgnore)
+    public FileDiscovery(IEnumerable<SearchPath> rootPaths, bool useGitIgnore, bool useBlitzIgnore = true, bool useGlobalIgnore = true)
     {
-        _rootPaths = rootPaths;
-        _useGitIgnore = useGitIgnore;
+        UseGitIgnore = useGitIgnore;
+        UseBlitzIgnore = useBlitzIgnore;
+        UseGlobalIgnore = useGlobalIgnore;
         _isFileDiscoveryWorking = false;
         _isFileDiscoveryFinished = false;
-        InstallWatchers();
+        if (useGlobalIgnore)
+        {
+            GitConfig.Instance.GitConfigChanged+=InstanceOnGitConfigChanged;
+        }
+        ConfigureRootPaths(rootPaths);
         _ = PopulateFiles();
     }
 
+    private void InstanceOnGitConfigChanged(object? sender, EventArgs e)
+    {
+        foreach (var fileDiscoveryPath in _fileRootPaths)
+        {
+            fileDiscoveryPath.UpdateGlobalIgnorePath();
+        }
+        ResetFilePopulation();
+        NotifyFileChanged(GitConfig.Instance.GetGlobalGitIgnoreFile());
+    }
+
+    public void ResetFilePopulation()
+    {
+        _ = PopulateFiles();
+    }
+
+    public void NotifyFileChanged(string fileName)
+    {
+        FileChanged?.Invoke(this, fileName);
+    }
+    
     public ConcurrentBag<ExceptionResult> ExceptionResults { get; } = [];
 
     private async Task PopulateFiles()
@@ -50,37 +144,19 @@ public class FileDiscovery
     }
 
 
-    public bool IsIgnored(string filename)
-    {
-        if (!_useGitIgnore)
-        {
-            return false;
-        }
-        return IsIgnored(filename, false) || IsIgnored(filename, true);
-    }
     
-    public bool IsIgnored(string fileName, bool isBlitzIgnore)
+    private readonly ConcurrentDictionary<string, IgnorePath> _ignoreCache = new();
+    private readonly ConcurrentDictionary<string, IgnorePath> _blitzIgnoreCache = new ();
+
+    public bool DiscoverAndParseIgnore(string folder,bool isBlitzIgnore, Stack<IgnorePath> ignoreStack)
     {
-        if (!_useGitIgnore)
+        switch (isBlitzIgnore)
         {
-            return false;
+            case false when !UseGitIgnore:
+            case true when !UseBlitzIgnore:
+                return false;
         }
-        var paths = new Stack<IgnorePath>();
-        var directory = Path.GetDirectoryName(fileName);
-        while (!string.IsNullOrEmpty(directory))
-        {
-            DiscoverAndParseIgnore(directory, isBlitzIgnore, paths);
-            directory = Path.GetDirectoryName(directory);
-        }
-        return paths.Any(ignoreInstance => ignoreInstance.IsIgnored(fileName));
-    }
-    
-    private bool DiscoverAndParseIgnore(string folder,bool isBlitzIgnore, Stack<IgnorePath> ignoreStack)
-    {
-        if (!_useGitIgnore)
-        {
-            return false;
-        }
+
         var dictionary = isBlitzIgnore ? _blitzIgnoreCache : _ignoreCache;
         var ignoreFile = isBlitzIgnore ? ".blitzIgnore" : ".gitignore";
         var tryIgnorePath = Path.Combine(folder, ignoreFile);
@@ -89,7 +165,7 @@ public class FileDiscovery
             return false;
         }
         var ignorePath = dictionary.GetOrAdd(folder, _ => new IgnorePath(tryIgnorePath));
-        if (!ignorePath.ParseIgnore(tryIgnorePath))
+        if (!ignorePath.ParseIgnore())
         {
             return false;
         }
@@ -97,79 +173,7 @@ public class FileDiscovery
         return true;
     }
 
-    private ConcurrentDictionary<string, IgnorePath> _ignoreCache = new ConcurrentDictionary<string, IgnorePath>();
-    private ConcurrentDictionary<string, IgnorePath> _blitzIgnoreCache = new ConcurrentDictionary<string, IgnorePath>();
-
-
-    private void DiscoverFiles(FileDiscoveryTask task, ConcurrentQueue<FileDiscoveryTask> taskBag, CancellationTokenSource cancellationTokenSource)
-    {
-        var path = task.Path;
-        var ignoreStack = task.IgnoreStack;
-        var blitzIgnoreStack = task.BlitzIgnoreStack;
-
-        if (string.IsNullOrEmpty(path.Folder))
-        {
-            return;
-        }
-
-        bool discoveredIgnore = DiscoverAndParseIgnore(path.Folder, false, ignoreStack);
-        bool discoveredBlitzIgnore = DiscoverAndParseIgnore(path.Folder, false, blitzIgnoreStack);
-
-        if (!Directory.Exists(path.Folder))
-        {
-            return;
-        }
-
-        if (cancellationTokenSource.IsCancellationRequested) return;
-        try
-        {
-            foreach (var fileName in Directory.EnumerateFiles(path.Folder, "*", SearchOption.TopDirectoryOnly))
-            {
-                if (cancellationTokenSource.IsCancellationRequested) return;
-                if (_useGitIgnore && ignoreStack.Any(ignoreInstance => ignoreInstance.IsIgnored(fileName)))
-                {
-                    continue;
-                }
-                
-                //Separate preference for .blitzIgnore -> https://github.com/Natestah/BlitzSearch/issues/92
-                if (_useGitIgnore && blitzIgnoreStack.Any(ignoreInstance => ignoreInstance.IsIgnored(fileName)))
-                {
-                    continue;
-                }
-
-                var extension = Path.GetExtension(fileName);
-
-                var fileSet = _filesByExtension.GetOrAdd(extension, (_) => new ConcurrentDictionary<string, byte>());
-                fileSet.TryAdd(fileName, 1);
-            }
-            
-            if (!path.TopLevelOnly)
-            {
-            
-                foreach (var directory in Directory.EnumerateDirectories(path.Folder, "*", SearchOption.TopDirectoryOnly))
-                {
-                    taskBag.Enqueue(new FileDiscoveryTask(new SearchPath { Folder = directory, TopLevelOnly = false }, new Stack<IgnorePath>(ignoreStack) , new Stack<IgnorePath>(blitzIgnoreStack)));
-                }
-            }
-
-        }
-        catch (UnauthorizedAccessException e)
-        {
-            ExceptionResults.Add(ExceptionResult.CreateFromException(e));
-        }
-
-        
-        if (discoveredIgnore)
-        {
-            ignoreStack.Pop();
-        }
-
-        if (discoveredBlitzIgnore)
-        {
-            blitzIgnoreStack.Pop();
-        }
-    }
-
+    
     public List<string> GetFoundExtensions()
     {
         return _filesByExtension.Keys.ToList();
@@ -238,7 +242,7 @@ public class FileDiscovery
         var traversals = new List<Task>();
 
         var taskBag = new ConcurrentQueue<FileDiscoveryTask>();
-        foreach (var path in _rootPaths)
+        foreach (var path in _fileRootPaths)
         {
             var ignoreStack = new Stack<IgnorePath>();
             var blitzIgnoreStack = new Stack<IgnorePath>();
@@ -251,8 +255,12 @@ public class FileDiscovery
             while (taskBag.TryDequeue(out var fileDiscoveryTask))
             {
                 foundAny = true;
-                traversals.Add(Task.Run(() => { DiscoverFiles(fileDiscoveryTask, taskBag,_cancelPopulateToken); },
-                     _cancelPopulateToken.Token));
+                var task = Task.Run(() =>
+                    {
+                        fileDiscoveryTask.DiscoveryPath.DiscoverFiles(fileDiscoveryTask, taskBag, _cancelPopulateToken);
+                    },
+                    _cancelPopulateToken.Token);
+                traversals.Add(task);
             }
 
             if (!foundAny)
@@ -284,9 +292,9 @@ public class FileDiscovery
     public bool IsFinished => _isFileDiscoveryFinished;
     public int FoundFilesCount => _filesByExtension.Values.Sum(dictionary => dictionary.Count);
 
-    private void InstallWatchers()
+    private void ConfigureRootPaths(IEnumerable<SearchPath> rootPaths)
     {
-        foreach (var path in _rootPaths)
+        foreach (var path in rootPaths)
         {
             if (path.Folder == null)
             {
@@ -317,15 +325,7 @@ public class FileDiscovery
 
             try
             {
-                var watcher = new FileSystemWatcher(path.Folder, "*");
-                watcher.IncludeSubdirectories = !path.TopLevelOnly;
-                watcher.EnableRaisingEvents = true;
-                watcher.Created += WatcherOnCreated;
-                watcher.Renamed += WatcherOnRenamed;
-                watcher.Deleted += WatcherOnDeleted;
-                watcher.Changed += WatcherOnChanged;
-                watcher.Error += WatcherOnError;
-                _watchers.Add(watcher);
+                _fileRootPaths.Add(new FileDiscoveryPath(this,path, _cancelPopulateToken, null));
             }
             catch (Exception e)
             {
@@ -339,67 +339,17 @@ public class FileDiscovery
         }
     }
 
-    private void WatcherOnChanged(object? sender, FileSystemEventArgs e)
-    {
-        Task.Run(() =>
-        {
-            if (IsIgnored(e.FullPath))
-            {
-                return;
-            }
-            FileChanged?.Invoke(sender, e.FullPath);
-        },_cancelPopulateToken.Token);
-    }
-
-    private async void WatcherOnError(object sender, ErrorEventArgs e)
-    {
-        await PopulateFiles();
-    }
-
-    private void WatcherOnDeleted(object sender, FileSystemEventArgs e)
-    {
-        var extension = Path.GetExtension(e.FullPath);
-        var fileSet = _filesByExtension.GetOrAdd(extension, (_) => new ConcurrentDictionary<string, byte>());
-        fileSet.TryRemove(e.FullPath, out _);
-    }
-
-
-    private void WatcherOnRenamed(object sender, RenamedEventArgs e)
-    {
-        Task.Run(() => 
-        { 
-            var extension = Path.GetExtension(e.FullPath);
-            var fileSet = _filesByExtension.GetOrAdd(extension, (_) => new ConcurrentDictionary<string, byte>());
-            fileSet.TryRemove(e.OldFullPath, out _);
-            if (!IsIgnored(e.FullPath))
-            {
-                fileSet.TryAdd(e.FullPath, 1);
-                FileChanged?.Invoke(sender, e.FullPath);
-            }
-        },_cancelPopulateToken.Token);
-    }
-
-    private void WatcherOnCreated(object sender, FileSystemEventArgs e)
-    {
-        Task.Run(() => 
-        { 
-            var extension = Path.GetExtension(e.FullPath);
-            var fileSet = _filesByExtension.GetOrAdd(extension, (_) => new ConcurrentDictionary<string, byte>());
-            if (!IsIgnored(e.FullPath))
-            {
-                fileSet.TryAdd(e.FullPath, 1);
-                FileChanged?.Invoke(sender, e.FullPath);
-            }
-        },_cancelPopulateToken.Token);
-    }
 
     public void DisableWatchers()
     {
         _cancelPopulateToken.Cancel();
-        foreach (var watcher in _watchers)
+        if (UseGlobalIgnore)
         {
-            watcher.EnableRaisingEvents = false;
-            watcher.Dispose();
+            GitConfig.Instance.GitConfigChanged -= InstanceOnGitConfigChanged;
+        }
+        foreach (var watcher in _fileRootPaths)
+        {
+            watcher.DisposeWatcher();
         }
     }
 
@@ -419,9 +369,9 @@ public class FileDiscovery
     }
 }
 
-public class FileDiscoveryTask(SearchPath path, Stack<IgnorePath> ignoreStack, Stack<IgnorePath> blitzIgnoreStack)
+public class FileDiscoveryTask(FileDiscoveryPath discoveryPath, Stack<IgnorePath> ignoreStack, Stack<IgnorePath> blitzIgnoreStack)
 {
-    public SearchPath Path => path;
+    public FileDiscoveryPath DiscoveryPath => discoveryPath;
     public Stack<IgnorePath> IgnoreStack => ignoreStack;
     public Stack<IgnorePath> BlitzIgnoreStack => blitzIgnoreStack;
 }

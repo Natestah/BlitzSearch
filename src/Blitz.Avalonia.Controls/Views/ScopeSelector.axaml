@@ -17,6 +17,7 @@
                     Height="{Binding MainWindowViewModel.GeneralIconSize}"
                     IsVisible="{Binding ScopeImageVisible}" Source="{Binding ScopeBitmap}"/>
             <TextBlock Margin="6 0" VerticalAlignment="Center"  Text="{Binding ScopeTitle}"></TextBlock>
+            <TextBlock Margin="2 0" VerticalAlignment="Center" Text="{Binding FirstNameSummary}" Opacity="0.5"></TextBlock>
         </StackPanel>
         <Button.Flyout>
             <Flyout>
