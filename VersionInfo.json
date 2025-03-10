@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.93",
+    "Changes": "* Fixed an infinite loop hang.\r\n\r\n"
+  },
+  {
     "Revision": "0.0.92",
     "Changes": "* Adding support for Global Git Ignore, this is applied to each root path\r\n* Decoupling option for .blitzIgnore files. Use .blitzIgnore when you want to ignore files that you do not want in .gitIgnore\r\n* Hints in Settings are in Tooltips now, saving vertical space\r\n* Removed Opt-out for Exception Verbosity, You NEED to know when files are locked.\r\n* Fixed Crash that happened when I forced Exception. ( It should show a result node for files that generate exception )\r\n* Restoring Icon in the background, with option to disable it.\r\n* Remove the broken YouTube channel link as well as the link in the Task Bar.\r\n* Removed RoadMap\r\n* Changing .gitIgnore/.blitzIgnore reflects Immediately\r\n\r\n"
   },

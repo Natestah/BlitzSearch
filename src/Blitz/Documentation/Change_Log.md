@@ -4,8 +4,10 @@
 
 I am approaching 1.0, to which I hope to slow updates significantly. Please help make that build as stable as possible and report issues.
 
-
 Thank you!
+
+### Version 0.0.93~~~~
+* Fixed an infinite loop hang.
 
 ### Version 0.0.92
 * Adding support for Global Git Ignore, this is applied to each root path

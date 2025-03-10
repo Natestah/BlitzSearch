@@ -227,6 +227,10 @@ public class FileDiscoveryPath
         var directory = Path.GetDirectoryName(fileName);
         while (!string.IsNullOrEmpty(directory))
         {
+            if (_cancelPopulateToken.Token.IsCancellationRequested)
+            {
+                return false;
+            }
             _fileDiscovery.DiscoverAndParseIgnore(directory, isBlitzIgnore, paths);
             directory = Path.GetDirectoryName(directory);
         }

@@ -45,17 +45,16 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
         {
             return LineMatchesWholeWord(lineText, CaseSensitive, out matches);
         }
+        
             
         int startingIndex = 0;
         bool hitAny = false;
-        int indexOf = -1;
         matches = [];
-        StringComparison comparison =
-            CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
+        var comparison = CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
         
-        while(true)
+        while(SearchWord.Length > 0)
         {
-            indexOf = lineText.IndexOf(SearchWord, startingIndex, comparison);
+            var indexOf = lineText.IndexOf(SearchWord, startingIndex, comparison);
             if (indexOf == -1)
             {
                 break;
