@@ -331,7 +331,7 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
         name.Append("_");
         name.Append(description.MaxLineChars.ToString());
 
-        name.Append("_v5");
+        name.Append("_v6");
         name.Append(".bc");
         Directory.CreateDirectory(CacheFolder);
         return Path.Combine(CacheFolder,name.ToString());

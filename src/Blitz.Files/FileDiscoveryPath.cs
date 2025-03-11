@@ -75,6 +75,34 @@ public class FileDiscoveryPath
         _watcher.Dispose();
     }
     
+    public static bool IsRootFolder(string path)
+    {
+        //Checking Root folder since c:\ in windows has the Hidden folder attribute.
+        var directoryInfo = new DirectoryInfo(path);
+        return directoryInfo.Parent == null;
+    }
+
+    public static bool IsHidden(string fileOrDirectory)
+    {
+        var attributes = File.GetAttributes(fileOrDirectory);
+        if( (attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+        {
+            return !IsRootFolder(fileOrDirectory);
+        }
+        var directory = Path.GetDirectoryName(fileOrDirectory);
+        while (!string.IsNullOrEmpty(directory))
+        {
+            attributes = File.GetAttributes(directory);
+            if( (attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+            {
+                return !IsRootFolder(directory);
+            }
+            directory = Path.GetDirectoryName(directory);
+        }
+        return false;
+    }
+    
+    
     public void DiscoverFiles(FileDiscoveryTask task, ConcurrentQueue<FileDiscoveryTask> taskBag, CancellationTokenSource cancellationTokenSource)
     {   
         var path = task.DiscoveryPath._path;
@@ -85,14 +113,14 @@ public class FileDiscoveryPath
         {
             return;
         }
+        if (!Directory.Exists(path.Folder) || IsHidden(path.Folder))
+        {
+            return;
+        }
 
         bool discoveredIgnore = _fileDiscovery.DiscoverAndParseIgnore(path.Folder, false, ignoreStack);
         bool discoveredBlitzIgnore = _fileDiscovery.DiscoverAndParseIgnore(path.Folder, true, blitzIgnoreStack);
 
-        if (!Directory.Exists(path.Folder))
-        {
-            return;
-        }
 
         if (cancellationTokenSource.IsCancellationRequested) return;
         try
@@ -123,6 +151,10 @@ public class FileDiscoveryPath
             
                 foreach (var directory in Directory.EnumerateDirectories(path.Folder, "*", SearchOption.TopDirectoryOnly))
                 {
+                    if (IsHidden(directory))
+                    {
+                        continue;
+                    }
                     var searchPath = new SearchPath { Folder = directory, TopLevelOnly = false };
                     var rootPath = new FileDiscoveryPath(_fileDiscovery, searchPath, _cancelPopulateToken, _rootFileDiscoveryPath);
                     taskBag.Enqueue(new FileDiscoveryTask(rootPath, new Stack<IgnorePath>(ignoreStack) , new Stack<IgnorePath>(blitzIgnoreStack)));

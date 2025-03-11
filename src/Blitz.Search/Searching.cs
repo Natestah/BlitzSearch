@@ -127,7 +127,7 @@ public class Searching
         return _messageProcesses.Values.SelectMany(processDictionary => processDictionary.Values).ToList();
     }
 
-    private void ProcessChangedFilesTask()
+    private void  ProcessChangedFilesTask()
     { 
         
         while (_changedFiles.Count > 0)
@@ -254,7 +254,7 @@ public class Searching
 
         if (newQuery.FileNameQueryEnabled)
         {
-            if (string.IsNullOrEmpty(oldTask.SearchQuery.FileNameQuery))
+            if (string.IsNullOrEmpty(oldTask.SearchQuery.FileNameQuery) && !string.IsNullOrEmpty(newQuery.FileNameQuery))
             {
                 acceptedExclusions = [];
                 fileNameResults = [];

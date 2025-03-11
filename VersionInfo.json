@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.94",
+    "Changes": "* Ignore Hidden Folders / Files\r\n\r\n"
+  },
+  {
     "Revision": "0.0.93",
     "Changes": "* Fixed an infinite loop hang.\r\n\r\n"
   },

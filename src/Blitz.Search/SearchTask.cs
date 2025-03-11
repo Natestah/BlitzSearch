@@ -1480,7 +1480,11 @@ public class SearchTask
         {
             return;
         }
-        
+
+        if (FileDiscoveryPath.IsHidden(changedFile))
+        {
+            return;
+        }
         
         var taskParameters = GetSearchTaskParameters();
         var searchTaskResult = InitializeSearch(taskParameters,changedFile,ref presentThisFile, ref foundAnything);
