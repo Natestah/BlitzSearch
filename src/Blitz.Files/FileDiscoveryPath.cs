@@ -75,27 +75,29 @@ public class FileDiscoveryPath
         _watcher.Dispose();
     }
     
-    public static bool IsRootFolder(string path)
-    {
-        //Checking Root folder since c:\ in windows has the Hidden folder attribute.
-        var directoryInfo = new DirectoryInfo(path);
-        return directoryInfo.Parent == null;
-    }
 
-    public static bool IsHidden(string fileOrDirectory)
+    public bool IsHidden(string fileOrDirectory)
     {
+        if (_path.Folder == null)
+        {
+            return false;
+        }
         var attributes = File.GetAttributes(fileOrDirectory);
         if( (attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
         {
-            return !IsRootFolder(fileOrDirectory);
+            return true;
         }
         var directory = Path.GetDirectoryName(fileOrDirectory);
         while (!string.IsNullOrEmpty(directory))
         {
+            if (directory.Length <= _path.Folder.Length)
+            {
+                break;
+            }
             attributes = File.GetAttributes(directory);
             if( (attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
             {
-                return !IsRootFolder(directory);
+                return true;
             }
             directory = Path.GetDirectoryName(directory);
         }
@@ -113,10 +115,11 @@ public class FileDiscoveryPath
         {
             return;
         }
-        if (!Directory.Exists(path.Folder) || IsHidden(path.Folder))
+        if (!Directory.Exists(path.Folder))
         {
             return;
         }
+        
 
         bool discoveredIgnore = _fileDiscovery.DiscoverAndParseIgnore(path.Folder, false, ignoreStack);
         bool discoveredBlitzIgnore = _fileDiscovery.DiscoverAndParseIgnore(path.Folder, true, blitzIgnoreStack);

@@ -1481,12 +1481,18 @@ public class SearchTask
             return;
         }
 
-        if (FileDiscoveryPath.IsHidden(changedFile))
+        var taskParameters = GetSearchTaskParameters();
+        
+        if (SearchRoot.FileDiscoverer == null)
         {
             return;
         }
         
-        var taskParameters = GetSearchTaskParameters();
+        if ( !SearchRoot.FileDiscoverer.FileValidate(changedFile))
+        {
+            return;
+        }
+        
         var searchTaskResult = InitializeSearch(taskParameters,changedFile,ref presentThisFile, ref foundAnything);
 
         Recycling.RetainedResults.TryRemove(changedFile, out _);

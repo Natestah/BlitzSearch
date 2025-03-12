@@ -6,12 +6,12 @@ I am approaching 1.0, to which I hope to slow updates significantly. Please help
 
 Thank you!
 
+### Version 0.0.95
+* Fix for Ignore files when you are targeting a folder that's already a system (Hidden) folder.
 ### Version 0.0.94
 * Ignore Hidden Folders / Files
-
 ### Version 0.0.93
 * Fixed an infinite loop hang.
-
 ### Version 0.0.92
 * Adding support for Global Git Ignore, this is applied to each root path
 * Decoupling option for .blitzIgnore files. Use .blitzIgnore when you want to ignore files that you do not want in .gitIgnore
@@ -22,17 +22,13 @@ Thank you!
 * Remove the broken YouTube channel link as well as the link in the Task Bar.
 * Removed RoadMap
 * Changing .gitIgnore/.blitzIgnore reflects Immediately
-
 ### Version 0.0.91
 * -find parameter takes a path now option too.  
-
 ### Version 0.0.89
 * opening the executable with -find, will create a Folder search for the working directory of the -find command.
 * Update to the dropdown for folders to show the first folder path.
-
 ### Version 0.0.88
 * when opening Visual Studio Solution, Select Visual Studio Editor automatically
-
 ### Version 0.0.87
 * Visual Studio Code - Improved multi-Instanced workflow
 * Workspace/Solution Scope selectors always Visible, important for knowing where Goto will land.
@@ -41,35 +37,28 @@ Thank you!
 * Editor Selection Moved to left. 
 * Text Labels for scopes Icon only with labels moved to ToolTip.
 * When Running "Search This" from the latest VS Code Extension, VS Code Editor will auto-select for that instance.
-
 ### Version 0.0.86
 * Windsurf support
 * Visual Studio - Supports multiple Solutions / Instances better ( get the extension update )
 * Continued to add more feedback on what's being searched when you have an empty query.
 * Title bar
-
 ### Version 0.0.85
 * Moving Visual Studio up in the list / Notepad to the bottom
 * Sublime Text Workspace support.
 * Sublime Text "Replace this Support"
- 
 ### Version 0.0.84
 * Fixed Crash ( Backed out .Net 9.0 upgrade for now )
 * Various Nuget Jiggling to get back to working state.
-
 ### Version 0.0.83
 * Made Workspaces ( vscode style with folders ) different from Solutions. This will help with upcoming Sublime Text work.
 * Migrate to .Net 9.0
 * All Code Compile Warnings resolved.
 * Fixed up some Cache Bleeding, introduced Per Scope caching for these new types.
 * Some Security warnings relating to JSON Nugets have been addressed.
-
 ### Version 0.0.82
 * Add Cursor Support
-
 ### Version 0.0.81
 * VS Code filter fix
-
 ### Version 0.0.80
 * Answering many Todo notes
 * Removed maximum 10 results from the backend matching.
@@ -78,7 +67,6 @@ Thank you!
 * VS Code uses Solution / Folder scope instead of creating a new Folder scope
 * Active Files / Current file scopes added.  
 * Fixed a cache pollution issue that would create results for files that don't exist in the folder scope. 
-
 ### Version 0.0.79
 * Fixed Selected Editor not retaining between sessions
 * In Folder Scope selection, I noticed the large image overlaying some buttons and fixed.
@@ -87,16 +75,13 @@ Thank you!
 * Fix Replace/Special chars https://github.com/Natestah/BlitzSearch/issues/83
 * Fix Preview Mode being an actual run-mode on non - preview mode supporting editors.
 * Adding New GotoEditor Selector right in this new pane.  This affects the Scope visibility and things. 
-
 ### Version 0.0.78
 * Always switch to the project last loaded by VS Code.  Time will tell if we need an opt out of this behavior but it seem right.
 * Only do preview request to VS Code when the internal preview is closed.
-
 ### Version 0.0.77
 * VS Code can now Configure the theme in Blitz Search to match automatically. Look for "Blitz Configure Theme" in the command pallete.
 * VS Code now Informs Blitz search about Workspace changes, folders from these workspaces create and select the scope automatically on first discovery.
 * Adding a small label to show the selected items Title ( Default VS Code icon here was being too generic ). 
-
 ### Version 0.0.76
 * Fix highlighting on light theme
 ### Version 0.0.75
