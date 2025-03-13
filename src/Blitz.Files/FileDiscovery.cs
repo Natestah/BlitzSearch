@@ -32,6 +32,11 @@ public class FileDiscovery
 
     public bool FileValidate(string fileName)
     {
+        if (!File.Exists(fileName))
+        {
+            return false;
+        }
+        
         var anyPathMatches = false;
         var validFile = true;
         foreach (var filePath in _fileRootPaths)
@@ -45,7 +50,7 @@ public class FileDiscovery
                 continue;
             }
 
-            if (filePath.IsIgnored(fileName) || filePath.IsHidden(fileName))
+            if (filePath.IsIgnored(fileName) || filePath.IsHiddenOrNonAccessible(fileName))
             {
                 validFile = false;
             }

@@ -74,19 +74,37 @@ public class FileDiscoveryPath
         _watcher.EnableRaisingEvents = false;
         _watcher.Dispose();
     }
-    
 
-    public bool IsHidden(string fileOrDirectory)
+
+    private bool IsFileHiddenOrBlocked(string fileOrDirectory)
+    {
+        FileAttributes attributes;
+        try
+        {
+            attributes = File.GetAttributes(fileOrDirectory);
+        }
+        catch (FileNotFoundException e)
+        {
+            //File.GetAttribues is claiming this exception but the stack has a check prior.
+            // I am guessing the correct answer here. which is to say it's hidden.
+            return false;
+        }
+        
+        return (attributes & FileAttributes.Hidden) == FileAttributes.Hidden;
+    }
+
+    public bool IsHiddenOrNonAccessible(string fileOrDirectory)
     {
         if (_path.Folder == null)
         {
             return false;
         }
-        var attributes = File.GetAttributes(fileOrDirectory);
-        if( (attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+
+        if (IsFileHiddenOrBlocked(fileOrDirectory))
         {
             return true;
         }
+        
         var directory = Path.GetDirectoryName(fileOrDirectory);
         while (!string.IsNullOrEmpty(directory))
         {
@@ -94,8 +112,7 @@ public class FileDiscoveryPath
             {
                 break;
             }
-            attributes = File.GetAttributes(directory);
-            if( (attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+            if (IsFileHiddenOrBlocked(directory))
             {
                 return true;
             }
@@ -154,7 +171,7 @@ public class FileDiscoveryPath
             
                 foreach (var directory in Directory.EnumerateDirectories(path.Folder, "*", SearchOption.TopDirectoryOnly))
                 {
-                    if (IsHidden(directory))
+                    if (IsHiddenOrNonAccessible(directory))
                     {
                         continue;
                     }

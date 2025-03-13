@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.96",
+    "Changes": "* fix for selecting root folder through button\r\n* Special Thanks to Herr Kaste\r\n* https://github.com/Natestah/BlitzSearch/issues/110\r\n* https://github.com/Natestah/BlitzSearch/issues/111\r\n"
+  },
+  {
     "Revision": "0.0.95",
     "Changes": "* Fix for Ignore files when you are targeting a folder that\u0027s already a system (Hidden) folder.\r\n"
   },

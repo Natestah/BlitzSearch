@@ -5,7 +5,11 @@
 I am approaching 1.0, to which I hope to slow updates significantly. Please help make that build as stable as possible and report issues.
 
 Thank you!
-
+### Version 0.0.96
+* fix for selecting root folder through button
+* Special Thanks to Herr Kaste
+* https://github.com/Natestah/BlitzSearch/issues/110
+* https://github.com/Natestah/BlitzSearch/issues/111
 ### Version 0.0.95
 * Fix for Ignore files when you are targeting a folder that's already a system (Hidden) folder.
 ### Version 0.0.94

@@ -60,7 +60,7 @@ public partial class ScopeSettingsPanel : UserControl
 
         if ((sender as Control)?.DataContext is SearchPathViewModel vm)
         {
-            vm.SearchPath = files[0].Path.LocalPath;
+            vm.SearchPath = files[0].Path.IsAbsoluteUri ? files[0].Path.LocalPath : files[0].Path.ToString();
         }
     }
 

@@ -17,6 +17,7 @@ Super early testing and feedback:
 * Carlos Pineda
 * Robert Dye
 * Noé Pfister
+* Herr Kaste
 
 Killer Blitz Icons
 * Oscar Lopez 

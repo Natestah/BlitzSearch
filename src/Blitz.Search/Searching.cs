@@ -142,6 +142,7 @@ public class Searching
                     {
                         continue;
                     }
+
                     task.UpdateFileChanged(changedFile,_fileChangedCancel);
                 }
             }
