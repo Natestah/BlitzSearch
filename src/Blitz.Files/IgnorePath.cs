@@ -24,7 +24,8 @@ public class IgnorePath
         _ignore = new Ignore();
         if (!File.Exists(ignoreFile))
         {
-            throw new FileNotFoundException(ignoreFile);
+			string friendlyErrorMessages = "git config --global core.excludesFile incorrect with \'" + ignoreFile + "\'";
+            throw new FileNotFoundException(friendlyErrorMessages);
         }
 
         IgnoreFileName = ignoreFile;
