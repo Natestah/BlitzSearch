@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.97",
+    "Changes": "* Fix for non-existing Global Git ignore file.~~~~\r\n"
+  },
+  {
     "Revision": "0.0.96",
     "Changes": "* fix for selecting root folder through button\r\n* Special Thanks to Herr Kaste\r\n* https://github.com/Natestah/BlitzSearch/issues/110\r\n* https://github.com/Natestah/BlitzSearch/issues/111\r\n"
   },

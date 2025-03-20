@@ -57,9 +57,13 @@ public class FileDiscoveryPath
         return null;
     }
 
-    private IgnorePath InstallGlobalGitIgnorePath()
+    private IgnorePath? InstallGlobalGitIgnorePath()
     {
         var currentGlobalIgnoreFile = GitConfig.Instance.GetGlobalGitIgnoreFile();
+        if (string.IsNullOrEmpty(currentGlobalIgnoreFile))
+        {
+            return null;
+        }
         var ignorePath = new IgnorePath(currentGlobalIgnoreFile, _path.Folder);
         ignorePath.ParseIgnore();
         return ignorePath;

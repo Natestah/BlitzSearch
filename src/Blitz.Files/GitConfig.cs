@@ -90,7 +90,7 @@ public class GitConfig
         catch (Win32Exception)
         {
             // It's ok that Git is not found.
-            return _gitConfigCachedPath = String.Empty;
+            return _gitConfigCachedPath = string.Empty;
         }
     
     

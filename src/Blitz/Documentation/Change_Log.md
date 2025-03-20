@@ -5,6 +5,8 @@
 I am approaching 1.0, to which I hope to slow updates significantly. Please help make that build as stable as possible and report issues.
 
 Thank you!
+### Version 0.0.97
+* Fix for non-existing Global Git ignore file.~~~~
 ### Version 0.0.96
 * fix for selecting root folder through button
 * Special Thanks to Herr Kaste
