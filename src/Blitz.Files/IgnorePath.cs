@@ -22,10 +22,14 @@ public class IgnorePath
     public IgnorePath(string ignoreFile, string? rootDirectory = null)
     {
         _ignore = new Ignore();
+        if (string.IsNullOrEmpty(ignoreFile))
+        {
+            throw new NullReferenceException("Null or empty ignore file..");
+        }
+        
         if (!File.Exists(ignoreFile))
         {
-			string friendlyErrorMessages = "git config --global core.excludesFile incorrect with \'" + ignoreFile + "\'";
-            throw new FileNotFoundException(friendlyErrorMessages);
+            throw new FileNotFoundException(ignoreFile);
         }
 
         IgnoreFileName = ignoreFile;
