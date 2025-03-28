@@ -1119,14 +1119,14 @@ public class SearchTask
             return ContentResult.NotFound;
         }
 
-        if (SearchRoot.FileDiscoverer != null && !SearchRoot.FileDiscoverer.FileValidate(file))
+        if (taskParameters.CacheScopeType == SearchExtensionCache.CacheScopeType.Folders)
         {
-            DebugPostCreation(taskParameters.DebugFileNameQuery,searchTaskResult, "File is not Valid");
-            return ContentResult.Skipped;
+            if (SearchRoot.FileDiscoverer != null && !SearchRoot.FileDiscoverer.FileValidate(file))
+            {
+                DebugPostCreation(taskParameters.DebugFileNameQuery,searchTaskResult, "File is not Valid");
+                return ContentResult.Skipped;
+            }
         }
-
-
-
 
         return FinalizeSearch(taskParameters,
             file,
