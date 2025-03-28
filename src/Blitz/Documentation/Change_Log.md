@@ -5,6 +5,10 @@
 I am approaching 1.0, to which I hope to slow updates significantly. Please help make that build as stable as possible and report issues.
 
 Thank you!
+
+### Version 0.0.98
+* Field testing with Unreal Engine source code revealed some major delays, dealing with "cache cleanup"
+* Some types that I discovered in source are now mapped (for highlighting) as ".cpp" and ".h"
 ### Version 0.0.97
 * Fix for non-existing Global Git ignore file.~~~~
 ### Version 0.0.96

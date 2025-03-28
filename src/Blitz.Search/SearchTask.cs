@@ -392,13 +392,6 @@ public class SearchTask
                 ContentResult result = ContentResult.Unknown;
                 try
                 {
-                    if (!SearchRoot.FileDiscoverer.FileValidate(file))
-                    {
-                        result = ContentResult.Skipped;
-                        foundAnything = false;
-                        presentThisFile = false;
-                        return;
-                    }
                     result = SearchContents(taskParameters, fileCache, file, extension.Extension, searchTaskResult, null);
                     if (CancellationTokenSource.IsCancellationRequested)
                     {
@@ -846,10 +839,9 @@ public class SearchTask
                     {
                         if(SearchRoot.ExtensionCache.TryGetValue(extension.Extension!, out var extensionCache))
                         {
-                            if (SearchRoot.FileDiscoverer != null && SearchRoot.FileDiscoverer.CleanupCache(extensionCache))
+                            if (SearchRoot.FileDiscoverer != null && SearchRoot.FileDiscoverer.CleanupCache(extensionCache,CancellationTokenSource))
                             {
                                 SearchRoot.ExtensionCache.DirtyCache(extension.Extension!);
-                                SearchRoot.ExtensionCache.SaveCache(descriptor);
                             }
                         }
                         SearchRoot.ExtensionCache.SaveCache(descriptor);
@@ -945,23 +937,6 @@ public class SearchTask
         SearchRoot.RaiseNewSearchTaskResult(searchTaskResult);
     }
 
-    
-    private void CleanupCache()
-    {
-        if (SearchRoot.FileDiscoverer == null)
-        {
-            return;
-        }
-        foreach (var extToDictionary in SearchRoot.ExtensionCache)
-        {
-            var descriptor = GetCachingDescription(extToDictionary.Key);
-            if (SearchRoot.FileDiscoverer.CleanupCache(extToDictionary.Value))
-            {
-                SearchRoot.ExtensionCache.DirtyCache(extToDictionary.Key);
-                SearchRoot.ExtensionCache.SaveCache(descriptor);
-            }
-        }
-    }
 
     public void StartSearch()
     {
@@ -1144,6 +1119,11 @@ public class SearchTask
             return ContentResult.NotFound;
         }
 
+        if (SearchRoot.FileDiscoverer != null && !SearchRoot.FileDiscoverer.FileValidate(file))
+        {
+            DebugPostCreation(taskParameters.DebugFileNameQuery,searchTaskResult, "File is not Valid");
+            return ContentResult.Skipped;
+        }
 
 
 

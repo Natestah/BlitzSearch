@@ -12,6 +12,11 @@ public static class ExtensionAsMap
     {
         { ".gsc", ".cpp" },
         { ".scr", ".cpp" },
+        { ".ispc", ".cpp" },
+        { ".isph", ".h" },
+        { ".usf", ".cpp" },
+        { ".ush", ".h" },
+        { ".mdl", ".cpp" },
     };
     public static string Get(string extension) => AsMap.GetValueOrDefault(extension, extension);
 }

@@ -17,15 +17,22 @@ public class FileDiscovery
     public readonly bool UseGlobalIgnore;
     private readonly CancellationTokenSource _cancelPopulateToken = new();
 
-    public bool CleanupCache(FilesByExtension extToDictionary)
+    public bool CleanupCache(FilesByExtension extToDictionary, CancellationTokenSource searchCancellationToken )
     {
         bool updated = false;
         foreach (var fileName in extToDictionary.Keys)
         {
-            if (!FileValidate(fileName))
+            if (searchCancellationToken.IsCancellationRequested)
             {
-                updated = true;
+                return false;
             }
+
+            if (FileValidate(fileName))
+            {
+                continue;
+            }
+            updated = true;
+            extToDictionary.TryRemove(fileName, out _);
         }
         return updated;
     }

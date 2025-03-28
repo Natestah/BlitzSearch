@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "0.0.98",
+    "Changes": "* Field testing with Unreal Engine source code revealed some major delays, dealing with \u0022cache cleanup\u0022\r\n* Some types that I discovered in source are now mapped (for highlighting) as \u0022.cpp\u0022 and \u0022.h\u0022\r\n"
+  },
+  {
     "Revision": "0.0.97",
     "Changes": "* Fix for non-existing Global Git ignore file.~~~~\r\n"
   },
