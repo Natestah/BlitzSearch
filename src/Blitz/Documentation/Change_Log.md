@@ -1,10 +1,15 @@
 # Change Log
 
-#### Come join me on.. [Discord Preferred](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+#### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
-I am approaching 1.0, to which I hope to slow updates significantly. Please help make that build as stable as possible and report issues.
+I'm pleased to announce version 1.0 of Blitz Search.
+
+I plan to spend more of my personal time learning new Game Developer things but I will support this as best as I can on the side.
 
 Thank you!
+
+### Version 1.0.0
+* Fixed S key input on the search box not working. 
 ### Version 0.0.99
 * Fix solution search
 ### Version 0.0.98

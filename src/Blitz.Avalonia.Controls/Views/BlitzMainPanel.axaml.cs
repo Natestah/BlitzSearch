@@ -192,7 +192,7 @@ public partial class BlitzMainPanel : UserControl
 
     public KeyBinding AddDefaultKeyBoundCommand(Key key, KeyModifiers modifiers, Action command)
     {
-        var binding = new KeyBinding() { Gesture = new KeyGesture(key), Command = ReactiveCommand.Create(command) };
+        var binding = new KeyBinding() { Gesture = new KeyGesture(key,modifiers), Command = ReactiveCommand.Create(command) };
         BlitzSecondary.AvaloniaTextEditor.KeyBindings.Add(binding);
         return binding;
     }

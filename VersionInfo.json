@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "1.0.0",
+    "Changes": "* Fixed S key input on the search box not working. \r\n"
+  },
+  {
     "Revision": "0.0.99",
     "Changes": "* Fix solution search\r\n"
   },
