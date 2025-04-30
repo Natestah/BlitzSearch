@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "1.0.1",
+    "Changes": "* Improved performance on large folder sets.\r\n* Fixed alignment of Flyout panes throughout.\r\n* Removed File Size Calculation\r\n"
+  },
+  {
     "Revision": "1.0.0",
     "Changes": "* Fixed S key input on the search box not working. \r\n"
   },

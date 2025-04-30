@@ -8,6 +8,10 @@ I plan to spend more of my personal time learning new Game Developer things but 
 
 Thank you!
 
+### Version 1.0.1
+* Improved performance on large folder sets.
+* Fixed alignment of Flyout panes throughout.
+* Removed File Size Calculation
 ### Version 1.0.0
 * Fixed S key input on the search box not working. 
 ### Version 0.0.99

@@ -51,14 +51,7 @@
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel IsVisible="{Binding}" VerticalAlignment="Center" Orientation="Horizontal"
-                                    MinWidth="{StaticResource StatusItemWidth}">
-                            <avalonia:MaterialIcon Classes="statusMaterial" Kind="Files"
-                                                   Foreground="{Binding StatusBarForeground}" />
-                            <TextBlock Classes="statusBar" Text="{Binding TotalFileSizeHumanized}"
-                                       Foreground="{Binding StatusBarForeground}">
-                            </TextBlock>
-                        </StackPanel>
+                        
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal"
                                     MinWidth="{StaticResource StatusItemWidth}">
                             <avalonia:MaterialIcon Classes="statusMaterial" Kind="Timer"

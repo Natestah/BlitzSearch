@@ -15,6 +15,9 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
 
     [Key(nameof(Words))] 
     public List<string> Words { get; set; } = new();
+
+    [IgnoreMember] private bool _dirtyWords = true;
+    [IgnoreMember] private string[] _wordsSnapShot = [];
     
     [IgnoreMember]
     public Dictionary<string,int> WordsToIntMap { get; set; } = new();
@@ -55,6 +58,7 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
                 {
                     returnList[index] = freshCount;
                     Words.Add(word);
+                    _dirtyWords = true;
                     WordsToIntMap[word] = freshCount;
                 }
                 else
@@ -68,20 +72,26 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
     }
     public string[] GetWordStrings(int[] intWords)
     {
-        lock (Words)
+        if (_dirtyWords)
         {
-            var wordsArray = new string[intWords.Length];
-            for (var index = 0; index < intWords.Length; index++)
+            lock (Words)
             {
-                var word = intWords[index];
-                if (word < Words.Count)
-                {
-                    wordsArray[index] = Words[word];
-                }
+                _wordsSnapShot = Words.ToArray();
+                _dirtyWords = false;
             }
-            return wordsArray;
         }
-    }
+        
+        var wordsArray = new string[intWords.Length];
+        for (var index = 0; index < intWords.Length; index++)
+        {
+            var word = intWords[index];
+            if (word < _wordsSnapShot.Length)
+            {
+                wordsArray[index] = _wordsSnapShot[word];
+            }
+        }
+        return wordsArray;
+}
 
     public void TryAdd(string file, SearchFileInformation info)
     {
@@ -200,7 +210,7 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
         foreach (var key in dictionary.Keys)
         {
             if (cancellationTokenSource.IsCancellationRequested) yield break;
-            if (File.Exists(key))
+            //if (File.Exists(key))
             {
                 yield return key;
             }

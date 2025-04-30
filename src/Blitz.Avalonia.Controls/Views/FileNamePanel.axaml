@@ -15,7 +15,7 @@
                 <material:MaterialIcon Classes="m1" Kind="FolderFile" />
             </DropDownButton.Content>
             <Button.Flyout>
-                <Flyout>
+                <Flyout Placement="TopEdgeAlignedLeft">
                     <ListBox ItemsSource="{Binding SearchFileHistory}"
                              SelectionChanged="SelectingFileItemsControl_OnSelectionChanged">
                     </ListBox>

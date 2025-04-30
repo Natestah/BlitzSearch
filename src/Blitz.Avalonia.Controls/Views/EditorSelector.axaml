@@ -29,7 +29,7 @@
             </StackPanel>
         </StackPanel>
         <Button.Flyout>
-            <Flyout>
+            <Flyout Placement="TopEdgeAlignedLeft">
                 <ListBox ItemsSource="{Binding GotoEditorCollection}"
                          SelectedItem="{Binding SelectedEditorViewModel}">
                     <ListBox.DataTemplates>

@@ -80,8 +80,14 @@ public class FileDiscoveryPath
     }
 
 
+    ConcurrentDictionary<string,byte> _hidecache = new();
+    
     private bool IsFileHiddenOrBlocked(string fileOrDirectory)
     {
+        if (_hidecache.ContainsKey(fileOrDirectory))
+        {
+            return true;
+        }
         FileAttributes attributes;
         try
         {
@@ -89,12 +95,18 @@ public class FileDiscoveryPath
         }
         catch (FileNotFoundException e)
         {
+            _hidecache.TryAdd(fileOrDirectory, 1);
             //File.GetAttribues is claiming this exception but the stack has a check prior.
             // I am guessing the correct answer here. which is to say it's hidden.
-            return false;
+            return true;
         }
-        
-        return (attributes & FileAttributes.Hidden) == FileAttributes.Hidden;
+
+        if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+        {
+            _hidecache.TryAdd(fileOrDirectory, 1);
+            return true;
+        }
+        return false;
     }
 
     public bool IsHiddenOrNonAccessible(string fileOrDirectory)

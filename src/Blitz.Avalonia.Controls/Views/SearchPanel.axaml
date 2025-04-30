@@ -18,7 +18,7 @@
                                 <material:MaterialIcon Classes="m1" Kind="Search" />
                             </DropDownButton.Content>
                             <Button.Flyout>
-                                <Flyout>
+                                <Flyout Placement="TopEdgeAlignedLeft">
                                     <ListBox ItemsSource="{Binding SearchTextHistory}"
                                              SelectionChanged="SelectingItemsControl_OnSelectionChanged">
                                     </ListBox>

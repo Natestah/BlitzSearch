@@ -18,7 +18,6 @@ public class FileDiscoveryStatusViewModel : ViewModelBase
     private int _filesDiscoveredCount;
     private int _runningTimeMs;
     private int _lastResultTimeMs;
-    private long _totalFileSize;
     private double _progressOpacity;
 
     public FileDiscoveryStatusViewModel(MainWindowViewModel mainWindowViewModel)
@@ -89,9 +88,6 @@ public class FileDiscoveryStatusViewModel : ViewModelBase
     public string RunningTimeHumanized => TimeSpan.FromMilliseconds(_runningTimeMs).Humanize(2);
     public string LastResultTimeHumanized => TimeSpan.FromMilliseconds(_lastResultTimeMs).Humanize(2);
 
-    public string TotalFileSizeHumanized => _totalFileSize.Bytes().Humanize();
-    
-
     public double ProgressOpacity
     {
         get => _progressOpacity;
@@ -116,6 +112,5 @@ public class FileDiscoveryStatusViewModel : ViewModelBase
         }
         this.RaiseAndSetIfChanged(ref _runningTimeMs, (int)currentStatus.RunningTime.TotalMilliseconds, nameof(RunningTimeHumanized));
         this.RaiseAndSetIfChanged(ref _lastResultTimeMs, (int)currentStatus.LastResultTime.TotalMilliseconds, nameof(LastResultTimeHumanized));
-        this.RaiseAndSetIfChanged(ref _totalFileSize, currentStatus.TotalFileSIze, nameof(TotalFileSizeHumanized));
     }
 }

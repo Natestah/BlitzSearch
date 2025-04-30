@@ -41,6 +41,4 @@ public class FileSearchStatus
     [Key(nameof(LastResultTime))]
     public TimeSpan LastResultTime { get; set; }
     
-    [Key(nameof(TotalFileSIze))]
-    public long TotalFileSIze { get; set; }
 }

@@ -15,7 +15,7 @@
                                 <material:MaterialIcon Classes="m1" Kind="Regex" />
                             </DropDownButton.Content>
                             <Button.Flyout>
-                                <Flyout>
+                                <Flyout Placement="TopEdgeAlignedLeft">
                                     <ListBox ItemsSource="{Binding RegexSearchTextHistory}"
                                              SelectionChanged="RegexSearchControl_OnSelectionChanged">
                                     </ListBox>
