@@ -14,10 +14,12 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
 {
 
     [Key(nameof(Words))] 
-    public List<string> Words { get; set; } = new();
+    public string[] Words { get; set; } = [];
+    
+    [Key(nameof(WordCount))]
+    public int WordCount { get; set; } = 0;
 
-    [IgnoreMember] private bool _dirtyWords = true;
-    [IgnoreMember] private string[] _wordsSnapShot = [];
+    [IgnoreMember] private object _wordSync = true;
     
     [IgnoreMember]
     public Dictionary<string,int> WordsToIntMap { get; set; } = new();
@@ -39,59 +41,60 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
 
     public int[] GetWordPositions(HashSet<string> collectionOfWords)
     {
-        lock (Words)
+        var returnList = new int[collectionOfWords.Count];
+        if (WordsToIntMap.Count == 0)
         {
-            var returnList = new int[collectionOfWords.Count];
-            if (WordsToIntMap.Count == 0)
+            lock (_wordSync)
             {
-                for (int i = 0; i < Words.Count; i++)
+                for (int i = 0; i < WordCount; i++)
                 {
                     WordsToIntMap[Words[i]] = i;
                 }
             }
-
-            int index = 0;
-            foreach (var word in collectionOfWords)
-            {
-                var freshCount = Words.Count;
-                if( !WordsToIntMap.TryGetValue(word, out var wordInt))
-                {
-                    returnList[index] = freshCount;
-                    Words.Add(word);
-                    _dirtyWords = true;
-                    WordsToIntMap[word] = freshCount;
-                }
-                else
-                {
-                    returnList[index] = wordInt;
-                }
-                index++;
-            }
-            return returnList;
         }
+
+        int index = 0;
+        foreach (var word in collectionOfWords)
+        {
+            if( !WordsToIntMap.TryGetValue(word, out var wordInt))
+            {
+                lock (_wordSync)
+                {
+                    if (Words.Length <= WordCount)
+                    {
+                        var currentLength = Math.Max(Words.Length, 1);
+                        var updated = new string[currentLength * 2];
+                        Words.CopyTo(updated, 0);
+                        Words = updated;
+                    }
+                    
+                    returnList[index] = WordCount;
+                    Words[WordCount] = word;
+                    WordsToIntMap[word] = WordCount;
+                    WordCount++;
+                }
+            }
+            else
+            {
+                returnList[index] = wordInt;
+            }
+            index++;
+        }
+        return returnList;
     }
     public string[] GetWordStrings(int[] intWords)
     {
-        if (_dirtyWords)
-        {
-            lock (Words)
-            {
-                _wordsSnapShot = Words.ToArray();
-                _dirtyWords = false;
-            }
-        }
-        
         var wordsArray = new string[intWords.Length];
         for (var index = 0; index < intWords.Length; index++)
         {
             var word = intWords[index];
-            if (word < _wordsSnapShot.Length)
+            if (word < Words.Length)
             {
-                wordsArray[index] = _wordsSnapShot[word];
+                wordsArray[index] = Words[word];
             }
         }
         return wordsArray;
-}
+    }
 
     public void TryAdd(string file, SearchFileInformation info)
     {
@@ -111,9 +114,9 @@ public class FilesByExtension //: ConcurrentDictionary<string, SearchFileInforma
 
     public IEnumerable<string> GetAllWords()
     {
-        lock (Words)
+        for (var i = 0; i < WordCount; i++)
         {
-            return Words.ToArray();
+            yield return Words[i];
         }
     }
 }

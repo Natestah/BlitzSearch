@@ -123,7 +123,7 @@
                                                                Padding="4" Kind="History"/>
                                     </DropDownButton.Content>
                                     <Button.Flyout>
-                                        <Flyout Placement="TopEdgeAlignedLeft">
+                                        <Flyout Placement="BottomEdgeAlignedLeft">
                                             <ListBox ItemsSource="{Binding ParentModel.PathFolderHistory}" SelectionChanged="SearchPathViewmodelHistoryFolder_OnSelectionChanged">
                                             </ListBox>    
                                         </Flyout>

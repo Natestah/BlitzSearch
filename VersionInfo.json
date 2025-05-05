@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "1.0.2",
+    "Changes": "* Removed prejudice for large files Types Detection for binaries.  \r\n* Some of Binary Detection happens on discovery now, reducing the need for managing .blitzIgnore and improving memory use on larger projects.\r\n* Improved a thread Lock that happens while initially parsing a large collection of files.\r\n* Control \u002B Mouse Wheel will adjust the font scale.\r\n* Scope selector pops under instead of over.\r\n* Fixed bug in the OR query. \u0022rocket|grenade\u0022\r\n* made \u0022.as\u0022 (angle script) files render as .cpp in search\r\n"
+  },
+  {
     "Revision": "1.0.1",
     "Changes": "* Improved performance on large folder sets.\r\n* Fixed alignment of Flyout panes throughout.\r\n* Removed File Size Calculation\r\n"
   },
@@ -37,7 +41,7 @@
   },
   {
     "Revision": "0.0.92",
-    "Changes": "* Adding support for Global Git Ignore, this is applied to each root path\r\n* Decoupling option for .blitzIgnore files. Use .blitzIgnore when you want to ignore files that you do not want in .gitIgnore\r\n* Hints in Settings are in Tooltips now, saving vertical space\r\n* Removed Opt-out for Exception Verbosity, You NEED to know when files are locked.\r\n* Fixed Crash that happened when I forced Exception. ( It should show a result node for files that generate exception )\r\n* Restoring Icon in the background, with option to disable it.\r\n* Remove the broken YouTube channel link as well as the link in the Task Bar.\r\n* Removed RoadMap\r\n* Changing .gitIgnore/.blitzIgnore reflects Immediately\r\n"
+    "Changes": "* Adding support for Global Git Ignore, this is applied to each root path\r\n* Decoupling option for .blitzIgnore files. Use .blitzIgnore when you want to ignore files that you do not want in .gitIgnore\r\n* Hints in Settings are in Tooltips now, saving vertical space\r\n* Removed Opt-out for Exception Verbosity, You NEED to know when files are locked.\r\n* Fixed Crash that happened when I forced Exception. ( It should show a result node for files that generate exception )\r\n* Restoring Icon in the background, with option to disable it.\r\n* Remove the broken YouTube channel link as well as the link in the Task Bar.\r\n* Removed RoadMap~~~~\r\n* Changing .gitIgnore/.blitzIgnore reflects Immediately\r\n"
   },
   {
     "Revision": "0.0.91",

@@ -10,10 +10,11 @@ public static class ExtensionAsMap
 {
     private static readonly Dictionary<string, string> AsMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     {
-        { ".gsc", ".cpp" },
-        { ".scr", ".cpp" },
-        { ".ispc", ".cpp" },
-        { ".isph", ".h" },
+        { ".gsc", ".cpp" }, //COD 
+        { ".scr", ".cpp" }, //MOHAA
+		{ ".as", ".cpp" }, //angelscript
+		{ ".ispc", ".cpp" },
+		{ ".isph", ".h" },
         { ".usf", ".cpp" },
         { ".ush", ".h" },
         { ".mdl", ".cpp" },

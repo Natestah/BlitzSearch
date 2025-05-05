@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
@@ -38,6 +39,12 @@ public class FileNameResultViewModel : ViewModelBase, IResultCopiable
         return true;
     }
 
+    public void UpdateFileName()
+    {
+        this.RaisePropertyChanged(nameof(FileNameWithHighlights));
+    }
+
+
     public InlineCollection FileNameWithHighlights
     {
         get
@@ -73,29 +80,13 @@ public class FileNameResultViewModel : ViewModelBase, IResultCopiable
             for (int workingIndex = 0; workingIndex < fileName.Length; workingIndex++)
             {
                 var character = fileName[workingIndex];
-                if (character == Path.VolumeSeparatorChar)
+                if (character == Path.DirectorySeparatorChar || character == Path.AltDirectorySeparatorChar)
                 {
-                    //Fist C in c:\directory\files.txt
-                    var runText = fileName.Substring(startingIndex, workingIndex - startingIndex);
-                    var run = new Run(runText){Foreground = foreground};
-                    inlineCollection.Add(run);
-
-                    // this character (Path.VolumeSeparatorChar)
-                    inlineCollection.Add(new Run(character.ToString()){Foreground = foreground});
-                    workingIndex++;
-                    startingIndex = workingIndex;
-                }
-                else if (character == Path.DirectorySeparatorChar || character == Path.AltDirectorySeparatorChar)
-                {
-                    //files in c:\directory\files.txt
-                    var runText = fileName.Substring(startingIndex, workingIndex - startingIndex);
-                    inlineCollection.Add(new Run(runText){Foreground = foreground});
-
-                    // this character
-                    inlineCollection.Add(new Run(character.ToString()){Foreground = foreground});
                     startingIndex = workingIndex + 1;
                 }
             }
+            var runText = fileName.Substring(0, startingIndex);
+            inlineCollection.Add(new Run(runText){Foreground = foreground});
 
             //files.txt in c:\directory\files.txt gets different color
             var fileNameText = fileName.Substring(startingIndex, fileName.Length - startingIndex);
@@ -103,13 +94,34 @@ public class FileNameResultViewModel : ViewModelBase, IResultCopiable
 
             if (_fileNameResult?.BlitzMatches == null)
             {
-                return inlineCollection;
+                return TrimFileNameToScope(inlineCollection);
             }
             var states = _mainWindowViewModel.ResultsHighlighting.GetCharStatesFromInlines(inlineCollection, _fileNameResult.FileName);
             var matchHighlighter = new MatchHighlighter(states,_fileNameResult.BlitzMatches, _fileNameResult.FileName, false);
-            return matchHighlighter.GetInlines();
+            var inlines = matchHighlighter.GetInlines();
+            return TrimFileNameToScope(inlines);
         }
+    }
 
+    private InlineCollection TrimFileNameToScope(InlineCollection inlineCollection)
+    {
+        if (!_mainWindowViewModel.ResultsFileNameScopeTrim)
+        {
+            return inlineCollection;
+        }
+        var firstRun = inlineCollection[0] as Run;
+        if (firstRun?.Text == null || _mainWindowViewModel.SelectedScope == null)
+        {
+            return inlineCollection;
+        }
+        foreach (var scopePath in _mainWindowViewModel.SelectedScope.SearchPathViewModels)
+        {
+            if (firstRun.Text.StartsWith(scopePath.SearchPath, StringComparison.OrdinalIgnoreCase))
+            {
+                firstRun.Text = firstRun.Text.Substring(scopePath.SearchPath.Length);
+            }
+        }
+        return inlineCollection;
     }
 
     public string CopyText => _fileNameResult.FileName;

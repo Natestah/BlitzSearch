@@ -56,4 +56,5 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
     }
 
     public string CopyText => fileContentResultResult.CapturedContents;
+
 }

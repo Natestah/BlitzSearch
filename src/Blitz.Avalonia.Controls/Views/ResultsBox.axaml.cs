@@ -19,6 +19,19 @@ public partial class ResultsBox : UserControl
         InitializeComponent();
         GotoOtherEditor = ReactiveCommand.Create<int>(GotoOtherEditorRun);
         KeyDown+=OnKeyDown;
+        AddHandler(PointerWheelChangedEvent, Handler, RoutingStrategies.Tunnel);
+    }
+
+    private void Handler(object? sender, PointerWheelEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel
+            || !e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            return;
+        }
+        
+        mainWindowViewModel.FontSize += e.Delta.Y > 0 ? 0.8 : -0.8;
+        e.Handled = true;
     }
 
     private void OnKeyDown(object? sender, KeyEventArgs e)

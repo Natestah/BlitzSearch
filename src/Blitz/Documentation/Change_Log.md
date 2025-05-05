@@ -8,6 +8,14 @@ I plan to spend more of my personal time learning new Game Developer things but 
 
 Thank you!
 
+### Version 1.0.2
+* Removed prejudice for large files Types Detection for binaries.  
+* Some of Binary Detection happens on discovery now, reducing the need for managing .blitzIgnore and improving memory use on larger projects.
+* Improved a thread Lock that happens while initially parsing a large collection of files.
+* Control + Mouse Wheel will adjust the font scale.
+* Scope selector pops under instead of over.
+* Fixed bug in the OR query. "rocket|grenade"
+* made ".as" (angle script) files render as .cpp in search
 ### Version 1.0.1
 * Improved performance on large folder sets.
 * Fixed alignment of Flyout panes throughout.
@@ -40,7 +48,7 @@ Thank you!
 * Fixed Crash that happened when I forced Exception. ( It should show a result node for files that generate exception )
 * Restoring Icon in the background, with option to disable it.
 * Remove the broken YouTube channel link as well as the link in the Task Bar.
-* Removed RoadMap
+* Removed RoadMap~~~~
 * Changing .gitIgnore/.blitzIgnore reflects Immediately
 ### Version 0.0.91
 * -find parameter takes a path now option too.  

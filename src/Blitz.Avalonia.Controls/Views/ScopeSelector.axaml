@@ -20,7 +20,7 @@
             <TextBlock Margin="2 0" VerticalAlignment="Center" Text="{Binding FirstNameSummary}" Opacity="0.5"></TextBlock>
         </StackPanel>
         <Button.Flyout>
-            <Flyout Placement="TopEdgeAlignedLeft">
+            <Flyout Placement="BottomEdgeAlignedLeft">
                 <ListBox ItemsSource="{Binding ScopeViewModels}"
                          SelectionChanged="ComboboxItemsControl_OnSelectionChanged"
                          SelectedItem="{Binding SelectedScope}">
@@ -34,7 +34,6 @@
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding ScopeTitle}"></TextBlock>
                                     <TextBlock Margin="6 0" VerticalAlignment="Center" Text="{Binding FoldersList}" Opacity="0.5"></TextBlock>
-                                    
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>

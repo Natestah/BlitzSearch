@@ -21,10 +21,16 @@ For most searches simple words are enough, but there may come results that can c
 
 "good **!apples**"  will exclude the line containing apples
 
+
 ### Whole Word @
 
 "@apple" matches nothing"
 "@apples" matches the line containing the whole word
+
+### NOT ! and Whole words @ can be used at the end of the word.
+
+"good **apples!**" will exclude the line containing apples
+"apples@" matches the line containing the whole word
 
 ## Case Sensitivity 
 

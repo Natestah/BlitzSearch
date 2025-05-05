@@ -405,6 +405,24 @@ public class MainWindowViewModel : ViewModelBase
         {
             Configuration.Instance.EditorConfig.LineSpacing = value;
             this.RaisePropertyChanged();
+            foreach (var result in this.ResultBoxItems.OfType<ContentResultViewModel>())
+            {
+                result.RefreshPropertyVisuals();
+            }
+        }
+    }
+
+    public bool ResultsFileNameScopeTrim
+    {
+        get => Configuration.Instance.EditorConfig.ResultsFileNameScopeTrim;
+        set
+        {
+            Configuration.Instance.EditorConfig.ResultsFileNameScopeTrim = value;
+            this.RaisePropertyChanged();
+            foreach (var result in this.ResultBoxItems.OfType<FileNameResultViewModel>())
+            {
+                result.UpdateFileName();
+            }
         }
     }
 
@@ -1058,6 +1076,10 @@ public class MainWindowViewModel : ViewModelBase
         if (e.PropertyName is nameof(IsMissingScopeRequirements) 
             or nameof(CacheStatus) 
             or nameof(SelectedFontFamily)
+            or nameof(ResultsFileNameScopeTrim)
+            or nameof(FontSize)
+            or nameof(GeneralIconSize)
+            or nameof(LineSpacing)
             or nameof(EnableGotoPane)
             or nameof(EnableHelpPane)
             or nameof(EnableSettingsPane)

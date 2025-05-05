@@ -179,6 +179,12 @@ public class FileDiscoveryPath
                 {
                     continue;
                 }
+                
+                if (_fileDiscovery.IgnoreBinaries && TypeDetection.Instance.IsFileBinary(fileName))
+                {
+                    continue;
+                }
+
                 _fileDiscovery.UpdateCreatedFile(fileName, false);
             }
             
@@ -240,14 +246,13 @@ public class FileDiscoveryPath
 
     private void WatcherOnCreated(object sender, FileSystemEventArgs e)
     {
-        _fileDiscovery.UpdateCreatedFile(e.FullPath);
         Task.Run(() => 
-        { 
-            if (!IsIgnored(e.FullPath))
+        {
+            if (IsIgnored(e.FullPath))
             {
-                var extension = Path.GetExtension(e.FullPath);
-                _fileDiscovery.UpdateCreatedFile(e.FullPath);
+                return;
             }
+            _fileDiscovery.UpdateCreatedFile(e.FullPath);
         },_cancelPopulateToken.Token);
     }
 
@@ -265,6 +270,11 @@ public class FileDiscoveryPath
     }
     public bool IsIgnored(string filename)
     {
+        if (_fileDiscovery.IgnoreBinaries && TypeDetection.Instance.IsFileBinary(filename))
+        {
+            return true;
+        }
+        
         if (_fileDiscovery.UseGitIgnore && IsIgnored(filename, false) )
         {
             return true;

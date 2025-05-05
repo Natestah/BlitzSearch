@@ -36,9 +36,12 @@ public class BlitzOrQuery: IBlitzMatchingQuery
     {
         foreach (var subQuery in SubQueries)
         {
-            if (!subQuery.SearchIndexValidFor(uniqueWords)) return false;
+            if (subQuery.SearchIndexValidFor(uniqueWords))
+            {
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 
     private static char BlitzOrCharacter => '|';

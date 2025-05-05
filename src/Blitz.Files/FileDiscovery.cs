@@ -15,6 +15,7 @@ public class FileDiscovery
     public readonly bool UseGitIgnore;
     public readonly bool UseBlitzIgnore;
     public readonly bool UseGlobalIgnore;
+    public readonly bool IgnoreBinaries;
     private readonly CancellationTokenSource _cancelPopulateToken = new();
 
     public bool CleanupCache(FilesByExtension extToDictionary, CancellationTokenSource searchCancellationToken )
@@ -101,11 +102,12 @@ public class FileDiscovery
     /// </summary>
     /// <param name="rootPaths">Collection of SearchPaths used for Defining roots of the FileDiscovery</param>
     /// <param name="useGitIgnore">Use .gitignore files to ignore in results, Also can save memory</param>
-    public FileDiscovery(IEnumerable<SearchPath> rootPaths, bool useGitIgnore, bool useBlitzIgnore = true, bool useGlobalIgnore = true)
+    public FileDiscovery(IEnumerable<SearchPath> rootPaths, bool useGitIgnore, bool useBlitzIgnore = true, bool useGlobalIgnore = true, bool ignoreBinaries = true)
     {
         UseGitIgnore = useGitIgnore;
         UseBlitzIgnore = useBlitzIgnore;
         UseGlobalIgnore = useGlobalIgnore;
+        IgnoreBinaries = ignoreBinaries;
         _isFileDiscoveryWorking = false;
         _isFileDiscoveryFinished = false;
         if (useGlobalIgnore)

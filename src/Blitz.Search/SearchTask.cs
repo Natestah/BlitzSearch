@@ -167,6 +167,7 @@ public class SearchTask
 
     private SearchTaskResult InitializeSearch(SearchTaskParameters taskParameters, string file,  ref bool presentThisFile, ref bool foundAnything)
     {
+        
         List<BlitzMatch>? matches = null;
 
         bool wordsFailed = false;
@@ -289,6 +290,7 @@ public class SearchTask
             }
         }
     }
+    
     public delegate IEnumerable<string> SearchEnumerator(string extension, CancellationTokenSource cancellationTokenSource);
 
 
@@ -464,6 +466,11 @@ public class SearchTask
         if (extension.Extension == null)
         {
             throw new ArgumentNullException(nameof(extension.Extension));
+        }
+
+        if (TypeDetection.Instance.IsBinaryByPrejudice(extension.Extension, out _))
+        {
+            return false;
         }
         
         var fileCache = SearchRoot.ExtensionCache.GetOrAdd(extension.Extension,

@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
+using System.Text;
 
-namespace Blitz.Search;
+namespace Blitz.Files;
 
 
 /// <summary>
@@ -63,9 +64,13 @@ public class TypeDetection
         type.IsTextType = isText;
     }
 
-    public bool IsBinary(string extension, string fileName)
+    public bool IsFileBinary(string filename)
     {
-        var type = _detectionDictionary.GetOrAdd(extension, (_) => new BlitzFileType());
+        return IsBinary(Path.GetExtension(filename), filename);
+    }
+    public bool IsBinaryByPrejudice(string extension, out BlitzFileType type)
+    {
+        type = _detectionDictionary.GetOrAdd(extension, (_) => new BlitzFileType());
         
         if (type.Reason != BlitzFileType.DetectReason.NotDetected)
         {
@@ -78,34 +83,35 @@ public class TypeDetection
             type.IsTextType = false;
             return true;
         }
-        
+
         if (type.FilesThatHaveManyControlChars.Count > 0)
         {
             type.Reason = BlitzFileType.DetectReason.ManyFilesWithControlChars;
             type.IsTextType = false;
             return true;
         }
+        return false;
+    }
 
-        var fileInfo = new FileInfo(fileName);
-        if (fileInfo.Length > 2000000)
+    public bool IsBinary(string extension, string fileName)
+    {
+        if (IsBinaryByPrejudice(extension, out var type))
         {
-            type.FilesThatAreVeryLarge[fileName] = 1;
-        }
-
-        if (type.FilesThatAreVeryLarge.Count > 10)
-        {
-            type.Reason = BlitzFileType.DetectReason.LargeFile;
-            type.IsTextType = false;
             return true;
         }
-        int controlCharsCount = 0;
 
-        using var file = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        using var streamreader = new StreamReader(file);
-        int charsRead = 0;
-        while (streamreader.Peek() != -1 && charsRead++ < 2000 )
+        if (type.Reason != BlitzFileType.DetectReason.NotDetected)
         {
-            try
+            return !type.IsTextType;
+        }
+        
+        try
+        {
+            int controlCharsCount = 0;
+            using var file = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var streamreader = new StreamReader(file);
+            int charsRead = 0;
+            while (streamreader.Peek() != -1 && charsRead++ < 2000 )
             {
                 var charTest = (char)streamreader.Read();
                 if (charTest == '\0' || !char.IsWhiteSpace(charTest) && char.IsControl(charTest) && charTest != '\r' && charTest != '\n')
@@ -118,11 +124,10 @@ public class TypeDetection
                     }
                 }
             }
-            catch (Exception)
-            {
-                return !type.IsTextType;
-            }
-            
+        }
+        catch (Exception)
+        {
+            return !type.IsTextType;
         }
         type.Reason = BlitzFileType.DetectReason.AutoMaticallyLooksLikeAtextFile;
         type.IsTextType = true;
@@ -135,13 +140,10 @@ public class BlitzFileType
     public enum DetectReason
     {
         NotDetected,
-        LargeFile,
         BuiltInDetermination,
         ManyFilesWithControlChars,
-        HasSyntaxHighlighting,
         AutoMaticallyLooksLikeAtextFile,
         HasNoExtension,
-        KnownBackupFile
     }
 
     public DetectReason Reason { get; set; }
@@ -149,5 +151,4 @@ public class BlitzFileType
     public bool IsTextType { get; set; }
 
     public ConcurrentDictionary<string, Byte> FilesThatHaveManyControlChars { get; set; } = [];
-    public ConcurrentDictionary<string, Byte> FilesThatAreVeryLarge { get; set; } = [];
 }

@@ -13,7 +13,7 @@
                 <avalonia:MaterialIcon Classes="m1" Kind="TextBoxSearch" />
             </DropDownButton.Content>
             <Button.Flyout>
-                <Flyout Placement="TopEdgeAlignedLeft">
+                <Flyout Placement="BottomEdgeAlignedLeft">
                     <ListBox ItemsSource="{Binding LiteralSearchTextHistory}"
                              SelectionChanged="LiteralSearchControl_OnSelectionChanged">
                     </ListBox>
