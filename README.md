@@ -71,14 +71,11 @@ Blitz.Avalonia.Controls - Houses everything inside the window.  It's a bit of a 
 
 ## More Info:
 
-[Blitz Search Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUb3991awUDA2ZFEvthqfjfg&si=otNpWusFuHGkC7FZ) - Building in Public Todays Story Playlist
+[Blitz Search Features on Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=6hpIiOI5kr7kPH8k) - Demonstrations of features
 
 [Natestah.com](https://natestah.com/) - Main landing page for Blitz Search
-
-[LinkedIn](https://www.linkedin.com/company/blitz-search/) - "Company Page" for blitz search
 
 [LinkedIn Nathan Silvers](www.linkedin.com/in/nathan-silvers-a17308a8) - Personal LinkedIn Profile
 
 [Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - new builds posted here first.. Join the conversation
 
-[Reddit](https://www.reddit.com/r/BlitzSearch/)
