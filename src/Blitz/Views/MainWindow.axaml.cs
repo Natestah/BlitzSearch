@@ -42,11 +42,11 @@ public partial class MainWindow : Window
             return;
         }
 
-        var processStartInfo = new ProcessStartInfo("https://natestah.com")
+        var processStartInfo = new ProcessStartInfo("https://natestah.com/download")
         {
             UseShellExecute = true
         };
-        Process.Start(processStartInfo); // todo landing page for new version.
+        Process.Start(processStartInfo); 
 
     }
 

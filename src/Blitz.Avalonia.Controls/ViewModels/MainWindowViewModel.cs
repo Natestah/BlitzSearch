@@ -527,13 +527,15 @@ public class MainWindowViewModel : ViewModelBase
         {
             return _replaceModeViewModels ??=
             [
-                new ReplaceModeViewModel(this, MaterialIconKind.FileWordBox, "Word", "Single word, supports '@' (whole word) and '|' (OR words)"),
+                new ReplaceModeViewModel(this, MaterialIconKind.FileWordBox, BlitzSingleWordQuery, "Single word, supports '@' (whole word) and '|' (OR words)"),
                 new ReplaceModeViewModel(this, MaterialIconKind.TextBoxSearch, "Literal", "Literal search, everything typed gets replaced"),
                 new ReplaceModeViewModel(this, MaterialIconKind.RegularExpression, "Regular Expression", "Traditional Regular Expression")
             ];
         }
     }
-    
+
+    private const string BlitzSingleWordQuery = "Blitz Word";
+
     private const int MaxHistoryEntries = 15;
 
     public void UpdateHistoryForColllection(ObservableCollection<string> history, string text)
@@ -548,9 +550,15 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public string ReplaceModeHint => SelectedReplaceMode?.Hint ?? "No Replace Models..";
+
     public ReplaceModeViewModel? SelectedReplaceMode
     {
-        get => _selectedReplaceMode;
+        get
+        {
+            _selectedReplaceMode ??= ReplaceModeViewModels.FirstOrDefault(a => a.Title == Configuration.Instance.ReplaceMode);
+            return _selectedReplaceMode ??= ReplaceModeViewModels?.FirstOrDefault();
+        }
         set
         {
             if (value != null)
@@ -558,6 +566,17 @@ public class MainWindowViewModel : ViewModelBase
                 Configuration.Instance.ReplaceMode = value.Title;
             }
             this.RaiseAndSetIfChanged(ref _selectedReplaceMode, value);
+            this.RaisePropertyChanged(nameof(IsReplaceCaseSensitivityVisible));
+        }
+    }
+
+    public bool IsReplaceCaseSensitivityVisible
+    {
+        get
+        {
+            if(SelectedReplaceMode == null) return false;
+            return SelectedReplaceMode.Title != BlitzSingleWordQuery;
+
         }
     }
 

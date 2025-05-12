@@ -1152,6 +1152,7 @@ public class SearchTask
                 {
                     contentResult.BlitzMatches ??= [];
                     contentResult.BlitzMatches.AddRange(blitzMatches);
+                    contentResult.BlitzMatches.Sort((a,b)=>a.MatchIndex.CompareTo(b.MatchIndex));
                 }
                 updated.Add(contentResult);
             }

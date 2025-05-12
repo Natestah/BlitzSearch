@@ -13,6 +13,7 @@ public class CharState
     {
         None,
         WordMatch,
+        DimWordMatch,
         RegexGroup
     }
 }

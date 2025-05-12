@@ -19,17 +19,27 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
         {
             return baseCollection;
         }
+
+        int offsetReplaced = 0;
         foreach (var match in matches)
         {
-            int target = match.MatchIndex+match.MatchLength;
+            int offsetMatchIndex = offsetReplaced + match.MatchIndex;
+
+            if (offsetMatchIndex < 0)
+            {
+                continue;
+            }
+            int target = offsetMatchIndex + match.MatchLength;
             // matches are from whole line, which can be truncated for displaytext.
             
-            for (int i = match.MatchIndex; i < target && i < states.Length; i++)
+            for (int i = offsetMatchIndex; i < target && i < states.Length; i++)
             {
                 states[i] ??= new CharState();
-                if (i == match.MatchIndex && !string.IsNullOrEmpty(match.Replacement))
+                if (i == offsetMatchIndex && !string.IsNullOrEmpty(match.Replacement))
                 {
                     states[i]!.ReplacedFrom = match.Replacement;
+                    int offset = match.MatchLength - match.Replacement.Length;
+                    offsetReplaced += offset;
                 }
                 if (match.IsRegexSubgroup)
                 {
@@ -37,7 +47,17 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
                 }
                 else
                 {
-                    states[i]!.BackGroundState = CharState.HighLightState.WordMatch;
+                    if (isForReplacement && match.Replacement == null)
+                    {
+                        if (states[i]!.BackGroundState != CharState.HighLightState.WordMatch)
+                        {
+                            states[i]!.BackGroundState = CharState.HighLightState.DimWordMatch;
+                        }
+                    }
+                    else
+                    {
+                        states[i]!.BackGroundState = CharState.HighLightState.WordMatch;
+                    }
                 }
             }
         }
@@ -111,7 +131,7 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
                     }
                     else
                     {
-                        bool extendingBorder = highlightBorder != null;
+                        bool extendingBorder = highlightBorder != null && !highlightChanged;
                         if (highlightBorder != null)
                         {
                             if (state.BackGroundState != CharState.HighLightState.RegexGroup)
@@ -132,7 +152,7 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
                             var replaceBlock = new TextBlock{Inlines =replaceInlines, VerticalAlignment = VerticalAlignment.Center};
                             var replaceeBorder = new Border
                             {
-                                Padding = new Thickness(-1, 0),
+                                Padding = new Thickness(-1, 0, -1, -1 ),
                                 BorderThickness = isForReplacement ? new Thickness(1,1,1,0) : new Thickness(1), 
                                 BorderBrush = new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBorder), 
                                 Background =  new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBackground),
@@ -141,21 +161,25 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
                             stackPanel.Children.Add(replaceeBorder);
                         }
 
+                        bool centerVerticalAlign = !isForReplacement || string.IsNullOrEmpty(states[i]!.ReplacedFrom);
+                        
                         //close begin new border
                         highlightBorder = new Border
                         {
-                            Padding = new Thickness(-1, 0),
+                            Padding = new Thickness(-1, -1),
                             BorderThickness = extendingBorder? new Thickness(0,1,1,1): new Thickness(1), 
                             BorderBrush = new SolidColorBrush(borderBrush), 
                             Background = bgbrush,
+                            Opacity = states[i]!.BackGroundState == CharState.HighLightState.DimWordMatch ? 0.7 : 1,
                             Child = block,
                             // Opacity = opacityFromText,
-                            VerticalAlignment = isForReplacement? VerticalAlignment.Bottom: VerticalAlignment.Center
+                            VerticalAlignment = centerVerticalAlign? VerticalAlignment.Center: VerticalAlignment.Bottom
                         };
                         stackPanel.Children.Add(highlightBorder);
 
                         var container = new InlineUIContainer();
-                        container.BaselineAlignment = isForReplacement ? BaselineAlignment.Bottom: BaselineAlignment.Center;
+                        //container.BaselineAlignment = centerVerticalAlign ? BaselineAlignment.Bottom: BaselineAlignment.Center;
+                        container.BaselineAlignment = BaselineAlignment.Bottom;
                         container.Child = stackPanel;
                         baseCollection.Add(container);
                     }

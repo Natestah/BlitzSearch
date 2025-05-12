@@ -253,6 +253,7 @@ public class SearchFileContents
             if (replaceBlitzMatches != null)
             {
                 blitzMatches.AddRange(replaceBlitzMatches);
+                blitzMatches.Sort(Comparison);
             }
 
             var fileContentResult = new FileContentResult 
@@ -267,6 +268,25 @@ public class SearchFileContents
         }
         return contentResults.Count > 0;
     }
+
+    private int Comparison(BlitzMatch a, BlitzMatch b)
+    {
+        if (a.MatchIndex == b.MatchIndex)
+        {
+            if (a.Replacement != null && b.Replacement == null)
+            {
+                return 1;
+            }
+
+            if (b.Replacement != null && a.Replacement == null)
+            {
+                return -1;
+            }
+            
+        }
+        return a.MatchIndex.CompareTo(b.MatchIndex);
+    }
+
 
     private static bool GetLiteralMatches(string lineContents,SearchTaskParameters taskParameters ,string searchFor, ref List<BlitzMatch> blitzMatches, bool caseSensitive)
     {

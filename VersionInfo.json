@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "1.0.3",
+    "Changes": "* Removed Case Sensitivity Checkbox on replacing with Blitz Single Word query\r\n* \u0022Word-\u003EBlitz Word\u0022 - Verbage here, I hope guide user a bit.\r\n* Highlighting fixes when doing a replace. \r\n"
+  },
+  {
     "Revision": "1.0.2",
     "Changes": "* Removed prejudice for large files Types Detection for binaries.  \r\n* Some of Binary Detection happens on discovery now, reducing the need for managing .blitzIgnore and improving memory use on larger projects.\r\n* Improved a thread Lock that happens while initially parsing a large collection of files.\r\n* Control \u002B Mouse Wheel will adjust the font scale.\r\n* Scope selector pops under instead of over.\r\n* Fixed bug in the OR query. \u0022rocket|grenade\u0022\r\n* made \u0022.as\u0022 (angle script) files render as .cpp in search\r\n"
   },

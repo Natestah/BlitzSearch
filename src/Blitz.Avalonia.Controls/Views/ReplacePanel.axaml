@@ -36,6 +36,7 @@
                                               Padding="2"
                                               Margin="4 0"
                                               VerticalAlignment="Center"
+                                              IsVisible="{Binding IsReplaceCaseSensitivityVisible}"
                                               IsChecked="{Binding IsReplaceCaseSensitive}">
                                     <ToolTip.Tip>
                                         Toggle Case Sensitivity
@@ -53,7 +54,7 @@
                                         </Flyout>
                                     </Button.Flyout>
                                 </DropDownButton>
-                                <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="Replace.."
+                                <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="{Binding ReplaceModeHint}"
                                          LostFocus="ReplaceField_OnLostFocus"
                                          Text="{Binding ReplaceBoxText}">
                                 </TextBox>

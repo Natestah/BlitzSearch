@@ -7,7 +7,10 @@ I'm pleased to announce version 1.0 of Blitz Search.
 I plan to spend more of my personal time learning new Game Developer things but I will support this as best as I can on the side.
 
 Thank you!
-
+### Version 1.0.3
+* Removed Case Sensitivity Checkbox on replacing with Blitz Single Word query
+* "Word->Blitz Word" - Verbage here, I hope guide user a bit.
+* Highlighting fixes when doing a replace. 
 ### Version 1.0.2
 * Removed prejudice for large files Types Detection for binaries.  
 * Some of Binary Detection happens on discovery now, reducing the need for managing .blitzIgnore and improving memory use on larger projects.
