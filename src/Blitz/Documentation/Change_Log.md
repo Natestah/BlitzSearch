@@ -7,6 +7,10 @@ I'm pleased to announce version 1.0 of Blitz Search.
 I plan to spend more of my personal time learning new Game Developer things but I will support this as best as I can on the side.
 
 Thank you!
+### Version 1.0.4
+* More highlight fixup with Replace. When replacing simply adjust the matches in the search function.
+* Regex Replace now support standard regex substitution ( those $1 $2 )
+* Regex Replace highlights now report matches as a diff instead of expression matches.
 ### Version 1.0.3
 * Removed Case Sensitivity Checkbox on replacing with Blitz Single Word query
 * "Word->Blitz Word" - Verbage here, I hope guide user a bit.

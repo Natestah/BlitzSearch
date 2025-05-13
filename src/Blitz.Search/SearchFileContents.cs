@@ -2,6 +2,11 @@ using System.Runtime.CompilerServices;
 using Blitz.Interfacing.QueryProcessing;
 using System.Text;
 using System.Text.RegularExpressions;
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
+using DiffPlex.Model;
+
 namespace Blitz.Search;
 
 public class SearchFileContents
@@ -127,16 +132,38 @@ public class SearchFileContents
             replaceContents = null;
             return false;
         }
-
         var regexMatches = new List<BlitzMatch>();
-        if (!GetRegexMatches(lineContents,taskParameters.ReplaceRegex, ref regexMatches))
+
+        var text = taskParameters.ReplaceRegex?.Replace(lineContents, taskParameters.ReplaceWith!);
+
+        if (!taskParameters.ReplaceRegex.IsMatch(lineContents) || text == null)
         {
             replaceMatches = null;
             replaceContents = null;
             return false;
         }
+        
+        DiffResult? diff = Differ.Instance.CreateCharacterDiffs(lineContents, text, true, !taskParameters.ReplaceCaseSensitive);
+
+        foreach (var block in diff.DiffBlocks)
+        {
+            var match = new BlitzMatch();
+            if (block.DeleteCountA == 0)
+            {
+                match.Replacement = string.Empty;//lineContents.Substring(block.DeleteStartA, block.DeleteCountA);
+            }
+            else
+            {
+                match.Replacement = lineContents.Substring(block.DeleteStartA, block.DeleteCountA);
+            }
+            match.MatchIndex = block.InsertStartB;
+            match.MatchLength = block.InsertCountB;
+            regexMatches.Add(match);
+        }
+
+        replaceContents = text;
+        regexMatches ??= [];
         replaceMatches = regexMatches;
-        ApplyBlitzMatchReplacements(lineContents,taskParameters, out replaceContents, replaceMatches);
         return true;
     }
     
@@ -252,9 +279,53 @@ public class SearchFileContents
             blitzMatches ??= [];
             if (replaceBlitzMatches != null)
             {
-                blitzMatches.AddRange(replaceBlitzMatches);
-                blitzMatches.Sort(Comparison);
+                if (findMatch)
+                {
+                    blitzMatches = [];
+                    blitzMatches.AddRange(replaceBlitzMatches);
+                    
+                    //Reapplying matches for updated replaced contents, 
+                    if (performedAndQuery &&_taskParameters.TextBoxQuery != null && replacedContents != null)
+                    {
+                        findMatch = _taskParameters.TextBoxQuery.LineMatches(replacedContents, false,
+                            out var updatedBlitzMatches);
+                        if (updatedBlitzMatches != null)
+                        {
+                            blitzMatches.AddRange(updatedBlitzMatches);
+                        }
+                    }
+                    if (_taskParameters.RegexSearch != null && replacedContents != null)
+                    {
+                        if (performedAndQuery && !findMatch)
+                        {
+                            continue;
+                        }
+                        var rxMatch = _taskParameters.RegexSearch.Match(replacedContents);
+                        if (!rxMatch.Success)
+                        {
+                            continue;
+                        }
+                        foreach (Match matchInstance in _taskParameters.RegexSearch.Matches(replacedContents))
+                        {
+                            for (var index = 0; index < matchInstance.Groups.Count; index++)
+                            {
+                                var subGroup = matchInstance.Groups[index];
+                                var match = new BlitzMatch
+                                    { MatchIndex = subGroup.Index, MatchLength = subGroup.Length, IsRegexSubgroup = index > 0};
+                                blitzMatches.Add(match);
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    blitzMatches = [];
+                    blitzMatches.AddRange(replaceBlitzMatches);
+                }
             }
+            
+            blitzMatches.Sort(Comparison);
 
             var fileContentResult = new FileContentResult 
             { 
@@ -268,7 +339,7 @@ public class SearchFileContents
         }
         return contentResults.Count > 0;
     }
-
+    
     private int Comparison(BlitzMatch a, BlitzMatch b)
     {
         if (a.MatchIndex == b.MatchIndex)
@@ -282,7 +353,6 @@ public class SearchFileContents
             {
                 return -1;
             }
-            
         }
         return a.MatchIndex.CompareTo(b.MatchIndex);
     }

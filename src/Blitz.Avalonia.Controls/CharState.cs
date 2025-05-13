@@ -9,6 +9,7 @@ public class CharState
     public HighLightState BackGroundState { get; set; }
     
     public string? ReplacedFrom { get; set; }
+    public string? InsertedText { get; set; }
     public enum HighLightState 
     {
         None,

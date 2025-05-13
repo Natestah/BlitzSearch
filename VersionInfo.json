@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "1.0.4",
+    "Changes": "* More highlight fixup with Replace. When replacing simply adjust the matches in the search function.\r\n* Regex Replace now support standard regex substitution ( those $1 $2 )\r\n* Regex Replace highlights now report matches as a diff instead of expression matches.\r\n"
+  },
+  {
     "Revision": "1.0.3",
     "Changes": "* Removed Case Sensitivity Checkbox on replacing with Blitz Single Word query\r\n* \u0022Word-\u003EBlitz Word\u0022 - Verbage here, I hope guide user a bit.\r\n* Highlighting fixes when doing a replace. \r\n"
   },

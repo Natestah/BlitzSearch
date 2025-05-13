@@ -13,33 +13,35 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
 {
     public InlineCollection GetInlines()
     {
-        InlineCollection baseCollection = new InlineCollection();
+        var baseCollection = new InlineCollection();
         var currentCollection = baseCollection;
         if (states.Length == 0)
         {
             return baseCollection;
         }
 
-        int offsetReplaced = 0;
+        BlitzMatch? lastMatch = null;
         foreach (var match in matches)
         {
-            int offsetMatchIndex = offsetReplaced + match.MatchIndex;
 
-            if (offsetMatchIndex < 0)
+            int target = match.MatchIndex + match.MatchLength;
+
+
+            if (match.Replacement is { Length: 0 })
             {
-                continue;
+                states[match.MatchIndex] ??= new CharState();
+                states[match.MatchIndex]!.InsertedText = lineText.Substring(match.MatchIndex, match.MatchLength);
             }
-            int target = offsetMatchIndex + match.MatchLength;
             // matches are from whole line, which can be truncated for displaytext.
             
-            for (int i = offsetMatchIndex; i < target && i < states.Length; i++)
+            for (int i = match.MatchIndex; i < target && i < states.Length; i++)
             {
                 states[i] ??= new CharState();
-                if (i == offsetMatchIndex && !string.IsNullOrEmpty(match.Replacement))
+                if (i == match.MatchIndex && match.Replacement is { Length: > 0 } )
                 {
                     states[i]!.ReplacedFrom = match.Replacement;
                     int offset = match.MatchLength - match.Replacement.Length;
-                    offsetReplaced += offset;
+                    match.MatchIndex += offset;
                 }
                 if (match.IsRegexSubgroup)
                 {
@@ -108,87 +110,110 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
             //isForReplacement = !string.IsNullOrEmpty(state.ReplacedFrom);
             bool highlightChanged = stateStart != null && state.BackGroundState != stateStart.BackGroundState;
             bool colorChanged = !Equals(state.Foreground, stateStart?.Foreground);
-            if( !highlightChanged && !colorChanged) continue;
+            if( !highlightChanged && !colorChanged && state.InsertedText == null) continue;
             
             AppendRunToCurrent(i);
-
-            if (highlightChanged)
-            {
-                //begin new highlight.
-                currentCollection = [];
-                var block = new TextBlock{Inlines =currentCollection, VerticalAlignment = isForReplacement? VerticalAlignment.Bottom: VerticalAlignment.Center};
-                var borderBrush = isForReplacement
-                    ? Configuration.Instance.CurrentTheme.ContentHighlightReplaceBorder
-                    : Configuration.Instance.CurrentTheme.ContentHighlightBorder;
-                var backgroundBrush = isForReplacement
-                    ? Configuration.Instance.CurrentTheme.ContentHighlightReplaceBackground
-                    : Configuration.Instance.CurrentTheme.ContentHighlightBackground;
-
-                    if (state.BackGroundState == CharState.HighLightState.None)
-                    {
-                        currentCollection = baseCollection;
-                        highlightBorder = null;
-                    }
-                    else
-                    {
-                        bool extendingBorder = highlightBorder != null && !highlightChanged;
-                        if (highlightBorder != null)
-                        {
-                            if (state.BackGroundState != CharState.HighLightState.RegexGroup)
-                            {
-                                //remove RightBoarder from prior highlight
-                              //  highlightBorder.BorderThickness = new Thickness( highlightBorder.BorderThickness.Left ,1,0,1);
-                            }
-                        }
-                        
-                        IBrush bgbrush = state.BackGroundState == CharState.HighLightState.RegexGroup ? Brushes.Transparent : new SolidColorBrush(backgroundBrush);
-                        
-                        var stackPanel = new StackPanel() { Orientation = Orientation.Vertical, VerticalAlignment = isForReplacement? VerticalAlignment.Bottom: VerticalAlignment.Center};
-        
-                        if (!string.IsNullOrEmpty(state.ReplacedFrom))
-                        {
-                            var replaceRun = new Run(state.ReplacedFrom){BaselineAlignment = isForReplacement ? BaselineAlignment.Bottom: BaselineAlignment.Center};
-                            var replaceInlines = new InlineCollection { replaceRun };
-                            var replaceBlock = new TextBlock{Inlines =replaceInlines, VerticalAlignment = VerticalAlignment.Center};
-                            var replaceeBorder = new Border
-                            {
-                                Padding = new Thickness(-1, 0, -1, -1 ),
-                                BorderThickness = isForReplacement ? new Thickness(1,1,1,0) : new Thickness(1), 
-                                BorderBrush = new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBorder), 
-                                Background =  new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBackground),
-                                Child = replaceBlock,
-                            };
-                            stackPanel.Children.Add(replaceeBorder);
-                        }
-
-                        bool centerVerticalAlign = !isForReplacement || string.IsNullOrEmpty(states[i]!.ReplacedFrom);
-                        
-                        //close begin new border
-                        highlightBorder = new Border
-                        {
-                            Padding = new Thickness(-1, -1),
-                            BorderThickness = extendingBorder? new Thickness(0,1,1,1): new Thickness(1), 
-                            BorderBrush = new SolidColorBrush(borderBrush), 
-                            Background = bgbrush,
-                            Opacity = states[i]!.BackGroundState == CharState.HighLightState.DimWordMatch ? 0.7 : 1,
-                            Child = block,
-                            // Opacity = opacityFromText,
-                            VerticalAlignment = centerVerticalAlign? VerticalAlignment.Center: VerticalAlignment.Bottom
-                        };
-                        stackPanel.Children.Add(highlightBorder);
-
-                        var container = new InlineUIContainer();
-                        //container.BaselineAlignment = centerVerticalAlign ? BaselineAlignment.Bottom: BaselineAlignment.Center;
-                        container.BaselineAlignment = BaselineAlignment.Bottom;
-                        container.Child = stackPanel;
-                        baseCollection.Add(container);
-                    }
-            }
             
             if (i < states.Length)
             {
                 stateStart = states[i];
             }
+            
+
+            if (!highlightChanged && state.InsertedText == null)
+            {
+                continue;
+            }
+            //begin new highlight.
+            currentCollection = [];
+            var borderBrush = isForReplacement
+                ? Configuration.Instance.CurrentTheme.ContentHighlightReplaceBorder
+                : Configuration.Instance.CurrentTheme.ContentHighlightBorder;
+            var backgroundBrush = isForReplacement
+                ? Configuration.Instance.CurrentTheme.ContentHighlightReplaceBackground
+                : Configuration.Instance.CurrentTheme.ContentHighlightBackground;
+
+            if (state.InsertedText != null)
+            {
+                //Inserted Text and move on
+                var stackPanel = new StackPanel() { Orientation = Orientation.Vertical, VerticalAlignment = isForReplacement? VerticalAlignment.Bottom: VerticalAlignment.Center};
+                //close begin new border
+                highlightBorder = new Border
+                {
+                    Padding = new Thickness(-1, -1),
+                    BorderThickness = new Thickness(1), 
+                    BorderBrush = new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBorder), 
+                    Background = new SolidColorBrush(backgroundBrush),
+                    Child = new TextBlock(){Text = state.InsertedText},
+                    VerticalAlignment = VerticalAlignment.Bottom
+                };
+                stackPanel.Children.Add(highlightBorder);
+                var container = new InlineUIContainer();
+                container.BaselineAlignment = BaselineAlignment.Bottom;
+                container.Child = stackPanel;
+                baseCollection.Add(container);
+                if(currentCollection.Count == 0)
+                    {continue;}
+            }
+            
+            if (!highlightChanged)
+            {
+                continue;
+            }
+
+            var block = new TextBlock{Inlines =currentCollection, VerticalAlignment = isForReplacement? VerticalAlignment.Bottom: VerticalAlignment.Center};
+
+            if (state.BackGroundState == CharState.HighLightState.None)
+            {
+                currentCollection = baseCollection;
+                highlightBorder = null;
+            }
+            else
+            {
+                bool extendingBorder = highlightBorder != null && !highlightChanged;
+               
+                IBrush bgbrush = state.BackGroundState == CharState.HighLightState.RegexGroup ? Brushes.Transparent : new SolidColorBrush(backgroundBrush);
+                        
+                var stackPanel = new StackPanel() { Orientation = Orientation.Vertical, VerticalAlignment = isForReplacement? VerticalAlignment.Bottom: VerticalAlignment.Center};
+        
+                if (state.ReplacedFrom != null)
+                {
+                    var replaceRun = new Run(state.ReplacedFrom){BaselineAlignment = isForReplacement ? BaselineAlignment.Bottom: BaselineAlignment.Center};
+                    var replaceInlines = new InlineCollection { replaceRun };
+                    var replaceBlock = new TextBlock{Inlines =replaceInlines, VerticalAlignment = VerticalAlignment.Center};
+                    var replaceeBorder = new Border
+                    {
+                        Padding = new Thickness(-1, 0, -1, -1 ),
+                        BorderThickness = isForReplacement ? new Thickness(1,1,1,0) : new Thickness(1), 
+                        BorderBrush = new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBorder), 
+                        Background =  new SolidColorBrush(Configuration.Instance.CurrentTheme.ContentHighlightBackground),
+                        Child = replaceBlock,
+                    };
+                    stackPanel.Children.Add(replaceeBorder);
+                }
+
+                bool centerVerticalAlign = !isForReplacement || string.IsNullOrEmpty(states[i]!.ReplacedFrom);
+                        
+                //close begin new border
+                highlightBorder = new Border
+                {
+                    Padding = new Thickness(-1, -1),
+                    BorderThickness = extendingBorder? new Thickness(0,1,1,1): new Thickness(1), 
+                    BorderBrush = new SolidColorBrush(borderBrush), 
+                    Background = bgbrush,
+                    Opacity = states[i]!.BackGroundState == CharState.HighLightState.DimWordMatch ? 0.7 : 1,
+                    Child = block,
+                    // Opacity = opacityFromText,
+                    VerticalAlignment = centerVerticalAlign? VerticalAlignment.Center: VerticalAlignment.Bottom
+                };
+                stackPanel.Children.Add(highlightBorder);
+
+                var container = new InlineUIContainer();
+                container.BaselineAlignment = BaselineAlignment.Bottom;
+                container.Child = stackPanel;
+                baseCollection.Add(container);
+            }
+
         }
         
         AppendRunToCurrent(states.Length);
