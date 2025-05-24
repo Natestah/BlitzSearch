@@ -1,6 +1,6 @@
 # Welcome  to Blitz Search
 
-The official Deployment of Blitz Search is at https://natestah.com - where the executable has been Signed by my Company, Natestah LLC And has an Updater included.
+The official Deployment of Blitz Search is at https://natestah.com/download - where the executable has been Signed by my Company, Natestah LLC And has an Updater included.
 
 ![Blitz Search Sample](https://blitzsearch.s3.us-east-2.amazonaws.com/BlitzPretty2x.png)
 
@@ -9,11 +9,9 @@ The official Deployment of Blitz Search is at https://natestah.com - where the e
 ---
 # What is Blitz Search?
 
-Mirrored from https://natestah.com
-
 ## Universal Search
 * A Stand alone Windows (x64) Search Tool that works together with Many Popular IDEs and Text Editors.
-## Dynamic Results, its not just about Speed
+## User Experience first, Speed isn't the only important thing in search!
 * Search code for words on a line.
 * Stack query types ( words, and literal, or regex )
 * Real time results update while you type.
@@ -27,6 +25,7 @@ Mirrored from https://natestah.com
 * Can open editors directly to the results, Acting as a stand-in for Control-Shift-F  and Control-Shift-H ( replace in files )
 * Plugins available for Visual Studio Code, Visual Studio, All JetBrains IDEs, Sublime Text, and Notepad++
 * Plugins Communicate with Blitz Search to Find/Replace the word at the cursor, much the same as selecting the word and pressing Control-Shift-F/H
+* Some IDE's, Visual Studio, VS Code, Sublime text feature a little deeper integration with ability to Scope to open Workspace/Solution/Projects.
 
 # Samples:
 
@@ -45,7 +44,6 @@ Mirrored from https://natestah.com
 ![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/ReplaceText.png)
 
 ### Context Menu lets you Goto Any Text Editor!
-### See: ( https://github.com/Natestah/Blitz.GotoEditor )
 ![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/RightClickOptions.png)
 
 ### Supports traditional Literal / Regular expression searches too!
@@ -58,24 +56,13 @@ Mirrored from https://natestah.com
 ![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/WordsInAnyOrder.png)
 
 
-
-## Code details:
-
-This is the Main application for Blitz Search. 
-
-Pardon the mess, the repository has been private until now so I've been a little bit undisciplined 
-
-Blitz.csproj - Main Avalonia Application Houses Documentation, Version Checking, Global Exception handling ( print to local HTML before crashing )
-Blitz.Configuration - These are Json Configuration options, JsonContext provides setup for NativeAOC
-Blitz.Avalonia.Controls - Houses everything inside the window.  It's a bit of a mess and I have some todo's here but this is where the wheels hit the road.  User control templates and behaviors
-
 ## More Info:
 
 [Blitz Search Features on Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=6hpIiOI5kr7kPH8k) - Demonstrations of features
 
-[Natestah.com](https://natestah.com/) - Main landing page for Blitz Search
+[Natestah.com/Download](https://natestah.com/download) - Download the windows installer.
 
 [LinkedIn Nathan Silvers](www.linkedin.com/in/nathan-silvers-a17308a8) - Personal LinkedIn Profile
 
-[Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - new builds posted here first.. Join the conversation
+[Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - Feedback is welcome, This is my personal Discord and shares topics of game dev things.
 
