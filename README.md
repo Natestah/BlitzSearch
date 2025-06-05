@@ -1,10 +1,10 @@
 # Welcome  to Blitz Search
 
+![Blitz128](https://github.com/Natestah/BlitzSearch/assets/11800697/dcd68d7f-da5c-4dae-bf8e-02b88e37cfa9)
+
 The official Deployment of Blitz Search is at https://natestah.com/download - where the executable has been Signed by my Company, Natestah LLC And has an Updater included.
 
 ![Blitz Search Sample](https://blitzsearch.s3.us-east-2.amazonaws.com/BlitzPretty2x.png)
-
-![Blitz128](https://github.com/Natestah/BlitzSearch/assets/11800697/dcd68d7f-da5c-4dae-bf8e-02b88e37cfa9)
 
 ---
 # What is Blitz Search?
@@ -27,38 +27,13 @@ The official Deployment of Blitz Search is at https://natestah.com/download - wh
 * Plugins Communicate with Blitz Search to Find/Replace the word at the cursor, much the same as selecting the word and pressing Control-Shift-F/H
 * Some IDE's, Visual Studio, VS Code, Sublime text feature a little deeper integration with ability to Scope to open Workspace/Solution/Projects.
 
-# Samples:
-
-
-### Set multiple sets of multiple paths and associate an icon for easy switching 
-
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/ConfigurePaths.png)
-
-### Full Text Preview ( AvaloniaEdit! )
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/FullTextPreview.png)
-
-### Regular Expression Search is awesome to see in Real Time!
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/RegularExpression.png)
-
-### Replace with Over / Under style
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/ReplaceText.png)
-
-### Context Menu lets you Goto Any Text Editor!
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/RightClickOptions.png)
-
-### Supports traditional Literal / Regular expression searches too!
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/TraditionalLiteralSearch.png)
-
-### Theme support
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/UsePopularThemes.png)
-
-### Words in any order
-![sample](https://blitzsearch.s3.us-east-2.amazonaws.com/WordsInAnyOrder.png)
-
+![AnimateBlitzUpdated](https://github.com/user-attachments/assets/b51d0d60-7ee1-4527-bd01-b03e52c929da)
 
 ## More Info:
 
 [Blitz Search Features on Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=6hpIiOI5kr7kPH8k) - Demonstrations of features
+
+[Donate to Blitz Search](https://natestah.com/blitz-search) - Support blitz search with cash.
 
 [Natestah.com/Download](https://natestah.com/download) - Download the windows installer.
 
