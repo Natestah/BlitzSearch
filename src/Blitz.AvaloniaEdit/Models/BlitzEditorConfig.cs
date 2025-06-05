@@ -8,6 +8,7 @@ public class BlitzEditorConfig
     public double LineSpacing { get; set; } = 0.0;
 
     public bool ResultsFileNameScopeTrim { get; set; } = false;
+    public bool ShowDonationButton { get; set; } = true;
     
     [DefaultValue(24.0)] 
     public double GeneralIconSize { get; set; } = 24.0;

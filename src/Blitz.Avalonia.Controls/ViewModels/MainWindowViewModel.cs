@@ -426,6 +426,16 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public bool ShowDonationButton
+    {
+        get => Configuration.Instance.EditorConfig.ShowDonationButton;
+        set
+        {
+            Configuration.Instance.EditorConfig.ShowDonationButton = value;
+            this.RaisePropertyChanged();
+        }
+    }
+
     
     public double FontSize
     {

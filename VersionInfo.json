@@ -1,5 +1,9 @@
 [
   {
+    "Revision": "1.0.5",
+    "Changes": "* I\u0027m adding Donation Details\r\n* Fixed bug in NOT operator \r\n"
+  },
+  {
     "Revision": "1.0.4",
     "Changes": "* More highlight fixup with Replace. When replacing simply adjust the matches in the search function.\r\n* Regex Replace now support standard regex substitution ( those $1 $2 )\r\n* Regex Replace highlights now report matches as a diff instead of expression matches.\r\n"
   },

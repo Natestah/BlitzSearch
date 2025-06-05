@@ -2,11 +2,17 @@
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
-I'm pleased to announce version 1.0 of Blitz Search.
+Blitz Search now has a "Donation" portal.  Donation's will go to cover maintenance costs as well as promote Blitz Search.
 
-I plan to spend more of my personal time learning new Game Developer things but I will support this as best as I can on the side.
+There is an option to remove the button at the bottom in the theme settings.
+
+https://pay.natestah.com/
 
 Thank you!
+
+### Version 1.0.5
+* I'm adding Donation Details
+* Fixed bug in NOT operator 
 ### Version 1.0.4
 * More highlight fixup with Replace. When replacing simply adjust the matches in the search function.
 * Regex Replace now support standard regex substitution ( those $1 $2 )

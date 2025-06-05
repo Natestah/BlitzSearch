@@ -58,7 +58,7 @@ public class SearchFileContents
             return false;
         }
 
-        bool replaceMatch  =  taskParameters.ReplaceQuery.LineMatches(lineContents, taskParameters.ReplaceCaseSensitive, out replaceMatches);
+        bool replaceMatch  =  taskParameters.ReplaceQuery.LineMatches(lineContents,  out replaceMatches);
 
         if (!replaceMatch)
         {
@@ -143,7 +143,7 @@ public class SearchFileContents
             return false;
         }
         
-        DiffResult? diff = Differ.Instance.CreateCharacterDiffs(lineContents, text, true, !taskParameters.ReplaceCaseSensitive);
+        DiffResult? diff = Differ.Instance.CreateCharacterDiffs(lineContents, text, true, ignoreCase:false);
 
         foreach (var block in diff.DiffBlocks)
         {
@@ -205,7 +205,7 @@ public class SearchFileContents
             {
                 if (_taskParameters.TextBoxQuery != null)
                 {
-                    findMatch = _taskParameters.TextBoxQuery.LineMatches(lineContents, false,
+                    findMatch = _taskParameters.TextBoxQuery.LineMatches(lineContents,
                         out blitzMatches);
                 }
                 else
@@ -287,7 +287,7 @@ public class SearchFileContents
                     //Reapplying matches for updated replaced contents, 
                     if (performedAndQuery &&_taskParameters.TextBoxQuery != null && replacedContents != null)
                     {
-                        findMatch = _taskParameters.TextBoxQuery.LineMatches(replacedContents, false,
+                        findMatch = _taskParameters.TextBoxQuery.LineMatches(replacedContents,
                             out var updatedBlitzMatches);
                         if (updatedBlitzMatches != null)
                         {

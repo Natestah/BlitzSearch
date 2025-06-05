@@ -122,7 +122,7 @@ public class SearchTask
         {
             return false;
         }
-        return debugFileQuery.LineMatches(file, false, out var _);
+        return debugFileQuery.LineMatches(file, out var _);
     }
     private void DebugReportPriorToCreation(BlitzAndQuery? debugFileQuery, string file, string debugMessage)
     {
@@ -173,7 +173,7 @@ public class SearchTask
         bool wordsFailed = false;
         bool regexFailed = false;
         bool literalFailed = false;
-        if (taskParameters.TextBoxQuery.SubQueries.Count > 0 && !taskParameters.TextBoxQuery.LineMatches(file, caseSensitive:false, out matches))
+        if (taskParameters.TextBoxQuery.SubQueries.Count > 0 && !taskParameters.TextBoxQuery.LineMatches(file, out matches))
         {
             wordsFailed = true;
         }
@@ -343,7 +343,7 @@ public class SearchTask
         Interlocked.Increment(ref _fileNameCount);
 
         if (SearchQuery.FileNameQueryEnabled && SearchQuery.FileNameQuery != null
-            && !taskParameters.FileNameQuery!.LineMatches(file, caseSensitive:false, out var fileNameMatches))
+            && !taskParameters.FileNameQuery!.LineMatches(file, out var fileNameMatches))
         {
             DebugReportPriorToCreation(taskParameters.DebugFileNameQuery, file, "FileName Query disabled");
             return;

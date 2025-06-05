@@ -24,7 +24,7 @@ public interface IBlitzMatchingQuery
     /// <param name="caseSensitive"></param>
     /// <param name="matches"></param>
     /// <returns></returns>
-    bool LineMatches(string lineText, bool caseSensitive, out List<BlitzMatch> matches);
+    bool LineMatches(string lineText, out List<BlitzMatch> matches);
 
     /// <summary>
     /// Returns false only when this matching query can be determined by the unique words for a file.  

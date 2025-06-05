@@ -39,14 +39,13 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
     }
 
     
-    public bool LineMatches(string lineText, bool _, out List<BlitzMatch> matches)
+    public bool LineMatches(string lineText, out List<BlitzMatch> matches)
     {
         if (WholeWord)
         {
-            return LineMatchesWholeWord(lineText, CaseSensitive, out matches);
+            return LineMatchesWholeWord(lineText, out matches);
         }
         
-            
         int startingIndex = 0;
         bool hitAny = false;
         matches = [];
@@ -78,7 +77,7 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
         return c != '_';
     }
 
-    public bool LineMatchesWholeWord(string lineText, bool _, out List<BlitzMatch> matches)
+    public bool LineMatchesWholeWord(string lineText, out List<BlitzMatch> matches)
     {
         int matchIndex = 0;
         bool matchedAny = false;
@@ -118,6 +117,11 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
 
     public bool SearchIndexValidFor(IEnumerable<string> uniqueWords)
     {
+        if (IsExclude)
+        {
+            return true;
+        }
+        
         foreach (var word in IndexWords)
         {
             bool anyContains = false;

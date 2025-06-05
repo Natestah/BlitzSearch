@@ -3,6 +3,12 @@
 
 There are a number of ways to support blitz search.  Listed in order of priority.
 
+## Donate
+
+There are some things that I would like to recoup some of the costs on including SSL certificates / Business renewal fees. S3 storage.  Most of this has been out of my own pocket.
+
+Donate here -> [pay.natestah.com](https://pay.natestah.com)
+
 ## Give Feedback
 
 The more I can smooth over the end-user experience the better chance Blitz Search has to fulfill its mission to becoming a beloved tool that many Software developers enjoy.
@@ -20,4 +26,4 @@ The more I can smooth over the end-user experience the better chance Blitz Searc
 
 #### [Natestah.com](https://natestah.com/) - Blitz Search Homepage.
 
-#### [LinkedIn - Nathan Silvers](https://www.linkedin.com/in/nathan-silvers-a17308a8/) - Hire me to work. 
+#### [LinkedIn - Nathan Silvers](https://www.linkedin.com/in/nathan-silvers-a17308a8/) - Hire me to work.

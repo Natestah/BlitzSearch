@@ -20,4 +20,13 @@ public partial class BlitzStatusBar : UserControl
     {
         InstallerClick?.Invoke();
     }
+
+    private void DonateButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var processStartInfo = new ProcessStartInfo("https://pay.natestah.com")
+        {
+            UseShellExecute = true
+        };
+        Process.Start(processStartInfo); // todo landing page for new version.
+    }
 }

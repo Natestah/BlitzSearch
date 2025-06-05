@@ -22,12 +22,12 @@ public class BlitzAndQuery: IBlitzMatchingQuery
     {
         
     }
-    public bool LineMatches(string lineText, bool caseSensitive, out List<BlitzMatch> matches)
+    public bool LineMatches(string lineText, out List<BlitzMatch> matches)
     {
         matches = null!;
         foreach (var subQuery in SubQueries)
         {
-            if (!subQuery.LineMatches(lineText, caseSensitive, out var matchCollection))
+            if (!subQuery.LineMatches(lineText, out var matchCollection))
             {
                 return false;
             }

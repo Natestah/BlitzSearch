@@ -13,13 +13,13 @@ public class BlitzOrQuery: IBlitzMatchingQuery
     [Key(nameof(SubQueries))]
     public List<IBlitzMatchingQuery> SubQueries { get; set; } = [];
     
-    public bool LineMatches(string lineText, bool caseSensitive, out List<BlitzMatch> matches)
+    public bool LineMatches(string lineText,  out List<BlitzMatch> matches)
     {
         bool anyMatched = false;
         matches = null!;
         foreach (var subQuery in SubQueries)
         {
-            if (!subQuery.LineMatches(lineText, caseSensitive, out var subQueryMatch))
+            if (!subQuery.LineMatches(lineText, out var subQueryMatch))
             {
                 continue;
             }

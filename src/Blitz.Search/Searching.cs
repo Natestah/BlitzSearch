@@ -345,13 +345,13 @@ public class Searching
 
             update.FileName = fileName;
             var fileNameMatch =
-                newTextQuery.LineMatches(fileName, caseSensitive: false, out var updatedMatches);
+                newTextQuery.LineMatches(fileName, out var updatedMatches);
             update.BlitzMatches = updatedMatches;
             var newContentResults = new List<FileContentResult>();
             foreach (var contentResult in oldResult.ContentResults)
             {
                 Debug.Assert(contentResult.CapturedContents != null, "contentResult.CapturedContents != null");
-                if (newTextQuery.LineMatches(contentResult.CapturedContents, false,
+                if (newTextQuery.LineMatches(contentResult.CapturedContents,
                         out var updatedContentMatches))
                 {
                     var newContentResult = new FileContentResult
