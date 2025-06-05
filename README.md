@@ -1,6 +1,5 @@
-# Welcome  to Blitz Search
 
-![Blitz128](https://github.com/Natestah/BlitzSearch/assets/11800697/dcd68d7f-da5c-4dae-bf8e-02b88e37cfa9)
+![2025-06-05_10-19-14](https://github.com/user-attachments/assets/9b9f608b-2c02-4322-a6da-b9e569d58ed1)
 
 The official Deployment of Blitz Search is at https://natestah.com/download - where the executable has been Signed by my Company, Natestah LLC And has an Updater included.
 
