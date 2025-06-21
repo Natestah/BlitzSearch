@@ -22,9 +22,9 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: .\src
+      working-directory: src
     - name: Build
       run: dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
-      working-directory: .\src
+      working-directory: src
     - name: Test
       run: dotnet test --no-build --verbosity normal
