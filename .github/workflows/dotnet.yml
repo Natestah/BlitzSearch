@@ -23,8 +23,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: src
-    - name: Workload List
-      run: dotnet workload list
+    - name: Workload Update
+      run: dotnet workload update
       working-directory: src
     - name: Build
       run: dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
