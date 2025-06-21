@@ -7,7 +7,6 @@
         <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
         <IsTrimmable>true</IsTrimmable>
         <PublishAot>true</PublishAot>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Blitz Interfacing</Title>
         <Copyright>2024</Copyright>
         <RepositoryUrl>https://github.com/natestah/blitz.interfacing</RepositoryUrl>

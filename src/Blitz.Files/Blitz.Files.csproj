@@ -5,7 +5,6 @@
         <Nullable>enable</Nullable>
         <PublishAot>true</PublishAot>
         <IsTrimmable>true</IsTrimmable>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Blitz.Files</Title>
         <Description>Cached File Enumeration for Blitz Search.  Maintains dictionary of file paths and updates them with watcher changes</Description>
         <Copyright>2024 Natestah LLC</Copyright>

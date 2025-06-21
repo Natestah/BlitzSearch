@@ -13,7 +13,6 @@
         <PackageProjectUrl>https://www.natestah.com</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Natestah/Blitz.GotoEditor/</RepositoryUrl>
         <Version>1.0.8</Version>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <TargetFrameworks>net8.0</TargetFrameworks>
     </PropertyGroup>
 

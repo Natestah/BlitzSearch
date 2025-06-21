@@ -4,7 +4,6 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Blitz.AvaloniaEdit</Title>
         <Description>Managing FileTabs and Document states for AvaloniaEdit</Description>
         <Copyright>2024 Nathan Silvers</Copyright>
