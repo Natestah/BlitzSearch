@@ -23,6 +23,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
+      run: |
+        cd src
+        dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
     - name: Test
       run: dotnet test --no-build --verbosity normal
