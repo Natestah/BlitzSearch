@@ -1,15 +1,19 @@
 # Change Log
 
-#### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
-Blitz Search now has a "Donation" portal.  Donation's will go to cover maintenance costs as well as promote Blitz Search.
 
-There is an option to remove the button at the bottom in the theme settings.
+Blitz Search now has a "Donation" portal. If you like Blitz Search, consider the ultimate compliment, hard cash!  I also Love social media engagement.
 
 https://pay.natestah.com/
 
 Thank you!
 
+#### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+
+### Version 1.0.6
+* Losing Code signature. 
+* Disabling Auto Update 
+* Please see https://github.com/Natestah/BlitzSearch for updated instructions.  
 ### Version 1.0.5
 * I'm adding Donation Details
 * Fixed bug in NOT operator 

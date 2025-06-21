@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -27,7 +29,7 @@ public partial class MainWindow : Window
 
         InitializeComponent();
         Closed += OnClosed;
-        PropertyChanged+=OnPropertyChanged;
+        PropertyChanged += OnPropertyChanged;
         BlitzMainPanel.SetRestartAction(DoUpdateAndRestart);
     }
 
@@ -46,7 +48,7 @@ public partial class MainWindow : Window
         {
             UseShellExecute = true
         };
-        Process.Start(processStartInfo); 
+        Process.Start(processStartInfo);
 
     }
 
@@ -65,13 +67,57 @@ public partial class MainWindow : Window
                     vm.LastNonMinizedState = this.WindowState;
 
                 }
-                break;    
+
+                break;
         }
     }
 
     private string _detectedVersion = "0.0.0.0";
 
-    private const string VersionUrl = "https://raw.githubusercontent.com/Natestah/BlitzSearch/main/VersionInfo.json";
+    List<BlitzVersion> ParseLocalChangeLog()
+    {
+        var uri = new Uri(Environment.ExpandEnvironmentVariables($"%programfiles%\\blitz\\Documentation\\change_log.md"));
+        if (!File.Exists(uri.LocalPath))
+        {
+            return [];
+        }
+        using var re = new StreamReader(uri.LocalPath);
+        {
+            return ParseChangeLog(re);
+        }
+    }
+
+    List<BlitzVersion> ParseChangeLog( StreamReader re )
+    {
+        var versionMatch = new Regex(@"Version (\d*\.\d*\.\d*)", RegexOptions.Compiled);
+        var versionBuilder = new Dictionary<string, StringBuilder>();
+        string? currentVersion = null;
+        while (re.Peek() != -1)
+        {
+            var line = re.ReadLine()!;
+            var match = versionMatch.Match(line);
+            if (match.Success)
+            {
+                currentVersion = match.Groups[1].ToString();
+                versionBuilder[currentVersion] = new StringBuilder();
+                continue;
+            }
+
+            if (currentVersion != null)
+            {
+                versionBuilder[currentVersion].AppendLine(line);
+            }
+        }
+        var versionList = new List<BlitzVersion>();
+        foreach (var kvp in versionBuilder)
+        {
+            versionList.Add(new BlitzVersion{ Revision = kvp.Key,Changes = kvp.Value.ToString()});
+        }
+
+        return versionList;
+    }
+    
+    private const string ChangeLogURL = "https://raw.githubusercontent.com/Natestah/BlitzSearch/refs/heads/main/src/Blitz/Documentation/Change_Log.md";
     private async Task CheckUpdate()
     {
         if (DataContext is not MainWindowViewModel vm)
@@ -82,13 +128,11 @@ public partial class MainWindow : Window
         client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true, MustRevalidate = true};
         try
         {
-            await using var s = await client.GetStreamAsync(VersionUrl);
+            await using var s = await client.GetStreamAsync(ChangeLogURL);
             using var sr = new StreamReader(s);
             {
-                var text = await sr.ReadToEndAsync();
-
-                var versions = BlitzVersion.DeserializeFrom(text);
-                if (versions is null)
+                var versions = ParseChangeLog(sr);
+                if (versions.Count == 0)
                 {
                     vm.NewVersionAvailable = false;
                     return;
