@@ -83,8 +83,6 @@ public class FileDiscoveryTests
         PrepareTestFiles(out var searchPaths, out var testingFiles, out var extensionSet);
         
         var lookingForFiles = new List<string>(testingFiles);
-
-        
         var fileDiscovery = new FileDiscovery(searchPaths, useGitIgnore: false);
         foreach (var file in fileDiscovery.EnumerateAllFiles(new CancellationTokenSource()))
         {
@@ -93,6 +91,7 @@ public class FileDiscoveryTests
         }
 
         Assert.Empty(lookingForFiles);
+        CleanupTestFiles(testingFiles);
     }
 
     private void GitIgnoreFiles(bool retention)
