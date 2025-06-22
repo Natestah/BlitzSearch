@@ -212,8 +212,9 @@ public class FileDiscovery
         }
     }
 
-    public IEnumerable<string> EnumerateAllFiles(CancellationTokenSource cancellationTokenSource = null!)
+    public IEnumerable<string> EnumerateAllFiles(CancellationTokenSource cancellationTokenSource)
     {
+        
         var foundSet = new HashSet<string>();
         while (true)
         {

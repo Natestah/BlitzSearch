@@ -39,12 +39,12 @@ public class SearchTests : IDisposable
         foreach (var cache in freshCache.Values)
         {
             byte[] bytes = MessagePackSerializer.Serialize(cache);
-            var deserialized = MessagePackSerializer.Deserialize<ConcurrentDictionary<string, SearchFileInformation>>(bytes);
+            FilesByExtension deserialized = MessagePackSerializer.Deserialize<FilesByExtension>(bytes);
             
-            Assert.All(deserialized, deserializedItem =>
+            Assert.All(deserialized.FileInformations, deserializedItem =>
             {
                 Assert.True(cache.TryGetValue(deserializedItem.Key, out var cacheItemValue));
-                Assert.Equal(cacheItemValue!.UniqueWords, deserializedItem.Value.UniqueWords);
+                Assert.True(cacheItemValue!.UniqueWords.SequenceEqual(deserializedItem.Value.UniqueWords));
                 Assert.Equal(cacheItemValue.FileSize, deserializedItem.Value.FileSize);
                 Assert.Equal(cacheItemValue.FileState, deserializedItem.Value.FileState);
                 Assert.Equal(cacheItemValue.LastModifiedTime, deserializedItem.Value.LastModifiedTime);
@@ -58,7 +58,9 @@ public class SearchTests : IDisposable
     public void Test_SearchParsing_SingleFile(string file, string[] uniqueWords)
     {
         string fileName = Path.Combine(_tempPath, file);
-        var fileSearcher = new SearchFileParsing(fileName, new SearchQuery(string.Empty,[],[]));
+        var searchQuery = new SearchQuery(string.Empty, [], []);
+        searchQuery.RobotFilterMaxLineChars = 30000; // matches RobotDetectionSettings.cd value
+        var fileSearcher = new SearchFileParsing(fileName, searchQuery);
         var filesByExtension = new FilesByExtension();
         var searchFileInformation = fileSearcher.ParseFile(filesByExtension);
         var exceptSet = new HashSet<string>(uniqueWords);

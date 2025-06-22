@@ -9,7 +9,10 @@ public class FileDiscoveryTests
     private void PrepareTestFiles(out List<SearchPath> searchPaths, out List<string> files, out HashSet<string> exclusiveExtensions)
     {
         var tempPath = Path.Combine(Path.GetTempPath(), "blitz_files_tests");
-        Directory.CreateDirectory(tempPath);
+        if (!Directory.Exists(tempPath))
+        {
+            Directory.CreateDirectory(tempPath);
+        }
         var gitIgnoreFile = Path.Combine(tempPath, ".gitignore");
         
         searchPaths =
@@ -18,8 +21,9 @@ public class FileDiscoveryTests
         ];
         files =
         [
-            Path.Combine(tempPath, gitIgnoreFile),
-            Path.Combine(tempPath, @"testNotIgnored\test\file.cs"),
+            Path.Combine(tempPath, ".gitignore"),
+            Path.Combine(tempPath, GitIgnoreFile),
+            Path.Combine(tempPath, "testNotIgnored","test","file.cs"),
             Path.Combine(tempPath, "file.cs"),
         ];
 
@@ -32,10 +36,7 @@ public class FileDiscoveryTests
             File.WriteAllText(file, "");
         }
         
-        
-        
-        File.WriteAllText(gitIgnoreFile,"ignore\\" );
-        CleanupTestFiles(files);
+        File.WriteAllText(gitIgnoreFile,"ignore/" + Environment.NewLine );
     }
 
     private void CleanupTestFiles(List<string> files)
@@ -49,7 +50,10 @@ public class FileDiscoveryTests
 
         foreach (var dir in dirs)
         {
-            Directory.Delete(dir);
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, recursive: true);
+            }
         }
     }
 
@@ -62,13 +66,15 @@ public class FileDiscoveryTests
 
         
         var fileDiscovery = new FileDiscovery(searchPaths, useGitIgnore: false);
-        foreach (var file in fileDiscovery.EnumerateAllFiles(null!))
+        foreach (var file in fileDiscovery.EnumerateAllFiles(new  CancellationTokenSource()))
         {
             Trace.WriteLine(file);
             Assert.True(lookingForFiles.Remove(file));
         }
 
         Assert.Empty(lookingForFiles);
+        CleanupTestFiles(testingFiles);
+
     }
     
     [Fact]
@@ -80,7 +86,7 @@ public class FileDiscoveryTests
 
         
         var fileDiscovery = new FileDiscovery(searchPaths, useGitIgnore: false);
-        foreach (var file in fileDiscovery.EnumerateAllFiles(null!))
+        foreach (var file in fileDiscovery.EnumerateAllFiles(new CancellationTokenSource()))
         {
             Trace.WriteLine(file);
             Assert.True(lookingForFiles.Remove(file));
@@ -120,7 +126,7 @@ public class FileDiscoveryTests
         }
 
         Assert.Single(lookingForFiles);
-        Assert.EndsWith(lookingForFiles[0],GitIgnoreFile);
+        Assert.EndsWith(GitIgnoreFile,lookingForFiles[0]);
         CleanupTestFiles(testingFiles);
     }
     
@@ -139,7 +145,7 @@ public class FileDiscoveryTests
         }
 
         Assert.Single(lookingForFiles);
-        Assert.EndsWith(lookingForFiles[0],GitIgnoreFile);
+        Assert.EndsWith(GitIgnoreFile,lookingForFiles[0]);
         CleanupTestFiles(testingFiles);
     }
 }

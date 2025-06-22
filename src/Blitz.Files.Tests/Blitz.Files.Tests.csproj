@@ -3,7 +3,6 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PublishAot>true</PublishAot>
         <IsPackable>false</IsPackable>
         <IsTrimmable>true</IsTrimmable>
         <IsTestProject>true</IsTestProject>

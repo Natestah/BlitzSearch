@@ -93,7 +93,7 @@ public class FileDiscoveryPath
         {
             attributes = File.GetAttributes(fileOrDirectory);
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException )
         {
             _hidecache.TryAdd(fileOrDirectory, 1);
             //File.GetAttribues is claiming this exception but the stack has a check prior.
