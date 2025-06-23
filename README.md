@@ -1,11 +1,16 @@
 
 # Welcome to Blitz Search - A Universal improvement to Find/Replace in files for ANY IDE
 
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearchVS?label=Visual%20Studio%20Extension%20Downloads)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearch?label=VS%20Code%20Extension%20Downloads)
+![Sublime](https://img.shields.io/packagecontrol/dt/BlitzSearch?label=Sublime%20Text%20Downloads)
+
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/natestah/blitzsearch/total?label=Total%20Installer%20Downloads)
+
 ![AnimateBlitzUpdated](https://github.com/user-attachments/assets/b51d0d60-7ee1-4527-bd01-b03e52c929da)
 
 ---
 ## Setup Instructions
-
 -Setup is currently Under Construction, this should be available as soon as I get it hooked up.
 
 

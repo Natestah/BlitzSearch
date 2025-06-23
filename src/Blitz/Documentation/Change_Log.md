@@ -1,7 +1,5 @@
 # Change Log
 
-
-
 Blitz Search now has a "Donation" portal. If you like Blitz Search, consider the ultimate compliment, hard cash!  I also Love social media engagement.
 
 https://pay.natestah.com/
@@ -10,6 +8,8 @@ Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+### Version 1.0.7
+* Testing Version Update for GitHub Deploy
 ### Version 1.0.6
 * Losing Code signature. 
 * Disabling Auto Update 
