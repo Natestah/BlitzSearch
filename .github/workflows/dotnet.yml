@@ -29,6 +29,6 @@ jobs:
     - name: Build
       run: dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
       working-directory: src
-    - name: Test
+    - name: Test Blitz.Search
       run: dotnet test --verbosity normal --configuration Release
-      working-directory: src
+      working-directory: src/Blitz.Search
