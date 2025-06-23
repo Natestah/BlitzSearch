@@ -39,5 +39,5 @@ jobs:
     - name: Compile .ISS to .EXE Installer
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2 # Use the Inno Setup Action
       with:
-        path: src/setup.iss # Path to your .iss script
-        options: /O+ # Example option to force output overriding
+        path: src/blitz.iss
+        options: /O+
