@@ -32,3 +32,12 @@ jobs:
     - name: Test Blitz.Search
       run: dotnet test --verbosity normal --configuration Release
       working-directory: src/Blitz.Search
+#    Todo:      
+#    - name: Test Blitz.Files
+#      run: dotnet test --verbosity normal --configuration Release
+#      working-directory: src/Blitz.Files      
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2 # Use the Inno Setup Action
+      with:
+        path: src/setup.iss # Path to your .iss script
+        options: /O+ # Example option to force output overriding
