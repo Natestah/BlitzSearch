@@ -45,7 +45,6 @@
 
 [Donate to Blitz Search](https://natestah.com/blitz-search) - Support blitz search with cash.
 
-[Natestah.com/Download](https://natestah.com/download) - Download the windows installer.
 
 [LinkedIn Nathan Silvers](www.linkedin.com/in/nathan-silvers-a17308a8) - Personal LinkedIn Profile
 
