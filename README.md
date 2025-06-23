@@ -1,12 +1,13 @@
 
-![2025-06-05_10-19-14](https://github.com/user-attachments/assets/9b9f608b-2c02-4322-a6da-b9e569d58ed1)
+# Welcome to Blitz Search - A Universal improvement to Find/Replace in files for ANY IDE
 
-The official Deployment of Blitz Search is at https://natestah.com/download - where the executable has been Signed by my Company, Natestah LLC And has an Updater included.
-
-![Blitz Search Sample](https://blitzsearch.s3.us-east-2.amazonaws.com/BlitzPretty2x.png)
+![AnimateBlitzUpdated](https://github.com/user-attachments/assets/b51d0d60-7ee1-4527-bd01-b03e52c929da)
 
 ---
-# What is Blitz Search?
+## Setup Instructions
+
+-Setup is currently Under Construction, this should be available as soon as I get it hooked up.
+
 
 ## Universal Search
 * A Stand alone Windows (x64) Search Tool that works together with Many Popular IDEs and Text Editors.
@@ -26,7 +27,7 @@ The official Deployment of Blitz Search is at https://natestah.com/download - wh
 * Plugins Communicate with Blitz Search to Find/Replace the word at the cursor, much the same as selecting the word and pressing Control-Shift-F/H
 * Some IDE's, Visual Studio, VS Code, Sublime text feature a little deeper integration with ability to Scope to open Workspace/Solution/Projects.
 
-![AnimateBlitzUpdated](https://github.com/user-attachments/assets/b51d0d60-7ee1-4527-bd01-b03e52c929da)
+
 
 ## More Info:
 

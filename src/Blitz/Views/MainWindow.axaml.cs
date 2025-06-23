@@ -171,7 +171,7 @@ public partial class MainWindow : Window
     }
     
     private string GetInstallerFileNameFromVersion(string version) => $"SetupBlitz_win-x64_{version}.exe";
-    private string GetInstallerUriFromExe(string executableName) =>  $"https://blitzsearch.s3.us-east-2.amazonaws.com/{executableName}";
+    private string GetInstallerUriFromExe(string version, string executableName) =>  $"https://github.com/Natestah/BlitzSearch/releases/download/v{version}/{executableName}";
 
     private string GetLocalInstallerPathFromExeName(string exeName)
     {
@@ -186,7 +186,7 @@ public partial class MainWindow : Window
         try
         {
             string executableName = GetInstallerFileNameFromVersion(version);
-            string url = GetInstallerUriFromExe(executableName);
+            string url = GetInstallerUriFromExe(version,executableName);
             string destination = GetLocalInstallerPathFromExeName(executableName);
             if (File.Exists(destination))
             {

@@ -14,6 +14,8 @@ Thank you!
 * Losing Code signature. 
 * Disabling Auto Update 
 * Please see https://github.com/Natestah/BlitzSearch for updated instructions.  
+* Direct Change log parsing for version information.
+* Installer moved to GitHub Actions
 ### Version 1.0.5
 * I'm adding Donation Details
 * Fixed bug in NOT operator 
