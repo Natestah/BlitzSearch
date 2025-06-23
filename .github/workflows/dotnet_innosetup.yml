@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number for release'
+        required: true
+        default: '0.0.0'
+
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: src
+    - name: Workload Update
+      run: dotnet workload update
+      working-directory: src
+    - name: Build
+      run: dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
+      working-directory: src
+    - name: Test Blitz.Search
+      run: dotnet test --verbosity normal --configuration Release
+      working-directory: src/Blitz.Search
+#    Todo:      
+#    - name: Test Blitz.Files
+#      run: dotnet test --verbosity normal --configuration Release
+#      working-directory: src/Blitz.Files      
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2 # Use the Inno Setup Action
+      with:
+        path: src/setup.iss # Path to your .iss script
+        options: /O+ # Example option to force output overriding
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.event.inputs.version }}
+        release_name: Blitz Search ${{ github.event.inputs.version }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: src/Output/SetupBlitz_win-x64_${{ github.event.inputs.version }}.exe
+        asset_name: SetupBlitz_win-x64_${{ github.event.inputs.version }}.exe
+        asset_content_type: application/octet-stream
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Setup
+        path: src/Output/SetupBlitz_win-x64_${{ github.event.inputs.version }}.exe
