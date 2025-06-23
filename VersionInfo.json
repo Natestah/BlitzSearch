@@ -1,5 +1,13 @@
 [
   {
+    "Revision": "1.0.7",
+    "Changes": "* Testing Version Update for GitHub Deploy\r\n"
+  },
+  {
+    "Revision": "1.0.6",
+    "Changes": "* Losing Code signature. \r\n* Disabling Auto Update \r\n* Please see https://github.com/Natestah/BlitzSearch for updated instructions.  \r\n* Direct Change log parsing for version information.\r\n* Installer moved to GitHub Actions\r\n"
+  },
+  {
     "Revision": "1.0.5",
     "Changes": "* I\u0027m adding Donation Details\r\n* Fixed bug in NOT operator \r\n"
   },

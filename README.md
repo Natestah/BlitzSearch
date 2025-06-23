@@ -11,8 +11,13 @@
 
 ---
 ## Setup Instructions
--Setup is currently Under Construction, this should be available as soon as I get it hooked up.
 
+1) Install Blitz Search From Current Releases. 
+    * You will encounter windows defender warnings to which you have to accept the risk.  
+    * Blitz Search currently does not have an SSL certificate.
+2) Find and Install the Extension "Blitz Search" from your IDE's marketplace ( VSCode,VS,Sublime Text, Notepad++, Jetbrains ) 
+3) (Optional) Bind blits* commands to a key. 
+    * farther instructions are typically displayed on the marketplace extension information pages.
 
 ## Universal Search
 * A Stand alone Windows (x64) Search Tool that works together with Many Popular IDEs and Text Editors.
