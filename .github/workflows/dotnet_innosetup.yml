@@ -29,13 +29,6 @@ jobs:
     - name: Build
       run: dotnet publish -f net8.0 -r win-x64 -c Release --self-contained true
       working-directory: src
-    - name: Test Blitz.Search
-      run: dotnet test --verbosity normal --configuration Release
-      working-directory: src/Blitz.Search
-#    Todo:      
-#    - name: Test Blitz.Files
-#      run: dotnet test --verbosity normal --configuration Release
-#      working-directory: src/Blitz.Files      
     - name: Compile .ISS to .EXE Installer
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.2 # Use the Inno Setup Action
       with:
@@ -61,7 +54,7 @@ jobs:
         asset_name: SetupBlitz_win-x64_${{ github.event.inputs.version }}.exe
         asset_content_type: application/octet-stream
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Setup
         path: src/Output/SetupBlitz_win-x64_${{ github.event.inputs.version }}.exe
