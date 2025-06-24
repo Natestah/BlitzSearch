@@ -7,7 +7,8 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
-
+### Version 1.0.8
+* No Changes, simply adding one step to Flush Old users to New Deploy.  
 ### Version 1.0.7
 * Testing Version Update for GitHub Deploy
 ### Version 1.0.6
