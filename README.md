@@ -1,7 +1,9 @@
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/natestah/blitzsearch/total?label=Total%20Downloads)
-![Sublime](https://img.shields.io/packagecontrol/dt/BlitzSearch?label=Sublime%20Text%20Downloads)
-![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearch?label=VS%20Code%20Downloads)
-![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearchVS?label=Visual%20Studio%20Downloads)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/natestah/blitzsearch/total?label=Total)
+![Sublime](https://img.shields.io/packagecontrol/dt/BlitzSearch?label=Sublime%20Text)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearch?label=VS%20Code)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearchVS?label=Visual%20Studio)
+![JetBrains Plugin Downloads](https://img.shields.io/jetbrains/plugin/d/24564-blitzsearch?label=Jetbrains%20)
+
 
 # Blitz Search 
 
