@@ -1466,10 +1466,18 @@ public class SearchTask
             return;
         }
         
+        //Make sure .git folders don't get opened
+        //https://github.com/Natestah/BlitzSearch/issues/113
+        if (changedFile.Contains(@"\.git\"))
+        {
+            return;
+        }
+        
         if ( !SearchRoot.FileDiscoverer.FileValidate(changedFile))
         {
             return;
         }
+        
         
         var searchTaskResult = InitializeSearch(taskParameters,changedFile,ref presentThisFile, ref foundAnything);
 

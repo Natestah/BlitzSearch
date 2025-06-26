@@ -1,23 +1,23 @@
-# IDE Setup information
+## IDE Setup information
 
-Blitz Search has Plugins for many IDE's and Text Editors. 
+1) Install Blitz Search From Current Releases.
+2) Find and Install the Extension "Blitz Search" from your IDE's marketplace ( VSCode,VS,Sublime Text, Notepad++, Jetbrains )
+3) (Optional) Bind blits* commands to a key.
+    * farther instructions are typically displayed on the marketplace extension information pages.
 
-They each include a command that I call "Search This". This command does something super useful, that is save you from using copy-paste to search a thing. Much like many of the IDE commands when you press control-shift-f.
+## Core features
+Each extension features "Blitz Search This" and "Blitz Replace This" Commands.  I leave it up to you if you want to replace the built in find/replace commands that are typically assigned to Control-Shift-F and Control-Shift-H. 
 
-This command does the following:
+## Special Features:
 
-## With No Selection and Caret on a word:
-* Whole-word search on that word
+Some Editors have special features, they come due to ease of implementation or popularity of that specific editor.
 
-## With text Selected
-* Search just that word as a substring ( part of word ) match
+## Visual Studio
+* Visual Studio sends special Scopes for Solution,Selected Project, Active files, Active file. So that you can easily select them.
 
-This is an important ingredient in Serving as a Find-In-Files alternative because using the Clipboard is not ideal. You wouldn't use a clipboard with the internal search.
+## Visual Studio Code
+* An Extra Command call "Blitz Configure Theme" Will align Syntax Highlighting in Blitz Search
+* Sends extra Context about the WorkSpace (folders) for easier selection.
 
-## Walk Through Guides
-
-* [Visual Studio](https://natestah.com/blogf/blitz-search-with-visual-studio) - Required for going to a line from Blitz search reliably
-* [VS Code](https://natestah.com/blog/f/blitz-search-with-vs-code)
-* [NotePad++](https://natestah.com/blog/f/blitz-search-and-notepad)
-* [ALL JetBrains](https://natestah.com/blog/f/blitz-with-jetbrains-ides)
-* [Sublime Text](https://natestah.com/blog/f/setup-blitz-search-with-sublime-text)
+## Sublime Text
+* Sends extra Context about the WorkSpace (folders) for easier selection.

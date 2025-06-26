@@ -58,7 +58,7 @@ public class FileDiscovery
                 continue;
             }
 
-            if (filePath.IsIgnored(fileName) || filePath.IsHiddenOrNonAccessible(fileName))
+            if (filePath.IsHiddenOrNonAccessible(fileName) || filePath.IsIgnored(fileName))
             {
                 validFile = false;
             }

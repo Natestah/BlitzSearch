@@ -4,9 +4,7 @@ Thank you for taking time to check it out.
 
 You can get some Video walkthrough on my YouTube Channel
 
-[Blitz Search Youtube](https://www.youtube.com/@BlitzSearch-qb2oq)
-
-Blitz Search is just getting started so give feedback, praise, bugs. It's all good!
+[Blitz Search Youtube](https://www.youtube.com/@NatestahsSpace)
 
 -Nathan silvers
 
