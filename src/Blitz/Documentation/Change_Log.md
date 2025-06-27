@@ -7,6 +7,10 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.9
+* Switching Preview pane to Over-Under, inspired by JetBrains Search. If you hate it, reach out!
+* Always ignore folders containing /.git/.  This is in addition to the don't search hidden folders change. 
+* Documentation Cleanup ( Broken links, Word reduction, removed Roadmap, less Natestah.com )
 ### Version 1.0.8
 * No Changes, simply adding one step to Flush Old users to New Deploy.  
 ### Version 1.0.7

@@ -20,7 +20,6 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
             return baseCollection;
         }
 
-        BlitzMatch? lastMatch = null;
         foreach (var match in matches)
         {
 

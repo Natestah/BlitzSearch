@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Description>Minimal shared interfaces to house objects shared between Client/Server for Blitz Search.</Description>
-        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/natestah/blitzSearch/</PackageProjectUrl>
         <IsTrimmable>true</IsTrimmable>
         <PublishAot>true</PublishAot>
         <Title>Blitz Interfacing</Title>

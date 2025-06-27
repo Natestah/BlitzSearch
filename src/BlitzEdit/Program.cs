@@ -95,7 +95,7 @@ sealed class Program
         builder.AppendLine("</p>");
 
         builder.AppendLine("<br>");
-        builder.AppendLine("<a href=\"mailto:natesta@natestah.com\">Email Support</a>");
+        builder.AppendLine("<a href=\"mailto:natestah@gmail.com\">Email Support</a>");
         builder.AppendLine("<br>");
         builder.AppendLine("<a href=\"https://discord.com/invite/UYPwQY9ngm\">Join the BlitzSearch Discord</a>");
         builder.AppendLine("<br>");

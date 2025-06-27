@@ -132,7 +132,7 @@ sealed class Program
         builder.AppendLine("</p>");
 
         builder.AppendLine("<br>");
-        builder.AppendLine("<a href=\"mailto:natesta@natestah.com\">Email Support</a>");
+        builder.AppendLine("<a href=\"mailto:natestah@gmail.com\">Email Support</a>");
         builder.AppendLine("<br>");
         builder.AppendLine("<a href=\"https://discord.com/invite/UYPwQY9ngm\">Join the BlitzSearch Discord</a>");
         builder.AppendLine("<br>");
@@ -233,7 +233,7 @@ sealed class Program
         builder.AppendLine(
             "Currently Blitz Search Does not send any data, I would like to get this information. Send to Email or Discord");
         builder.Append("Email: ");
-        builder.AppendLine("natesta@natestah.com");
+        builder.AppendLine("natestah@gmail.com");
         builder.Append("Discord: ");
         builder.AppendLine("https://discord.com/invite/UYPwQY9ngm");
 

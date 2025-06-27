@@ -44,7 +44,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var processStartInfo = new ProcessStartInfo("https://natestah.com/download")
+        var processStartInfo = new ProcessStartInfo("https://github.com/Natestah/BlitzSearch")
         {
             UseShellExecute = true
         };

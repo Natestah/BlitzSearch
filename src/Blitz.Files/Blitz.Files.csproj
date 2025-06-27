@@ -11,7 +11,7 @@
         <PackageReleaseNotes>upgrade to Blitz.Interfacing 1.0.2</PackageReleaseNotes>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/natestah/blitzSearch/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/natestah/blitz.files</RepositoryUrl>
         <Version>1.0.2</Version>
         <TargetFrameworks>net8.0</TargetFrameworks>

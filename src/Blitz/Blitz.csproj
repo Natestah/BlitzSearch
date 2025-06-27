@@ -13,10 +13,9 @@
         <PackageProjectUrl>www.natestah.com</PackageProjectUrl>
         <PackageIcon>Assets\BlitzIcon.ico</PackageIcon>
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
-        <PackageReleaseNotes>Limited Time Beta</PackageReleaseNotes>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>1.0.8</AssemblyVersion>
-        <FileVersion>1.0.8</FileVersion>
+        <AssemblyVersion>1.0.9</AssemblyVersion>
+        <FileVersion>1.0.9</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>

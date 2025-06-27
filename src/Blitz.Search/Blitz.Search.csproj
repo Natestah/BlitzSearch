@@ -8,7 +8,7 @@
         <Title>Blitz.Search</Title>
         <Description>File Searching Component for Blitz Search, Deals with Searching AND hosting code for transmitting results to the client, which is currentlly in-process.</Description>
         <Copyright>2024 Nathan SIlvers</Copyright>
-        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/natestah/blitzSearch/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Natestah/Blitz.Search</RepositoryUrl>
         <PackageReleaseNotes>Initial release</PackageReleaseNotes>
         <PackageReadmeFile>readme.md</PackageReadmeFile>

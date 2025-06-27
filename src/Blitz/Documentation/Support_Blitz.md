@@ -24,6 +24,4 @@ The more I can smooth over the end-user experience the better chance Blitz Searc
 
 #### [YouTube ](https://www.youtube.com/@NatestahsSpace) "Natestah's Space" Channel..
 
-#### [Natestah.com](https://natestah.com/) - Blitz Search Homepage.
-
 #### [LinkedIn - Nathan Silvers](https://www.linkedin.com/in/nathan-silvers-a17308a8/) - Hire me to work.

@@ -10,7 +10,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PublishAot>true</PublishAot>
         <Copyright>2024 - Nathan Silvers</Copyright>
-        <PackageProjectUrl>https://www.natestah.com</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/natestah/blitzSearch/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Natestah/Blitz.GotoEditor/</RepositoryUrl>
         <Version>1.0.8</Version>
         <TargetFrameworks>net8.0</TargetFrameworks>

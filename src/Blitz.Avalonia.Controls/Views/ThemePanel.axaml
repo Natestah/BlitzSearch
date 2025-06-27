@@ -9,6 +9,7 @@
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.ThemePanel">
     <DockPanel LastChildFill="True">
+        <ScrollViewer>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
             <DropDownButton Margin="10" DataContext="{Binding EditorViewModel}">
                 <DropDownButton.Styles>
@@ -131,5 +132,6 @@
                 </StackPanel>
             </Panel>
         </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>

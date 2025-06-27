@@ -40,18 +40,18 @@
             <models:InlineScopePanel DockPanel.Dock="Top"/>
             <models:InformerPanel DockPanel.Dock="Top"/>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="270" />
-                    <ColumnDefinition Width="4" lb:ColumnDefinition.IsVisible="{Binding SplitPane}" />
-                    <ColumnDefinition Width="*" lb:ColumnDefinition.IsVisible="{Binding SplitPane}" />
-                </Grid.ColumnDefinitions>
-                <Border Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="270" />
+                    <RowDefinition Height="4" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
+                    <RowDefinition Height="*" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0">
                     <Grid IsVisible="{Binding ShowScopeImage}">
                         <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image>
                         <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" />
                     </Grid>
                 </Border>
-                <DockPanel Grid.Column="0" LastChildFill="True">
+                <DockPanel Grid.Row="0" LastChildFill="True">
                     <DockPanel  DockPanel.Dock="Bottom" Background="{StaticResource ReplaceHighlight}" LastChildFill="False"
                                 IsVisible="{Binding ReplaceInFileEnabled}">
                         <Button Content="Apply Changes" DockPanel.Dock="Right" Margin="5" Padding="15 5" Foreground="WhiteSmoke"
@@ -68,8 +68,8 @@
                     </Grid>
                     <models:ResultsBox x:Name="ResultsBox" />
                 </DockPanel>
-                <GridSplitter Grid.Column="1" ResizeDirection="Columns" IsTabStop="False" />
-                <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Column="2" />
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
+                <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" />
             </Grid>
         </DockPanel>
     </Grid>

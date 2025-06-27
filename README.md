@@ -41,5 +41,5 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
 ## Donate!
 
-[Donate to Blitz Search](https://natestah.com/blitz-search) - Support blitz search with cash.
+[Donate to Blitz Search](https://pay.natestah.com) - The ultimate upvote is with cash.. 
 

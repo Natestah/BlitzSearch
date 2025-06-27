@@ -7,7 +7,7 @@
         <Title>Blitz.AvaloniaEdit</Title>
         <Description>Managing FileTabs and Document states for AvaloniaEdit</Description>
         <Copyright>2024 Nathan Silvers</Copyright>
-        <PackageProjectUrl>https://natestah.com</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/natestah/blitzSearch/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Natestah/BlitzEdit</RepositoryUrl>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

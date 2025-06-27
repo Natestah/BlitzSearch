@@ -2,9 +2,9 @@
 
 Thank you for taking time to check it out.
 
-You can get some Video walkthrough on my YouTube Channel
+Take a look at some of the feature walk shorts on this YouTube playlist
 
-[Blitz Search Youtube](https://www.youtube.com/@NatestahsSpace)
+[Blitz Search Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=U0SITbEJOb8jgRoJ)
 
 -Nathan silvers
 
@@ -30,8 +30,7 @@ Blitz has been blessed by the following Open source projects
 * [Markdown.Avalonia](https://github.com/whistyun/Markdown.Avalonia) - Showing this page! 
 * [Blitz.Goto](https://github.com/Natestah/Blitz.GotoEditor) - Blitz.Goto is giving back to open source, this is a helper for opening any text editor to a file/linecolumn.  More to come!
 
-## Stay Tuned
+Come chat with me on my personal Discord Channel. 
 
-Like and subscribe to your favorite social media or visit the home of Blitz Search™ at
-
-[www.natestah.com](https://natestah.com/)
+Your feedback means a lot to me!
+### [My Discord Community](https://discord.com/invite/UYPwQY9ngm)

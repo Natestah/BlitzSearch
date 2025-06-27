@@ -56,11 +56,3 @@ place a ^ before the word to enforce case sensitivity on the word ( to match onl
 Blitz is not a heuristic or AI driven! Fuzzy search and AI is difficult to get right and In my own humble option, a slippery slope. 
 
 I hope that Blitz Search can appeal to Humans wanting to look at code without some AI interpretation of intents.
-
-## Plugin Setup Guides:
-Many IDE's and Editors feature plugins that allow you to set the search field in Blitz Without Using Copy-Paste.
-
-#### [NotePad++](https://natestah.com/blog/f/blitz-search-and-notepad)
-#### [VS Code](https://natestah.com/blog/f/blitz-search-with-vs-code)
-#### [Visual Studio](https://natestah.com/blog/f/blitz-search-with-visual-studio)
-#### [Jetbrains](https://natestah.com/blog/f/blitz-with-jetbrains-ides)
