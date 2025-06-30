@@ -7,6 +7,10 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.10
+* Upgrading some Avalonia Nuget packages.
+* Adding a toggle for Filename Matching.  https://github.com/Natestah/BlitzSearch/issues/32
+* Fix up filename matching highlighting when using results recycling.
 ### Version 1.0.9
 * Switching Preview pane to Over-Under, inspired by JetBrains Search. If you hate it, reach out!
 * Always ignore folders containing /.git/.  This is in addition to the don't search hidden folders change. 

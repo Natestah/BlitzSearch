@@ -9,7 +9,7 @@
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.FileNamePanel">
-    <DockPanel DockPanel.Dock="Top" IsVisible="{Binding FileNameSearchEnabled}">
+    <DockPanel DockPanel.Dock="Top" IsVisible="{Binding FileNameDebugQueryEnabled}">
         <DropDownButton>
             <DropDownButton.Content>
                 <material:MaterialIcon Classes="m1" Kind="FolderFile" />

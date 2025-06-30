@@ -27,7 +27,7 @@ public partial class FileNamePanel : UserControl
             return;
         }
 
-        mainWindowViewModel.FileNameSearchEnabled = false;
+        mainWindowViewModel.FileNameDebugQueryEnabled = false;
     }
 
     private void FileNameFilterBox_OnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
@@ -40,8 +40,8 @@ public partial class FileNamePanel : UserControl
         if (DataContext is MainWindowViewModel mainWindowViewModel)
             mainWindowViewModel.PropertyChanged += (_, args) =>
             {
-                if (args.PropertyName == nameof(MainWindowViewModel.FileNameSearchEnabled) &&
-                    mainWindowViewModel.FileNameSearchEnabled)
+                if (args.PropertyName == nameof(MainWindowViewModel.FileNameDebugQueryEnabled) &&
+                    mainWindowViewModel.FileNameDebugQueryEnabled)
                 {
                     textBox.Focus();
                     textBox.SelectAll();

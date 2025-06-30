@@ -29,6 +29,8 @@ public class Searching
         var recycleList = new List<FileNameResult>();
         var messageDictionary = _messageProcesses.GetOrAdd(query.ProcessIdentity, _ => new MessageInstanceDictionary());
 
+        var newTask = new SearchTask(query, this);
+
         bool recycle = false;
         if (messageDictionary.TryGetValue(query.InstanceIdentity, out var workingTask))
         {
@@ -48,7 +50,7 @@ public class Searching
 
             if (!needsFileSystemRestart)
             {
-                DoPriorResultsRecycling(query, workingTask, out recycledExclusions, out recycleList);
+                DoPriorResultsRecycling(query, workingTask, newTask, out recycledExclusions, out recycleList);
             }
             else
             {
@@ -56,7 +58,6 @@ public class Searching
             }
         }
 
-        var newTask = new SearchTask(query, this);
         
         if (needsFileSystemRestart || FileDiscoverer == null)
         {
@@ -149,10 +150,17 @@ public class Searching
         }
     }
 
-    private void DoPriorResultsRecycling(SearchQuery newQuery, SearchTask oldTask,
+    private void DoPriorResultsRecycling(SearchQuery newQuery, SearchTask oldTask, SearchTask newTask,
         out ImmutableHashSet<string> acceptedExclusions, out List<FileNameResult> fileNameResults)
     {
         if (oldTask == null)
+        {
+            acceptedExclusions = [];
+            fileNameResults = [];
+            return;
+        }
+
+        if (oldTask.SearchQuery.FileNameInResultsInResultsEnabled != newQuery.FileNameInResultsInResultsEnabled)
         {
             acceptedExclusions = [];
             fileNameResults = [];
@@ -246,14 +254,14 @@ public class Searching
             return;
         }
 
-        if (oldTask.SearchQuery.FileNameQueryEnabled != newQuery.FileNameQueryEnabled)
+        if (oldTask.SearchQuery.FileNameDebugQueryEnabled != newQuery.FileNameDebugQueryEnabled)
         {
             acceptedExclusions = [];
             fileNameResults = [];
             return;
         }
 
-        if (newQuery.FileNameQueryEnabled)
+        if (newQuery.FileNameDebugQueryEnabled)
         {
             if (string.IsNullOrEmpty(oldTask.SearchQuery.FileNameQuery) && !string.IsNullOrEmpty(newQuery.FileNameQuery))
             {
@@ -337,6 +345,9 @@ public class Searching
 
         fileNameResults = [];
         var newList = new List<FileNameResult>();
+
+        var newTaskParameters = newTask.GetSearchTaskParameters();
+        
         foreach (var fileResult in oldTask.Recycling.RetainedResults)
         {
             string fileName = fileResult.Key;
@@ -344,9 +355,17 @@ public class Searching
             FileNameResult oldResult = fileResult.Value;
 
             update.FileName = fileName;
-            var fileNameMatch =
-                newTextQuery.LineMatches(fileName, out var updatedMatches);
-            update.BlitzMatches = updatedMatches;
+            
+            bool presentThisFile = false;
+            bool foundAnything = false;
+            bool fileNameMatch = false;
+            if (newTaskParameters.SearchFileNamesInResults)
+            {
+                var taskResult = newTask.InitializeSearch(newTaskParameters, fileName, ref presentThisFile,
+                    ref foundAnything);
+                update.BlitzMatches = taskResult.FileNames.First().BlitzMatches;
+                fileNameMatch = update.BlitzMatches.Count > 0;
+            }
             var newContentResults = new List<FileContentResult>();
             foreach (var contentResult in oldResult.ContentResults)
             {

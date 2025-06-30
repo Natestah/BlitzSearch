@@ -20,7 +20,8 @@ namespace Blitz.Search;
 /// <param name="literalCaseSensitive"></param>
 /// <param name="regexCaseSensitive"></param>
 /// <param name="replaceCaseSensitive"></param>
-public class SearchTaskParameters(BlitzAndQuery textBoxQuery,
+public class SearchTaskParameters(
+    BlitzAndQuery textBoxQuery,
     BlitzAndQuery? fileNameQuery = null,
     BlitzAndQuery? debugFileNameQuery = null,
     IBlitzMatchingQuery? replaceQuery = null,
@@ -32,6 +33,7 @@ public class SearchTaskParameters(BlitzAndQuery textBoxQuery,
     bool literalCaseSensitive = false,
     bool regexCaseSensitive = false,
     bool replaceCaseSensitive = false,
+    bool searchFileNamesInResultsInResults = false,
     SearchExtensionCache.CacheScopeType cacheScopeType = SearchExtensionCache.CacheScopeType.None
     )
 {
@@ -51,4 +53,6 @@ public class SearchTaskParameters(BlitzAndQuery textBoxQuery,
     public bool LiteralCaseSensitive => literalCaseSensitive;
     public bool RegexCaseSensitive => regexCaseSensitive;
     public bool ReplaceCaseSensitive => replaceCaseSensitive;
+    
+    public bool SearchFileNamesInResults => searchFileNamesInResultsInResults;
 }

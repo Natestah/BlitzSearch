@@ -14,8 +14,8 @@
         <PackageIcon>Assets\BlitzIcon.ico</PackageIcon>
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>1.0.9</AssemblyVersion>
-        <FileVersion>1.0.9</FileVersion>
+        <AssemblyVersion>1.0.10</AssemblyVersion>
+        <FileVersion>1.0.10</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>
@@ -34,8 +34,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.2.1" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.1" />
+        <PackageReference Include="Avalonia" Version="11.3.2" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.2" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="ReactiveUI" Version="20.1.63" />
         <PackageReference Include="ReactiveUI.XamForms" Version="19.6.12" />

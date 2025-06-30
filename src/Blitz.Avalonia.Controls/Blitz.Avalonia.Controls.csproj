@@ -17,23 +17,23 @@
 
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.1" />
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.2" />
         <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
-        <PackageReference Include="Avalonia.Labs.Controls" Version="11.2.0" />
-        <PackageReference Include="Avalonia.Svg" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.2" />
+        <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Svg" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.2" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.2" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.1" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.2" />
         <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
         <PackageReference Include="ColorTextBlock.Avalonia" Version="11.0.3-a1" />
         <PackageReference Include="Humanizer" Version="3.0.0-beta.13" />
         <PackageReference Include="Humanizer.Core" Version="3.0.0-beta.13" />
         <PackageReference Include="Markdown.Avalonia" Version="11.0.3-a1" />
         <PackageReference Include="ReactiveUI" Version="20.1.1" />
-        <PackageReference Include="TextMateSharp" Version="1.0.63" />
+        <PackageReference Include="TextMateSharp" Version="1.0.69" />
     </ItemGroup>
 
 

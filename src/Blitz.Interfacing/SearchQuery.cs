@@ -37,11 +37,15 @@ public class SearchQuery : MessageWithIdentity
     [Key(nameof(DebugFileNameQuery))] 
     public string? DebugFileNameQuery { get; set; }
     
-    [Key(nameof(FileNameQueryEnabled))]
-    public bool FileNameQueryEnabled { get; set; }
+    [Key(nameof(FileNameDebugQueryEnabled))]
+    public bool FileNameDebugQueryEnabled { get; set; }
 
     [Key(nameof(LiteralSearchEnabled))]
     public bool LiteralSearchEnabled { get; set; }
+
+    [Key(nameof(FileNameInResultsInResultsEnabled))] 
+    [DefaultValue(true)]
+    public bool FileNameInResultsInResultsEnabled;
     
     [Key(nameof(RegexSearchEnabled))]
     public bool RegexSearchEnabled { get; set; }
@@ -139,7 +143,7 @@ public class SearchQuery : MessageWithIdentity
     public string? SelectedProjectName { get; set; }
     
     public SearchQuery(string textBoxQuery, List<SearchPath> filePaths, List<SearchExtension> priorityExtensions,
-        bool useGitIgnore = true, bool useBlitzIgnore=true,bool useGlobalIgnore=true, bool enableSearchIndex = true, bool enableResultsRecycling = true, int searchThreads = 32)
+        bool useGitIgnore = true, bool useBlitzIgnore=true,bool useGlobalIgnore=true, bool enableSearchIndex = true, bool enableResultsRecycling = true, bool fileNameInResultsInResultsEnabled=true, int searchThreads = 32)
     {
         TextBoxQuery = textBoxQuery;
         FilePaths = filePaths;
@@ -150,6 +154,7 @@ public class SearchQuery : MessageWithIdentity
         EnableSearchIndex = enableSearchIndex;
         SearchThreads = searchThreads;
         EnableResultsRecycling = enableResultsRecycling;
+        FileNameInResultsInResultsEnabled = fileNameInResultsInResultsEnabled;
     }
 
     [IgnoreMember] private string? _rawExtension;

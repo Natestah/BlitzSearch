@@ -25,6 +25,7 @@
                                 </Flyout>
                             </Button.Flyout>
                         </DropDownButton>
+                        
                         <DropDownButton DockPanel.Dock="Right" HorizontalAlignment="Stretch">
                             <DropDownButton.Content>
                                 <material:MaterialIcon Classes="m1" Kind="FilterPlus" />
@@ -51,7 +52,7 @@
                                     </MenuItem>
                                     <MenuItem Icon="{material:MaterialIconExt FolderFile}"
                                               Command="{Binding ToggleFileNameFilterCommand}"
-                                              IsChecked="{Binding FileNameSearchEnabled}"
+                                              IsChecked="{Binding FileNameDebugQueryEnabled}"
                                               ToggleType="CheckBox"
                                               Header="Find-in-files">
                                         <MenuItem.InputGesture>
@@ -70,6 +71,16 @@
                                 </MenuFlyout>
                             </Button.Flyout>
                         </DropDownButton>
+                        <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FileNameInResultsEnabled}" >
+                            <ToolTip.Tip>
+                                Show results for filenames that match the query.
+                            </ToolTip.Tip>
+
+                            <ToggleButton.Content>
+                                <material:MaterialIcon Classes="TitleBarIcon" Kind="FileSettings" />
+                            </ToggleButton.Content>
+                        </ToggleButton>
+
                         <TextBox LostFocus="MainSearchField_OnLostFocus"
                                  x:Name="MainSearchField"
                                  VerticalAlignment="Center"

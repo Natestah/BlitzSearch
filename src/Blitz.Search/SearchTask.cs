@@ -164,16 +164,26 @@ public class SearchTask
     }
 
     private ParallelOptions GetParallelOptions() => new() { MaxDegreeOfParallelism = SearchQuery.SearchThreads, CancellationToken = CancellationTokenSource.Token};
-
-    private SearchTaskResult InitializeSearch(SearchTaskParameters taskParameters, string file,  ref bool presentThisFile, ref bool foundAnything)
+    
+    
+    public SearchTaskResult InitializeSearch(SearchTaskParameters taskParameters, string file,  ref bool presentThisFile, ref bool foundAnything)
     {
         
-        List<BlitzMatch>? matches = null;
+        if (!taskParameters.SearchFileNamesInResults)
+        {
+            var emptyResults = new SearchTaskResult
+            {
+                FileNames = [new FileNameResult { FileName = file, BlitzMatches = [] }]
+            };
+            emptyResults.AlignIdentity(SearchQuery);
+            return emptyResults;
+        }
 
+        List<BlitzMatch>? fileNameMatches = null;
         bool wordsFailed = false;
         bool regexFailed = false;
         bool literalFailed = false;
-        if (taskParameters.TextBoxQuery.SubQueries.Count > 0 && !taskParameters.TextBoxQuery.LineMatches(file, out matches))
+        if (taskParameters.TextBoxQuery.SubQueries.Count > 0 && !taskParameters.TextBoxQuery.LineMatches(file, out fileNameMatches))
         {
             wordsFailed = true;
         }
@@ -182,10 +192,10 @@ public class SearchTask
         {
             if (taskParameters.RegexSearch.IsMatch(file))
             {
-                matches ??= [];
+                fileNameMatches ??= [];
                 foreach (Match match in taskParameters.RegexSearch.Matches(file))
                 {
-                    matches.Add(new BlitzMatch() { MatchIndex = match.Index, MatchLength = match.Length });
+                    fileNameMatches.Add(new BlitzMatch() { MatchIndex = match.Index, MatchLength = match.Length });
                 }
             }
             else
@@ -202,8 +212,8 @@ public class SearchTask
             if (index != -1)
             {
                
-                matches ??= [];
-                matches.Add( new BlitzMatch(){MatchIndex = index, MatchLength = taskParameters.LiteralSearch.Length});
+                fileNameMatches ??= [];
+                fileNameMatches.Add( new BlitzMatch(){MatchIndex = index, MatchLength = taskParameters.LiteralSearch.Length});
             }
             else
             {
@@ -227,11 +237,11 @@ public class SearchTask
         }
 
         
-        matches ??= [];
+        fileNameMatches ??= [];
         
         var searchTaskResult = new SearchTaskResult
         {
-            FileNames = [new FileNameResult { FileName = file, BlitzMatches = matches }]
+            FileNames = [new FileNameResult { FileName = file, BlitzMatches = fileNameMatches }]
         };
                 
         searchTaskResult.AlignIdentity(SearchQuery);
@@ -342,7 +352,7 @@ public class SearchTask
         }
         Interlocked.Increment(ref _fileNameCount);
 
-        if (SearchQuery.FileNameQueryEnabled && SearchQuery.FileNameQuery != null
+        if (SearchQuery.FileNameDebugQueryEnabled && SearchQuery.FileNameQuery != null
             && !taskParameters.FileNameQuery!.LineMatches(file, out var fileNameMatches))
         {
             DebugReportPriorToCreation(taskParameters.DebugFileNameQuery, file, "FileName Query disabled");
@@ -499,7 +509,7 @@ public class SearchTask
     }
 
     private SearchTaskParameters? _searchTaskParameters;
-    private SearchTaskParameters GetSearchTaskParameters()
+    public SearchTaskParameters GetSearchTaskParameters()
     {
         if (_searchTaskParameters != null)
         {
@@ -593,6 +603,7 @@ public class SearchTask
             SearchQuery.LiteralCaseSensitive,
             SearchQuery.RegexCaseSensitive,
             SearchQuery.ReplaceCaseSensitive,
+            SearchQuery.FileNameInResultsInResultsEnabled,
             cacheType
             );
     }
@@ -1413,7 +1424,7 @@ public class SearchTask
         message.AppendLine("In folders:");
         AppendInFoldersToMessage(message);
         
-        if (SearchQuery.FileNameQueryEnabled && !string.IsNullOrEmpty(rawFileNamestring))
+        if (SearchQuery.FileNameDebugQueryEnabled && !string.IsNullOrEmpty(rawFileNamestring))
         {
             message.AppendLine();
             message.AppendLine("With FileName Filter:");

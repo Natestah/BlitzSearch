@@ -162,7 +162,7 @@ public class MainWindowViewModel : ViewModelBase
         GotoSelectedExplorer = ReactiveCommand.Create(GotoSelectedExplorerRun);
         GotoSelectedCmd = ReactiveCommand.Create(GotoSelectedCmdRun);
         ToggleTextEditCmd = ReactiveCommand.Create(ToggleTextEditRun);
-        ToggleFileNameFilterCommand = ReactiveCommand.Create(ToggleFileNameFilterCommandRun);
+        ToggleFileNameFilterCommand = ReactiveCommand.Create(ToggleFileNameDebugFilterCommandRun);
         ToggleLiteralSearchCommand = ReactiveCommand.Create(ToggleLiteralSearchCommandRun);
         ToggleRegexSearchCommand = ReactiveCommand.Create(ToggleRegexSearchCommandRun);
         ShowPreviewTextCommand = ReactiveCommand.Create(ShowPreviewTextCommandCommandRun);
@@ -474,19 +474,28 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public bool FileNameSearchEnabled
+    public bool FileNameDebugQueryEnabled
     {
-        get => _searchQuery.FileNameQueryEnabled;
+        get => _searchQuery.FileNameDebugQueryEnabled;
         set
         {
-            _searchQuery.FileNameQueryEnabled = value;
-            this.RaisePropertyChanged(nameof(FileNameSearchEnabled));
+            _searchQuery.FileNameDebugQueryEnabled = value;
+            this.RaisePropertyChanged(nameof(FileNameDebugQueryEnabled));
         }
     }
 
     public string LiteralSearchHeader => "Literal Search";
     public string RegexMatchHeader => "RegExp Search";
     
+    public bool FileNameInResultsEnabled
+    {
+        get => _searchQuery.FileNameInResultsInResultsEnabled;
+        set
+        {
+            _searchQuery.FileNameInResultsInResultsEnabled = value;
+            this.RaisePropertyChanged();
+        }
+    }
     public bool LiteralSearchEnabled
     {
         get => _searchQuery.LiteralSearchEnabled;
@@ -691,9 +700,9 @@ public class MainWindowViewModel : ViewModelBase
         ReplaceInFileEnabled = !ReplaceInFileEnabled;
     }
 
-    private void ToggleFileNameFilterCommandRun()
+    private void ToggleFileNameDebugFilterCommandRun()
     {
-        FileNameSearchEnabled = !FileNameSearchEnabled;
+        FileNameDebugQueryEnabled = !FileNameDebugQueryEnabled;
     }
     
     
