@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:Blitz.Avalonia.Controls.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Blitz.Avalonia.Controls.Views.OptionTogglePanel"
+             x:DataType="vm:MainWindowViewModel">
+    <UserControl.Styles>
+        <Style Selector="avalonia|MaterialIcon.TitleBarIcon">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Foreground" Value="DarkGray" />
+        </Style>
+        <Style Selector="ToggleButton.titleButton">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="ScrollBar">
+            <Setter Property="ShowDelay" Value="0.0"></Setter>
+        </Style>
+    </UserControl.Styles>
+    <StackPanel Orientation="Horizontal">
+        <ToggleButton Classes="titleButton" IsChecked="{Binding EnableHelpPane, Mode=TwoWay}"
+                      Click="Button_OnClick">
+            <ToolTip.Tip>
+                Help
+            </ToolTip.Tip>
+            <ToggleButton.Content>
+                <avalonia:MaterialIcon Classes="TitleBarIcon" Kind="HelpBox" />
+            </ToggleButton.Content>
+        </ToggleButton>
+        <ToggleButton Classes="titleButton" IsChecked="{Binding EnableSettingsPane}" Click="Button_OnClick">
+            <ToolTip.Tip>
+                Advanced Settings
+            </ToolTip.Tip>
+            <ToggleButton.Content>
+                <avalonia:MaterialIcon Classes="TitleBarIcon" Kind="Settings" />
+            </ToggleButton.Content>
+        </ToggleButton>
+        <ToggleButton Classes="titleButton" IsChecked="{Binding EnableTextPane}" Click="Button_OnClick">
+            <ToolTip.Tip>
+                Text Previewer
+            </ToolTip.Tip>
+
+            <ToggleButton.Content>
+                <avalonia:MaterialIcon Classes="TitleBarIcon" Kind="Text" />
+            </ToggleButton.Content>
+        </ToggleButton>
+        <ToggleButton Classes="titleButton" IsChecked="{Binding EnableGotoPane}" Click="Button_OnClick">
+            <ToolTip.Tip>
+                Goto Text Editor
+            </ToolTip.Tip>
+            <ToggleButton.Content>
+                <avalonia:MaterialIcon Classes="TitleBarIcon" Kind="Arrow" />
+            </ToggleButton.Content>
+        </ToggleButton>
+        <ToggleButton Classes="titleButton" IsChecked="{Binding EnableScopePane}" Click="Button_OnClick">
+            <ToolTip.Tip>
+                File Scope
+            </ToolTip.Tip>
+            <ToggleButton.Content>
+                <Grid>
+                    <avalonia:MaterialIcon Classes="TitleBarIcon" Kind="Telescope" />
+                    <Border IsVisible="{Binding IsMissingScopeRequirements }" Background="Crimson"
+                            HorizontalAlignment="Right" CornerRadius="6" Padding="0 2"
+                            VerticalAlignment="Bottom">
+                        <TextBlock FontWeight="Bold" Foreground="White" FontSize="14">!</TextBlock>
+                    </Border>
+                </Grid>
+            </ToggleButton.Content>
+        </ToggleButton>
+        <ToggleButton Classes="titleButton" IsChecked="{Binding EnableThemePane}" Click="Button_OnClick">
+            <ToolTip.Tip>
+                Theme
+            </ToolTip.Tip>
+            <ToggleButton.Content>
+                <avalonia:MaterialIcon Classes="TitleBarIcon" Kind="Palette" />
+            </ToggleButton.Content>
+        </ToggleButton>
+    </StackPanel>
+</UserControl>

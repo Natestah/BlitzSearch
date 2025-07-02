@@ -20,7 +20,7 @@ public class BlitzEditorViewModel : ViewModelBase
     private TextMate.Installation? _textMateInstallation;
     private IBrush? _statusBarForeground;
     private IBrush? _statusBarBackground;
-    private IBrush? _titleBarBackground = Brushes.Sienna;
+    private IBrush? _titleBarBackground = Brushes.Transparent;
     private IBrush? _textForeground;
     private string? _searchThisPreviewText;
 

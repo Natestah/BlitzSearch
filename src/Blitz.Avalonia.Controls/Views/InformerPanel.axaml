@@ -5,7 +5,7 @@
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:material="using:Material.Icons.Avalonia"
              xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
-             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.InformerPanel">

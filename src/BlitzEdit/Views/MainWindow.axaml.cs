@@ -36,6 +36,8 @@ public partial class MainWindow : Window
         
         vm.EditorViewModel.PopulateThemeModels();
         vm.EditorViewModel.PropertyChanged +=EditorViewModelOnPropertyChanged;
+        
+        
     }
     
 

@@ -5,10 +5,14 @@
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:material="using:Material.Icons.Avalonia"
              xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
-             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.ReplacePanel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"/>
+    </UserControl.Styles>
+
     <DockPanel DockPanel.Dock="Top" IsVisible="{Binding ReplaceInFileEnabled}">
                         <Button DockPanel.Dock="Right" Padding="1" Click="CloseReplaceBox_OnClick">
                             <material:MaterialIcon Classes="m1" Kind="Close" />
@@ -55,6 +59,7 @@
                                     </Button.Flyout>
                                 </DropDownButton>
                                 <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="{Binding ReplaceModeHint}"
+                                         Classes="custom"
                                          LostFocus="ReplaceField_OnLostFocus"
                                          Text="{Binding ReplaceBoxText}">
                                 </TextBox>
@@ -70,6 +75,8 @@
                                 </DropDownButton>
                                 <TextBox DockPanel.Dock="Left" MinWidth="275" Watermark="With.."
                                          x:Name="ReplaceTextWithBox"
+                                         Classes="custom"
+
                                          AttachedToVisualTree="ReplaceWithBox_OnAttachedToVisualTree"
                                          LostFocus="ReplaceWithField_OnLostFocus"
                                          Text="{Binding ReplaceWithBoxText}">

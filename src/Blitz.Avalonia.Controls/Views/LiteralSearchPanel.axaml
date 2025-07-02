@@ -7,6 +7,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Blitz.Avalonia.Controls.Views.LiteralSearchPanel"
              x:DataType="vm:MainWindowViewModel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"/>
+    </UserControl.Styles>
+
     <DockPanel DockPanel.Dock="Top" IsVisible="{Binding LiteralSearchEnabled}">
         <DropDownButton>
             <DropDownButton.Content>
@@ -37,6 +41,7 @@
         </ToggleButton>
 
         <TextBox DockPanel.Dock="Left" MinWidth="600"
+                 Classes="custom"
                  Watermark="Literal Match contents ( spaces and everything )"
                  AttachedToVisualTree="LiterSearchTextBox_OnAttachedToVisualTree"
                  LostFocus="LiteralSearchField_OnLostFocus"

@@ -18,167 +18,203 @@
         <controls:DirectEditorImageConverter x:Key="DirectEditorImageConverter"></controls:DirectEditorImageConverter>
         <SolidColorBrush x:Key="ExtensionHighlight">#11444444</SolidColorBrush>
         <SolidColorBrush x:Key="ExtensionForeground">Turquoise</SolidColorBrush>
-        <MultiBinding  x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}">
-            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="Executable"/>
-            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="ExecutableIconHint"/>
+        <MultiBinding x:Key="ImageConverterBinding" Converter="{StaticResource GotoEditorImageConverter}">
+            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="Executable" />
+            <CompiledBinding DataType="vm:GotoEditorViewModel" Path="ExecutableIconHint" />
         </MultiBinding>
     </Styles.Resources>
-        <Style Selector="material|MaterialIcon.m1">
-            <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
-            <Setter Property="Height" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="material|MaterialIcon.m1Scoped">
-            <Setter Property="Width"
-                    Value="{CompiledBinding DataType=vm:ScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
-            <Setter Property="Height"
-                    Value="{CompiledBinding DataType=vm:ScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
+    <Style Selector="material|MaterialIcon.m1">
+        <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
+        <Setter Property="Height" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="material|MaterialIcon.m1Scoped">
+        <Setter Property="Width"
+                Value="{CompiledBinding DataType=vm:ScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Height"
+                Value="{CompiledBinding DataType=vm:ScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 
-        <Style Selector="material|MaterialIcon.m1ForToggle">
-            <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
-            <Setter Property="Height" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
+    <Style Selector="material|MaterialIcon.m1ForToggle">
+        <Setter Property="Width" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
+        <Setter Property="Height" Value="{CompiledBinding DataType=vm:MainWindowViewModel, Path=GeneralIconSize}" />
+        <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 
     <Style Selector="material|MaterialIcon.m1ForSolution">
-        <Setter Property="Width" Value="{CompiledBinding DataType=vm:SolutionViewModel, Path=MainWindowVM.GeneralIconSize}" />
-        <Setter Property="Height" Value="{CompiledBinding DataType=vm:SolutionViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Width"
+                Value="{CompiledBinding DataType=vm:SolutionViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Height"
+                Value="{CompiledBinding DataType=vm:SolutionViewModel, Path=MainWindowVM.GeneralIconSize}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
     <Style Selector="material|MaterialIcon.m1ForWorkspace">
         <Setter Property="Margin" Value="4 2"></Setter>
-        <Setter Property="Width" Value="{CompiledBinding DataType=vm:WorkspaceScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
-        <Setter Property="Height" Value="{CompiledBinding DataType=vm:WorkspaceScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Width"
+                Value="{CompiledBinding DataType=vm:WorkspaceScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
+        <Setter Property="Height"
+                Value="{CompiledBinding DataType=vm:WorkspaceScopeViewModel, Path=MainWindowVM.GeneralIconSize}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-        <Style Selector="material|MaterialIcon.results">
-            <Setter Property="Width"
-                    Value="{CompiledBinding DataType=vm:ReplaceModeViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
-            <Setter Property="Height"
-                    Value="{CompiledBinding DataType=vm:ReplaceModeViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        
-        <Style Selector="material|MaterialIcon.statusMaterial">
-            <Setter Property="Width"
-                    Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
-            <Setter Property="Height"
-                    Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="material|MaterialIcon.updateAvailable">
-            <Setter Property="Width" Value="20" />
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Foreground" Value="LawnGreen" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="material|MaterialIcon.s1">
-            <Setter Property="Width" Value="24" />
-            <Setter Property="Height" Value="24" />
-            <Setter Property="Margin" Value="2" />
+    <Style Selector="material|MaterialIcon.results">
+        <Setter Property="Width"
+                Value="{CompiledBinding DataType=vm:ReplaceModeViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
+        <Setter Property="Height"
+                Value="{CompiledBinding DataType=vm:ReplaceModeViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="material|MaterialIcon.m2">
-            <Setter Property="Width" Value="44" />
-            <Setter Property="Height" Value="44" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="TextBlock.statusBar">
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="4 0" />
-            <Setter Property="MinWidth" Value="100"></Setter>
-            <Setter Property="Background" Value="Transparent"></Setter>
+    <Style Selector="material|MaterialIcon.statusMaterial">
+        <Setter Property="Width"
+                Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
+        <Setter Property="Height"
+                Value="{CompiledBinding DataType=vm:FileDiscoveryStatusViewModel, Path=MainWindowViewModel.GeneralIconSize}" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="material|MaterialIcon.updateAvailable">
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Foreground" Value="LawnGreen" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="material|MaterialIcon.s1">
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Margin" Value="2" />
+
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="material|MaterialIcon.m2">
+        <Setter Property="Width" Value="44" />
+        <Setter Property="Height" Value="44" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource GeneralIcon}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="TextBlock.statusBar">
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="4 0" />
+        <Setter Property="MinWidth" Value="100"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
+    </Style>
+
+    <Style Selector="TextBlock.statusBarSlash">
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="4 0" />
+        <!-- <Setter Property="Foreground" Value="{Binding StatusBarForeground}"/> -->
+    </Style>
+    <Style Selector="TextBlock.opt1Text">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="4 0" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+
+    <Style Selector="TextBlock.labelText">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="4 0" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+    <Style Selector="DropDownButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="Border.opt1">
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Background" Value="{StaticResource ExtensionForeground}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ExtensionHighlight}" />
+    </Style>
+    <Style Selector="Button.opt1Button">
+        <Setter Property="Padding" Value="1" />
+    </Style>
+
+    <Style Selector="RadioButton">
+        <Setter Property="Margin" Value="4" />
+    </Style>
+
+    <Style Selector="RadioButton /template/ Border#PART_BorderOverlay">
+        <Setter Property="Opacity" Value="0.0" />
+    </Style>
+    <Style Selector="RadioButton:pointerover /template/ Border#PART_BorderOverlay">
+        <Setter Property="Opacity" Value="0.1" />
+    </Style>
+    <Style Selector="RadioButton:pressed /template/ Border#PART_BorderOverlay">
+        <Setter Property="Opacity" Value="0.2" />
+    </Style>
+    <Style Selector="RadioButton:checked /template/ Border#PART_BorderOverlay">
+        <Setter Property="Opacity" Value="0.3" />
+    </Style>
+
+    <Style Selector="Button.hyperlink">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource SystemAccentColor}"
+                           TextDecorations="Underline">
+                    <TextBlock.Styles>
+                        <Style Selector="TextBlock:pointerover">
+                            <Setter Property="Foreground" Value="{StaticResource SystemAccentColorLight1}" />
+                        </Style>
+                    </TextBlock.Styles>
+                </TextBlock>
+            </ControlTemplate>
+        </Setter>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="TextBox.custom">
+        <Style.Resources>
+            <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+        </Style.Resources>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="10,0,6,0" />
+        <Setter Property="MinHeight" Value="{DynamicResource LayerHeight}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+
+        <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource TextControlForeground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource TextControlSelectionHighlightColor}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+        <Setter Property="MinWidth" Value="{DynamicResource TextControlThemeMinWidth}" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
+        <Setter Property="ContextFlyout" Value="{StaticResource DefaultTextBoxContextFlyout}" />
+        <Style Selector="^ /template/ TextBlock#PART_Watermark">
+            <Setter Property="Foreground" Value="{DynamicResource TextControlPlaceholderForegroundFocused}" />
         </Style>
 
-        <Style Selector="TextBlock.statusBarSlash">
-            <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Margin" Value="4 0" />
-            <!-- <Setter Property="Foreground" Value="{Binding StatusBarForeground}"/> -->
-        </Style>
-        <Style Selector="TextBlock.opt1Text">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="4 0" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontWeight" Value="Bold" />
-        </Style>
-
-
-        <Style Selector="TextBlock.labelText">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="4 0" />
-            <Setter Property="FontWeight" Value="Bold" />
-        </Style>
-        <Style Selector="DropDownButton">
+        <Style Selector="^ /template/ Border#PART_BorderElement">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-        <Style Selector="ComboBox">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
-        <Style Selector="Border.opt1">
-            <Setter Property="Padding" Value="1" />
-            <Setter Property="Margin" Value="1" />
-            <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Background" Value="{StaticResource ExtensionForeground}" />
-            <Setter Property="BorderBrush" Value="{StaticResource ExtensionHighlight}" />
-        </Style>
-        <Style Selector="Button.opt1Button">
-            <Setter Property="Padding" Value="1" />
-        </Style>
 
-        <Style Selector="RadioButton">
-            <Setter Property="Margin" Value="4" />
-        </Style>
-
-        <Style Selector="RadioButton /template/ Border#PART_BorderOverlay">
-            <Setter Property="Opacity" Value="0.0" />
-        </Style>
-        <Style Selector="RadioButton:pointerover /template/ Border#PART_BorderOverlay">
-            <Setter Property="Opacity" Value="0.1" />
-        </Style>
-        <Style Selector="RadioButton:pressed /template/ Border#PART_BorderOverlay">
-            <Setter Property="Opacity" Value="0.2" />
-        </Style>
-        <Style Selector="RadioButton:checked /template/ Border#PART_BorderOverlay">
-            <Setter Property="Opacity" Value="0.3" />
-        </Style>
-
-        <Style Selector="Button.hyperlink">
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource SystemAccentColor}"
-                               TextDecorations="Underline">
-                        <TextBlock.Styles>
-                            <Style Selector="TextBlock:pointerover">
-                                <Setter Property="Foreground" Value="{StaticResource SystemAccentColorLight1}" />
-                            </Style>
-                        </TextBlock.Styles>
-                    </TextBlock>
-                </ControlTemplate>
-            </Setter>
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-
+        <!-- <Style Selector="^:pointerover /template/ Border#PART_BorderElement"> -->
+        <!--     <Setter Property="Background" Value="{DynamicResource SubtleFillColorSecondaryBrush}" /> -->
+        <!-- </Style> -->
+    </Style>
     <!-- Add Styles Here -->
 </Styles>

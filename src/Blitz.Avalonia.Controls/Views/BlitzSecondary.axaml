@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:material="using:Material.Icons.Avalonia"
-             xmlns:md="https://github.com/whistyun/Markdown.Avalonia.Tight"
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:views="clr-namespace:Blitz.AvaloniaEdit.Views;assembly=Blitz.AvaloniaEdit"
              xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
@@ -68,163 +67,32 @@
         </Style>
     </UserControl.Styles>
     <Grid>
-        <Panel IsVisible="{Binding EnableHelpPane, Mode=TwoWay}">
-            <DockPanel>
-                <ListBox x:Name="HelpBox" Background="Transparent" SelectionChanged="HelpBoxItemChanged" DockPanel.Dock="Left">
-                    <ListBoxItem>Welcome</ListBoxItem>
-                    <ListBoxItem>Usage</ListBoxItem>
-                    <ListBoxItem>IDE Setup</ListBoxItem>
-                    <ListBoxItem>Change Log</ListBoxItem>
-                    <ListBoxItem>Support Blitz</ListBoxItem>
-                    <ListBoxItem>About</ListBoxItem>
-                </ListBox>
-                <md:MarkdownScrollViewer
-                    x:Name="MarkdownScrollViewer"
-                    Grid.Column="2"
-                    MaxWidth="800"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Left"
-                    SaveScrollValueWhenContentUpdated="True">
-                    <md:MarkdownScrollViewer.Styles>
-                        <StyleInclude Source="avares://Blitz.Avalonia.Controls/Resources/MarkdownStyles.axaml" />
-                    </md:MarkdownScrollViewer.Styles>
-                </md:MarkdownScrollViewer>
+        <DockPanel >
+            <DockPanel DockPanel.Dock="Top" LastChildFill="False" Background="{Binding EditorViewModel.TitleBarBackground}">
+                <models:OptionTogglePanel DockPanel.Dock="Right"/>
+                <Grid DockPanel.Dock="Left" IsVisible="{Binding EnableTextPane}">
+                    <views:BlitzFileTab  DataContext="{Binding EditorViewModel }" DockPanel.Dock="Left"/>
+                </Grid>
             </DockPanel>
-        </Panel>
-        <Panel Margin="15" IsVisible="{Binding EnableSettingsPane}">
-                           <ScrollViewer>
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Margin="0 20 0 0" Orientation="Vertical">
-                        <CheckBox Classes="OptionBox" IsChecked="{Binding EnableSearchIndex}">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Search Indexing </TextBlock>
-                            </StackPanel>
-                            <ToolTip.Tip> Search Indexing helps reduce the workload by Parsing the file for unique words.  It is the backbone of what makes blitz search fast!</ToolTip.Tip>
-                        </CheckBox>
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Search Threads </TextBlock>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="4" VerticalAlignment="Center" Text="{Binding SearchThreads}"> </TextBlock>
-                                    <Slider Width="480" Value="{Binding SearchThreads}"
-                                            Maximum="{Binding SearchThreadsMax}"
-                                            Minimum="{Binding SearchThreadsMin}" >
-                                        <ToolTip.Tip>Searching Files in parallel can return results faster.</ToolTip.Tip>
-                                    </Slider>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> DebugFile </TextBlock>
-                            </StackPanel>
-                            <TextBox Text="{Binding DebugFileNameSearchTextBox}"
-                                     Watermark="Search for words separated by space..">
-                                <ToolTip.Tip>For files that match this blitz query Add a result with debug information ( why it was excluded), Clicking that result will show the reason.</ToolTip.Tip>
-                            </TextBox>
-                        </StackPanel>
-
-                        <CheckBox Classes="OptionBox" IsChecked="{Binding EnableResultsRecycling }">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Results Recycling </TextBlock>
-                            </StackPanel>
-                            <ToolTip.Tip>Under certain conditions, the results of a prior search, can be recycled to improve the speed.</ToolTip.Tip>
-                        </CheckBox>
-
-                        <TextBlock Text="Generated Text file handling" />
-                        <StackPanel Margin="40 4 0 0" Orientation="Vertical">
-                            <StackPanel Orientation="Vertical">
-                                <RadioButton VerticalAlignment="Center" GroupName="RobotFilter" IsChecked="{Binding EnableRobotFileFilterIgnore}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Classes="radio" Text="Ignore" />
-                                    </StackPanel>
-                                    <ToolTip.Tip>Memory saving, removes message</ToolTip.Tip>
-                                </RadioButton>
-                                <RadioButton VerticalAlignment="Center" GroupName="RobotFilter" IsChecked="{Binding EnableRobotFileFilterDefer}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Classes="radio" VerticalAlignment="Top" Text="Defer" />
-                                    </StackPanel>
-                                    <ToolTip.Tip>No memory saved but ordered heavy files to last</ToolTip.Tip>
-                                </RadioButton>
-                                <RadioButton VerticalAlignment="Center" GroupName="RobotFilter"
-                                             IsChecked="{Binding EnableRobotFileFilterSkipAndReport}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Classes="radio" VerticalAlignment="Top" Text="Report and Skip (default)" />
-                                    </StackPanel>
-                                    <ToolTip.Tip>Saves Memory but provides information</ToolTip.Tip>
-                                </RadioButton>
-                            </StackPanel>
-                            <StackPanel Classes="DescriptorPanel">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Classes="h2">Max Human File Size (MB)</TextBlock>
-                                    <NumericUpDown Increment="0.1" FormatString="0.0" Minimum="0"
-                                                   Value="{Binding RobotFileDetectionSizeMB}" >
-                                        <ToolTip.Tip>Files Larger than this will be considered Generated files.</ToolTip.Tip>
-                                    </NumericUpDown>
-                                </StackPanel>
-                                <TextBlock Classes="d1"></TextBlock>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Classes="h2">Max Human Line Size in Characters</TextBlock>
-                                    <NumericUpDown Increment="100" Minimum="1000"
-                                                   Value="{Binding RobotContentLineDetection}" >
-                                        <ToolTip.Tip>If the first line of the file is Greater than this (IE large non-pretty json files )</ToolTip.Tip>
-                                    </NumericUpDown>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                    
-                </StackPanel>
-                    <StackPanel Orientation="Vertical" >
-                        <CheckBox Classes="OptionBox" IsChecked="{Binding ShowOnTaskBar }">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Show Icon on Taskbar </TextBlock>
-                            </StackPanel>
-                            <ToolTip.Tip>Show the icon on windows taskbar ( icon always shows in tray )</ToolTip.Tip>
-                        </CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" >
-                        <CheckBox Classes="OptionBox" IsChecked="{Binding TimerDisplayTotalSearchTIme }">
-                            <StackPanel Classes="DescriptorPanel">
-                                <TextBlock Classes="h2"> Show Total time spent searching </TextBlock>
-                            </StackPanel>
-                            <ToolTip.Tip>The default time shown is time-to-last result, enabling this will show the total time to completion .</ToolTip.Tip>
-                        </CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button IsEnabled="{Binding !CacheCleaning}" Content="Clean up Cache" Click="CacheClean_OnClick"></Button>
-                        <StackPanel Classes="DescriptorPanel">
-                            <TextBlock  Classes="h2" Text="{Binding CacheStatus }"></TextBlock>
-                            <TextBlock Classes="d1"> Manually Clean up the cache</TextBlock>
-                        </StackPanel>
-                        
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Garbage Collect" Click="CollectGarbage_OnClick"></Button>
-                        <StackPanel Classes="DescriptorPanel">
-                            <TextBlock Classes="h2" Text="Collect Garbage"></TextBlock>
-                            <TextBlock Classes="d1"> Force .NET Garbage Collection to get clearer picture of memory</TextBlock>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-                </ScrollViewer>
-        </Panel>
-        <DockPanel IsVisible="{Binding EnableTextPane}">
-            <views:BlitzFileTab DataContext="{Binding EditorViewModel }" DockPanel.Dock="Top"/>
-            <views:BlitzFileView DataContext="{Binding EditorViewModel }" x:Name="FileView" DockPanel.Dock="Top" >
-                 
-            </views:BlitzFileView>
+            <Grid DockPanel.Dock="Top" >
+                <models:HelpPanel/>
+                <models:SettingsPanel/>
+                <Panel IsVisible="{Binding EnableTextPane}">
+                    <views:BlitzFileView  DataContext="{Binding EditorViewModel }" x:Name="FileView"  />
+                </Panel>
+                <Panel IsVisible="{Binding EnableGotoPane}">
+                    <models:GotoEditorSettingsPanel/>
+                </Panel>
+                <Panel IsVisible="{Binding EnableScopePane}">
+                    <models:ScopeSettingsPanel DataContext="{Binding WorkingScope}"/>
+                </Panel>
+                <Panel IsVisible="{Binding EnableThemePane}">
+                    <models:ThemePanel />
+                </Panel>
+            </Grid>
             
         </DockPanel>
-        <Panel IsVisible="{Binding EnableGotoPane}">
-            <models:GotoEditorSettingsPanel/>
-        </Panel>
-        <Panel IsVisible="{Binding EnableScopePane}">
-            <models:ScopeSettingsPanel DataContext="{Binding WorkingScope}"/>
-        </Panel>
-        <Panel IsVisible="{Binding EnableThemePane}">
-            <models:ThemePanel />
-        </Panel>
+
     </Grid>
     
 </UserControl>

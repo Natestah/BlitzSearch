@@ -6,7 +6,7 @@
              xmlns:svg="clr-namespace:Avalonia.Svg;assembly=Avalonia.Svg"
              xmlns:lb="clr-namespace:Blitz_Behavior"
              xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
-             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.BlitzMainPanel">
@@ -29,48 +29,53 @@
         <KeyBinding Gesture="Ctrl+Shift+F" Command="{Binding ToggleFileNameFilterCommand}" />
         <KeyBinding Gesture="Ctrl+Shift+H" Command="{Binding ToggleFindInFilesFilterCommand}" />
     </UserControl.KeyBindings>
-    <Grid>
-        <DockPanel>
-            <models:BlitzStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom"/>
-            <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top"/>
-            <models:LiteralSearchPanel DockPanel.Dock="Top"/>
-            <models:RegularExpressionPanel DockPanel.Dock="Top"/>
-            <models:FileNamePanel DockPanel.Dock="Top"/>
-            <models:ReplacePanel x:Name="ReplacePanel" DockPanel.Dock="Top"/>
-            <models:InlineScopePanel DockPanel.Dock="Top"/>
-            <models:InformerPanel DockPanel.Dock="Top"/>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MinHeight="270" />
-                    <RowDefinition Height="4" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
-                    <RowDefinition Height="*" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0">
-                    <Grid IsVisible="{Binding ShowScopeImage}">
-                        <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="300" Width="300" Source="{Binding WorkingScope.ScopeBitmap}"></Image>
-                        <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1" Width="300" Height="300" VerticalAlignment="Bottom" Margin="20" Path="/Resources/BlitzSVGCentered.svg" />
-                    </Grid>
-                </Border>
-                <DockPanel Grid.Row="0" LastChildFill="True">
-                    <DockPanel  DockPanel.Dock="Bottom" Background="{StaticResource ReplaceHighlight}" LastChildFill="False"
-                                IsVisible="{Binding ReplaceInFileEnabled}">
-                        <Button Content="Apply Changes" DockPanel.Dock="Right" Margin="5" Padding="15 5" Foreground="WhiteSmoke"
-                                Click="AcceptChangesClick"/>
-                    </DockPanel>
-                    <Grid DockPanel.Dock="Bottom">
-                        <ProgressBar Margin="0 0 0 2" MinWidth="70" VerticalAlignment="Bottom" 
-                            DataContext="{Binding Path=FileSearchStatus}"
-                            Opacity="{Binding ProgressOpacity}"
-                            IsIndeterminate="{Binding IsIndeterminate}"
-                            IsVisible="{Binding Working}"
-                            Maximum="{Binding FilesDiscoveredCount}"
-                            Value="{Binding FilesProcessedCount}"/>
-                    </Grid>
-                    <models:ResultsBox x:Name="ResultsBox" />
+    <DockPanel LastChildFill="True">
+        <models:BlitzStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" />
+        <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top" />
+        <models:LiteralSearchPanel DockPanel.Dock="Top" />
+        <models:RegularExpressionPanel DockPanel.Dock="Top" />
+        <models:FileNamePanel DockPanel.Dock="Top" />
+        <models:ReplacePanel x:Name="ReplacePanel" DockPanel.Dock="Top" />
+        <Separator Opacity="0.5" DockPanel.Dock="Top"/>
+        <models:InlineScopePanel DockPanel.Dock="Top" /> 
+        <models:InformerPanel DockPanel.Dock="Top" />
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MinHeight="30" />
+                <RowDefinition Height="4" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
+                <RowDefinition Height="*" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0">
+                <Grid IsVisible="{Binding ShowScopeImage}">
+                    <Image IsVisible="{Binding !IsBlitzLogoVisibile}" Opacity="0.15" HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom" Height="300" Width="300"
+                           Source="{Binding WorkingScope.ScopeBitmap}">
+                    </Image>
+                    <svg:Svg IsVisible="{Binding IsBlitzLogoVisibile}" HorizontalAlignment="Right" Opacity="0.1"
+                             Width="300" Height="300" VerticalAlignment="Bottom" Margin="20"
+                             Path="/Resources/BlitzSVGCentered.svg" />
+                </Grid>
+            </Border>
+            <DockPanel Grid.Row="0" LastChildFill="True">
+                <DockPanel DockPanel.Dock="Bottom" Background="{StaticResource ReplaceHighlight}" LastChildFill="False"
+                           IsVisible="{Binding ReplaceInFileEnabled}">
+                    <Button Content="Apply Changes" DockPanel.Dock="Right" Margin="5" Padding="15 5"
+                            Foreground="WhiteSmoke"
+                            Click="AcceptChangesClick" />
                 </DockPanel>
-                <GridSplitter Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
-                <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" />
-            </Grid>
-        </DockPanel>
-    </Grid>
+                <Grid DockPanel.Dock="Bottom">
+                    <ProgressBar Margin="0 0 0 2" MinWidth="70" VerticalAlignment="Bottom"
+                                 DataContext="{Binding Path=FileSearchStatus}"
+                                 Opacity="{Binding ProgressOpacity}"
+                                 IsIndeterminate="{Binding IsIndeterminate}"
+                                 IsVisible="{Binding Working}"
+                                 Maximum="{Binding FilesDiscoveredCount}"
+                                 Value="{Binding FilesProcessedCount}" />
+                </Grid>
+                <models:ResultsBox x:Name="ResultsBox" />
+            </DockPanel>
+            <GridSplitter Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
+            <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" />
+        </Grid>
+    </DockPanel>
 </UserControl>

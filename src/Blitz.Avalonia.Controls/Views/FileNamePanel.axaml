@@ -5,10 +5,14 @@
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:material="using:Material.Icons.Avalonia"
              xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
-             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="200"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.FileNamePanel">
+    <UserControl.Styles>
+        <StyleInclude Source="../Styles/BlitzStyles.axaml"/>
+    </UserControl.Styles>
+
     <DockPanel DockPanel.Dock="Top" IsVisible="{Binding FileNameDebugQueryEnabled}">
         <DropDownButton>
             <DropDownButton.Content>
@@ -27,6 +31,7 @@
         </Button>
 
         <TextBox DockPanel.Dock="Left" MinWidth="600" Watermark="Filter Filenames with words.."
+                 Classes="custom"
                  AttachedToVisualTree="FileNameFilterBox_OnAttachedToVisualTree"
                  LostFocus="FileNameSearchField_OnLostFocus"
                  Text="{Binding FileNameSearchTextBox}">

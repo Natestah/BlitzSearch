@@ -9,7 +9,6 @@ using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Blitz.Goto;
-using TextMateSharp.Grammars;
 using System.IO;
 using System.Linq;
 using System.Reactive;
@@ -21,7 +20,6 @@ using AvaloniaEdit.TextMate;
 using AvaloniaEdit.Utils;
 using Blitz.Avalonia.Controls.Views;
 using Blitz.Interfacing;
-using Blitz.AvaloniaEdit.Models;
 using Blitz.AvaloniaEdit.ViewModels;
 using Material.Icons;
 using Application = Avalonia.Application;
@@ -168,7 +166,7 @@ public class MainWindowViewModel : ViewModelBase
         ShowPreviewTextCommand = ReactiveCommand.Create(ShowPreviewTextCommandCommandRun);
         HidePreviewPaneCommand = ReactiveCommand.Create(HidePreviewPaneCommandRun);
         ToggleFindInFilesFilterCommand = ReactiveCommand.Create(ToggleFindInFilesFilterCommandRun);
-        
+        EscapeMinimizeCommand = ReactiveCommand.Create(EscapeMininizeCommandRun);
         
         LoadQuery();
 
@@ -189,6 +187,11 @@ public class MainWindowViewModel : ViewModelBase
         BuildScopesViewModelsFromConfig();
         ResultsHighlighting = new ResultsHighlighting(this);
         ExternalPluginInteractions = new ExternalPluginInteractions(this);
+    }
+
+    private void EscapeMininizeCommandRun()
+    {
+        GotoMinimizer.Invoke();
     }
 
     public ResultsHighlighting ResultsHighlighting { get; set; } 
@@ -283,6 +286,7 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit,Unit> ShowPreviewTextCommand { get; set; }
     public ReactiveCommand<Unit,Unit> HidePreviewPaneCommand { get; set; }
     public ReactiveCommand<Unit,Unit> ToggleFindInFilesFilterCommand { get; set; }
+    public ReactiveCommand<Unit,Unit> EscapeMinimizeCommand { get; set; }
     public ObservableCollection<string> GetHistoryFromConfiguration(List<string> collection)
     {
         var config = new ObservableCollection<string>(collection);
@@ -1045,7 +1049,7 @@ public class MainWindowViewModel : ViewModelBase
                     ResultBoxItems.Add(new FileNameResultViewModel(this,changedFile){IsUpdated = true});
                     foreach (var item in changedFile.ContentResults)
                     {
-                        ResultBoxItems.Add(new ContentResultViewModel(this,item,changedFile));
+                        ResultBoxItems.Add(new ContentResultViewModel(this, item, changedFile));
                     }
                 }
             }
@@ -1066,9 +1070,23 @@ public class MainWindowViewModel : ViewModelBase
             }
             foreach (var contentResult in fileResult.ContentResults)
             {
-                ResultBoxItems.Add(new ContentResultViewModel(this, contentResult, fileResult));
+                var thisItem = new ContentResultViewModel(this, contentResult, fileResult);
+                ResultBoxItems.Add(thisItem);
             }
         }
+        
+        if (SelectedItems.Count == 0)
+        {
+            var first = ResultBoxItems.OfType<ContentResultViewModel>().FirstOrDefault()
+                        ?? ResultBoxItems.FirstOrDefault();
+
+            if (first != null)
+            {
+                SelectedItems.Add(first);
+                this.RaisePropertyChanged(nameof(SelectedItems));
+            }
+        }
+
 
         if (searchTaskResult.MissingRequirements.Count > 0)
         {
@@ -1124,6 +1142,7 @@ public class MainWindowViewModel : ViewModelBase
             or nameof(EnableTextPane)
             or nameof(EnableScopePane)
             or nameof(EnableThemePane)
+            or nameof(SelectedItems)
             or nameof(SplitPane)
             )
         {
@@ -1704,7 +1723,6 @@ public class MainWindowViewModel : ViewModelBase
         EnableSettingsPane =  false;
         EnableTextPane = false;
         EnableThemePane = false;
-        
     }
 
     private void DisablePaneIfNot(ref bool refVal, bool value, [CallerMemberName] string? propertyName = null)
@@ -1781,6 +1799,8 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public bool IsBlitzLogoVisibile =>  WorkingScope is not ScopeViewModel scopeViewModel || !scopeViewModel.ScopeImageVisible;
+    public Action GotoMinimizer { get; set; }
+    public BoolDelegate PreviewOnlyWhenFocused { get; set; }
 
     public void RefreshBoxItemHighlights()
     {
@@ -1792,6 +1812,7 @@ public class MainWindowViewModel : ViewModelBase
             }
         }
     }
+    public delegate bool BoolDelegate();
 
     public void StopRespondingToCurrentQuery()
     {

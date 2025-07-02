@@ -233,6 +233,12 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
 
     public bool RunGoto(bool preview, string fileToGoto, int line, int column, out string errorMessage)
     {
+        if (preview && mainWindowViewModel != null && mainWindowViewModel.PreviewOnlyWhenFocused != null && !mainWindowViewModel.PreviewOnlyWhenFocused())
+        {
+            errorMessage = string.Empty;
+            return true;
+        }
+        
         var gotoAction = new GotoAction(GotoEditor);
         var directive = new GotoDirective(mainWindowViewModel.SolutionViewModel?.Export?.Name,fileToGoto, line, column);
 
@@ -262,6 +268,11 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
 
             errorMessage = builder.ToString();
             return false;
+        }
+
+        if (!preview)
+        {
+            mainWindowViewModel.GotoMinimizer.Invoke();
         }
 
         return true;

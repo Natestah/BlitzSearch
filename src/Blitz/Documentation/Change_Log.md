@@ -7,6 +7,13 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.11
+* Significant Layout Adjustments to reduce clutter in view ( more dialogue box looking )
+* reduced flickering due to mouse over items while typing
+* Add Escape Key Minimize window.
+* Added Select First -> Update previews while typing.  This restored the behavior of pressing Enter to goto the thing.
+* Fixed an issue in Visual Studio that came about due to changing to the Misc project.
+* Entering/Double Clicking things minimizes the window.
 ### Version 1.0.10
 * Upgrading some Avalonia Nuget packages.
 * Adding a toggle for Filename Matching.  https://github.com/Natestah/BlitzSearch/issues/32

@@ -959,7 +959,14 @@ public class SearchTask
 
     private async void ClearAnyTimeTask()
     {
-        await Task.Delay(TimeSpan.FromMilliseconds(500));
+        try
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(500), CancellationTokenSource.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
         var searchTaskResult = new SearchTaskResult();
         searchTaskResult.AlignIdentity(SearchQuery);
         searchTaskResult.ScheduledClear = true;

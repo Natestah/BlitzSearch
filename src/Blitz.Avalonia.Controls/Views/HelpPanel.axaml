@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:md="https://github.com/whistyun/Markdown.Avalonia.Tight"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+             x:DataType="vm:MainWindowViewModel"
+             x:Class="Blitz.Avalonia.Controls.Views.HelpPanel">
+    <Panel IsVisible="{Binding EnableHelpPane, Mode=TwoWay}">
+        <DockPanel>
+            <ListBox x:Name="HelpBox" Background="Transparent" SelectionChanged="HelpBoxItemChanged" DockPanel.Dock="Left">
+                <ListBoxItem>Welcome</ListBoxItem>
+                <ListBoxItem>Usage</ListBoxItem>
+                <ListBoxItem>IDE Setup</ListBoxItem>
+                <ListBoxItem>Change Log</ListBoxItem>
+                <ListBoxItem>Support Blitz</ListBoxItem>
+                <ListBoxItem>About</ListBoxItem>
+            </ListBox>
+            <md:MarkdownScrollViewer
+                x:Name="MarkdownScrollViewer"
+                Grid.Column="2"
+                MaxWidth="800"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Left"
+                SaveScrollValueWhenContentUpdated="True">
+                <md:MarkdownScrollViewer.Styles>
+                    <StyleInclude Source="avares://Blitz.Avalonia.Controls/Resources/MarkdownStyles.axaml" />
+                </md:MarkdownScrollViewer.Styles>
+            </md:MarkdownScrollViewer>
+        </DockPanel>
+    </Panel>
+</UserControl>

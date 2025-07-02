@@ -91,6 +91,9 @@ public partial class App : Application
                     mainWindow.Foreground = null;
                 }
             };
+
+            _mainWindowViewModel.GotoMinimizer = GotoMinimize;
+            _mainWindowViewModel.PreviewOnlyWhenFocused = PreviewOnlyWhenFocused;
             
             _mainWindowViewModel.EditorViewModel.PropertyChanged +=MainWindowViewModelOnPropertyChanged;
             var trayIcon = new TrayIcon();
@@ -116,6 +119,24 @@ public partial class App : Application
             };
         }
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private bool PreviewOnlyWhenFocused()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && desktop.MainWindow is MainWindow mainWindow)
+        {
+            return mainWindow.IsActive;
+        }
+        return false;
+    }
+
+
+    private void GotoMinimize()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktop)
+        {
+            desktop.MainWindow.WindowState = WindowState.Minimized;
+        }
     }
 
     private void MainWindowViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)

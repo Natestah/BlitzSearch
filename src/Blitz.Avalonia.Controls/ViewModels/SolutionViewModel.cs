@@ -44,8 +44,13 @@ public class SolutionViewModel : ViewModelBase
             {
                 Configuration.Instance.SolutionProjectSelection[SolutionIdentity.Identity] = value.Name; ;
             }
-            this.RaiseAndSetIfChanged(ref _selectedProject, value);
-            _mainWindowViewModel.RaiseSolutionPropertyChanged();
+
+            if (_selectedProject != value)
+            {
+                _selectedProject = value;
+                this.RaisePropertyChanged();
+                _mainWindowViewModel.RaiseSolutionPropertyChanged();
+            }
         }
     }
 

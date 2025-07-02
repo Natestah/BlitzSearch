@@ -4,14 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
              xmlns:material="using:Material.Icons.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.SearchPanel">
     <UserControl.Styles>
         <StyleInclude Source="../Styles/BlitzStyles.axaml"/>
     </UserControl.Styles>
-
     <DockPanel DockPanel.Dock="Top" LastChildFill="True">
                         <DropDownButton>
                             <DropDownButton.Content>
@@ -25,7 +24,6 @@
                                 </Flyout>
                             </Button.Flyout>
                         </DropDownButton>
-                        
                         <DropDownButton DockPanel.Dock="Right" HorizontalAlignment="Stretch">
                             <DropDownButton.Content>
                                 <material:MaterialIcon Classes="m1" Kind="FilterPlus" />
@@ -84,6 +82,7 @@
                         <TextBox LostFocus="MainSearchField_OnLostFocus"
                                  x:Name="MainSearchField"
                                  VerticalAlignment="Center"
+                                 Classes="custom"
                                  DockPanel.Dock="Left"
                                  MinWidth="100"
                                  KeyDown="MainSearchField_OnKeyDown"

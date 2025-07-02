@@ -39,7 +39,20 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
 [Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - Feedback is welcome, This is my personal Discord and shares topics of game dev things.
 
+## Special thanks
+
+Super early testing and feedback:
+* Stephen McCarty
+* Carlos Pineda
+* Robert Dye
+* Noé Pfister
+* Herr Kaste
+
+Killer Blitz Icons
+* Oscar Lopez
+
+
 ## Donate!
 
-[Donate to Blitz Search](https://pay.natestah.com) - The ultimate upvote is with cash.. 
+[Donate to Blitz Search](https://pay.natestah.com) - The ultimate upvote is with cash..   
 

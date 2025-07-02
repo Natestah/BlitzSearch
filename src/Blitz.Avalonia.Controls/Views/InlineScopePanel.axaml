@@ -6,7 +6,7 @@
              xmlns:material="using:Material.Icons.Avalonia"
              xmlns:views="clr-namespace:Blitz.Avalonia.Controls.Views"
              xmlns:controls="clr-namespace:Blitz.Avalonia.Controls"
-             mc:Ignorable="d" d:DesignWidth="2800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="MainPanel"
              x:DataType="vm:MainWindowViewModel"
              x:Class="Blitz.Avalonia.Controls.Views.InlineScopePanel">
@@ -19,37 +19,8 @@
     </UserControl.Styles>
     
     <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-        <views:EditorSelector DockPanel.Dock="Left" />
-        <ComboBox DockPanel.Dock="Left"
-                  IsVisible="{Binding IsSolutionStyle}"
-            VerticalAlignment="Center" VerticalContentAlignment="Center"
-            HorizontalAlignment="Stretch"
-            ItemsSource="{Binding SolutionViewModels}"
-            SelectedItem="{Binding SolutionViewModel}">
-            <ComboBox.DataTemplates>
-                <DataTemplate x:DataType="vm:SolutionViewModel">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.DataTemplates>
-        </ComboBox>
-        <ComboBox IsVisible="{Binding IsWorkspaceStyle}"
-                  VerticalAlignment="Center" VerticalContentAlignment="Center"
-                  HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding WorkspaceScopeViewModels}"
-                  SelectedItem="{Binding SelectedWorkspaceScopeViewModel}">
-            <ComboBox.DataTemplates>
-                <DataTemplate x:DataType="vm:WorkspaceScopeViewModel">
-                    <StackPanel Orientation="Horizontal">
-                        <!-- <Image Width="32" Height="32" Source="{Binding ExecutableIconHint,Converter={StaticResource DirectEditorImageConverter}}"  /> -->
-                        <TextBlock Classes="labelText" Text="{Binding DisplayTitle}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.DataTemplates>
-        </ComboBox>
-        <ListBox
-            Background="Transparent">
+       
+        <ListBox Background="Transparent" Margin="2">
 
             <ListBoxItem IsVisible="{Binding IsWorkspaceStyle}"
                          IsSelected="{Binding  IsWorkspaceScopeSelected}">

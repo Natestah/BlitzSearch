@@ -270,7 +270,6 @@ public partial class MainWindow : Window
         }
 
         SetBoarderChromeForMaximizedState();
-        FancyTitleBarSizeChanged();
     }
 
     private void SetBoarderChromeForMaximizedState()
@@ -319,33 +318,8 @@ public partial class MainWindow : Window
         {
             return;
         }
-        if (!FancyTitleBarSizeChanged())
-        {
-            return;
-        }
         Configuration.Instance.BlitzPosWidth = e.NewSize.Width;
         Configuration.Instance.BlitzPosHeight = e.NewSize.Height;
-    }
-
-    private bool FancyTitleBarSizeChanged()
-    {
-        var completeWidth = TitlePanel.Bounds.Width + MaximizeBorder.BorderThickness.Left +MaximizeBorder.BorderThickness.Right;
-        var spaceForBothBlitzSearchLabels = completeWidth - (BlitzLogo.Bounds.Width + ButtonPanel.Bounds.Width + WindowsPanel.Bounds.Width);
-        bool blitzShouldBeVisible = BlitzLabelBlitz.IsVisible = spaceForBothBlitzSearchLabels > BlitzLabelBlitz.Bounds.Width;
-        bool blitzSearchShouldBeVisible = spaceForBothBlitzSearchLabels >
-                                          (BlitzLabelBlitz.Bounds.Width + BlitzLabelSearch.Bounds.Width);
-        bool blitzScopeNameShouldBeVisible = spaceForBothBlitzSearchLabels >
-                                          (BlitzLabelBlitz.Bounds.Width + BlitzLabelSearch.Bounds.Width);
-        if (!blitzShouldBeVisible)
-        {
-            this.MinWidth = Configuration.Instance.BlitzPosWidth;
-            return false;
-        }
-        
-        BlitzLabelSearch.IsVisible = blitzSearchShouldBeVisible;
-        BlitzLabelBlitz.IsVisible = blitzShouldBeVisible;
-
-        return true;
     }
 
     private void Button_MinimizeWindow(object? sender, RoutedEventArgs e)
@@ -378,5 +352,4 @@ public partial class MainWindow : Window
         {
             mainWindowViewModel.SplitPane = true;
         }
-    }
-}
+    }}

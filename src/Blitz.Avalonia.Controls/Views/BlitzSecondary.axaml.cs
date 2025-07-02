@@ -1,19 +1,14 @@
-using System.IO;
 using Avalonia.Controls;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
 using AvaloniaEdit;
 using Blitz.Avalonia.Controls.ViewModels;
 using Blitz.AvaloniaEdit.ViewModels;
 using Blitz.Interfacing;
-using Humanizer;
 using MainWindowViewModel = Blitz.Avalonia.Controls.ViewModels.MainWindowViewModel;
 using MouseButton = Avalonia.Input.MouseButton;
 
@@ -24,7 +19,7 @@ public partial class BlitzSecondary : UserControl
     public BlitzSecondary()
     {
         InitializeComponent();
-        ShowHelpMd();
+        
         Loaded += (sender, args) =>
         {
             
@@ -32,7 +27,6 @@ public partial class BlitzSecondary : UserControl
             {
                 mainWindowViewModel.ShowPreview = ShowPreview;
             }
-            _ = CalculateCacheUsage();
 
             FileView.TextEditor.TextArea.TextView.ContextRequested +=AvaloniaTextEditorOnContextRequested;
             FileView.TextEditor.TextArea.TextView.PointerMoved+=TextViewOnPointerHover;
@@ -308,29 +302,7 @@ public partial class BlitzSecondary : UserControl
         {
             FileView.ScrollToLineColumn(gotoDocument);
         }
-        
     }
-    
-    private void ShowHelpMd()
-    {
-        HelpBox.SelectedItem = null;
-        if (!Configuration.Instance.IsWelcomed)
-        {
-            HelpBox.SelectedItem = HelpBox.Items[0]; // first is welcome
-            Configuration.Instance.IsWelcomed = true;
-        }
-        else
-        {
-            foreach (var item in HelpBox.Items.OfType<ListBoxItem>())
-            {
-                if (item.Content is not "Change Log") continue;
-                HelpBox.SelectedItem = item;
-                break;
-            }
-        }
-    }
-
-
     public void ShowHelp()
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -338,88 +310,5 @@ public partial class BlitzSecondary : UserControl
             return;
         }
         mainWindowViewModel.EnableHelpPane = true;
-    }
-
-    private void CollectGarbage_OnClick(object? _, RoutedEventArgs e)
-    {
-        GC.Collect();
-    }
-    private async void CacheClean_OnClick(object? _, RoutedEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-            return;
-        mainWindowViewModel.CacheStatus = "Cleaning...";
-        mainWindowViewModel.CacheCleaning = true;
-
-        int count = 0;
-        await Task.Run(() => { 
-            foreach (var file in Directory.EnumerateFiles(SearchExtensionCache.CacheFolder))
-            {
-                try
-                {
-                    File.Delete(file);
-                    count++;
-                    Dispatcher.UIThread.Post(() => { mainWindowViewModel.CacheStatus = $"Cleaned '{count}' Files"; });
-                }
-                catch( Exception ex)
-                {
-                    Dispatcher.UIThread.Post(() => { mainWindowViewModel.CacheStatus = $"failed {ex.Message}"; });
-                }
-            }
-        });
-        await CalculateCacheUsage();
-        mainWindowViewModel.CacheCleaning = false;
-    }
-
-    private async Task CalculateCacheUsage()
-    {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-            return;
-
-        long fileSizeBytes = 0;
-        mainWindowViewModel.CacheStatus = $"Cache Size '{fileSizeBytes.Bytes().Humanize()}'";
-        await Task.Run(() => { 
-            if(!Directory.Exists(SearchExtensionCache.CacheFolder))
-            {
-                return;
-            }
-            foreach (var file in Directory.EnumerateFiles(SearchExtensionCache.CacheFolder))
-            {
-                try
-                {
-                    fileSizeBytes += new FileInfo(file).Length;
-                    Dispatcher.UIThread.Post(() => { mainWindowViewModel.CacheStatus = $"Cache Size '{fileSizeBytes.Bytes().Humanize()}'"; });
-                }
-                catch( Exception )
-                {
-                    // ignore
-                }
-            }
-        });
-        
-    }
-
-    private void HelpBoxItemChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if ((e.AddedItems[0] as ListBoxItem)?.Content is not string text) return;
-        text = text.Replace(" ", "_");
-        var uri = new Uri(Path.GetFullPath($"Documentation/{text}.md"));
-
-        if (!File.Exists(uri.LocalPath))
-        {
-            // Deployed and Working dir didn't resolve.. 
-            uri = new Uri(Environment.ExpandEnvironmentVariables($"%programfiles%\\blitz\\Documentation\\{text}.md"));
-        }
-        
-        if (Path.Exists(uri.LocalPath))
-        {
-            MarkdownScrollViewer.AssetPathRoot = Path.GetDirectoryName(uri.LocalPath);
-            MarkdownScrollViewer.Source = uri;
-        }
-        else
-        {
-            MarkdownScrollViewer.Markdown = uri.LocalPath;
-        }
-            
     }
 }
