@@ -9,7 +9,8 @@
 
 A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
-![AnimateBlitzUpdated](https://github.com/user-attachments/assets/b51d0d60-7ee1-4527-bd01-b03e52c929da)
+![2025-07-02_09-59-58](https://github.com/user-attachments/assets/a0c9a6e4-436a-461f-a3b8-458ff87d8060)
+
 
 ## Companion for Popular Editors and IDEs
 * Acts as a stand-in for Control-Shift-F  and Control-Shift-H ( find/replace in files )
@@ -17,7 +18,7 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 * Visual Studio, VS Code, and Sublime text feature deeper integration with ability to Scope to open Workspace/Solution/Projects/Files.
 
  ## User Experience first
-* Search code for words on a line.
+* Unique Search code for words on a line.
 * Stack query types ( words, and literal, or regex )
 * Real time results update while you type.
 * Replace words or Literal or Regular expression.
@@ -38,6 +39,31 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 [Blitz Search Features on Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=6hpIiOI5kr7kPH8k) - Demonstrations of features
 
 [Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - Feedback is welcome, This is my personal Discord and shares topics of game dev things.
+
+## Supported IDEs and Extensions
+
+[Sublime Text](https://github.com/Natestah/BlitzSt)
+* Real time search speed
+* Preview text instead of opening files to view context
+* Dialog based search experience
+
+[Visual Studio Code / Cursor / Windsurf ](https://github.com/Natestah/blitzSearchVSCode) - 
+* More spacious results.
+* Syntax Highlights.
+* Over/under find/replace preview style is prefered
+
+[Notepad++](https://github.com/Natestah/BlitsNppPlugin)
+* a significan upgrade to an otherwise primitive find-in-files experience
+
+[Visual Studio](https://github.com/Natestah/BlitzVisualStudioExtension) 
+* Syntax Highlight
+* DIalogue based
+* Real Time Searhc
+
+[IntelliJ - Jetbrains IDEs](https://github.com/Natestah/BlitzIntellij)
+* Words on a line search
+* Might be nice to have external search scopes managed by other search program.
+* Still missing a lot ( no edit in place on the results preview )
 
 ## Special thanks
 
