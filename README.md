@@ -65,6 +65,14 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 * Might be nice to have external search scopes managed by other search program.
 * Still missing a lot ( no edit in place on the results preview )
 
+## Dependencies
+* [AvaloniaUI](https://github.com/avaloniaui/) - Modern Presentation framework
+* [AvaloniaEdit](https://github.com/avaloniaui/avaloniaedit) - Text Editor
+* [TextMateSharp](https://github.com/AvaloniaUI/AvaloniaEdit/) - Syntax Highlighting
+* [Huminizer](https://github.com/Humanizr/Humanizer) - Making Timestamps and file sizes more humanly readable.
+* [Material.Icons](https://github.com/SKProCH/Material.Icons) - Material Icons provides much of the icons used throughout.
+* [Markdown.Avalonia](https://github.com/whistyun/Markdown.Avalonia) - Showing this page! 
+
 ## Special thanks
 
 Super early testing and feedback:
