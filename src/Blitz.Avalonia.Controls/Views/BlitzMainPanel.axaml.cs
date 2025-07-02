@@ -238,11 +238,6 @@ public partial class BlitzMainPanel : UserControl
     }
 
     
-    public void SetRestartAction(Action doUpdateAndRestart)
-    {
-        this.StatusBar.InstallerClick = doUpdateAndRestart;
-    }
-
     private async void AcceptChangesClick(object? sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel) return;
@@ -307,8 +302,8 @@ public partial class BlitzMainPanel : UserControl
                         ?? mainWindowViewModel.ResultBoxItems.FirstOrDefault();
 
             if (first is null) return;
-            mainWindowViewModel.SelectedItems.Clear();
-            mainWindowViewModel.SelectedItems.Add(first);
+            // mainWindowViewModel.SelectedItems.Clear();
+            // mainWindowViewModel.SelectedItems.Add(first);
             if (!ResultsBox.ResultsListBox.Focus())
             {
                 ResultsBox.ResultsListBox.Focusable = true;

@@ -45,6 +45,7 @@
     <Border x:Name="MaximizeBorder" BorderBrush="Transparent" BorderThickness="0">
     <Grid>
         <DockPanel  LastChildFill="True">
+            <controls:BlitzStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" />
             <Grid DockPanel.Dock="Top">
                 <Panel VerticalAlignment="Stretch" IsHitTestVisible="False" Background="{Binding EditorViewModel.TitleBarBackground}" />
                 <DockPanel DockPanel.Dock="Top"  LastChildFill="False" >

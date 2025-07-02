@@ -680,8 +680,22 @@ public class MainWindowViewModel : ViewModelBase
     }
     private void ToggleTextEditRun()
     {
-        SplitPane = !SplitPane;
-        ShowPaneIfSelection();
+        if (SplitPane)
+        {
+            if (!EnableTextPane)
+            {
+                EnableTextPane = true;
+                return;
+            }
+
+            SplitPane = false;
+        }
+        else
+        {
+            SplitPane = true;
+            EnableTextPane = true;
+            ShowPaneIfSelection();
+        }
     }
 
 
@@ -725,9 +739,9 @@ public class MainWindowViewModel : ViewModelBase
     {
         bool wasShown = EnableTextPane && SplitPane;
         EnableTextPane = true;
-        SplitPane = true;
         if (!wasShown)
         {
+            SplitPane = true;
             ShowPaneIfSelection();
         }
     }
@@ -1840,8 +1854,11 @@ public class MainWindowViewModel : ViewModelBase
     {
         if (SplitPane == true) 
         {
-            //update preview on internal text pane.
-            ShowPreview?.Invoke(eAddedItem);
+            if (EnableTextPane)
+            {
+                //update preview on internal text pane.
+                ShowPreview?.Invoke(eAddedItem);
+            }
         }
         else if (SelectedEditorViewModel != null && !SelectedEditorViewModel.RunTotoOnObjectGoto(eAddedItem,true,
                      out string errorMessage))

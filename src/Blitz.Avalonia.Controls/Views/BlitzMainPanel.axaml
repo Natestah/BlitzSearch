@@ -30,7 +30,6 @@
         <KeyBinding Gesture="Ctrl+Shift+H" Command="{Binding ToggleFindInFilesFilterCommand}" />
     </UserControl.KeyBindings>
     <DockPanel LastChildFill="True">
-        <models:BlitzStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom" />
         <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top" />
         <models:LiteralSearchPanel DockPanel.Dock="Top" />
         <models:RegularExpressionPanel DockPanel.Dock="Top" />

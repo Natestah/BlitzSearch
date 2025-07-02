@@ -233,10 +233,6 @@ public partial class BlitzSecondary : UserControl
             {
                 DirtyText = robotFileSummaryViewModel.GetCsvReport()
             };
-            if (mainWindowViewModel.SplitPane)
-            {
-                mainWindowViewModel.EnableTextPane = true;
-            }
         }
         else if (previewing is ReplaceTextViewModel replaceTextViewModel)
         {
@@ -258,11 +254,6 @@ public partial class BlitzSecondary : UserControl
             {
                 DirtyText = replaceTextViewModel.TextSummary
             };
-            
-            if (mainWindowViewModel.SplitPane)
-            {
-                mainWindowViewModel.EnableTextPane = true;
-            }
         }
         else if (previewing is string asString)
         {
@@ -270,14 +261,6 @@ public partial class BlitzSecondary : UserControl
             {
                 DirtyText = asString
             };
-            if (mainWindowViewModel.SplitPane)
-            {
-                mainWindowViewModel.EnableTextPane = true;
-            }
-        }
-        if (mainWindowViewModel.SplitPane)
-        {
-            mainWindowViewModel.EnableTextPane = true;
         }
 
         if (gotoDocument == null)

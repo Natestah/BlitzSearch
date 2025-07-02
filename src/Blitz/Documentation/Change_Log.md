@@ -7,6 +7,9 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.12
+* Behavioral updates to fix aggressive showing of preview ( it was clobbering the config pane when setting file paths)
+* Minor layout adjustment to fix status bar look.
 ### Version 1.0.11
 * Significant Layout Adjustments to reduce clutter in view ( more dialogue box looking )
 * reduced flickering due to mouse over items while typing

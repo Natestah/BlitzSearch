@@ -30,7 +30,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         Closed += OnClosed;
         PropertyChanged += OnPropertyChanged;
-        BlitzMainPanel.SetRestartAction(DoUpdateAndRestart);
+        SetRestartAction(DoUpdateAndRestart);
     }
 
     public void DoUpdateAndRestart()
@@ -337,6 +337,11 @@ public partial class MainWindow : Window
         Close();
     }
 
+    public void SetRestartAction(Action doUpdateAndRestart)
+    {
+        this.StatusBar.InstallerClick = doUpdateAndRestart;
+    }
+
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -353,3 +358,5 @@ public partial class MainWindow : Window
             mainWindowViewModel.SplitPane = true;
         }
     }}
+    
+    
