@@ -9,28 +9,21 @@
 
 A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
-![2025-07-02_09-59-58](https://github.com/user-attachments/assets/a0c9a6e4-436a-461f-a3b8-458ff87d8060)
+![AnimateBlitzUpdated](https://blitzsearch.s3.us-east-2.amazonaws.com/AnimateBlitzUpdated.gif)
 
-
-## Companion for Popular Editors and IDEs
-* Acts as a stand-in for Control-Shift-F  and Control-Shift-H ( find/replace in files )
-* Plugins available for Visual Studio Code, Visual Studio, All JetBrains IDEs, Sublime Text, and Notepad++
-* Visual Studio, VS Code, and Sublime text feature deeper integration with ability to Scope to open Workspace/Solution/Projects/Files.
-
- ## User Experience first
-* Unique Search code for words on a line.
-* Stack query types ( words, and literal, or regex )
+## Bullets
+* Search code for words on a line.
 * Real time results update while you type.
-* Replace words or Literal or Regular expression.
+* Replace using Words or Literal or Regular expression.
 * Handles Large volumes of files. 
-* Syntax Highlighting in results,  highlights on matches are easy on the eyes.
-* Git Ignore file filter reduces workload and Clutter in results.
-* Auto-Human text file discovery Takes burden off Filtering.
+* Syntax Highlighting in results.
+* Git Ignore filter reduces workload and Clutter in results.
+* Auto-Human text file discovery
  
 ## Setup Instructions
 
-1) Install Blitz Search From Current Releases. 
-2) Find and Install the Extension "Blitz Search" from your IDE's marketplace ( VSCode,VS,Sublime Text, Notepad++, Jetbrains ) 
+1) Install Blitz Search From Current Releases here. 
+2) Install the Extension "Blitz Search" from your IDE's marketplace. 
 3) (Optional) Bind blits* commands to a key. 
     * farther instructions are typically displayed on the marketplace extension information pages.
 
@@ -40,30 +33,17 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
 [Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - Feedback is welcome, This is my personal Discord and shares topics of game dev things.
 
-## Supported IDEs and Extensions
+## Supported IDEs and Extension Source
 
-[Sublime Text](https://github.com/Natestah/BlitzSt)
-* Real time search speed
-* Preview text instead of opening files to view context
-* Dialog based search experience
+There are varying levels of support on these, with all but Jetbrains having feature parity.  You should be able to rebind Find/Replace in these editors.
 
-[Visual Studio Code / Cursor / Windsurf ](https://github.com/Natestah/blitzSearchVSCode) - 
-* More spacious results.
-* Syntax Highlights.
-* Over/under find/replace preview style is prefered
+I personally have Blitz Search as the stand in for all but Jetbrains ( there are some points there that I wont ever be able to hit ).
 
-[Notepad++](https://github.com/Natestah/BlitsNppPlugin)
-* a significan upgrade to an otherwise primitive find-in-files experience
-
-[Visual Studio](https://github.com/Natestah/BlitzVisualStudioExtension) 
-* Syntax Highlight
-* DIalogue based
-* Real Time Searhc
-
-[IntelliJ - Jetbrains IDEs](https://github.com/Natestah/BlitzIntellij)
-* Words on a line search
-* Might be nice to have external search scopes managed by other search program.
-* Still missing a lot ( no edit in place on the results preview )
+* [Sublime Text](https://github.com/Natestah/BlitzSt)
+* [Visual Studio Code / Cursor / Windsurf ](https://github.com/Natestah/blitzSearchVSCode)
+* [Notepad++](https://github.com/Natestah/BlitsNppPlugin)
+* [Visual Studio](https://github.com/Natestah/BlitzVisualStudioExtension) 
+* [IntelliJ - Jetbrains IDEs](https://github.com/Natestah/BlitzIntellij)
 
 ## Dependencies
 * [AvaloniaUI](https://github.com/avaloniaui/) - Modern Presentation framework

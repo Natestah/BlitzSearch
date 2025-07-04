@@ -163,8 +163,6 @@ public class MainWindowViewModel : ViewModelBase
         ToggleFileNameFilterCommand = ReactiveCommand.Create(ToggleFileNameDebugFilterCommandRun);
         ToggleLiteralSearchCommand = ReactiveCommand.Create(ToggleLiteralSearchCommandRun);
         ToggleRegexSearchCommand = ReactiveCommand.Create(ToggleRegexSearchCommandRun);
-        ShowPreviewTextCommand = ReactiveCommand.Create(ShowPreviewTextCommandCommandRun);
-        HidePreviewPaneCommand = ReactiveCommand.Create(HidePreviewPaneCommandRun);
         ToggleFindInFilesFilterCommand = ReactiveCommand.Create(ToggleFindInFilesFilterCommandRun);
         EscapeMinimizeCommand = ReactiveCommand.Create(EscapeMininizeCommandRun);
         
@@ -285,6 +283,7 @@ public class MainWindowViewModel : ViewModelBase
     
     public ReactiveCommand<Unit,Unit> ShowPreviewTextCommand { get; set; }
     public ReactiveCommand<Unit,Unit> HidePreviewPaneCommand { get; set; }
+    
     public ReactiveCommand<Unit,Unit> ToggleFindInFilesFilterCommand { get; set; }
     public ReactiveCommand<Unit,Unit> EscapeMinimizeCommand { get; set; }
     public ObservableCollection<string> GetHistoryFromConfiguration(List<string> collection)
@@ -734,30 +733,12 @@ public class MainWindowViewModel : ViewModelBase
         RegexSearchEnabled = !RegexSearchEnabled;
     }
 
-
-    private void ShowPreviewTextCommandCommandRun()
-    {
-        bool wasShown = EnableTextPane && SplitPane;
-        EnableTextPane = true;
-        if (!wasShown)
-        {
-            SplitPane = true;
-            ShowPaneIfSelection();
-        }
-    }
-
     public void ShowPaneIfSelection()
     {
         if (SelectedItems.FirstOrDefault() is { } firstOrDefault)
         {
             UpdatePreviewForItem(firstOrDefault);
         }
-    }
-    
-    
-    private void HidePreviewPaneCommandRun()
-    {
-        SplitPane = false;
     }
     
     public bool IsProjectScopeSelected

@@ -23,12 +23,11 @@
     <ListBox  DoubleTapped="ResultsListBox_OnDoubleTapped" Name="ResultsListBox" 
               SelectionMode="Multiple"
               IsHitTestVisible="{Binding SearchResultsHitTestEnabled}"
-              ItemsSource="{Binding ResultBoxItems}" 
-              SelectedItems="{Binding SelectedItems}"
+              ItemsSource="{Binding ResultBoxItems}"
+              
+              SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
               SelectionChanged="ResultsView_OnSelectionChanged" Background="Transparent">
                     <ListBox.KeyBindings>
-                        <KeyBinding Gesture="Right" Command="{Binding ShowPreviewTextCommand}" />
-                        <KeyBinding Gesture="Left" Command="{Binding HidePreviewPaneCommand}" />
                         <KeyBinding Gesture="Control+c" Command="{Binding CopyCommand}" />
                         <KeyBinding Gesture="Space" Command="{Binding ToggleTextEditCmd}" />
                     </ListBox.KeyBindings>

@@ -37,10 +37,6 @@
                     </Button>
                 </StackPanel>
         
-                <StackPanel DockPanel.Dock="Right">
-                    <Button Content="Donate.." IsVisible="{Binding ShowDonationButton}" Click="DonateButton_OnClick"></Button>
-                </StackPanel>
-
                 <DockPanel DockPanel.Dock="Bottom">
                     <DockPanel DockPanel.Dock="Bottom" LastChildFill="False"
                                DataContext="{Binding Path=FileSearchStatus}">

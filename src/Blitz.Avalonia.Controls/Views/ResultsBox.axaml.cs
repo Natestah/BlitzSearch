@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -8,6 +10,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using ReactiveUI;
 using System.Reactive;
+using System.Threading.Tasks;
+
 namespace Blitz.Avalonia.Controls.Views;
 
 public partial class ResultsBox : UserControl
@@ -20,6 +24,135 @@ public partial class ResultsBox : UserControl
         GotoOtherEditor = ReactiveCommand.Create<int>(GotoOtherEditorRun);
         KeyDown+=OnKeyDown;
         AddHandler(PointerWheelChangedEvent, Handler, RoutingStrategies.Tunnel);
+        AddHandler(KeyDownEvent, KeyDownHandler, RoutingStrategies.Tunnel);
+    }
+
+    private void KeyDownHandler(object? sender, KeyEventArgs e)
+    {
+        if (e.Key is Key.Right)
+        {
+            e.Handled = true;
+            SkipNextResultCommandRun();
+        }
+
+        if (e.Key is Key.Left)
+        {
+            e.Handled = true;
+            SkipPrevResultCommandRun();
+        }
+    }
+    
+
+    private void SkipNextResultCommandRun()
+    {
+        if (ResultsListBox.Items.Count == 0 )
+        {
+            return;
+        }
+        
+        if (ResultsListBox.SelectedItems.Count == 0)
+        {
+            ResultsListBox.SelectedItems.Clear();
+            ResultsListBox.SelectedItems.Add(ResultsListBox.Items.First());
+            return;
+        }
+
+        if (ResultsListBox.ItemContainerGenerator == null)
+        {
+            return;
+        }
+        if (ResultsListBox.SelectedItems.Cast<object>().LastOrDefault() is not { } lastorDefault)
+        {
+            return;
+        }
+        ResultsListBox.ScrollIntoView(lastorDefault);
+
+        var thisType = lastorDefault.GetType();
+        var index = ResultsListBox.Items.IndexOf(lastorDefault);
+        if (ResultsListBox.Scroll is not ScrollViewer scroll)
+        {
+            return;
+        }
+        
+        while (index < ResultsListBox.Items.Count - 1)
+        {
+            index++;
+            var nextItem = ResultsListBox.Items[index];
+            while (ResultsListBox.ContainerFromIndex(index) == null)
+            {
+                scroll.LineDown();
+                UpdateLayout();
+            }
+
+
+            if (ResultsListBox.ContainerFromIndex(index) is not ListBoxItem selectedItem)
+            {
+                continue;
+            }
+            selectedItem.IsSelected = true;
+            selectedItem.Focus();
+            ResultsListBox.SelectedIndex = index;
+            if (thisType == nextItem.GetType())
+            {
+                continue;
+            }
+            return;
+        }
+    }
+    
+    
+    private void SkipPrevResultCommandRun()
+    {
+        if (ResultsListBox.Items.Count == 0 )
+        {
+            return;
+        }
+        
+        if (ResultsListBox.SelectedItems is { Count: 0 })
+        {
+            //no wrapping here.
+            return;
+        }
+
+        if (ResultsListBox.SelectedItems?[0] is not { } firstOrDefault)
+        {
+            return;
+        }
+        if (ResultsListBox.Scroll is not ScrollViewer scroll)
+        {
+            return;
+        }
+
+        ResultsListBox.ScrollIntoView(firstOrDefault);
+        var thisType = firstOrDefault.GetType();
+        var index = ResultsListBox.Items.IndexOf(firstOrDefault);
+        while (index > 0)
+        {
+            index--;
+            var nextItem = ResultsListBox.Items[index];
+            
+            while (ResultsListBox.ContainerFromIndex(index) == null)
+            {
+                scroll.LineUp();
+                UpdateLayout();
+            }
+
+            if (ResultsListBox.ContainerFromIndex(index) is not ListBoxItem selectedItem)
+            {
+                return;
+            }
+            selectedItem.Focus();
+            ResultsListBox.ScrollIntoView(selectedItem);
+            if (thisType == nextItem?.GetType())
+            {
+                continue;
+            }
+            selectedItem.IsSelected = true;
+            selectedItem.Focus();
+            ResultsListBox.SelectedIndex = index;
+            return;
+
+        }
     }
 
     private void Handler(object? sender, PointerWheelEventArgs e)

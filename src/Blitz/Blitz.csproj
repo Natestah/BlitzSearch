@@ -14,8 +14,8 @@
         <PackageIcon>Assets\BlitzIcon.ico</PackageIcon>
         <RepositoryUrl>https://github.com/Natestah/BlitzSearch</RepositoryUrl>
         <ApplicationIcon>Assets\BlitzIcon.ico</ApplicationIcon>
-        <AssemblyVersion>1.0.12</AssemblyVersion>
-        <FileVersion>1.0.12</FileVersion>
+        <AssemblyVersion>1.0.13</AssemblyVersion>
+        <FileVersion>1.0.13</FileVersion>
         <AssemblyOriginatorKeyFile>BlitzSign.snk</AssemblyOriginatorKeyFile>
         <PublicSign>false</PublicSign>
     </PropertyGroup>
@@ -74,14 +74,6 @@
       </Content>
       <None Remove="Documentation\Usage.md" />
       <Content Include="Documentation\Usage.md">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Documentation\Welcome.md" />
-      <Content Include="Documentation\Welcome.md">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Documentation\IDE_Setup.md" />
-      <Content Include="Documentation\IDE_Setup.md">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Documentation\Support_Blitz_Search.md" />

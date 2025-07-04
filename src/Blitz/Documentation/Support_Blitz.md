@@ -1,17 +1,18 @@
 
 ## Support blitz Search
 
-There are a number of ways to support blitz search.  Listed in order of priority.
-
-## Donate
-
-There are some things that I would like to recoup some of the costs on including SSL certificates / Business renewal fees. S3 storage.  Most of this has been out of my own pocket.
-
-Donate here -> [pay.natestah.com](https://pay.natestah.com)
+There are a number of ways to support blitz search.
 
 ## Give Feedback
 
 The more I can smooth over the end-user experience the better chance Blitz Search has to fulfill its mission to becoming a beloved tool that many Software developers enjoy.
+
+## Donate
+
+A Donation is simply the highest form of compliment. Buy me a coffee.
+
+Donate here -> [pay.natestah.com](https://pay.natestah.com)
+
 
 * #### [Get on Discord and talk](https://discord.com/invite/UYPwQY9ngm) ! Let me know your pain points.  Even the most obvious things, your talking give those things an upvote.
 
@@ -20,8 +21,10 @@ The more I can smooth over the end-user experience the better chance Blitz Searc
 
 ## Engage Social Media
 
-#### [Blitz Search on X](https://x.com/BlitzSearch) - Follow me!
+Make noise on these, upvotes, especially commenting increases impressions of Blitz Search.
 
 #### [YouTube ](https://www.youtube.com/@NatestahsSpace) "Natestah's Space" Channel..
 
-#### [LinkedIn - Nathan Silvers](https://www.linkedin.com/in/nathan-silvers-a17308a8/) - Hire me to work.
+#### [Blitz Search on X](https://x.com/BlitzSearch) - Follow me! I'm still trying to figure out X but sometimes.
+
+#### [Follow me on Reddit](https://www.reddit.com/user/Front-Independence40/) - Upvoting posts and things can help visibility

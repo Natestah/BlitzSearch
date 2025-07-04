@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <controls:GotoEditorImageConverter x:Key="GotoEditorImageConverter"/>
     </UserControl.Resources>
-    <DropDownButton DockPanel.Dock="Right">
+    <DropDownButton DockPanel.Dock="Right" Focusable="False">
         <StackPanel DataContext="{Binding SelectedEditorViewModel}" Orientation="Horizontal">
             
             <StackPanel Orientation="Horizontal" Margin="2 2 6 2" >
