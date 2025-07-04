@@ -1070,7 +1070,7 @@ public class MainWindowViewModel : ViewModelBase
             }
         }
         
-        if (SelectedItems.Count == 0)
+        if (SelectedItems.Count == 0 && EnableTextPane)
         {
             var first = ResultBoxItems.OfType<ContentResultViewModel>().FirstOrDefault()
                         ?? ResultBoxItems.FirstOrDefault();

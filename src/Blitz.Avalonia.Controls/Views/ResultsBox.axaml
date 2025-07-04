@@ -25,7 +25,7 @@
               IsHitTestVisible="{Binding SearchResultsHitTestEnabled}"
               ItemsSource="{Binding ResultBoxItems}"
               
-              SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+              SelectedItems="{Binding SelectedItems}"
               SelectionChanged="ResultsView_OnSelectionChanged" Background="Transparent">
                     <ListBox.KeyBindings>
                         <KeyBinding Gesture="Control+c" Command="{Binding CopyCommand}" />

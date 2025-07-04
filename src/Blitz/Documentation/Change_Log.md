@@ -7,6 +7,8 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.14
+* Disable the automatic selection of First Item, when the preview pane is disabled.  This is proving to be disruptive.
 ### Version 1.0.13
 * Adding Left/Right arrow to skip to last/next type of item.
 * Readme StreamLining
