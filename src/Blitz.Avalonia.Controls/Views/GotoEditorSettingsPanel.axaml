@@ -13,26 +13,19 @@
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.p1">
-            <Setter Property="FontSize" Value="13" />
             <Setter Property="Width" Value="200" />
-            <Setter Property="Margin" Value="5 2 5 5" />
         </Style>
         <Style Selector="TextBox.e1">
-            <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="5 2 5 5" />
         </Style>
         <Style Selector="TextBlock.h1">
-            <Setter Property="FontSize" Value="26" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Margin" Value="5 10 5 10" />
             <Setter Property="DockPanel.Dock" Value="Top"></Setter>
         </Style>
         <Style Selector="TextBlock.h2">
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
         <Style Selector="TextBlock.d1">
-            <Setter Property="Margin" Value="4"></Setter>
             <Setter Property="Opacity" Value="0.5" />
             <Setter Property="MaxWidth" Value="520"></Setter>
             <Setter Property="TextWrapping" Value="Wrap" />
@@ -42,28 +35,29 @@
             <Setter Property="BorderBrush" Value="#444" />
             <Setter Property="CornerRadius" Value="8" />
             <Setter Property="Padding" Value="4" />
-            <Setter Property="Margin" Value="15 1 4 4 "></Setter>
             <Setter Property="Background" Value="Transparent"></Setter>
             <Setter Property="DockPanel.Dock" Value="Top"></Setter>
         </Style>
 
         <Style Selector="CheckBox.OptionBox">
-            <Setter Property="Margin" Value="0 4 0 4"></Setter>
+            <Setter Property="Margin" Value="0 2 0 2"></Setter>
         </Style>
     </UserControl.Styles>
     <DockPanel LastChildFill="True">
-        <Expander DockPanel.Dock="Bottom" Header="Customize" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <ScrollViewer>
+        <ScrollViewer>
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Create Custom Editor" Click="CreateCustomEditor_OnClick"></Button>
                         <Button Content="Duplicate and Edit" Click="DuplicateEditor_OnClick"></Button>
+                        <Button Content="Delete" DataContext="{Binding SelectedEditorViewModel}"  IsEnabled="{Binding !ReadOnly}" Click="DeleteEditorButton_OnClick"></Button>
                     </StackPanel>
-
-
                     <StackPanel Margin="10" DataContext="{Binding SelectedEditorViewModel }"
                                 IsEnabled="{Binding !ReadOnly}"
                                 Orientation="Vertical">
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Classes="p1" Text="Display Name" />
+                            <TextBox Classes="e1" Text="{Binding Title}" />
+                        </DockPanel>
                         <DockPanel LastChildFill="True">
                             <TextBlock Classes="p1" Text="Executable" />
                             <TextBox Classes="e1" Text="{Binding Executable}" />
@@ -117,35 +111,5 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
-        </Expander>
-        <TextBlock DockPanel.Dock="Top" Classes="h1">Select Editor from Presets</TextBlock>
-        <ListBox DockPanel.Dock="Top" Margin="10"
-                 SelectionMode="Single"
-                 ItemsSource="{Binding GotoEditorCollection}"
-                 SelectedItem="{Binding SelectedEditorViewModel}"
-                 >
-            <ListBox.DataTemplates>
-                <DataTemplate x:DataType="{x:Type vm:GotoEditorViewModel}">
-                    <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
-                        <!-- Source="{Binding Executable, Converter={StaticResource GotoEditorImageConverter}}" -->
-                        <Image DockPanel.Dock="Left" Margin="1 1 4 1" Width="32" Height="32">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource GotoEditorImageConverter}">
-                                    <Binding Path="Executable" />
-                                    <Binding Path="ExecutableIconHint" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                        <DockPanel LastChildFill="False">
-                            <TextBlock DockPanel.Dock="Left" Margin="4 2"  Text="{Binding Title}" />
-                            <Panel DockPanel.Dock="Left" Width="10"/>
-                            <TextBlock DockPanel.Dock="Right" Opacity="0.3" Margin="4 2" Text="{Binding Notes}" />
-                        </DockPanel>
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.DataTemplates>
-        </ListBox>
-
-
     </DockPanel>
 </UserControl>

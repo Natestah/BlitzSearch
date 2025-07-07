@@ -120,25 +120,17 @@ public class MainWindowViewModel : ViewModelBase
         GotoEditorViewModel? firstEditorThatExists = null;
         bool foundConfiguredEditor = false;
         var gotoEditors = new GotoDefinitions().GetBuiltInEditors().ToList();
-        gotoEditors.AddRange(Configuration.Instance.CustomEditors);
+        
         foreach (var gotoEditor in gotoEditors)
         {
-            var editorVm = new GotoEditorViewModel(this,gotoEditor)
-            {
-                ReadOnly = true
-            };
-            GotoEditorCollection.Add(editorVm);
-            if (gotoEditor.Title == Configuration.Instance.GotoEditor.Title)
-            {
-                foundConfiguredEditor = true;
-                _selectedEditorViewModel = editorVm;
-            }
-
-            if (firstEditorThatExists==null && editorVm.EditorExists())
-            {
-                firstEditorThatExists = editorVm;;
-            }
+            foundConfiguredEditor = AddEditorToViewModel(true, gotoEditor, foundConfiguredEditor, ref firstEditorThatExists);
         }
+        
+        foreach (var gotoEditor in Configuration.Instance.CustomEditors)
+        {
+            foundConfiguredEditor = AddEditorToViewModel( false, gotoEditor, foundConfiguredEditor, ref firstEditorThatExists);
+        }
+        
 
         if (!foundConfiguredEditor && firstEditorThatExists != null)
         {
@@ -185,6 +177,28 @@ public class MainWindowViewModel : ViewModelBase
         BuildScopesViewModelsFromConfig();
         ResultsHighlighting = new ResultsHighlighting(this);
         ExternalPluginInteractions = new ExternalPluginInteractions(this);
+    }
+
+    private bool AddEditorToViewModel(bool isReadOnly, GotoEditor gotoEditor, bool foundConfiguredEditor,
+        ref GotoEditorViewModel? firstEditorThatExists)
+    {
+        var editorVm = new GotoEditorViewModel(this,gotoEditor)
+        {
+            ReadOnly = isReadOnly
+        };
+        GotoEditorCollection.Add(editorVm);
+        if (gotoEditor.Title == Configuration.Instance.GotoEditor.Title)
+        {
+            foundConfiguredEditor = true;
+            _selectedEditorViewModel = editorVm;
+        }
+
+        if (firstEditorThatExists==null && editorVm.EditorExists())
+        {
+            firstEditorThatExists = editorVm;;
+        }
+
+        return foundConfiguredEditor;
     }
 
     private void EscapeMininizeCommandRun()

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -54,5 +55,22 @@ public partial class GotoEditorSettingsPanel : UserControl
          mainWindowViewModel.GotoEditorCollection.Add(newEditor);
          mainWindowViewModel.RebuildCustomEditorList();
          mainWindowViewModel.SelectedEditorViewModel = newEditor;
+    }
+
+    private void DeleteEditorButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel { SelectedEditorViewModel.GotoEditor: not null } mainWindowViewModel)
+        {
+            return;
+        }
+
+        if (mainWindowViewModel.SelectedEditorViewModel.ReadOnly)
+        {
+            return;
+        }
+        var selectedViewModel = mainWindowViewModel.SelectedEditorViewModel;
+        mainWindowViewModel.SelectedEditorViewModel = mainWindowViewModel.GotoEditorCollection.FirstOrDefault();
+        mainWindowViewModel.GotoEditorCollection.Remove(selectedViewModel);
+        mainWindowViewModel.RebuildCustomEditorList();
     }
 }

@@ -9,7 +9,7 @@ namespace Blitz.Files;
 /// </summary>
 public class GitConfig
 {
-    private readonly FileSystemWatcher _gitConfigWatcher;
+    private readonly FileSystemWatcher? _gitConfigWatcher;
     private FileSystemWatcher? _globalIgnoreWatcher;
     private string? _gitConfigCachedPath = null;
     public event EventHandler? GitConfigChanged;
@@ -21,8 +21,12 @@ public class GitConfig
         Task.Run(InstallIgnoreWatcher);
     }
 
-    private FileSystemWatcher CreateConfigResetWatcher(string path, string filter)
+    private FileSystemWatcher? CreateConfigResetWatcher(string path, string filter)
     {
+        if (!File.Exists(path))
+        {
+            return null;
+        }
         var watcher = new FileSystemWatcher(path, filter);
         watcher.EnableRaisingEvents = true;
         watcher.Created += WatcherResetsConfigCache;

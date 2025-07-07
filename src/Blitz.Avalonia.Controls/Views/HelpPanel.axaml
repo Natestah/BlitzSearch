@@ -10,9 +10,7 @@
     <Panel IsVisible="{Binding EnableHelpPane, Mode=TwoWay}">
         <DockPanel>
             <ListBox x:Name="HelpBox" Background="Transparent" SelectionChanged="HelpBoxItemChanged" DockPanel.Dock="Left">
-                <ListBoxItem>Welcome</ListBoxItem>
                 <ListBoxItem>Usage</ListBoxItem>
-                <ListBoxItem>IDE Setup</ListBoxItem>
                 <ListBoxItem>Change Log</ListBoxItem>
                 <ListBoxItem>Support Blitz</ListBoxItem>
                 <ListBoxItem>About</ListBoxItem>
