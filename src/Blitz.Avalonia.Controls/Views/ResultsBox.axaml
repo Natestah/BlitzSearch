@@ -134,8 +134,14 @@
                                         Foreground="DodgerBlue"
                                         Kind="FileReplace" />
                                         <TextBlock VerticalAlignment="Center" >
-                                            <Run Text="Replaced '"/><Run Text="{Binding Count}"/> <Run Text="of "/><Run Text="{Binding Total}"/> <Run Text="' Files"></Run>
+                                            <Run Text="Replaced '"/><Run Text="{Binding Count}"/> <Run Text="of "/><Run Text="{Binding Total}"/> <Run Text="' Files."></Run>
                                         </TextBlock>
+                                        <Button IsVisible="{Binding !!ReplaceFileNameResultFailures.Count}" Click="FixReplacement_OnClick">
+                                            <TextBlock VerticalAlignment="Center" >
+                                                <Run Text="Force Writable Replace on  '"/><Run Text="{Binding ReplaceFileNameResultFailures.Count}"/><Run Text="' Files."></Run>
+                                            </TextBlock>
+                                        </Button>
+                                    <TextBlock VerticalAlignment="Center" IsVisible="{Binding PerforceReplaced}" Text=" - (Perforce Edits in Default CL)"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

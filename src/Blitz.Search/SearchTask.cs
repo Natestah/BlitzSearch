@@ -1450,14 +1450,21 @@ public class SearchTask
         SearchRoot.RaiseNewSearchTaskResult(searchTaskResult);
     }
 
+    public readonly object UnionedResultsSyncTaskLock = new object();
+
     public void EmptyUnionResults()
     {
-        if (UnionResults.FileNames.Count <= 0)
+        SearchTaskResult? unionResults;
+        lock (UnionedResultsSyncTaskLock)
         {
-            return;
+            if (UnionResults.FileNames.Count <= 0)
+            {
+                return;
+            }
+            unionResults = UnionResults;
+            UnionResults = new SearchTaskResult();
         }
-        var unionResults = UnionResults;
-        UnionResults = new SearchTaskResult();
+
         SearchRoot.RaiseNewSearchTaskResult(unionResults);
     }
 

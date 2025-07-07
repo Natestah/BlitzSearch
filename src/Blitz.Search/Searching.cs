@@ -34,7 +34,7 @@ public class Searching
         bool recycle = false;
         if (messageDictionary.TryGetValue(query.InstanceIdentity, out var workingTask))
         {
-            recycle = true;
+            recycle = query.EnableResultsRecycling;
             workingTask.CancellationTokenSource.Cancel();
             _fileChangedCancel.Cancel();
             if (query.RestartedFromGitIGnore)
@@ -153,6 +153,12 @@ public class Searching
     private void DoPriorResultsRecycling(SearchQuery newQuery, SearchTask oldTask, SearchTask newTask,
         out ImmutableHashSet<string> acceptedExclusions, out List<FileNameResult> fileNameResults)
     {
+        if (!newQuery.EnableResultsRecycling)
+        {
+            acceptedExclusions = [];
+            fileNameResults = [];
+            return;
+        }
         if (oldTask == null)
         {
             acceptedExclusions = [];
@@ -454,10 +460,13 @@ public class Searching
         
         var newResult = new SearchTaskResult();
         newResult.AlignIdentity(searchTaskResult);
-        var newListOfResults = new List<FileNameResult>(currentSearchTask.UnionResults.FileNames);
-        newListOfResults.AddRange(searchTaskResult.FileNames);
-        newResult.FileNames = newListOfResults;
-        currentSearchTask.UnionResults = newResult;
+        lock (currentSearchTask.UnionedResultsSyncTaskLock)
+        {
+            var newListOfResults = new List<FileNameResult>(currentSearchTask.UnionResults.FileNames);
+            newListOfResults.AddRange(searchTaskResult.FileNames);
+            newResult.FileNames = newListOfResults;
+            currentSearchTask.UnionResults = newResult;
+        }
     }
 
     public void RaiseNewSearchTaskResult(SearchTaskResult searchTaskResult)

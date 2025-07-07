@@ -200,12 +200,12 @@ public partial class BlitzSecondary : UserControl
                     };
                 mainWindowViewModel.SplitPane = true;
                 mainWindowViewModel.EnableTextPane = true;
-                return;
             }
-
-            fileNameResult = fileNameResultViewModel.FileNameResult;
-            gotoDocument = editorViewModel.GetOpenedOrCreateFile(fileNameResult.FileName,true, 1, 1);
-
+            else
+            {
+                fileNameResult = fileNameResultViewModel.FileNameResult;
+                gotoDocument = editorViewModel.GetOpenedOrCreateFile(fileNameResult.FileName,true, 1, 1);
+            }
         }
         else  if (previewing is ExceptionViewModel exceptionViewModel)
         {

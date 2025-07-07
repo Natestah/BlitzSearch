@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Avalonia.Controls;
@@ -5,12 +6,14 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Blitz.Avalonia.Controls.ViewModels;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using ReactiveUI;
 using System.Reactive;
 using System.Threading.Tasks;
+using Blitz.Interfacing;
 
 namespace Blitz.Avalonia.Controls.Views;
 
@@ -283,5 +286,35 @@ public partial class ResultsBox : UserControl
                 mainWindowViewModel.ShowImportantMessage?.Invoke(errorMessage);
             }
         }
+    }
+
+    private async void FixReplacement_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { DataContext: ReplaceTextViewModel replaceTextViewModel })
+        {
+            return;
+        }
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        foreach (var replaceFileNameResultFailure in replaceTextViewModel.ReplaceFileNameResultFailures.ToList())
+        {
+            try
+            {
+                File.SetAttributes(replaceFileNameResultFailure.FilenameResult.FileName, ~FileAttributes.ReadOnly & File.GetAttributes(replaceFileNameResultFailure.FilenameResult.FileName));
+                await mainWindowViewModel.ApplyReplacement(replaceFileNameResultFailure.FilenameResult);
+            }
+            catch (Exception ex)
+            {
+                mainWindowViewModel.ResultBoxItems.Add(new ExceptionViewModel( ExceptionResult.CreateFromException(ex)));
+                continue;
+            }
+            mainWindowViewModel.ResultBoxItems.Remove(replaceFileNameResultFailure.ExceptionViewModel);
+            replaceTextViewModel.ReplaceFileNameResultFailures.Remove(replaceFileNameResultFailure);
+            replaceTextViewModel.Count = replaceTextViewModel.Count + 1;
+        }
+        
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using AvaloniaEdit.TextMate;
@@ -2008,5 +2009,12 @@ public class MainWindowViewModel : ViewModelBase
         {
             IsWorkspaceScopeSelected = true;
         }
+    }
+    
+    public async Task ApplyReplacement(FileNameResult item)
+    {
+        var text = await File.ReadAllTextAsync(item.FileName);
+        text = item.GetReplaceResults(text);
+        await File.WriteAllTextAsync(item.FileName, text);
     }
 }

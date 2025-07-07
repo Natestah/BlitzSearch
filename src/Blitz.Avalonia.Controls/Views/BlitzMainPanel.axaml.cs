@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -237,6 +239,24 @@ public partial class BlitzMainPanel : UserControl
         BlitzSecondary.ShowPreview(message);
     }
 
+    private static bool PerforceEditReadonlyFiles(IEnumerable<FileNameResult> files)
+    {
+        var readonlyFiles = new HashSet<string>();
+        foreach (var item in files)
+        {
+            if (new FileInfo(item.FileName).IsReadOnly)
+            {
+                readonlyFiles.Add(item.FileName);
+            }
+        }
+
+        if (readonlyFiles.Count == 0)
+        {
+            return false;
+        }
+        
+        return Perforce.EditBatch(readonlyFiles);
+    }
     
     private async void AcceptChangesClick(object? sender, RoutedEventArgs e)
     {
@@ -249,12 +269,19 @@ public partial class BlitzMainPanel : UserControl
         {
             items.Add(change.FileNameResult);
         }
-
         mainWindowViewModel.ResultBoxItems.Clear();
-
         var summary = new StringBuilder();
         int total = items.Count;
         int successCount = 0;
+        
+        var readonlyFailures = new ObservableCollection<ReplaceFailureReport>();
+
+        bool perforceFilesAdded = false;
+        if (Perforce.IsDetectPerforceCommandLineInstalled())
+        {
+            perforceFilesAdded = PerforceEditReadonlyFiles(items);
+        }
+        
         foreach (var item in items)
         {
             summary.AppendLine(item.FileName);
@@ -262,13 +289,22 @@ public partial class BlitzMainPanel : UserControl
 
             try
             {
-                var text = await File.ReadAllTextAsync(item.FileName);
-                text = item.GetReplaceResults(text);
-                await File.WriteAllTextAsync(item.FileName, text);
+                await mainWindowViewModel.ApplyReplacement(item);
             }
             catch (Exception ex)
             {
-                mainWindowViewModel.ResultBoxItems.Add(ExceptionResult.CreateFromException(ex));
+                var exceptionViewModel = new ExceptionViewModel(ExceptionResult.CreateFromException(ex));
+                
+                if (new FileInfo(item.FileName).IsReadOnly)
+                {
+                    var newReadonly = new ReplaceFailureReport{ ExceptionViewModel = exceptionViewModel, FilenameResult = item };
+                    readonlyFailures.Add(newReadonly);
+                    mainWindowViewModel.ResultBoxItems.Add(exceptionViewModel);
+                    continue;
+                }
+                
+                mainWindowViewModel.ResultBoxItems.Add(exceptionViewModel);
+                continue;
             }
 
             foreach (var contentResult in item.ContentResults)
@@ -283,11 +319,16 @@ public partial class BlitzMainPanel : UserControl
             successCount++;
         }
 
-        var replaceTextViewModel = new ReplaceTextViewModel(summary.ToString(), successCount, total);
+        var replaceTextViewModel = new ReplaceTextViewModel(summary.ToString(), successCount, total)
+            {
+                PerforceReplaced = perforceFilesAdded,
+                ReplaceFileNameResultFailures = readonlyFailures
+            };
         mainWindowViewModel.SelectedItems.Clear();
         mainWindowViewModel.ResultBoxItems.Add(replaceTextViewModel);
         mainWindowViewModel.SelectedItems.Add(replaceTextViewModel);
     }
+
 
     private void MainSearchField_OnKeyDown(object? sender, KeyEventArgs e)
     {

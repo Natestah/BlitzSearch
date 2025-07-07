@@ -7,6 +7,11 @@ https://pay.natestah.com/
 Thank you!
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.16
+* Fixed Readonly Failures and Access errors when replacing
+* Add "Force OverWrite and replace" after failure
+* If Perforce Command line is installed, Blitz Search will automatically P4 Edit those when using Replace
+* Fixed threading issue that would cause some results to not show.
 ### Version 1.0.15
 * Remove Editor Selector in the Editor options ( just use the main selector at the top )
 * Add "Delete button" for removing custom editors
