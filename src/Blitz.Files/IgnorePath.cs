@@ -27,11 +27,6 @@ public class IgnorePath
             throw new NullReferenceException("Null or empty ignore file..");
         }
         
-        if (!File.Exists(ignoreFile))
-        {
-            throw new FileNotFoundException(ignoreFile);
-        }
-
         IgnoreFileName = ignoreFile;
         _directory = rootDirectory ?? Path.GetDirectoryName(ignoreFile) ?? string.Empty;
         _gitRelativePath = _directory.Replace("\\","/");
@@ -48,6 +43,10 @@ public class IgnorePath
     /// <returns></returns>
     public bool ParseIgnore()
     {
+        if (!File.Exists(IgnoreFileName))
+        {
+            return false;
+        }
         lock (this)
         {
             try
