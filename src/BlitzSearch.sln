@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Interfacing", "Blitz.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Goto", "Blitz.Goto\Blitz.Goto.csproj", "{9AEC49C0-6194-4940-AE80-C3B0C0B787C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blitz.Discord", "Blitz.Discord\Blitz.Discord.csproj", "{578DC6D5-7C21-40FA-B370-2452F3F3757C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{9AEC49C0-6194-4940-AE80-C3B0C0B787C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AEC49C0-6194-4940-AE80-C3B0C0B787C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AEC49C0-6194-4940-AE80-C3B0C0B787C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578DC6D5-7C21-40FA-B370-2452F3F3757C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578DC6D5-7C21-40FA-B370-2452F3F3757C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578DC6D5-7C21-40FA-B370-2452F3F3757C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578DC6D5-7C21-40FA-B370-2452F3F3757C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

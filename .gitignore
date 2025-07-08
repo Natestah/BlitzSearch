@@ -30,3 +30,5 @@ src/Blitz.Goto/obj
 src/BlitzSearch.sln.DotSettings.user
 
 /src/Output
+/src/Blitz.Discord/obj
+/src/Blitz.Discord/bin
