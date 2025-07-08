@@ -51,7 +51,6 @@ I personally have Blitz Search as the stand in for all but Jetbrains ( there are
 * [TextMateSharp](https://github.com/AvaloniaUI/AvaloniaEdit/) - Syntax Highlighting
 * [Huminizer](https://github.com/Humanizr/Humanizer) - Making Timestamps and file sizes more humanly readable.
 * [Material.Icons](https://github.com/SKProCH/Material.Icons) - Material Icons provides much of the icons used throughout.
-* [Markdown.Avalonia](https://github.com/whistyun/Markdown.Avalonia) - Showing this page! 
 
 ## Special thanks
 
@@ -64,9 +63,3 @@ Super early testing and feedback:
 
 Killer Blitz Icons
 * Oscar Lopez
-
-
-## Donate!
-
-[Donate to Blitz Search](https://pay.natestah.com) - The ultimate upvote is with cash..   
-
