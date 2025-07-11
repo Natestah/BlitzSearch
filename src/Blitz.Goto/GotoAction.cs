@@ -153,6 +153,9 @@ public class GotoAction(GotoEditor gotoEditor)
         {
             switch (gotoEditor.CodeExecute)
             {
+                case CodeExecuteNames.NVim:
+                    executeGotoWithSolutionId(gotoDirective, "NVIM_GOTO", preview);
+                    break;
                 case CodeExecuteNames.VSCode:
                 case CodeExecuteNames.Cursor:
                 case CodeExecuteNames.Windsurf:
@@ -210,6 +213,8 @@ public class GotoAction(GotoEditor gotoEditor)
     {
         switch (gotoEditor.CodeExecute)
         {
+            case CodeExecuteNames.NVim:
+                return AnySystemPathContains("Neovim");
             case CodeExecuteNames.VisualStudio:
                 return AnySystemPathContains("Visual Studio");
             case CodeExecuteNames.VSCode:

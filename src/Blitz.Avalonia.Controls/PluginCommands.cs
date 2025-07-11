@@ -124,7 +124,6 @@ public class PluginCommands
             {
                 return;
             }
-            
             if (action.Contains(','))
             {
                 var split = action.Split(',');
@@ -146,9 +145,12 @@ public class PluginCommands
             {
                 try
                 {
+                    string? text = null;
                     using var file = new FileStream(fullFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    using var streamReader = new StreamReader(file);
-                    var text = streamReader.ReadToEnd();
+                    {
+                        using var streamReader = new StreamReader(file);
+                        text = streamReader.ReadToEnd();
+                    }
                     function.Invoke(text);
                     return;
 

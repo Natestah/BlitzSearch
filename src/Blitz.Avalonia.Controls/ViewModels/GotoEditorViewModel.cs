@@ -281,7 +281,8 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     
     public bool RunTotoOnObjectGoto(object? controlDataContext, bool preview, out string errorMessage)
     {
-        if (preview && !IsVsCode && !IsVisualStudio && !IsCursor&& !IsWindsurf)
+        //Todo: NeoVim preview huh?
+        if (preview && !IsVsCode && !IsVisualStudio && !IsCursor&& !IsWindsurf && !IsNeoVim)
         {
             errorMessage = string.Empty;
             return true; // not en error so much.
@@ -303,6 +304,7 @@ public class GotoEditorViewModel(MainWindowViewModel mainWindowViewModel, GotoEd
     public bool IsSublimeText => GotoEditor.CodeExecute == CodeExecuteNames.SublimeText;
     public bool IsCursor => GotoEditor.CodeExecute == CodeExecuteNames.Cursor;
     public bool IsWindsurf => GotoEditor.CodeExecute == CodeExecuteNames.Windsurf;
+    public bool IsNeoVim => GotoEditor.CodeExecute == CodeExecuteNames.NVim;
     public bool IsVisualStudio => GotoEditor.CodeExecute == CodeExecuteNames.VisualStudio;
 
 }

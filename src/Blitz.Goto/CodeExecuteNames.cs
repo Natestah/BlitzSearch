@@ -6,6 +6,7 @@ namespace Blitz.Goto;
 public class CodeExecuteNames
 {
     public const string VSCode = "VsCodeGoto"; 
+    public const string NVim = "NVimGoto"; 
     public const string Cursor = "CursorGoto"; 
     public const string Windsurf = "WindsurfGoto";
     public const string VisualStudio = "VisualStudioPlugin"; 

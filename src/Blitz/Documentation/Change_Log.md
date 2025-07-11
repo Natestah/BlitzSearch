@@ -1,12 +1,10 @@
 # Change Log
 
-Blitz Search now has a "Donation" portal. If you like Blitz Search, consider the ultimate compliment, hard cash!  I also Love social media engagement.
-
-https://pay.natestah.com/
-
-Thank you!
-
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+
+### Version 1.0.18
+* Basic work-in-progress update for NeoVim, including a built-in selector for it.
+* More reduction in documentation, donation links are in main github repository.
 ### Version 1.0.17
 * Fixed Exception that happens if you have a Global Git Ignore Specified but then don't have the file.
 ### Version 1.0.16
@@ -17,7 +15,7 @@ Thank you!
 ### Version 1.0.15
 * Remove Editor Selector in the Editor options ( just use the main selector at the top )
 * Add "Delete button" for removing custom editors
-* Enasbled "Title tweaking" on editors
+* Enasbled "Title tweaking" on editorsz
 * Fixed crash when there's no git config.
 ### Version 1.0.14
 * Disable the automatic selection of First Item, when the preview pane is disabled.  This is proving to be disruptive.

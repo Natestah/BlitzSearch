@@ -37,6 +37,7 @@ public class GotoEditorImageConverter : IMultiValueConverter
         {"idea64.exe", "intellij_idea.png"},
         {"pycharm64.exe", "pycharm.png"},
         {"goland64.exe", "goland.png"},
+        {"nvim.exe", "nvim.png"},
         {"rustrover64.exe", "rustrover.png"},
         {"clion64.exe", "clion.png"},
         {"phpstorm64.exe", "phpstorm.png"},

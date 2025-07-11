@@ -17,6 +17,16 @@
     "Notes": "Blitz Search plugin required for goto."
   },
   {
+    "Title": "NeoVim",
+    "Executable": "nvim.exe",
+    "RunningProcessName": "",
+    "CodeExecute": "NVimGoto",
+    "ExecutableIconHint": "",
+    "ExecutableWorkingDirectory": "%programfiles%\\Neovim\\bin",
+    "Arguments": "nvim \u002B%line% %filename%",
+    "Notes": "Trying Neo Vim"
+  },
+  {
     "Title": "SublimeText",
     "CodeExecute": "SublimeText",
     "Executable": "subl.exe",

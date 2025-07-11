@@ -86,6 +86,7 @@
       <AvaloniaResource Include="Resources\cursor.png" />
       <None Remove="Resources\windsurf-logo.png" />
       <AvaloniaResource Include="Resources\windsurf-logo.png" />
+      <None Remove="Resources\nvim.png" />
     </ItemGroup>
 
 
@@ -97,5 +98,10 @@
 
     <ItemGroup>
       <AvaloniaResource Include="Resources\NewBlitzPng.png" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <AvaloniaResource Include="Resources\nvim.png" />
     </ItemGroup>
 </Project>
