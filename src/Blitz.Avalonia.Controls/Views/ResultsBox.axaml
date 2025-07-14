@@ -76,23 +76,17 @@
                             </StackPanel>
                         </DataTemplate>
                         <DataTemplate x:DataType="vm:ContentResultViewModel">
-                            <Border BorderThickness="1" Background="Transparent" IsHitTestVisible="True" Margin="2"
+                            <Border Padding="3" Background="Transparent" IsHitTestVisible="True" Margin="0"
                                     VerticalAlignment="Center">
                                 <Panel>
-                                    <!-- <DockPanel LastChildFill="True"> -->
-                                        <!-- <Panel  VerticalAlignment="Center"> -->
-                                        <!--     <TextBlock VerticalAlignment="Center" -->
-                                        <!--                Inlines="{Binding BackGroundWithHighlights }" -->
-                                        <!--                LineSpacing="{Binding LineHeight}" -->
-                                        <!--                Foreground="{StaticResource SystemColorWindowTextColor}"> -->
-                                        <!--     </TextBlock> -->
-                                            <TextBlock VerticalAlignment="Center"
-                                                       Inlines="{Binding ContentWithHighlights }"
-                                                       LineSpacing="{Binding LineHeight}"
-                                                       Foreground="{StaticResource SystemColorWindowTextColor}">
-                                            </TextBlock>
-                                        <!-- </Panel> -->
-                                    <!-- </DockPanel> -->
+                                    <TextBlock VerticalAlignment="Center"
+                                               Inlines="{Binding ContentWithHighlights }"
+                                               LineSpacing="{Binding LineHeight}"
+                                               Foreground="{StaticResource SystemColorWindowTextColor}">
+                                    </TextBlock>
+                                    <Panel HorizontalAlignment="Right" Background="{Binding MainWindowViewModel.EditorViewModel.ThemeViewModel.BackGroundBrush}" VerticalAlignment="Stretch">
+                                        <TextBlock Margin="10 0 " VerticalAlignment="Center" Opacity="{Binding VisualAlpha}" Text="{Binding ShortDisplayName}"></TextBlock>
+                                    </Panel>
                                 </Panel>
                             </Border>
                         </DataTemplate>
@@ -147,7 +141,7 @@
                         </DataTemplate>
                     </ListBox.DataTemplates>
                     <ListBox.ContextMenu>
-                        <ContextMenu Opened="RightClickMenu_OnOpened">
+                        <ContextMenu>
                             <MenuItem Header="Copy" Command="{Binding CopyCommand}">
                                 <MenuItem.Icon>
                                     <material:MaterialIcon Kind="ContentCopy"></material:MaterialIcon>

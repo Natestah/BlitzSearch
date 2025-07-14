@@ -1,4 +1,6 @@
 using Avalonia.Controls.Documents;
+using Avalonia.Controls.Shapes;
+using Avalonia.Media;
 using Blitz.AvaloniaEdit.ViewModels;
 using Blitz.Interfacing;
 using ReactiveUI;
@@ -47,7 +49,13 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
             return matchHighlighter.GetInlines();
         }
     }
+    
+    public string ShortDisplayName => System.IO.Path.GetFileName(fileNameResult.FileName);
 
+    public IBrush FileBackgroundBrush => new SolidColorBrush(Configuration.Instance.CurrentTheme.WindowBackground);
+
+    public bool IsFirstFromFile { get; set; } 
+    public double VisualAlpha => IsFirstFromFile ? 0.35 : 0.10;
 
     public void RefreshPropertyVisuals()
     {

@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:viewModels="clr-namespace:Blitz.AvaloniaEdit.ViewModels"
+             x:DataType="viewModels:BlitzEditorViewModel"
+             x:Class="Blitz.AvaloniaEdit.Views.BlitzDocumentPreviewTitle">
+        <DockPanel DataContext="{Binding CurrentDocument }">
+            <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="20 3 3 3" Text ="{Binding TabTitle}" Foreground="{StaticResource SystemColorWindowTextColor}"/>
+            <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="3" Opacity="0.33" Text ="{Binding FileNameOrTitle}" Foreground="{StaticResource SystemColorWindowTextColor}"/>
+        </DockPanel>
+</UserControl>

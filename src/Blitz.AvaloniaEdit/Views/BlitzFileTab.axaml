@@ -6,7 +6,6 @@
              xmlns:viewModels="clr-namespace:Blitz.AvaloniaEdit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:avEditConverters="using:Blitz.AvaloniaEdit.Converters"
-
              x:DataType="viewModels:BlitzEditorViewModel"
              x:Class="Blitz.AvaloniaEdit.Views.BlitzFileTab">
     <UserControl.Resources>

@@ -2,6 +2,10 @@
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+### Version 1.0.19
+* Results are now in flat Style with Filenames to the right.
+* Some work to Left Right Arrow, now navigates to next not matching filename.
+* When the "also" search filenames is checked, those files with their matched names will show the same as before.
 ### Version 1.0.18
 * Basic work-in-progress update for NeoVim, including a built-in selector for it.
 * More reduction in documentation, donation links are in main github repository.

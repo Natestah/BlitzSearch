@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using Avalonia.Dialogs.Internal;
 using AvaloniaEdit.TextMate;
 using Avalonia.Media;
@@ -23,6 +24,16 @@ public class BlitzEditorViewModel : ViewModelBase
     private IBrush? _titleBarBackground = Brushes.Transparent;
     private IBrush? _textForeground;
     private string? _searchThisPreviewText;
+
+    public BlitzEditorViewModel()
+    {
+        _selectedFiles.CollectionChanged+=SelectedFilesOnCollectionChanged;
+    }
+
+    private void SelectedFilesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        this.RaisePropertyChanged(nameof(CurrentDocument));
+    }
 
     public Action<TextMate.Installation>? BackGroundForeGroundUpdate;
 
@@ -58,8 +69,13 @@ public class BlitzEditorViewModel : ViewModelBase
     public ObservableCollection<object> SelectedFiles
     {
         get => _selectedFiles;
-        set => this.RaiseAndSetIfChanged(ref _selectedFiles, value);
     }
+
+    public BlitzDocument? CurrentDocument
+    {
+        get => SelectedFiles.FirstOrDefault() as BlitzDocument;
+    }
+
 
     /// <summary>
     /// Gets the current opened file, if one isn't in the collection a new one 
@@ -158,9 +174,9 @@ public class BlitzEditorViewModel : ViewModelBase
     }
 
     private FontFamily _selectedFontFamily = FontFamily.Default;
+    private BlitzDocument? _currentDocument;
 
-    
-    
+
     bool ApplyBrushAction(TextMate.Installation e, string colorKeyNameFromJson, Action<IBrush> applyColorAction)
     {
         if (!e.TryGetThemeColor(colorKeyNameFromJson, out var colorString))

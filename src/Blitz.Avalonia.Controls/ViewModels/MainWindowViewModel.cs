@@ -1054,12 +1054,23 @@ public class MainWindowViewModel : ViewModelBase
 
                 bool isMatchInFilename = changedFile.BlitzMatches != null && changedFile.BlitzMatches.Count > 0;
             
-                if (!foundThis && (isMatchInFilename || changedFile.ContentResults.Count > 0) ) 
+                if (!foundThis && (isMatchInFilename || changedFile.ContentResults.Count > 0) )
                 {
-                    ResultBoxItems.Add(new FileNameResultViewModel(this,changedFile){IsUpdated = true});
+                    if (isMatchInFilename)
+                    {
+                        var fileItem = new FileNameResultViewModel(this, changedFile) { IsUpdated = true };
+                        ResultBoxItems.Add(fileItem);
+                    }
+                    bool isFirst = true;
                     foreach (var item in changedFile.ContentResults)
                     {
-                        ResultBoxItems.Add(new ContentResultViewModel(this, item, changedFile));
+                        var contextItem = new ContentResultViewModel(this, item, changedFile);
+                        if (isFirst)
+                        {
+                            contextItem.IsFirstFromFile = true;
+                            isFirst = false;
+                        }
+                        ResultBoxItems.Add(contextItem);
                     }
                 }
             }
@@ -1073,14 +1084,22 @@ public class MainWindowViewModel : ViewModelBase
                 return;
             }
             DoScheduledClear();
-            ResultBoxItems.Add(new FileNameResultViewModel(this,fileResult));
-            if (fileResult.ContentResults.Count <= 0)
+            bool isMatchInFilename = fileResult.BlitzMatches.Count > 0;
+            if ( isMatchInFilename )
             {
+                ResultBoxItems.Add(new FileNameResultViewModel(this,fileResult));
                 continue;
             }
+
+            bool isFirst = true;
             foreach (var contentResult in fileResult.ContentResults)
             {
                 var thisItem = new ContentResultViewModel(this, contentResult, fileResult);
+                if (isFirst)
+                {
+                    thisItem.IsFirstFromFile = true;
+                    isFirst = false;
+                }
                 ResultBoxItems.Add(thisItem);
             }
         }

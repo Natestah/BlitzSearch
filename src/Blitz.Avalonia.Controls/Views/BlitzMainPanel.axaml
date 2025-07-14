@@ -73,7 +73,7 @@
                 </Grid>
                 <models:ResultsBox x:Name="ResultsBox" />
             </DockPanel>
-            <GridSplitter Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
+            <GridSplitter IsVisible="{Binding SplitPane }" Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
             <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" />
         </Grid>
     </DockPanel>
