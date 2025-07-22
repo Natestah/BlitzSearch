@@ -8,8 +8,7 @@
 # Blitz Search 
 
 A Universal improvement to Find/Replace in files for any Text Editor / IDE
-
-![2025-07-04_10-25-40](https://github.com/user-attachments/assets/258507e1-c9fd-4894-ab68-c63024326be9)
+<img width="1920" height="1099" alt="blitzthing2" src="https://github.com/user-attachments/assets/956e5c0e-db96-4a43-b382-a399200f238a" />
 
 ## Bullets
 * Search code for words on a line.
@@ -22,6 +21,7 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 * Living search results update with file changes.
 
  
+
 ## Setup Instructions
 
 1) Install Blitz Search From Current Releases here. 
