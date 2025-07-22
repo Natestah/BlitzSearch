@@ -19,6 +19,8 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 * Syntax Highlighting in results.
 * Git Ignore filter reduces workload and Clutter in results.
 * Auto-Human text file discovery
+* Living search results update with file changes.
+
  
 ## Setup Instructions
 
