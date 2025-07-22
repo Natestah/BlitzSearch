@@ -23,7 +23,7 @@ public class TypeDetection
         ".master", ".boo", ".atg", ".css", ".java", ".patch", ".diff", ".ps1", ".psm1", ".psd1", ".php", ".py", ".pyw",
         ".tex", ".sql", ".vb", ".xml", ".xsl", ".xslt", ".xsd", ".manifest", ".config", ".addin", ".xshd", ".wxs",
         ".wxi", ".wxl", ".proj", ".csproj", ".vbproj", ".ilproj", ".booproj", ".build", ".xfrm", ".targets", ".xaml",
-        ".xpt", ".xft", ".map", ".wsdl", ".disco", ".ps1xml", ".nuspec", ".md", ".json"
+        ".xpt", ".xft", ".map", ".wsdl", ".disco", ".ps1xml", ".nuspec", ".md", ".json", ".vcxproj"
     ];
 
     private static HashSet<string> _knownBinaryTypes =

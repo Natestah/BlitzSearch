@@ -202,6 +202,10 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
         
         if (TryGetValue(description.Extension, out var fileDictionary))
         {
+            if (fileDictionary.FileInformations.Count == 0)
+            {
+                return;
+            }
             byte[] bytes = MessagePackSerializer.Serialize(fileDictionary);
             File.WriteAllBytes(fileName, bytes);
         }
@@ -237,6 +241,18 @@ public class SearchExtensionCache : ConcurrentDictionary<string, FilesByExtensio
             var bytes = File.ReadAllBytes(fileName);
             var fileDictionary =
                 MessagePackSerializer.Deserialize<FilesByExtension>(bytes);
+
+            for (var index = 0; index < fileDictionary.WordCount; index++)
+            {
+                var key = fileDictionary.Words[index];
+                if (key == null)
+                {
+                    // This dictionary is corrupt, so it's time to start a new cache.
+                    this[description.Extension] = new FilesByExtension();
+                    return;
+                }
+            }
+
             TryAdd(description.Extension, fileDictionary);
         }
         catch (Exception ex) when (ex is MessagePackSerializationException)

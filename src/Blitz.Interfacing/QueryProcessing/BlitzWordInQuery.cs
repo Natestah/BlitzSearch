@@ -127,7 +127,11 @@ public partial class BlitzWordInQuery: IBlitzMatchingQuery
             bool anyContains = false;
 
             foreach (var uniqueWord in uniqueWords)
-            {  
+            {
+                if (uniqueWord == null)
+                {
+                    continue;
+                }
                 if (uniqueWord.Contains(word, StringComparison.OrdinalIgnoreCase))
                 {
                     anyContains = true;

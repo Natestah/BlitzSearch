@@ -1173,6 +1173,7 @@ public class MainWindowViewModel : ViewModelBase
             or nameof(EnableThemePane)
             or nameof(SelectedItems)
             or nameof(SplitPane)
+            or nameof(IsSmartCaseSensitive)
             )
         {
             return;

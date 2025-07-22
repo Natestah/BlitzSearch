@@ -2,6 +2,11 @@
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+### Version 1.0.20
+* General UE5.sln ( Large Solution ) work: 
+* Fixed up bugs with Caching when using Solution Scope, some pieces needed updating to work properly
+* Fixed up report on "Files Discovered" when using Solution Scope.
+* Progress indicator improvement for Solution Scope.
 ### Version 1.0.19
 * Results are now in flat Style with Filenames to the right.
 * Some work to Left Right Arrow, now navigates to next not matching filename.

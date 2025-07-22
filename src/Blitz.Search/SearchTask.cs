@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
@@ -86,6 +87,10 @@ public class SearchTask
 
         status.FileDiscoveryFinished = SearchRoot.FileDiscoverer.IsFinished;
         status.DiscoveredCount = SearchRoot.FileDiscoverer.FoundFilesCount;
+        if (status.DiscoveredCount == 0)
+        {
+            status.DiscoveredCount = GetSolutionFilesCount();
+        }
         status.FilesProcessed = _fileNameCount;
         status.Discovering = !SearchRoot.FileDiscoverer.IsFinished;
         searchTaskResult.AlignIdentity(SearchQuery);
@@ -248,6 +253,24 @@ public class SearchTask
         return searchTaskResult;
     }
 
+    public int GetSolutionFilesCount()
+    {
+        int count = 0;
+        if(SearchQuery.SolutionExports == null) return count;
+        foreach (var solutionExport in SearchQuery.SolutionExports)
+        {
+            foreach (var project in solutionExport.Projects ?? [])
+            {
+                if (project.Files != null)
+                {
+                    count += project.Files.Count;
+                }
+            }
+        }
+
+        return count;
+    }
+
     public IEnumerable<string> SolutionEnumerator(string extension, CancellationTokenSource cancellationTokenSource)
     {
         if(SearchQuery.SolutionExports == null) yield break;
@@ -376,18 +399,18 @@ public class SearchTask
                 presentThisFile = true;
                 foundAnything = true;
             }
-            else if(result == ContentResult.NotFound) 
+            else if (result == ContentResult.NotFound)
             {
                 if (!foundAnything)
                 {
-                    
-                    DebugPostCreation(taskParameters.DebugFileNameQuery, searchTaskResult, "No Contents" );
+
+                    DebugPostCreation(taskParameters.DebugFileNameQuery, searchTaskResult, "No Contents");
                     if (CancellationTokenSource.IsCancellationRequested)
                     {
                         return;
                     }
 
-                    Recycling.FilesWithNoResults.TryAdd(file,1);
+                    Recycling.FilesWithNoResults.TryAdd(file, 1);
                 }
                 else
                 {
@@ -401,7 +424,7 @@ public class SearchTask
                 }
             }
         }
-        catch (Exception ex ) when (ex is UnauthorizedAccessException or IOException)
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
         {
             ReportException(ex);
         }
@@ -666,7 +689,7 @@ public class SearchTask
                     foreach (var file in project.Files ?? [])
                     {
                         string extension = Path.GetExtension(file);
-                        if (userSetofExtensions.Contains(extension))
+                        if (!userSetofExtensions.Add(extension))
                         {
                             continue;
                         }
@@ -701,6 +724,7 @@ public class SearchTask
             {
                 return;
             }
+
             try
             {
                 var descriptor = GetCachingDescription(extension.Extension!);
@@ -708,7 +732,7 @@ public class SearchTask
                 if (SearchQuery.FlatSearchFilesList != null)
                 {
                     SearchRoot.ExtensionCache.RestoreCache(descriptor, CancellationTokenSource.Token);
-                    if (SearchExtension(taskParameters, extension, FlatFileListEnumerator ))
+                    if (SearchExtension(taskParameters, extension, FlatFileListEnumerator))
                     {
                         foundAnything = true;
                     }
@@ -716,7 +740,7 @@ public class SearchTask
                 else if (SearchQuery.SolutionExports != null)
                 {
                     SearchRoot.ExtensionCache.RestoreCache(descriptor, CancellationTokenSource.Token);
-                    if (SearchExtension(taskParameters, extension, SolutionEnumerator ))
+                    if (SearchExtension(taskParameters, extension, SolutionEnumerator))
                     {
                         foundAnything = true;
                     }
@@ -724,19 +748,19 @@ public class SearchTask
                 else
                 {
                     SearchRoot.ExtensionCache.RestoreCache(descriptor, CancellationTokenSource.Token);
-                    if (SearchExtension(taskParameters, extension, SearchRoot.ExtensionCache.EnumCacheFileExtensions ))
+                    if (SearchExtension(taskParameters, extension, SearchRoot.ExtensionCache.EnumCacheFileExtensions))
                     {
                         foundAnything = true;
                     }
 
                 }
-                
+
                 if (CancellationTokenSource.IsCancellationRequested)
                 {
                     return;
                 }
             }
-            catch (Exception e ) when (e is not OperationCanceledException)
+            catch (Exception e) when (e is not OperationCanceledException)
             {
                 Console.WriteLine(e);
             }
@@ -831,45 +855,46 @@ public class SearchTask
         EmptyUnionResults();
         DoStatusUpdate();
         
-        if (taskParameters.DoFolderCache)
+        foreach (var extension in orderedSearch)
         {
-            foreach (var extension in orderedSearch)
+            if (CancellationTokenSource.IsCancellationRequested)
             {
-                if (CancellationTokenSource.IsCancellationRequested)
-                {
-                    return;
-                }
+                return;
+            }
 
-                try
+            try
+            {
+                var descriptor = GetCachingDescription(extension.Extension!);
+                if (SearchRoot.FileDiscoverer is { IsFinished: true })
                 {
-                    var descriptor = GetCachingDescription(extension.Extension!);
-                    if (SearchRoot.FileDiscoverer is { IsFinished: true })
+                    if(SearchRoot.ExtensionCache.TryGetValue(extension.Extension!, out var extensionCache))
                     {
-                        if(SearchRoot.ExtensionCache.TryGetValue(extension.Extension!, out var extensionCache))
+                        if(taskParameters.DoFolderCache)
                         {
                             if (SearchRoot.FileDiscoverer != null && SearchRoot.FileDiscoverer.CleanupCache(extensionCache,CancellationTokenSource))
                             {
                                 SearchRoot.ExtensionCache.DirtyCache(extension.Extension!);
                             }
                         }
-                        SearchRoot.ExtensionCache.SaveCache(descriptor);
                     }
+                    SearchRoot.ExtensionCache.SaveCache(descriptor);
                 }
-                catch (Exception e)
-                {
-                    ReportException(e);
-                }
-            }
-            try
-            {
-                SearchRoot.ExtensionCache.SaveAllKnownCacheTypes();
             }
             catch (Exception e)
             {
                 ReportException(e);
-                throw;
             }
         }
+        try
+        {
+            SearchRoot.ExtensionCache.SaveAllKnownCacheTypes();
+        }
+        catch (Exception e)
+        {
+            ReportException(e);
+            throw;
+        }
+        
         CancellationTokenSource.Cancel();
     }
 
@@ -980,7 +1005,7 @@ public class SearchTask
         {
             await Task.Delay(Searching.QuietTime + TimeSpan.FromMilliseconds(1), CancellationTokenSource.Token);
         }
-        catch (OperationCanceledException)
+        catch (TaskCanceledException)
         {
             return;
         }
@@ -1065,17 +1090,18 @@ public class SearchTask
             DebugPostCreation(taskParameters.DebugFileNameQuery,searchTaskResult, "Is a backup file (ends with ~)");
             return ContentResult.Skipped;
         }
+
         try
         {
             if (TypeDetection.Instance.IsBinary(extension, file))
             {
-                DebugPostCreation(taskParameters.DebugFileNameQuery,searchTaskResult, "Determined Binary");
+                DebugPostCreation(taskParameters.DebugFileNameQuery, searchTaskResult, "Determined Binary");
                 return ContentResult.Skipped;
             }
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
         {
-            DebugPostCreation(taskParameters.DebugFileNameQuery,searchTaskResult, "Unauthorized in Binary Detection");
+            DebugPostCreation(taskParameters.DebugFileNameQuery, searchTaskResult, "Unauthorized in Binary Detection");
             return ContentResult.Skipped;
         }
         
