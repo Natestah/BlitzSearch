@@ -84,9 +84,14 @@
                                                LineSpacing="{Binding LineHeight}"
                                                Foreground="{StaticResource SystemColorWindowTextColor}">
                                     </TextBlock>
-                                    <Panel HorizontalAlignment="Right" Background="{Binding MainWindowViewModel.EditorViewModel.ThemeViewModel.BackGroundBrush}" VerticalAlignment="Stretch">
-                                        <TextBlock Margin="10 0 " VerticalAlignment="Center" Opacity="{Binding VisualAlpha}" Text="{Binding ShortDisplayName}"></TextBlock>
-                                    </Panel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{Binding MainWindowViewModel.EditorViewModel.ThemeViewModel.BackGroundBrush}" VerticalAlignment="Stretch">
+                                            <Border  Background="DarkSlateGray" BorderBrush="Chartreuse" BorderThickness="0 0 5 0" IsVisible="{Binding IsUpdated}" Padding="3 1" CornerRadius="3" Margin="3">
+                                                <TextBlock Foreground="WhiteSmoke" FontWeight="Bold" VerticalAlignment="Center" Text="Updated!"/>
+                                            </Border>
+                                            <TextBlock Margin="10 0" VerticalAlignment="Center" Opacity="{Binding VisualAlpha}" Text="{Binding ShortDisplayName}"></TextBlock>
+                                            <TextBlock Margin="0 0 " VerticalAlignment="Center" Opacity="{Binding VisualAlpha}" Text="{Binding LineNumber}"></TextBlock>
+                                        </StackPanel>
+
                                 </Panel>
                             </Border>
                         </DataTemplate>

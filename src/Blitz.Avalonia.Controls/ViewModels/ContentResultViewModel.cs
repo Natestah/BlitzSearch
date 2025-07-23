@@ -10,12 +10,15 @@ namespace Blitz.Avalonia.Controls.ViewModels;
 public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, FileContentResult fileContentResultResult, FileNameResult fileNameResult)
     :  ViewModelBase,IResultCopiable
 {
+    private bool _isUpdated;
     public FileContentResult FileContentResult => fileContentResultResult;
     public FileNameResult FileNameResult => fileNameResult;
 
     public MainWindowViewModel MainWindowViewModel => mainWindowViewModel;
 
     public double LineHeight => Configuration.Instance.EditorConfig.LineSpacing;
+    
+    public int LineNumber => fileContentResultResult.LineNumber;
   
     public InlineCollection ContentWithHighlights
     {
@@ -65,4 +68,9 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
 
     public string CopyText => fileContentResultResult.CapturedContents;
 
+    public bool IsUpdated
+    {
+        get => _isUpdated;
+        set => this.RaiseAndSetIfChanged( ref _isUpdated, value);
+    }
 }

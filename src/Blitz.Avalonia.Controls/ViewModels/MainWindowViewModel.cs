@@ -1033,22 +1033,21 @@ public class MainWindowViewModel : ViewModelBase
                 }
                 for (int i = 0; i < ResultBoxItems.Count; i++)
                 {
-                    if (ResultBoxItems[i] is FileNameResultViewModel fileNameResultViewModel && fileNameResultViewModel.FileName == changedFile.FileName )
+                    if (ResultBoxItems[i] is ContentResultViewModel contenxtResultsViewModel && contenxtResultsViewModel.FileNameResult.FileName == changedFile.FileName )
                     {
                         foundThis = true;
-                        i++;
-                        while (i < ResultBoxItems.Count && ResultBoxItems[i] is not FileNameResultViewModel)
+                        while (i < ResultBoxItems.Count && ResultBoxItems[i] is ContentResultViewModel nextResultViewModel && nextResultViewModel.FileNameResult.FileName == changedFile.FileName )
                         {
                             ResultBoxItems.RemoveAt(i);
                         }
 
+                        bool first = true;
                         foreach (var content in changedFile.ContentResults)
                         {
-                            ResultBoxItems.Insert(i,new ContentResultViewModel(this,content,changedFile));
+                            ResultBoxItems.Insert(i,new ContentResultViewModel(this,content,changedFile){IsUpdated = true, IsFirstFromFile = first});
+                            first = false;
                             i++;
                         }
-
-                        fileNameResultViewModel.IsUpdated = true;
                     }
                 }
 

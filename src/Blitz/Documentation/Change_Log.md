@@ -2,6 +2,8 @@
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+### Version 1.0.21
+* BugFix - file change updates not landing correctly on new flat mode results.
 ### Version 1.0.20
 * General UE5.sln ( Large Solution ) work: 
 * Fixed up bugs with Caching when using Solution Scope, some pieces needed updating to work properly
