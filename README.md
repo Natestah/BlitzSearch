@@ -8,7 +8,10 @@
 # Blitz Search 
 
 A Universal improvement to Find/Replace in files for any Text Editor / IDE
-<img width="1920" height="1099" alt="blitzthing2" src="https://github.com/user-attachments/assets/956e5c0e-db96-4a43-b382-a399200f238a" />
+
+<img width="1920" height="1099" alt="blitzthing14" src="https://github.com/user-attachments/assets/b238dd0a-cc19-4463-b323-1435a84d9181" />
+
+
 
 ## Bullets
 * Search code for words on a line.
