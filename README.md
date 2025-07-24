@@ -23,7 +23,7 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 * Living search results reflect file changes.
 * In editor preview pane ( where applicable )
 
-[![2025-07-24_10-36-36](https://github.com/user-attachments/assets/057cd75e-2ee0-4d0d-834d-55a827a1c624)](https://github.com/user-attachments/assets/1d4363ab-1b4f-496c-a25c-52e78aa1e530)
+![2025-07-24_10-36-36](https://github.com/user-attachments/assets/1d4363ab-1b4f-496c-a25c-52e78aa1e530)
 
 
 ## Setup Instructions
