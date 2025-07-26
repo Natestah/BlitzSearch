@@ -84,7 +84,7 @@
                                                LineSpacing="{Binding LineHeight}"
                                                Foreground="{StaticResource SystemColorWindowTextColor}">
                                     </TextBlock>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{Binding MainWindowViewModel.EditorViewModel.ThemeViewModel.BackGroundBrush}" VerticalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="{Binding MainWindowViewModel.EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}" VerticalAlignment="Stretch">
                                             <Border  Background="DarkSlateGray" BorderBrush="Chartreuse" BorderThickness="0 0 5 0" IsVisible="{Binding IsUpdated}" Padding="3 1" CornerRadius="3" Margin="3">
                                                 <TextBlock Foreground="WhiteSmoke" FontWeight="Bold" VerticalAlignment="Center" Text="Updated!"/>
                                             </Border>

@@ -50,14 +50,25 @@ public class ThemeViewModel : ViewModelBase
         _options = new BlitzTextMateGrammarsRegistryOptions(options, themeAsFile);
         Registry = new Registry(_options);
         
-        var theme = Registry.GetTheme();
-        if (theme.GetGuiColorDictionary().TryGetValue("editor.background", out var colorHexString))
+        var colorDictionary = Registry.GetTheme().GetGuiColorDictionary();
+        if (colorDictionary.TryGetValue("editor.background", out var colorHexString))
         {
             BackGroundBrush = new SolidColorBrush(Color.Parse(colorHexString));
         }
         else
         {
             BackGroundBrush = Brushes.Transparent;
+        }
+        
+        if (colorDictionary.TryGetValue("sideBar.background", out var sideBarBackground)
+            ||colorDictionary.TryGetValue("menu.background", out sideBarBackground))
+        {
+            ResultsBackGroundBrush = new SolidColorBrush(Color.Parse(sideBarBackground));
+        }
+        else
+        {
+            // Todo: try and simply blend background with forground to differentiate automatically
+            ResultsBackGroundBrush = BackGroundBrush; 
         }
     }
     
@@ -90,6 +101,7 @@ public class ThemeViewModel : ViewModelBase
     
     
     public IBrush BackGroundBrush { get; }
+    public IBrush ResultsBackGroundBrush { get; }
 
     public ThemeName ThemeName => Enum.TryParse(_blitzTheme.ThemeName, out ThemeName parsedName ) ? parsedName : ThemeName.DarkPlus;
 

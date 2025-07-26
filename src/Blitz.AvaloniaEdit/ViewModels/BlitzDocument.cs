@@ -16,6 +16,8 @@ public class BlitzDocument : ViewModelBase
     private bool _isPreviewing;
     public string FileNameOrTitle { get; set; }
     
+    public string RelativeDirectoryPath { get; set; }
+
     //ScrollViewer, when sleeping files needs to go back to the last scroll position. -> https://github.com/Natestah/BlitzSearch/issues/89
 
     public int AlignViewLine
@@ -79,8 +81,29 @@ public class BlitzDocument : ViewModelBase
 
     public string DirtyText { get; set; } = "";
 
+    public string RelativePath
+    {
+        get
+        {
+            if (Type != DocumentType.File)
+            {
+                return string.Empty;  // for information tabs.
+            }
+
+            try
+            {
+                return Path.GetRelativePath(RelativeDirectoryPath, FileNameOrTitle);
+            }
+            catch (Exception e)
+            {
+                return "-";
+            }
+        }
+    }
+
     public BlitzDocument(DocumentType documentType, string fileNameOrTitle, string? relativeDirectoryPath = null)
     {
+        RelativeDirectoryPath = relativeDirectoryPath ?? string.Empty;
         FileNameOrTitle = fileNameOrTitle;
         Type = documentType;
     }

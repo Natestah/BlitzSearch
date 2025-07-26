@@ -10,12 +10,15 @@ public class SolutionID: IEquatable<SolutionID>
 {
     public string Title { get; set; } = string.Empty;
     public string Identity { get; set; } = string.Empty;
+    
+    public string SolutionPath { get; set; } = string.Empty;
 
     public static SolutionID CreateFromSolutionPath(string solutionPath) =>
         new()
         {
             Title = Path.GetFileNameWithoutExtension(solutionPath) ,
-            Identity = SearchExtensionCache.Md5(solutionPath)
+            Identity = SearchExtensionCache.Md5(solutionPath),
+            SolutionPath = Path.GetDirectoryName(solutionPath)
         };
     
     public static SolutionID None = new SolutionID{Title = "None", Identity = "None"};

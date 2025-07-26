@@ -33,6 +33,7 @@ public partial class BlitzSecondary : UserControl
         };
     }
 
+
     public TextEditor AvaloniaTextEditor => FileView.TextEditor;
 
     public void GotoPreviewLineRun()
@@ -178,7 +179,7 @@ public partial class BlitzSecondary : UserControl
             var documentLine = AvaloniaTextEditor.Document.GetLineByOffset(AvaloniaTextEditor.CaretOffset);
             int column = AvaloniaTextEditor.CaretOffset - documentLine.Offset;
             int fileLine = documentLine.LineNumber;
-            gotoDocument = editorViewModel.GetOpenedOrCreateFile(reloadPreviewRequest.FileName, true, fileLine, column);
+            gotoDocument = editorViewModel.GetOpenedOrCreateFile(reloadPreviewRequest.FileName, true, fileLine, column, mainWindowViewModel.GetRelativePathForFileName(reloadPreviewRequest.FileName));
 
         }
         else if (previewing is ContentResultViewModel contentResultViewModel)
@@ -187,7 +188,8 @@ public partial class BlitzSecondary : UserControl
             int fileLine = contentResultViewModel.FileContentResult.LineNumber;
             var firstMatch = contentResultViewModel.FileContentResult.BlitzMatches.FirstOrDefault();
             int column = firstMatch?.MatchIndex ?? 1;
-            gotoDocument = editorViewModel.GetOpenedOrCreateFile(fileNameResult.FileName,true , fileLine, column);
+            string relativePath = mainWindowViewModel.GetRelativePathForFileName(fileNameResult.FileName);
+            gotoDocument = editorViewModel.GetOpenedOrCreateFile(fileNameResult.FileName,true , fileLine, column,relativePath);
 
         }
         else if (previewing is FileNameResultViewModel fileNameResultViewModel)
@@ -204,7 +206,10 @@ public partial class BlitzSecondary : UserControl
             else
             {
                 fileNameResult = fileNameResultViewModel.FileNameResult;
-                gotoDocument = editorViewModel.GetOpenedOrCreateFile(fileNameResult.FileName,true, 1, 1);
+                
+                string relativePath = mainWindowViewModel.GetRelativePathForFileName(fileNameResult.FileName);
+
+                gotoDocument = editorViewModel.GetOpenedOrCreateFile(fileNameResult.FileName,true, 1, 1, relativePath);
             }
         }
         else  if (previewing is ExceptionViewModel exceptionViewModel)

@@ -13,7 +13,7 @@
         FontFamily="{Binding SelectedFontFamily}"
         FontSize="{Binding FontSize}"
         ExtendClientAreaToDecorationsHint="True"
-        BorderBrush="Transparent"
+        BorderBrush="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}"
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="-1"
         Title="Blitz">
@@ -86,7 +86,6 @@
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal"
                                 Spacing="0"
-
                                 VerticalAlignment="Center">
                         <Button Width="46"
                                 VerticalAlignment="Stretch"
@@ -188,7 +187,7 @@
                     </ToggleButton>
                 </DockPanel> 
             </Grid>
-            <controls:BlitzMainPanel Margin="5" DockPanel.Dock="Bottom" x:Name="BlitzMainPanel"></controls:BlitzMainPanel>
+            <controls:BlitzMainPanel DockPanel.Dock="Bottom" x:Name="BlitzMainPanel" Background="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}" ></controls:BlitzMainPanel>
         </DockPanel>
     </Grid>
     </Border>

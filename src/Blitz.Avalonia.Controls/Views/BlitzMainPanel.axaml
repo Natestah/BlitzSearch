@@ -29,16 +29,18 @@
         <KeyBinding Gesture="Ctrl+Shift+F" Command="{Binding ToggleFileNameFilterCommand}" />
         <KeyBinding Gesture="Ctrl+Shift+H" Command="{Binding ToggleFindInFilesFilterCommand}" />
     </UserControl.KeyBindings>
-    <DockPanel LastChildFill="True">
-        <models:SearchPanel x:Name="SearchPanel" DockPanel.Dock="Top" />
-        <models:LiteralSearchPanel DockPanel.Dock="Top" />
-        <models:RegularExpressionPanel DockPanel.Dock="Top" />
-        <models:FileNamePanel DockPanel.Dock="Top" />
-        <models:ReplacePanel x:Name="ReplacePanel" DockPanel.Dock="Top" />
-        <Separator Opacity="0.5" DockPanel.Dock="Top"/>
-        <models:InlineScopePanel DockPanel.Dock="Top" /> 
-        <models:InformerPanel DockPanel.Dock="Top" />
-        <Grid DockPanel.Dock="Top">
+    <DockPanel LastChildFill="True" >
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Background="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}">
+            <models:SearchPanel x:Name="SearchPanel" />
+            <models:LiteralSearchPanel />
+            <models:RegularExpressionPanel  />
+            <models:FileNamePanel  />
+            <models:ReplacePanel x:Name="ReplacePanel" />
+            <Separator Opacity="0.5"/>
+            <models:InlineScopePanel  /> 
+            <models:InformerPanel  />
+        </StackPanel>
+        <Grid Margin="5" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="30" />
                 <RowDefinition Height="4" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
@@ -55,7 +57,7 @@
                              Path="/Resources/BlitzSVGCentered.svg" />
                 </Grid>
             </Border>
-            <DockPanel Grid.Row="0" LastChildFill="True">
+            <DockPanel Grid.Row="0" LastChildFill="True"   Background="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}">
                 <DockPanel DockPanel.Dock="Bottom" Background="{StaticResource ReplaceHighlight}" LastChildFill="False"
                            IsVisible="{Binding ReplaceInFileEnabled}">
                     <Button Content="Apply Changes" DockPanel.Dock="Right" Margin="5" Padding="15 5"
@@ -74,7 +76,7 @@
                 <models:ResultsBox x:Name="ResultsBox" />
             </DockPanel>
             <GridSplitter IsVisible="{Binding SplitPane }" Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
-            <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" />
+            <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" Background="{Binding EditorViewModel.ThemeViewModel.BackGroundBrush}"/>
         </Grid>
     </DockPanel>
 </UserControl>

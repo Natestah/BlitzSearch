@@ -2036,4 +2036,33 @@ public class MainWindowViewModel : ViewModelBase
         text = item.GetReplaceResults(text);
         await File.WriteAllTextAsync(item.FileName, text);
     }
+    
+    
+        
+    public string GetRelativePathForFileName(string filenName)
+    {
+        // enumerate the selected WorkSpace/Project/Solutions to discover what the project is for incoming result.
+        if (SelectedScope != null)
+        {
+            foreach (var scopeViewModel in SelectedScope.SearchPathViewModels)
+            {
+                if (filenName.StartsWith(scopeViewModel.SearchPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    return scopeViewModel.SearchPath;
+                }
+            }
+        }
+
+        if (SolutionViewModel is not null)
+        {
+            SolutionViewModel.SolutionIdentity.SolutionPath = filenName;
+            if (filenName.StartsWith(SolutionViewModel.Title, StringComparison.OrdinalIgnoreCase))
+            {
+                return SolutionViewModel.SolutionIdentity.SolutionPath;
+            }
+        }
+
+        return "";
+    }
+
 }

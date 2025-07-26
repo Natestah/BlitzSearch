@@ -68,9 +68,9 @@
     </UserControl.Styles>
     <Grid>
         <DockPanel >
-            <DockPanel DockPanel.Dock="Top" LastChildFill="False" Background="{Binding EditorViewModel.TitleBarBackground}" >
+            <DockPanel DockPanel.Dock="Top" LastChildFill="False" Background="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}" >
                 <models:OptionTogglePanel Margin="0 6" DockPanel.Dock="Right"/>
-                <views:BlitzDocumentPreviewTitle Margin="0 6" DockPanel.Dock="Left" DataContext="{Binding EditorViewModel }" />
+                <views:BlitzDocumentPreviewTitle Margin="0 6" DockPanel.Dock="Left" DataContext="{Binding EditorViewModel }"  Background="{Binding ThemeViewModel.ResultsBackGroundBrush}"/>
             </DockPanel>
             <!-- <Grid DockPanel.Dock="Top" IsVisible="{Binding EnableTextPane}"> -->
             <!--     <views:BlitzFileTab  DataContext="{Binding EditorViewModel }" DockPanel.Dock="Left"/> -->

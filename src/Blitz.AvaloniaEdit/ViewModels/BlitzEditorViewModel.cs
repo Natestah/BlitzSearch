@@ -85,7 +85,7 @@ public class BlitzEditorViewModel : ViewModelBase
     /// <param name="lineNumber"></param>
     /// <param name="columnNumber"></param>
     /// <returns></returns>
-    public BlitzDocument GetOpenedOrCreateFile(string fileName, bool openInPreview = false, int lineNumber = 1, int columnNumber = 1)
+    public BlitzDocument GetOpenedOrCreateFile(string fileName, bool openInPreview = false, int lineNumber = 1, int columnNumber = 1, string relativePath = null)
     {
         int afterSelectedIndex = 0;
         if (SelectedFiles.FirstOrDefault() is BlitzDocument selected)
@@ -100,7 +100,7 @@ public class BlitzEditorViewModel : ViewModelBase
             {
                 var index = OpenedFiles.IndexOf(item);
                 OpenedFiles.Remove(item);
-                var updatedPreview = new BlitzDocument(BlitzDocument.DocumentType.File, fileName){AlignViewLine = lineNumber, AlignViewColumn = columnNumber, IsPreviewing = openInPreview};
+                var updatedPreview = new BlitzDocument(BlitzDocument.DocumentType.File, fileName, relativePath){AlignViewLine = lineNumber, AlignViewColumn = columnNumber, IsPreviewing = openInPreview};
                 OpenedFiles.Insert(index, updatedPreview);
                 SelectDocument(updatedPreview);
                 return updatedPreview;
@@ -118,7 +118,7 @@ public class BlitzEditorViewModel : ViewModelBase
         }
 
         
-        var returnDocument = new BlitzDocument(BlitzDocument.DocumentType.File, fileName){AlignViewLine = lineNumber, AlignViewColumn = columnNumber, IsPreviewing = openInPreview};
+        var returnDocument = new BlitzDocument(BlitzDocument.DocumentType.File, fileName, relativePath){AlignViewLine = lineNumber, AlignViewColumn = columnNumber, IsPreviewing = openInPreview};
         OpenedFiles.Insert(afterSelectedIndex, returnDocument);
         SelectDocument(returnDocument);
         return returnDocument;
