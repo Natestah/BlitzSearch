@@ -2,6 +2,9 @@
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+### Version 1.0.24
+* Don't dim Line Numbers
+* Trim leading Spaces from results to pull in those far tabbed code results.
 ### Version 1.0.23
 * Configuration options are now removed from the Text Editor Preview pane, making that space dedicated to text previewing
 * Created New Window, for the configuration stuff

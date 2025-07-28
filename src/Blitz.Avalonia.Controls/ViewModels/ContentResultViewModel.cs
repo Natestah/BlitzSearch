@@ -36,6 +36,8 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
             {
                 renderedContents = fileContentResultResult.ReplacedContents;
             }
+
+            renderedContents = renderedContents.TrimStart();
             
             bool largeLine = renderedContents.Length > maxLineDisplayChars;
             
