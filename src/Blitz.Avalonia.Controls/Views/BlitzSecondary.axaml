@@ -69,28 +69,14 @@
     <Grid>
         <DockPanel >
             <DockPanel DockPanel.Dock="Top" LastChildFill="False" Background="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}" >
-                <models:OptionTogglePanel Margin="0 6" DockPanel.Dock="Right"/>
                 <views:BlitzDocumentPreviewTitle Margin="0 6" DockPanel.Dock="Left" DataContext="{Binding EditorViewModel }"  Background="{Binding ThemeViewModel.ResultsBackGroundBrush}"/>
             </DockPanel>
             <!-- <Grid DockPanel.Dock="Top" IsVisible="{Binding EnableTextPane}"> -->
             <!--     <views:BlitzFileTab  DataContext="{Binding EditorViewModel }" DockPanel.Dock="Left"/> -->
             <!-- </Grid> -->
-            <Grid DockPanel.Dock="Top" >
-                <models:HelpPanel/>
-                <models:SettingsPanel/>
-                <Panel IsVisible="{Binding EnableTextPane}">
-                    <views:BlitzFileView  DataContext="{Binding EditorViewModel }" x:Name="FileView"  />
-                </Panel>
-                <Panel IsVisible="{Binding EnableGotoPane}">
-                    <models:GotoEditorSettingsPanel/>
-                </Panel>
-                <Panel IsVisible="{Binding EnableScopePane}">
-                    <models:ScopeSettingsPanel DataContext="{Binding WorkingScope}"/>
-                </Panel>
-                <Panel IsVisible="{Binding EnableThemePane}">
-                    <models:ThemePanel />
-                </Panel>
-            </Grid>
+            <Panel IsVisible="{Binding EnableTextPane}" DockPanel.Dock="Top">
+                <views:BlitzFileView  DataContext="{Binding EditorViewModel }" x:Name="FileView"  />
+            </Panel>
             
         </DockPanel>
 

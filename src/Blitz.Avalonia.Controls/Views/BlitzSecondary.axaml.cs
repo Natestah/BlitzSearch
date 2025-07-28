@@ -200,7 +200,6 @@ public partial class BlitzSecondary : UserControl
                     {
                         DirtyText = message
                     };
-                mainWindowViewModel.SplitPane = true;
                 mainWindowViewModel.EnableTextPane = true;
             }
             else
@@ -218,7 +217,6 @@ public partial class BlitzSecondary : UserControl
             {
                 DirtyText = exceptionViewModel.StackInfo
             };
-            mainWindowViewModel.SplitPane = true;
             mainWindowViewModel.EnableTextPane = true;
             return;
         }
@@ -227,8 +225,8 @@ public partial class BlitzSecondary : UserControl
             var missingRequirementResult = missingRequirementResultViewModel.Requirement;
             if (missingRequirementResult is MissingRequirementResult.Requirement.FileDirectory or MissingRequirementResult.Requirement.FileExtension)
             {
-                mainWindowViewModel.SplitPane = true;
                 mainWindowViewModel.EnableScopePane = true;
+                mainWindowViewModel.ShowPreferences();
                 return;
             }
         }
@@ -298,5 +296,6 @@ public partial class BlitzSecondary : UserControl
             return;
         }
         mainWindowViewModel.EnableHelpPane = true;
+        
     }
 }

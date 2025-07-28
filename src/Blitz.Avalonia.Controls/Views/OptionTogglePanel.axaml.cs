@@ -21,13 +21,6 @@ public partial class OptionTogglePanel : UserControl
             return;
         }
 
-        if (sender is ToggleButton tb && tb.IsChecked == false)
-        {
-            mainWindowViewModel.SplitPane = false;
-        }
-        else
-        {
-            mainWindowViewModel.SplitPane = true;
-        }
+        //Todo: delete this?
     }
 }

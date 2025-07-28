@@ -43,8 +43,8 @@
         <Grid Margin="5" DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" MinHeight="30" />
-                <RowDefinition Height="4" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
-                <RowDefinition Height="*" lb:RowDefinition.IsVisible="{Binding SplitPane}" />
+                <RowDefinition Height="4" lb:RowDefinition.IsVisible="{Binding EnableTextPane}" />
+                <RowDefinition Height="*" lb:RowDefinition.IsVisible="{Binding EnableTextPane}" />
             </Grid.RowDefinitions>
             <Border Grid.Row="0">
                 <Grid IsVisible="{Binding ShowScopeImage}">
@@ -75,7 +75,7 @@
                 </Grid>
                 <models:ResultsBox x:Name="ResultsBox" />
             </DockPanel>
-            <GridSplitter IsVisible="{Binding SplitPane }" Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
+            <GridSplitter IsVisible="{Binding EnableTextPane }" Grid.Row="1" ResizeDirection="Rows" IsTabStop="False" />
             <models:BlitzSecondary x:Name="BlitzSecondary" Grid.Row="2" Background="{Binding EditorViewModel.ThemeViewModel.BackGroundBrush}"/>
         </Grid>
     </DockPanel>

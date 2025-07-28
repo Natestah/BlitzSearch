@@ -176,15 +176,16 @@
                             </Path>
                         </Button>
                     </StackPanel>
-
-                    <ToggleButton DockPanel.Dock="Right" Classes="titleButton" IsChecked="{Binding SplitPane, Mode=TwoWay}" Click="Button_OnClick">
+                    
+                    <Button DockPanel.Dock="Right" Click="PreferenceButton_OnClick">
                         <ToolTip.Tip>
-                            Help
+                            Settings
                         </ToolTip.Tip>
-                        <ToggleButton.Content>
-                            <material:MaterialIcon Classes="TitleBarIcon" Kind="ArrowSplitHorizontal" />
-                        </ToggleButton.Content>
-                    </ToggleButton>
+                        <Button.Content>
+                            <material:MaterialIcon Classes="TitleBarIcon" Kind="Settings" />
+                        </Button.Content>
+                    </Button>
+
                 </DockPanel> 
             </Grid>
             <controls:BlitzMainPanel DockPanel.Dock="Bottom" x:Name="BlitzMainPanel" Background="{Binding EditorViewModel.ThemeViewModel.ResultsBackGroundBrush}" ></controls:BlitzMainPanel>

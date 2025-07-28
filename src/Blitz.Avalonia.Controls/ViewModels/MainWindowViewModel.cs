@@ -627,20 +627,6 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public bool SplitPane
-    {
-        get => Configuration.Instance.SplitPane;
-        set
-        {
-            Configuration.Instance.SplitPane = value;
-            if (!value)
-            {
-                DeselectAllPanes();
-            }
-            this.RaisePropertyChanged();
-        }
-    }
-
     public void UpdateTheme()
     {
         RefreshBoxItemHighlights();
@@ -694,20 +680,9 @@ public class MainWindowViewModel : ViewModelBase
     }
     private void ToggleTextEditRun()
     {
-        if (SplitPane)
+        EnableTextPane = !EnableTextPane;
+        if (EnableTextPane)
         {
-            if (!EnableTextPane)
-            {
-                EnableTextPane = true;
-                return;
-            }
-
-            SplitPane = false;
-        }
-        else
-        {
-            SplitPane = true;
-            EnableTextPane = true;
             ShowPaneIfSelection();
         }
     }
@@ -1171,7 +1146,6 @@ public class MainWindowViewModel : ViewModelBase
             or nameof(EnableScopePane)
             or nameof(EnableThemePane)
             or nameof(SelectedItems)
-            or nameof(SplitPane)
             or nameof(IsSmartCaseSensitive)
             )
         {
@@ -1750,7 +1724,6 @@ public class MainWindowViewModel : ViewModelBase
         EnableGotoPane = false;
         EnableScopePane = false;
         EnableSettingsPane =  false;
-        EnableTextPane = false;
         EnableThemePane = false;
     }
 
@@ -1784,7 +1757,7 @@ public class MainWindowViewModel : ViewModelBase
     public bool EnableTextPane
     {
         get => _enableTextPane;
-        set => this.DisablePaneIfNot(ref _enableTextPane , value);
+        set => this.RaiseAndSetIfChanged(ref _enableTextPane, value);
     }
 
     public bool EnableScopePane
@@ -1867,13 +1840,10 @@ public class MainWindowViewModel : ViewModelBase
 
     public void UpdatePreviewForItem(object eAddedItem)
     {
-        if (SplitPane == true) 
+        if (EnableTextPane == true) 
         {
-            if (EnableTextPane)
-            {
-                //update preview on internal text pane.
-                ShowPreview?.Invoke(eAddedItem);
-            }
+            //update preview on internal text pane.
+            ShowPreview?.Invoke(eAddedItem);
         }
         else if (SelectedEditorViewModel != null && !SelectedEditorViewModel.RunTotoOnObjectGoto(eAddedItem,true,
                      out string errorMessage))
@@ -2065,4 +2035,13 @@ public class MainWindowViewModel : ViewModelBase
         return "";
     }
 
+    public void ShowPreferences()
+    {
+        //Todo:
+        // Create show preference delegate in mainpanel
+        // start the window
+        throw new NotImplementedException();
+        
+        
+    }
 }

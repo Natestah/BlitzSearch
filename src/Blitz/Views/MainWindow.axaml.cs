@@ -14,12 +14,15 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Blitz.Avalonia.Controls.ViewModels;
+using Blitz.Avalonia.Controls.Views;
 using ReactiveUI;
 
 namespace Blitz.Views;
 
 public partial class MainWindow : Window
 {
+    private PreferenceWindow? _PreferenceWindow = null;
+
     public MainWindow()
     {
         if (Configuration.Instance.FromFile)
@@ -30,6 +33,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         Closed += OnClosed;
         PropertyChanged += OnPropertyChanged;
+
         SetRestartAction(DoUpdateAndRestart);
     }
 
@@ -297,21 +301,20 @@ public partial class MainWindow : Window
         this.StatusBar.InstallerClick = doUpdateAndRestart;
     }
 
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    private void PreferenceButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        if (_PreferenceWindow != null)
         {
             return;
         }
-
-        if (sender is ToggleButton tb && tb.IsChecked == false)
+        _PreferenceWindow = new PreferenceWindow()
         {
-            mainWindowViewModel.SplitPane = false;
-        }
-        else
-        {
-            mainWindowViewModel.SplitPane = true;
-        }
-    }}
+            DataContext = DataContext,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+        };
+        _PreferenceWindow.Closed += (o, e) => _PreferenceWindow = null;
+        _PreferenceWindow.Show(this);
+    }
+}
     
     

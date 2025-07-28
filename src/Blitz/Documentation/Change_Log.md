@@ -2,6 +2,9 @@
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
 
+### Version 1.0.23
+* Configuration options are now removed from the Text Editor Preview pane, making that space dedicated to text previewing
+* Created New Window, for the configuration stuff
 ### Version 1.0.22
 * File Tabs show relative to Solution / File Scope
 * Tweeks to use Sidebar ( VS Code, Or menu ) for results background.  To differentiate between the context preview.

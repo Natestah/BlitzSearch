@@ -1,0 +1,30 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Blitz.Avalonia.Controls.Views.PreferenceWindow"
+        xmlns:models="clr-namespace:Blitz.Avalonia.Controls.Views"
+        Width="910"
+        Height="1000"
+        xmlns:vm="using:Blitz.Avalonia.Controls.ViewModels"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Options">
+    <DockPanel  >
+        <models:OptionTogglePanel Margin="0 6" DockPanel.Dock="Top"/>
+        <Panel>
+            <models:HelpPanel/>
+            <models:SettingsPanel/>
+            <Panel IsVisible="{Binding EnableGotoPane}">
+                <models:GotoEditorSettingsPanel/>
+            </Panel>
+            <Panel IsVisible="{Binding EnableScopePane}">
+                <models:ScopeSettingsPanel DataContext="{Binding WorkingScope}"/>
+            </Panel>
+            <Panel IsVisible="{Binding EnableThemePane}">
+                <models:ThemePanel />
+            </Panel>
+        </Panel>
+    </DockPanel>
+
+</Window>
