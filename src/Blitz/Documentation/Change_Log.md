@@ -1,7 +1,10 @@
 # Change Log
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
-
+### Version 1.0.25
+* Fix Highlighting issue introduced with trimming result spaces
+* Fixed Replace being broken with new flat mode
+* Fixed a result recycling issue with whole word matches.
 ### Version 1.0.24
 * Don't dim Line Numbers
 * Trim leading Spaces from results to pull in those far tabbed code results.

@@ -31,16 +31,16 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
             //this can over-burden things. (huge performance hitch and horizontal scrolling).  simply truncate here
             const int maxLineDisplayChars = 1024; //Make this optional? -> https://github.com/Natestah/BlitzSearch/issues/84
             
-            
             if (!string.IsNullOrEmpty(fileContentResultResult.ReplacedContents))
             {
                 renderedContents = fileContentResultResult.ReplacedContents;
             }
 
+            int offsetForSpaceRemoval = renderedContents.Length;
             renderedContents = renderedContents.TrimStart();
+            offsetForSpaceRemoval -= renderedContents.Length;
             
             bool largeLine = renderedContents.Length > maxLineDisplayChars;
-            
             
             string displayContents = largeLine ? renderedContents.Substring(0, maxLineDisplayChars): renderedContents;
 
@@ -49,7 +49,7 @@ public class ContentResultViewModel(MainWindowViewModel mainWindowViewModel, Fil
 
             var states = MainWindowViewModel.ResultsHighlighting.GetCharStatesFromInlines(inlineCollection, displayContents);
             
-            var matchHighlighter = new MatchHighlighter(states,fileContentResultResult.BlitzMatches, displayContents, replacing);
+            var matchHighlighter = new MatchHighlighter(states,fileContentResultResult.BlitzMatches, displayContents, replacing, offsetForSpaceRemoval);
 
             return matchHighlighter.GetInlines();
         }

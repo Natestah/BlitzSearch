@@ -25,6 +25,7 @@ public class PluginCommands
     public const string SetThemeLight = "SET_THEME_LIGHT";  
     public const string VisualStudioCodeWorkspaceUpdate = "WORKSPACE_UPDATE";  
     public const string SublimeTextWorkspaceUpdate = "SUBLIME_TEXT_WORKSPACE";  
+    public const string NVimUpdateWorkspace = "NVIM_SET_WORKSPACE";  
     public const string UpdateVisualStudioProject = "VS_PROJECT";  
     public const string UpdateVisualStudioActiveFiles = "VS_ACTIVE_FILES";
     public static string SimpleFolderSearch = "SIMPLE_FOLDER_SEARCH";

@@ -265,10 +265,17 @@ public partial class BlitzMainPanel : UserControl
         mainWindowViewModel.StopRespondingToCurrentQuery();
 
         List<FileNameResult> items = [];
-        foreach (var change in mainWindowViewModel.ResultBoxItems.OfType<FileNameResultViewModel>())
+        HashSet<string> files = new HashSet<string>();
+        foreach (var change in mainWindowViewModel.ResultBoxItems.OfType<ContentResultViewModel>())
         {
-            items.Add(change.FileNameResult);
+            if (files.Add(change.FileNameResult.FileName))
+            {
+                items.Add(change.FileNameResult);
+            }
         }
+        
+        
+        
         mainWindowViewModel.ResultBoxItems.Clear();
         var summary = new StringBuilder();
         int total = items.Count;

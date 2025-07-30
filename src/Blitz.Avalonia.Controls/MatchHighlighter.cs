@@ -9,7 +9,7 @@ using Blitz.Interfacing.QueryProcessing;
 
 namespace Blitz.Avalonia.Controls;
 
-public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, string lineText, bool isForReplacement)
+public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, string lineText, bool isForReplacement, int offsetForSpaceRemoval = 0)
 {
     public InlineCollection GetInlines()
     {
@@ -22,21 +22,22 @@ public class MatchHighlighter(CharState?[] states, List<BlitzMatch> matches, str
 
         foreach (var match in matches)
         {
+            int offsetMathIndex = match.MatchIndex - offsetForSpaceRemoval;
 
-            int target = match.MatchIndex + match.MatchLength;
+            int target = offsetMathIndex + match.MatchLength;
 
 
             if (match.Replacement is { Length: 0 })
             {
-                states[match.MatchIndex] ??= new CharState();
-                states[match.MatchIndex]!.InsertedText = lineText.Substring(match.MatchIndex, match.MatchLength);
+                states[offsetMathIndex] ??= new CharState();
+                states[offsetMathIndex]!.InsertedText = lineText.Substring(offsetMathIndex, match.MatchLength);
             }
             // matches are from whole line, which can be truncated for displaytext.
             
-            for (int i = match.MatchIndex; i < target && i < states.Length; i++)
+            for (int i = offsetMathIndex; i < target && i < states.Length; i++)
             {
                 states[i] ??= new CharState();
-                if (i == match.MatchIndex && match.Replacement is { Length: > 0 } )
+                if (i == offsetMathIndex && match.Replacement is { Length: > 0 } )
                 {
                     states[i]!.ReplacedFrom = match.Replacement;
                     int offset = match.MatchLength - match.Replacement.Length;

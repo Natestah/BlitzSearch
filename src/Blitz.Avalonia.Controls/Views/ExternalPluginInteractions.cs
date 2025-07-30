@@ -42,6 +42,7 @@ public class ExternalPluginInteractions
         _commander.RegisterAction(PluginCommands.UpdateVisualStudioProject, UpdateVisualStudioSelectedProject);
         _commander.RegisterAction(PluginCommands.UpdateVisualStudioActiveFiles, UpdateVisualStudioActiveFilesList);
         _commander.RegisterAction(PluginCommands.SublimeTextWorkspaceUpdate, UpdateSublimeTextWorkspace);
+        _commander.RegisterAction(PluginCommands.NVimUpdateWorkspace, UpdateNVimWorkspace);
         _commander.RegisterAction(PluginCommands.SimpleFolderSearch, SetSimpleFolderSearch);
         _commander.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }
@@ -422,6 +423,28 @@ public class ExternalPluginInteractions
         });
     }
 
+
+    private void UpdateNVimWorkspace(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (_viewModel is not { SelectedEditorViewModel.IsSublimeText: true })
+            {
+                return;
+            }
+            var workspace = JsonSerializer.Deserialize(text, JsonContext.Default.FolderWorkspace);
+            if (workspace is null)
+            {
+                return;
+            }
+            _viewModel.ApplyNVimWorkSpace(workspace);
+        });
+    }
 
 
     private void UpdateSublimeTextWorkspace(string text)

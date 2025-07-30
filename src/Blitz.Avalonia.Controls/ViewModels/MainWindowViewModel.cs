@@ -371,6 +371,9 @@ public class MainWindowViewModel : ViewModelBase
             case CodeExecuteNames.Windsurf:
                 RecallVisualStudioCodeWorkspacesVisited();
                 break;
+            case CodeExecuteNames.NVim:
+                RecallNVimWorkspacesVisited();
+                break;
             case CodeExecuteNames.SublimeText:
                 //Sublime Text always updates a single summary of it's Windows and workspaces.
                 ExternalPluginInteractions.Commander.ExecuteNamedAction(PluginCommands.SublimeTextWorkspaceUpdate);
@@ -1869,18 +1872,12 @@ public class MainWindowViewModel : ViewModelBase
         
     }
 
-    public void RecallVisualStudioCodeWorkspacesVisited()
+    private void RecallWorkSPaceVisited(string fromPluginExport)
     {
-        if (SelectedEditorViewModel is not { IsVsCode: true } and not { IsCursor: true } and not
-            { IsWindsurf: true })
-        {
-            return;
-        }
-
         WorkspaceScopeViewModels.Clear();
         int max = 20;
         int count = 0;
-        foreach (var solutionId in ExternalPluginInteractions.Commander.GetSolutionIDsForCommands(PluginCommands.VisualStudioCodeWorkspaceUpdate))
+        foreach (var solutionId in ExternalPluginInteractions.Commander.GetSolutionIDsForCommands(fromPluginExport))
         {
             var workspaceScopeViewModel = new WorkspaceScopeViewModel(this, solutionId);
             WorkspaceScopeViewModels.Add(workspaceScopeViewModel);
@@ -1903,6 +1900,25 @@ public class MainWindowViewModel : ViewModelBase
         {
             IsWorkspaceScopeSelected = true;
         }
+    }
+
+    public void RecallNVimWorkspacesVisited()
+    {
+        if (SelectedEditorViewModel is not { IsNeoVim: true })
+        {
+            return;
+        }
+        RecallWorkSPaceVisited(PluginCommands.NVimUpdateWorkspace);
+    }
+    public void RecallVisualStudioCodeWorkspacesVisited()
+    {
+        if (SelectedEditorViewModel is not { IsVsCode: true } and not { IsCursor: true } and not
+            { IsWindsurf: true })
+        {
+            return;
+        }
+
+        RecallWorkSPaceVisited(PluginCommands.VisualStudioCodeWorkspaceUpdate);
     }
 
     private string GetNameFromSublimeTextWorkspace(FolderWorkspace workspace)
@@ -1955,6 +1971,23 @@ public class MainWindowViewModel : ViewModelBase
 
         builder.Append(')');
         return builder.ToString();
+    }
+    
+    public void ApplyNVimWorkSpace(FolderWorkspace workspace)
+    {
+        SolutionViewModel = null;
+        WorkspaceScopeViewModels.Clear();
+        
+        if (string.IsNullOrEmpty(workspace.Name))
+        {
+            workspace.Name = GetNameFromSublimeTextWorkspace(workspace);
+        }
+        var solutionId = SolutionID.CreateFromSolutionPath(workspace.Name);
+        var workspaceScopeViewModel = new WorkspaceScopeViewModel(this, solutionId,true)
+        {
+            WorkspaceExport = workspace
+        };
+        WorkspaceScopeViewModels.Insert(0, workspaceScopeViewModel);
     }
 
     public void ApplySublimeTextListOfWorkspaces(List<FolderWorkspace> workspaces)

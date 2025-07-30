@@ -415,6 +415,10 @@ public class Searching
             {
                 return false;
             }
+            else if (oldWordInQuery.SearchWord != newWordQuery.SearchWord)
+            {
+                return false;
+            }
             if (oldWordInQuery.CaseSensitive != newWordQuery.CaseSensitive)
             {
                 return false;
