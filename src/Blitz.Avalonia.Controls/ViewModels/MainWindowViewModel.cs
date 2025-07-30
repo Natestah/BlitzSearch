@@ -1908,7 +1908,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             return;
         }
-        RecallWorkSPaceVisited(PluginCommands.NVimUpdateWorkspace);
+        RecallWorkSPaceVisited(PluginCommands.VisualStudioCodeWorkspaceUpdate);
     }
     public void RecallVisualStudioCodeWorkspacesVisited()
     {

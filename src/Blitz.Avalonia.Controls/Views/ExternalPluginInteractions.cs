@@ -42,7 +42,6 @@ public class ExternalPluginInteractions
         _commander.RegisterAction(PluginCommands.UpdateVisualStudioProject, UpdateVisualStudioSelectedProject);
         _commander.RegisterAction(PluginCommands.UpdateVisualStudioActiveFiles, UpdateVisualStudioActiveFilesList);
         _commander.RegisterAction(PluginCommands.SublimeTextWorkspaceUpdate, UpdateSublimeTextWorkspace);
-        _commander.RegisterAction(PluginCommands.NVimUpdateWorkspace, UpdateNVimWorkspace);
         _commander.RegisterAction(PluginCommands.SimpleFolderSearch, SetSimpleFolderSearch);
         _commander.ExecuteWithin(DateTime.UtcNow, TimeSpan.FromSeconds(2));
     }

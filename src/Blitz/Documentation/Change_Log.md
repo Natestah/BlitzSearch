@@ -1,6 +1,8 @@
 # Change Log
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.26
+* NVim shares "Folder" workspace setup that VS Code does, this was the last TODO on my nvim plugin
 ### Version 1.0.25
 * Fix Highlighting issue introduced with trimming result spaces
 * Fixed Replace being broken with new flat mode
