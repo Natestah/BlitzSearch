@@ -155,6 +155,7 @@ public class GotoAction(GotoEditor gotoEditor)
             {
                 case CodeExecuteNames.NVim:
                     executeGotoWithSolutionId(gotoDirective, "NVIM_GOTO", preview);
+                    runExecutable = ExecutableBootRequired();
                     break;
                 case CodeExecuteNames.VSCode:
                 case CodeExecuteNames.Cursor:

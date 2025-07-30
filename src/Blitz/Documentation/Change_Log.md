@@ -1,6 +1,8 @@
 # Change Log
 
 #### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.27
+* Fix extra nvim.exe call outs creating contention with swap files when opening to a file. 
 ### Version 1.0.26
 * NVim shares "Folder" workspace setup that VS Code does, this was the last TODO on my nvim plugin
 ### Version 1.0.25
