@@ -15,13 +15,16 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
 * Blitz Query - "Word's on a line"
 * Real time results
+  * ♻️ Results Recycling / Caching help to reduces wear on IO
 * Robust Find and Replace
 * Handles Large volumes of files. 
 * Syntax Highlighting
 * Optional Git Ignore filter
+  * optional .blitzIgnore files too.
 * Auto-Human text file filtering.
 * Living search results reflect file changes.
 * In editor preview pane ( where applicable )
+* Built in Folder Scope Definitions
 
 ![2025-07-24_10-36-36](https://github.com/user-attachments/assets/1d4363ab-1b4f-496c-a25c-52e78aa1e530)
 
@@ -50,7 +53,7 @@ I personally have Blitz Search as the stand in for all but Jetbrains ( there are
 * [Notepad++](https://github.com/Natestah/BlitsNppPlugin)
 * [Visual Studio](https://github.com/Natestah/BlitzVisualStudioExtension) 
 * [IntelliJ - Jetbrains IDEs](https://github.com/Natestah/BlitzIntellij)
-* [NeoVim (Work in Progress)](https://github.com/Natestah/blitzsearch.nvim)
+* [NeoVim](https://github.com/Natestah/blitzsearch.nvim)
 
 ## Dependencies
 * [AvaloniaUI](https://github.com/avaloniaui/) - Modern Presentation framework
