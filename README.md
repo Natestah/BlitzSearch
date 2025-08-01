@@ -73,3 +73,35 @@ Super early testing and feedback:
 
 Killer Blitz Icon:
 * Oscar Lopez
+
+## Aspirations
+
+Blitz Search is my baby, but I need a partner in this. 
+
+I have a lot of ideas about what the future holds for Blitz Search.  If you find yourself aligning with the heart of Blitz Search and want to start making contributions.  Here are some things that I have been mulling.
+
+1) Cross platform (currently only windows). I had thought to start with Linux, from there a Mac Port should be pretty straight forward.
+
+2) Always Supporting New IDE's, Amazon Just put out a new VSCode derived one that should be easy (see my cursor or Windsurf commits).  You can follow any of the commits for the other IDE's to see how those are done.
+
+3) Fuzzy Search, This looks more like "Did you mean?" in Google where there's a clear explanation about only missed words.  Blitz Search can respond in an instant Since those words are stored in a unified cache per extension, ( we already know the words that aren't going to find anything )
+    * There are libraries that make this easy.
+
+4) Highlighting in search box, This entails changing it from a TextBox, too a full-blown AvaloniaEdit box, with a custom highlighter.
+    * Highlight things like the query symbols
+    * Indicate inline the words that missed.
+
+5) Search box context menu.
+    * Search Box should show hints for the Query when the cursor is on a word IE: Change this word to a not (!word), or Force Case Sensitive ^casesensitve, or Whole word @wholeword
+
+6) Word Completion, again with blitz search already having a complete view of all the words (when its fully cached), it can tell about words
+
+7) CLI version,  Get a basic command line version going where we simply provide the results and work with the cache of a file.  
+
+8) Open source Blitz.Query, this is probably the biggest takeaway from this tool, for things like Jetbrains, all that's needed is a customized matching and the inline version suddenly becomes better than Blitz Search.
+
+9) Visit all Extensions and add "Show Blitz Search" commands. It's something that I miss, and it is really easy to add. (It's like Search This, but without populating the box..)
+
+10) Improve Dirty Text handling,  One thing that IDE's can do with their search is find/replace within working text buffers that haven't been written to disk.  This requires going out to the Plugins and doing some work there and then some more work to communicate the buffer's.
+
+11) Anything to do with hands off the keyboard
