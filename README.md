@@ -25,6 +25,7 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 * Living search results reflect file changes.
 * In editor preview pane ( where applicable )
 * Built in Folder Scope Definitions
+* Automatic Updates, ( Update Button that shows Version changes on Mouse hover )
 
 ![2025-07-24_10-36-36](https://github.com/user-attachments/assets/1d4363ab-1b4f-496c-a25c-52e78aa1e530)
 
@@ -74,34 +75,80 @@ Super early testing and feedback:
 Killer Blitz Icon:
 * Oscar Lopez
 
-## Aspirations
+# The Future of Blitz Search
 
-Blitz Search is my baby, but I need a partner in this. 
+I NEED CONTRIBUTORS to help realize the vision of Blitz Search!  
 
-I have a lot of ideas about what the future holds for Blitz Search.  If you find yourself aligning with the heart of Blitz Search and want to start making contributions.  Here are some things that I have been mulling.
+This vision is a central place for simple text search, While IDE's focus on LSP, and now AI agent development. Find-in-File promises to be even farther left behind.
+
+I have worked hard to reach parity with the best of the best Find-in-Files, now it's time to take it to the next level!
+
+If you find yourself aligning with the heart of Blitz Search and want to start making contributions.  
+
+Here is as much as I could think of to layout as a roadmap.  Eventually, likely sooner, I'm going to take an indefinite break from all this.
+
+### Reaching People
 
 1) Cross platform (currently only windows). I had thought to start with Linux, from there a Mac Port should be pretty straight forward.
+   * There's some code relating to a window style ( putting things on the task bar in Windows ), where custom Maximize Close buttons need to mimic default MAC OS buttons
+   * gotodefs.json needs a platform version, this describes default install locations for applications
+   * I have habitually used Windows Path Separators,  This should be easy to fix up ( use Path.Combine )
 
-2) Always Supporting New IDE's, Amazon Just put out a new VSCode derived one that should be easy (see my cursor or Windsurf commits).  You can follow any of the commits for the other IDE's to see how those are done.
+2) Always Supporting New IDE's, You can follow any of the commits for the other IDE's to see how those are done.
+   * Amazon's new IDE is VSCODE, should be easy! 
+   * Obsidian
+   * Going to lesser known IDE's, is a great way to find passionate developers willing to chime in on feedback.  Sublime text has only 38 downloads and those guys have said a lot!
 
-3) Fuzzy Search, This looks more like "Did you mean?" in Google where there's a clear explanation about only missed words.  Blitz Search can respond in an instant Since those words are stored in a unified cache per extension, ( we already know the words that aren't going to find anything )
-    * There are libraries that make this easy.
+3) CLI Version,  There maybe some IDE's out there that can work on a CLI version.  Might be a good path to take to try and recognize the same parameters set by RIPGREP and things (if that makes sense)
+    * This isn't a huge breakout.  New Command Line project + Blitz.Search.csproj.  Works Without GUI
 
-4) Highlighting in search box, This entails changing it from a TextBox, too a full-blown AvaloniaEdit box, with a custom highlighter.
+## Improving Search, Increasing value
+
+1) Fuzzy Search, This looks more like "Did you mean?" in Google where there's a clear explanation about only missed words.  
+   * Blitz Search can respond in an instant Since those words are stored in a unified cache per extension, ( we already know the words that aren't going to find anything ) 
+   * There are libraries that make this easy.
+
+2) Highlighting in search box, This entails changing it from a TextBox, too a full-blown AvaloniaEdit box, with a custom highlighter.
     * Highlight things like the query symbols
     * Indicate inline the words that missed.
 
-5) Search box context menu.
+3) Search box context menu.
     * Search Box should show hints for the Query when the cursor is on a word IE: Change this word to a not (!word), or Force Case Sensitive ^casesensitve, or Whole word @wholeword
 
-6) Word Completion, again with blitz search already having a complete view of all the words (when its fully cached), it can tell about words
+4) Word Completion, again with blitz search already having a complete view of all the words (when its fully cached), it can tell about words
 
-7) CLI version,  Get a basic command line version going where we simply provide the results and work with the cache of a file.  
+5) Open source Blitz.Query, this is probably the biggest takeaway from this tool, for things like Jetbrains, all that's needed is a customized matching and the inline version suddenly becomes better than Blitz Search.
 
-8) Open source Blitz.Query, this is probably the biggest takeaway from this tool, for things like Jetbrains, all that's needed is a customized matching and the inline version suddenly becomes better than Blitz Search.
+6) Visit all Extensions and add "Show Blitz Search" commands. It's something that I miss, and it is really easy to add. (It's like Search This, but without populating the box..)
 
-9) Visit all Extensions and add "Show Blitz Search" commands. It's something that I miss, and it is really easy to add. (It's like Search This, but without populating the box..)
+7) Improve Dirty Text handling,  One thing that IDE's can do with their search is find/replace within working text buffers that haven't been written to disk.  This requires going out to the Plugins and doing some work there and then some more work to communicate the buffer's.
 
-10) Improve Dirty Text handling,  One thing that IDE's can do with their search is find/replace within working text buffers that haven't been written to disk.  This requires going out to the Plugins and doing some work there and then some more work to communicate the buffer's.
+8) Anything to do with hands off the keyboard, I think about maybe being inspired by VIM,  Hotkey to focus results/Switch Scopes. I was hoping ot reveal a bit of this from NVIM users.
 
-11) Anything to do with hands off the keyboard
+9) AI Features - Ability to Speak to an AI about results, or DO Large Language things 
+   * https://github.com/Zelex/aisearch - Check this out! Jon's example to me was search for "//Todo: " then ask AI to "Tell me about the todo's" 
+   * AI could be used to derive a complex OR operator search internally to soften the results or otherwise leverage LLM, I have considered using an English thesaurus, but LLM would be even cooler as it might yield cross language improvments.
+     * Using Thesaurus for exakmple here: "execute" would translate to an or search ( perform|accomplish|fulfil|achieve|do|implement|make )
+
+10) Multi-media, I Jettisoned this Idea before, but I thought it could be cool to show the image when a filename matched. a search for ".png" with filenames would yield a nice presentation of images along with text results
+
+## Code Quality
+
+1) Compiler complaints about Nullables hit me hard in this project, and I really didn't have a good answer to when a non-nullable reference found a way to become null.
+   * I can't remember if this was from JSON serialization or from MessagePack.  Would be nice to have some tests, that replicate what I suspect, and then maybe some code generators to  do what is appropriate.  I would like to have Collections be non-nullable and reliably enumerated.  Perhaps solutions in either exists already.
+2)  Warnings as Errors
+   * I have abandoned this at some point, most likey due to the above.
+3) Blitz Query
+   * I tacked on Literal/Regular Expressions to search, I would like for those to simply be SubQueries of the root "BlitzAddQuery" type, this would clean up quite a bit of code and noise there.
+4) Unit Tests
+   * Any retroactive Unit Tests would be helpful in maintaining stability  
+
+## Github
+
+1) I would like to develop a bit more Deploy triggers.  
+    * Currently Deploy offers nothing in Description, lets fix this up.
+
+## Social Engagement
+
+1) This has been at the heart of Blitz Search from the start, I need a vocal hero to elevate Blitz Search,  Every new feature is an opportunity to blast social about it.
+   * It would be cool to have brand new channels Dedicated, I have destroyed my profiles algorithms by talking about Game Development stuff.  
