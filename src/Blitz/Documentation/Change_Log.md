@@ -1,6 +1,6 @@
 # Change Log
-
-#### Come join me on.. [Discord](https://discord.com/invite/UYPwQY9ngm) and give feedback!
+### Version 1.0.28
+* Removing Discord
 ### Version 1.0.27
 * Fix extra nvim.exe call outs creating contention with swap files when opening to a file. 
 ### Version 1.0.26

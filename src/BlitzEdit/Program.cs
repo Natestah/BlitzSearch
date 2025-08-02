@@ -91,13 +91,13 @@ sealed class Program
 
         builder.AppendLine("<p>");
         builder.AppendLine(
-            "Currently Blitz Edit Does not automatically send information anywhere, please help me to improve the quality of Blitz Edit by sending this information to the either my email or Discord channel.");
+            "Currently Blitz Edit Does not automatically send information anywhere, please help me to improve the quality of Blitz Edit by sending this information to the Github issue tracker.");
         builder.AppendLine("</p>");
 
         builder.AppendLine("<br>");
-        builder.AppendLine("<a href=\"mailto:natestah@gmail.com\">Email Support</a>");
+        builder.AppendLine("<a href=\"mailto:natestah@gmail.com\">My Personal Email</a>");
         builder.AppendLine("<br>");
-        builder.AppendLine("<a href=\"https://discord.com/invite/UYPwQY9ngm\">Join the BlitzSearch Discord</a>");
+        builder.AppendLine("<a href=\"https://github.com/Natestah/BlitzSearch/issues\">File an Issue on Github</a>");
         builder.AppendLine("<br>");
         builder.AppendLine("<br>");
 

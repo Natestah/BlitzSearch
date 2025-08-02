@@ -128,13 +128,13 @@ sealed class Program
 
         builder.AppendLine("<p>");
         builder.AppendLine(
-            "Currently Blitz Search Does not automatically send information anywhere, please help me to improve the quality of Blitz Search by sending this information to the either my email or Discord channel.");
+            "Currently Blitz Search Does not automatically send information anywhere, please help me to improve the quality of Blitz Search by filing an issue on Github.");
         builder.AppendLine("</p>");
 
         builder.AppendLine("<br>");
         builder.AppendLine("<a href=\"mailto:natestah@gmail.com\">Email Support</a>");
         builder.AppendLine("<br>");
-        builder.AppendLine("<a href=\"https://discord.com/invite/UYPwQY9ngm\">Join the BlitzSearch Discord</a>");
+        builder.AppendLine("<a href=\"https://github.com/Natestah/BlitzSearch/issues\">File an Issue on Github</a>");
         builder.AppendLine("<br>");
         builder.AppendLine("<br>");
 
@@ -198,65 +198,6 @@ sealed class Program
     static void GlobalExeptionReportSimplified(Exception ex)
     {
         PrintExceptionAsHmtl(ex, true);
-    }
-
-    static void PrintStackText(Exception ex, StringBuilder builder)
-    {
-        if (ex.StackTrace == null) return;
-        builder.Append("Exception Stack: ");
-        builder.AppendLine("");
-        using var re = new StringReader(ex.StackTrace);
-        while (re.Peek() != -1)
-        {
-            var line = re.ReadLine()!;
-            builder.AppendLine(line);
-        }
-
-    }
-
-    static void PrintExceptionMessageText(Exception ex, StringBuilder builder)
-    {
-        builder.Append("Exception Message: ");
-        builder.AppendLine();
-        builder.AppendLine(ex.Message);
-    }
-    
-    static void PrintExceptionToText(Exception ex)
-    {
-        var dir = Path.Combine(Path.GetTempPath(), "blitz_exceptions");
-        Directory.CreateDirectory(dir);
-        string filePath = Path.Combine(dir, "BlitzException.txt");
-        
-        var builder = new StringBuilder();
-        
-        builder.AppendLine("Blitz Search Has crashed :( ");
-        builder.AppendLine(
-            "Currently Blitz Search Does not send any data, I would like to get this information. Send to Email or Discord");
-        builder.Append("Email: ");
-        builder.AppendLine("natestah@gmail.com");
-        builder.Append("Discord: ");
-        builder.AppendLine("https://discord.com/invite/UYPwQY9ngm");
-
-        PrintExceptionMessageText(ex, builder);
-        PrintStackText(ex, builder);
-
-        var innerException = ex.InnerException;
-
-        while (innerException != null)
-        {
-            PrintExceptionMessageText(innerException, builder);
-            if (innerException.StackTrace != null)
-            {
-                PrintStackText(innerException, builder);
-            }
-            innerException = innerException.InnerException;
-        }
-        File.WriteAllText(filePath,builder.ToString());
-        var processStartInfo = new ProcessStartInfo(filePath)
-        {
-            UseShellExecute = true
-        };
-        Process.Start(processStartInfo); 
     }
     
     public class MyCoolObservableExceptionHandler : IObserver<Exception>

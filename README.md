@@ -37,11 +37,9 @@ A Universal improvement to Find/Replace in files for any Text Editor / IDE
 3) (Optional) Bind blits* commands to a key. 
     * farther instructions are typically displayed on the marketplace extension information pages.
 
-## More Info:
+## YouTube Demonstrations:
 
-[Blitz Search Features on Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=6hpIiOI5kr7kPH8k) - Demonstrations of features
-
-[Blitz Discord](https://discord.com/invite/UYPwQY9ngm) - Feedback is welcome, This is my personal Discord and shares topics of game dev things.
+[Blitz Search Features on Youtube](https://youtube.com/playlist?list=PLDB5sR-xyaUYymdLPoywoApQ1ZlLl157d&si=6hpIiOI5kr7kPH8k) - Demonstrations of features, some of these are out of date but the functionality still exists.
 
 ## Supported IDEs and Extension Source
 
