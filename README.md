@@ -1,3 +1,15 @@
+# Creators Last words:
+
+I have made the decision to stop working on BlitzSearch,  100% stop working.  Initially I thought that maybe? Just maybe I could manage sitting in a moderators seat approving pull requests, but I am on day 1 of factory resetting my personal PC and getting an Issue reported about Version 1.0.28 and 1.0.27 triggering a virus report.
+
+This is not going to work.  I need my head space, and my freedom from what has entered into an unhealthy obsession.  Keep making issues and using BlitzSearch,  fork it and fix yourself.  That's the awesome part about open source.
+
+My hope is that someone would rebrand and take this thing to the next level (there ar about 5 plug-ins that also may need updating.   I'm not promising any support and I hope that you all understand the importance of this decision.
+
+Thank you everyone for your support on this, its been a blast to work on and has served its purpose.
+
+-Nathan Silvers 
+
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/natestah/blitzsearch/total?label=Installs)
 ![Sublime](https://img.shields.io/packagecontrol/dt/BlitzSearch?label=Sublime%20Text)
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/NathanSilvers.BlitzSearch?label=VS%20Code)
@@ -10,6 +22,8 @@
 A Universal improvement to Find/Replace in files for any Text Editor / IDE
 
 <img width="1920" height="1099" alt="blitzthing14" src="https://github.com/user-attachments/assets/b238dd0a-cc19-4463-b323-1435a84d9181" />
+
+
 
 ## Bullets
 
